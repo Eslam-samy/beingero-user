@@ -1,14 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.Main.signup.SignupFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:paddingBottom="50dp">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_username"
+                style="@style/TextInputLayoutStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:translationY="0dp"
+                >
+
+                <EditText
+                    style="@style/EditTextStyle"
+                    android:hint="@string/username"
+                    android:inputType="text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Hazem"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_phone_number"
+                style="@style/TextInputLayoutStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_username"
+                >
+
+                <EditText
+                    style="@style/EditTextStyle"
+                    android:hint="@string/phone_number"
+                    android:inputType="phone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="01064646456" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_password"
+                style="@style/TextInputLayoutStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_phone_number"
+                android:translationY="-10dp"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleDrawable="@drawable/selector_password_toggle_drawable"
+                app:passwordToggleTint="@color/colorAccent"
+                >
+
+                <EditText
+                    style="@style/EditTextStyle"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="12314456456"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_confirm_password"
+                style="@style/TextInputLayoutStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_password"
+                android:translationY="-20dp"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleDrawable="@drawable/selector_password_toggle_drawable"
+                app:passwordToggleTint="@color/colorAccent"
+
+                >
+
+                <EditText
+                    style="@style/EditTextStyle"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="65456456456"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_signup"
+                style="@style/ButtonNormalStyle"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/signup"
+                android:layout_marginTop="0dp"
+                android:translationY="-30dp"
+                app:layout_constraintTop_toBottomOf="@+id/input_confirm_password" />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

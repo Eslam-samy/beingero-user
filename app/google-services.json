@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "620153477348",
+    "firebase_url": "https://bringero-d63ac.firebaseio.com",
+    "project_id": "bringero-d63ac",
+    "storage_bucket": "bringero-d63ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:620153477348:android:75f1fa787ab09790",
+        "android_client_info": {
+          "package_name": "com.corptia.bringero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "620153477348-78trpjkc3h0fggq279j22nu7hhlqcibd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.corptia.bringero",
+            "certificate_hash": "8b6cc687500bd0f5c9fd8893eb0df38cf94b05e7"
+          }
+        },
+        {
+          "client_id": "620153477348-avo5jafvkqkhnn2fm6cho9uo0r5714bj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzyqcfAyiCnQzkVdnDacPxZGrTKgaLCy4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "620153477348-avo5jafvkqkhnn2fm6cho9uo0r5714bj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
