@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Bringero</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot Password</string>
+</resources>

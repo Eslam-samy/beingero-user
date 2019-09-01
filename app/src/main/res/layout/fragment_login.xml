@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.Main.login.LoginFragment">
+
+    <Button
+        android:id="@+id/btn_login"
+        style="@style/ButtonNormalStyle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="@string/login"
+        app:layout_constraintBottom_toTopOf="@+id/txt_forgot_password"
+        app:layout_constraintTop_toBottomOf="@+id/input_password"
+        tools:layout_editor_absoluteX="20dp" />
+
+    <TextView
+        android:id="@+id/txt_forgot_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin"
+        android:text="@string/forgot_password"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/btn_login"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_phone_number"
+        style="@style/TextInputLayoutStyle"
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@+id/input_password"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        >
+
+            <EditText
+                style="@style/EditTextStyle"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="123456"
+                android:padding="25dp"
+                android:layout_gravity="center"
+                android:textSize="17sp"
+                android:background="@drawable/shadow_input"
+                android:drawableEnd="@drawable/ic_cheak"
+                />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/input_password"
+        style="@style/TextInputLayoutStyle"
+        app:layout_constraintBottom_toTopOf="@+id/btn_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_phone_number"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleDrawable="@drawable/selector_password_toggle_drawable"
+        app:passwordToggleTint="@color/colorAccent"
+        >
+
+            <EditText
+                style="@style/EditTextStyle"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="789"
+                android:paddingStart="25dp"
+                android:paddingEnd="25dp"
+                android:textSize="17sp"
+                android:background="@drawable/shadow_input"
+                />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

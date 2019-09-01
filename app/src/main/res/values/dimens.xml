@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="floating_hint_margin">6dp</dimen>
+    <dimen name="radius_normal">8dp</dimen>
+    <dimen name="radius_large">12dp</dimen>
+
+    <dimen name="large_margin">20dp</dimen>
+    <dimen name="normal_margin">8dp</dimen>
+    <dimen name="low_margin">4dp</dimen>
+    <dimen name="medium_margin">12dp</dimen>
+    <dimen name="cardElevationLow">4dp</dimen>
+
+</resources>
