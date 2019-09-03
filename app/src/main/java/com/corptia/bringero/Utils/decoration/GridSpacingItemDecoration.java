@@ -1,4 +1,4 @@
-package com.corptia.bringero.Utils;
+package com.corptia.bringero.Utils.decoration;
 
 import android.content.Context;
 import android.graphics.Rect;

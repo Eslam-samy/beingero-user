@@ -7,14 +7,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.GridSpacingItemDecoration;
-import com.corptia.bringero.Utils.SpacesItemDecoration;
+import com.corptia.bringero.Utils.decoration.GridSpacingItemDecoration;
 import com.corptia.bringero.model.StoreTypes;
 import com.corptia.bringero.view.home.ui.storetypes.Adapter.StoreTypesAdapter;
 

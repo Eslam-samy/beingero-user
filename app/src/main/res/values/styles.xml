@@ -20,8 +20,8 @@
 
     <!-- No Action Bar -->
     <style name="AppBarLayoutTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <item name="titleTextColor">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/black</item>
+        <item name="titleTextColor">@color/black</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

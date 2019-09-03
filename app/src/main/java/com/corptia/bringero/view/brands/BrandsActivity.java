@@ -5,12 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.GridSpacingItemDecoration;
-import com.corptia.bringero.Utils.LinearSpacingItemDecoration;
+import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.model.StoreTypes;
 
 import java.util.ArrayList;
@@ -19,13 +17,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BrandsActivity extends AppCompatActivity {
+public class BrandsActivity extends AppCompatActivity implements BrandsContract.BrandsView {
 
     @BindView(R.id.recycler_brands)
     RecyclerView recycler_brands;
 
     BrandsAdapter adapter ;
     List<StoreTypes> storeTypesList = new ArrayList<>();
+
+    BrandsPresenter brandsPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,33 +34,35 @@ public class BrandsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        brandsPresenter = new BrandsPresenter(this);
 
 
         recycler_brands.setLayoutManager(new LinearLayoutManager(this));
         recycler_brands.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,this)));
 
-        //Set Data
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img5, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img6, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img5, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img6, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img5, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img6, "data"));
+        brandsPresenter.getBrands();
 
-        adapter = new BrandsAdapter(this , storeTypesList);
+    }
+
+    @Override
+    public void setBrands(List<StoreTypes> repositoryList) {
+
+        adapter = new BrandsAdapter(this , repositoryList);
         recycler_brands.setAdapter(adapter);
+    }
+
+    @Override
+    public void displayError(String errorMessage) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
 
     }
 }
