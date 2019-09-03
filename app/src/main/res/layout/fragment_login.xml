@@ -47,9 +47,10 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text=""
-                    android:drawableEnd="@drawable/ic_cheak"
                     android:background="@drawable/shadow_input"
                     />
+
+                <!--android:drawableEnd="@drawable/ic_cheak"-->
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -115,7 +115,8 @@ public class VerifyPhoneNumberActivity extends AppCompatActivity {
                     dialog.dismiss();
 
                     if(task.isSuccessful())
-                        Toast.makeText(VerifyPhoneNumberActivity.this,"User signed in successfully",Toast.LENGTH_SHORT).show();
+                    {Toast.makeText(VerifyPhoneNumberActivity.this,"User signed in successfully",Toast.LENGTH_SHORT).show();
+                    }
                     else if(task.getException() instanceof FirebaseAuthUserCollisionException)
                         Toast.makeText(VerifyPhoneNumberActivity.this,"User already exist",Toast.LENGTH_SHORT).show();
                     else
