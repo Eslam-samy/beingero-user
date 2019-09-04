@@ -1,4 +1,4 @@
-package com.corptia.bringero.view.Setting;
+package com.corptia.bringero.view.Setting.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

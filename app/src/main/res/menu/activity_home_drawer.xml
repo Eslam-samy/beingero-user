@@ -63,7 +63,8 @@
     <item
         android:id="@+id/nav_notifications"
         android:icon="@drawable/ic_nav_notifications"
-        android:title="@string/menu_notifications" />
+        android:title="@string/menu_notifications"
+        android:actionLayout="@layout/layout_switch_navigationview"/>
 
     <item
         android:id="@+id/nav_discounts"
