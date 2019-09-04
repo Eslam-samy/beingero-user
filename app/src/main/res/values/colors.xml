@@ -15,4 +15,8 @@
     <color name="colorPrimaryLight">#CA7474</color>
     <color name="colorBackground">#F4F7F7</color>
 
+    <color name="colorCharcoal">#323A61</color>
+    <color name="colorIndiaRed">#D25757</color>
+
+
 </resources>

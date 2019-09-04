@@ -79,6 +79,9 @@ dependencies {
     //FireBase
     implementation 'com.google.firebase:firebase-auth:19.0.0'
 
+    //ripple Animation Click On Button
+    implementation 'com.balysv:material-ripple:1.0.2'
+
 
 }
 

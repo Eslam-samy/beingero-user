@@ -20,8 +20,12 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_home"
-        app:menu="@menu/activity_store_types_drawer" />
-
+        app:menu="@menu/activity_home_drawer"
+        app:itemIconTint="@color/white"
+        app:itemTextColor="@color/white"
+        android:background="@drawable/round_main_button"
+        android:theme="@style/NavigationTheme"
+        />
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

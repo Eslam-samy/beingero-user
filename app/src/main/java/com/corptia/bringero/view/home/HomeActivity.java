@@ -3,10 +3,6 @@ package com.corptia.bringero.view.home;
 import android.os.Bundle;
 
 import com.corptia.bringero.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import android.view.View;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -60,7 +56,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.store_types, menu);
+        getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 
