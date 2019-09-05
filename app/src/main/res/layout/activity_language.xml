@@ -6,4 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".view.Setting.language.LanguageActivity">
 
+    <include
+        layout="@layout/layout_toolbar_white" />
+
+    <TextView
+        android:id="@+id/txt_lab_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/language"
+        style="@style/TextHeaderSetting"
+        app:layout_constraintTop_toBottomOf="@+id/bar"/>
+
+
+    <TextView
+        android:id="@+id/txt_hint_language"
+        android:text="@string/choose_language"
+        style="@style/HintTextStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_lab_setting"
+        android:layout_marginTop="@dimen/app_margin"
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow_input"
+        app:layout_constraintTop_toBottomOf="@+id/txt_hint_language"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginEnd="@dimen/medium_margin"/>
+
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ButtonNormalStyle"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/app_margin"
+        />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

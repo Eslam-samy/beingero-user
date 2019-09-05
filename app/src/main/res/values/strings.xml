@@ -57,5 +57,13 @@
     <string name="sms_notification">Sms Notification</string>
     <string name="newsletter_subscription">Newsletter Subscription</string>
     <string name="save">Save</string>
+    <string name="change_password">Change Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="cnofirm_password">Cnofirm Password</string>
+    <string name="contat_us">Contat Us</string>
+    <string name="name">Name</string>
+    <string name="message">Message</string>
+    <string name="choose_language">Choose Language</string>
 </resources>
 

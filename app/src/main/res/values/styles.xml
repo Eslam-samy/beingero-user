@@ -119,6 +119,7 @@
     <!-- ************************************************************ -->
 
     <!-- Material Ripple -->
+    <!-- app:mrl_rippleRoundedCorners="80dp" -->
     <style name="RippleStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -126,17 +127,21 @@
         <item name="mrl_rippleColor">@color/colorAccent</item>
         <item name="mrl_rippleAlpha">0.2</item>
     </style>
-    <!-- app:mrl_rippleRoundedCorners="80dp" -->
 
-    <style name="NavigationTheme" parent="AppTheme">
-        <item name="android:textSize">@dimen/medium_text_size</item>
-        <item name="android:layout_marginBottom">02dp</item>
-    </style>
 
-    <!-- /-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/ -->
 
+    <!-- MyRadioButtonStyle -->
     <style name="MyRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/selector_radiobutton</item>
+    </style>
+
+    <!-- HintTextStyle -->
+    <style name="HintTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/poppinsmedium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginStart">@dimen/app_margin</item>
     </style>
 
 </resources>

@@ -6,4 +6,109 @@
     android:layout_height="match_parent"
     tools:context=".view.Setting.contactUs.ContactUsActivity">
 
+    <include
+        layout="@layout/layout_toolbar_white" />
+
+    <TextView
+        android:id="@+id/txt_lab_setting"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/contat_us"
+        style="@style/TextHeaderSetting"
+        app:layout_constraintTop_toBottomOf="@+id/bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/txt_lab_setting"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save"
+        android:layout_marginTop="@dimen/app_margin"
+        android:layout_marginBottom="@dimen/medium_margin"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_name"
+                style="@style/TextInputLayoutStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:translationY="0dp"
+                >
+
+                <EditText
+                    style="@style/EditTextStyle"
+                    android:hint="@string/name"
+                    android:inputType="text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Hazem"
+
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_email"
+                style="@style/TextInputLayoutStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:translationY="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/input_name"
+                >
+
+                <EditText
+                    style="@style/EditTextStyle"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Hazem@yahoo.com"
+
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_message"
+                style="@style/TextInputLayoutStyle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:translationY="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/input_email"
+                >
+
+                <EditText
+                    style="@style/EditTextStyle"
+                    android:hint="@string/message"
+                    android:inputType="textMultiLine"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Message"
+                    android:lines="10"
+                    android:gravity="start"
+                    />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </ScrollView>
+
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ButtonNormalStyle"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="@dimen/app_margin"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

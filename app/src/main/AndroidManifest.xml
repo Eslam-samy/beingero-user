@@ -17,7 +17,15 @@
 
 
         </activity>
-        <activity android:name=".view.Setting.main.SettingActivity" />
+        <activity android:name=".view.Setting.main.SettingActivity" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".view.productDetail.ProductDetailActivity" />
         <activity android:name=".view.brandDetail.BrandDetailActivity" />
         <activity android:name=".view.brands.BrandsActivity" />
@@ -26,12 +34,7 @@
             android:label="@string/title_activity_store_types"
             android:theme="@style/AppTheme.NoActionBar">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
         <activity
