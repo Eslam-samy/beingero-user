@@ -1,6 +1,7 @@
 package com.corptia.bringero.view.home.ui.storetypes.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.R;
 import com.corptia.bringero.model.StoreTypes;
+import com.corptia.bringero.view.brands.BrandsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -45,6 +47,13 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
                 .into(holder.image_storetype);
 
         holder.txt_name_storetype.setText("Data " + (position+1));
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context , BrandsActivity.class));
+            }
+        });
 
 
     }

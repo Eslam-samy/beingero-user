@@ -1,6 +1,7 @@
 package com.corptia.bringero.view.brands;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.R;
 import com.corptia.bringero.model.StoreTypes;
+import com.corptia.bringero.view.brandDetail.BrandDetailActivity;
 import com.corptia.bringero.view.home.ui.storetypes.Adapter.StoreTypesAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -47,6 +49,12 @@ public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.ViewHolder
 
         holder.txt_name_brands.setText("Data " + (position+1));
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity(new Intent(context,BrandDetailActivity.class));
+            }
+        });
 
     }
 

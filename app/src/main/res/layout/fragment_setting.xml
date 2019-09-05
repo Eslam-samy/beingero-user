@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.Setting.main.SettingFragment"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_lab_setting"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/setting"
+                style="@style/TextHeaderSetting"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/medium_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/info"
+                    style="@style/TextSubHeaderSetting"
+                    android:background="@color/white"/>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    style="@style/RippleStyle">
+
+                    <Button
+                        android:id="@+id/btn_edit_profile"
+                        android:text="@string/edit_profile"
+                        style="@style/TextSubSetting"
+                        />
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    style="@style/RippleStyle">
+                    <Button
+                        android:id="@+id/btn_address"
+                        android:text="@string/adresses"
+                        style="@style/TextSubSetting"
+                        />
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/medium_margin">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/security"
+                    style="@style/TextSubHeaderSetting"
+                    />
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    style="@style/RippleStyle">
+                    <Button
+                        android:id="@+id/btn_change_password"
+                        android:text="@string/change_password"
+                        style="@style/TextSubSetting"
+                        />
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/medium_margin">
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    style="@style/RippleStyle">
+                    <Button
+                        android:id="@+id/btn_contact_us"
+                        android:text="@string/contact_us"
+                        style="@style/TextSubSetting"
+                        />
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    style="@style/RippleStyle">
+                    <Button
+                        android:id="@+id/btn_language"
+                        android:text="@string/language"
+                        style="@style/TextSubSetting"
+                        />
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    style="@style/RippleStyle">
+
+                    <Button
+                        android:id="@+id/btn_log_out"
+                        android:text="@string/log_out"
+                        style="@style/TextSubSetting"
+                        android:textColor="@color/colorIndiaRed"
+                        />
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
