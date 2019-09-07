@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="270dp"
+    android:layout_height="280dp"
     android:background="@drawable/shadow_card">
 
     <LinearLayout
@@ -16,8 +16,8 @@
             android:id="@+id/image_product"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="6"
-            android:padding="10dp"
+            android:layout_weight="5"
+            android:padding="@dimen/normal_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/img5"
             app:layout_constraintTop_toTopOf="parent" />
@@ -27,9 +27,9 @@
             android:layout_height="0dp"
             android:layout_weight="5"
             android:orientation="vertical"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="5dp">
+            android:paddingStart="@dimen/normal_padding"
+            android:paddingEnd="@dimen/normal_padding"
+            android:paddingBottom="@dimen/low_padding">
 
 
 
@@ -38,38 +38,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="5dp"
-                android:layout_weight="2"
+                android:layout_weight="5"
                 android:gravity="start"
                 android:text="Nike Air Max 95 PremiumPrem  "
                 android:textColor="@color/black"
-                android:textSize="13sp"
+                android:textSize="@dimen/medium_text_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/poppinsmedium"/>
 
             <TextView
                 android:id="@+id/txt_price"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/low_padding"
+                android:layout_weight="2"
                 android:gravity="start"
                 android:text="@string/usd180"
                 android:textColor="@color/colorAccent"
-                android:textSize="13sp"
+                android:textSize="@dimen/medium_text_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                android:fontFamily="@font/poppinsregular"/>
 
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/large_margin"
                 android:orientation="horizontal"
                 android:weightSum="2"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="@dimen/low_margin">
 
                 <RatingBar
                     android:id="@+id/ratingBar"
@@ -79,7 +81,8 @@
                     android:numStars="5"
                     android:stepSize="0.1"
                     android:isIndicator="false"
-                    android:progressDrawable="@drawable/custom_ratingstars"/>
+                    android:progressDrawable="@drawable/custom_ratingstars"
+                    android:paddingTop="@dimen/low_padding"/>
 
                 <TextView
                     android:id="@+id/txt_count_available"
@@ -88,7 +91,8 @@
                     android:layout_weight="2"
                     android:gravity="end"
                     android:text="(200)"
-                    android:textColor="@color/black"/>
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppinsregular"/>
 
             </LinearLayout>
         </LinearLayout>

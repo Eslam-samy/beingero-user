@@ -9,18 +9,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.Setting.language.LanguageActivity"></activity>
+        <activity android:name=".view.notification.NotificationActivity">
+
+
+
+        </activity>
+        <activity android:name=".view.Setting.language.LanguageActivity" />
         <activity android:name=".view.Setting.contactUs.ContactUsActivity" />
         <activity android:name=".view.Setting.changePassword.ChangePasswordActivity" />
-        <activity android:name=".view.Setting.editProfile.EditProfileActivity" >
-
-
-
-        </activity>
-        <activity android:name=".view.Setting.main.SettingActivity" >
-
-
-        </activity>
+        <activity android:name=".view.Setting.editProfile.EditProfileActivity"></activity>
+        <activity android:name=".view.Setting.main.SettingActivity"></activity>
         <activity android:name=".view.productDetail.ProductDetailActivity" />
         <activity android:name=".view.brandDetail.BrandDetailActivity" />
         <activity android:name=".view.brands.BrandsActivity" />

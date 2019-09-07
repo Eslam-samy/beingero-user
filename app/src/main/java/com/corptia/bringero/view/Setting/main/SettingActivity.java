@@ -26,8 +26,6 @@ public class SettingActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        toolbar = findViewById(R.id.toolbar);
-
         initActionBar();
 
 

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <Switch
         android:id="@+id/switch_sms_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txt_lab_sms_notification"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_lab_sms_notification"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:thumb="@drawable/selector_switch_thumb"
         android:track="@drawable/selector_switch_track"
-        android:thumb="@drawable/selector_switch_thumb"/>
+        app:layout_constraintBottom_toBottomOf="@+id/txt_lab_sms_notification"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_lab_sms_notification" />
 
 </LinearLayout>

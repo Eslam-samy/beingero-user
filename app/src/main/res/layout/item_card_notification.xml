@@ -3,25 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
-    android:background="@drawable/shadow_brands">
+    android:layout_height="115dp"
+    android:background="@drawable/shadow_notification">
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_image_brands"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="@dimen/large_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/card_image_notification"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:cardCornerRadius="@dimen/radius_normal"
-        app:cardElevation="@dimen/cardElevationLow"
-        app:cardUseCompatPadding="true">
+        app:cardCornerRadius="2dp">
 
 
         <ImageView
-            android:id="@+id/image_brands"
+            android:id="@+id/image_notification"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
@@ -33,24 +31,25 @@
 
 
     <TextView
-        android:id="@+id/txt_name_brands"
+        android:id="@+id/txt_messages_notification"
         style="@style/TextCardDefaultStyle"
-        app:layout_constraintBottom_toTopOf="@+id/txt_staus"
-        app:layout_constraintStart_toEndOf="@+id/card_image_brands"
+        app:layout_constraintBottom_toTopOf="@+id/txt_date_notification"
+        app:layout_constraintStart_toEndOf="@+id/card_image_notification"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Nike Official"
+        android:text="2 unread messages from Xiaomi"
         app:layout_constraintVertical_chainStyle="packed"
-        android:fontFamily="@font/poppinssemibold"/>
+        android:fontFamily="@font/poppinsmedium"/>
+
 
     <TextView
-        android:id="@+id/txt_staus"
+        android:id="@+id/txt_date_notification"
         style="@style/TextCardDefaultStyle"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/txt_name_brands"
-        app:layout_constraintTop_toBottomOf="@+id/txt_name_brands"
         android:layout_marginStart="0dp"
-        android:text="Verified"
+        android:textColor="@color/colorManatee"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/txt_messages_notification"
+        app:layout_constraintTop_toBottomOf="@+id/txt_messages_notification"
+        android:text="13 Dec 2018, 09:38"
         android:fontFamily="@font/poppinsregular"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
