@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@drawable/shadow_location">
+
+
+    <TextView
+        android:id="@+id/txt_name_brands"
+        style="@style/TextCardDefaultStyle"
+        app:layout_constraintBottom_toTopOf="@+id/txt_staus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="New Damietta - 33 Masr Street"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:fontFamily="@font/poppinsregular"
+        android:layout_marginStart="@dimen/app_margin"/>
+
+    <TextView
+        android:id="@+id/txt_staus"
+        style="@style/TextCardDefaultStyle"
+        android:textColor="@color/colorDavyGray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/txt_name_brands"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name_brands"
+        android:layout_marginStart="0dp"
+        android:text="56 Shops"
+        android:fontFamily="@font/poppinsregular"
+        android:textSize="@dimen/low_x_text_size" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

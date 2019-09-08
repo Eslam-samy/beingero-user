@@ -56,6 +56,7 @@
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:textSize">14sp</item>
         <item name="hintAnimationEnabled">true</item>
+        <item name="hintEnabled">true</item>
 
         <!-- <item name="android:translationY">-10dp</item> -->
 
@@ -127,6 +128,7 @@
         <item name="mrl_rippleColor">@color/colorAccent</item>
         <item name="mrl_rippleAlpha">0.2</item>
     </style>
+
 
 
 
