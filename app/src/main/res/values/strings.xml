@@ -69,6 +69,16 @@
     <string name="apply_voucher_code">Apply Voucher Code</string>
     <string name="total">Total</string>
     <string name="check_out">Check Out</string>
-
+    <string name="orders">Orders</string>
+    <string name="repeattheorder">repeat the order</string>
+    <string name="order_details">Order Details</string>
+    <string name="delivery_status">Delivery Status</string>
+    <string name="order_in_the_way">Order In the way</string>
+    <string name="track_package">Track Package</string>
+    <string name="order_information">Order Information</string>
+    <string name="order_id">Order ID</string>
+    <string name="order_time">Order Time</string>
+    <string name="payment">Payment</string>
+    <string name="cancel_order">Cancel Order</string>
 </resources>
 

@@ -9,14 +9,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.locations.LocationsActivity">
+        <activity android:name=".view.order.shopDetail.ShopDetailActivity">
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
+        <activity android:name=".view.order.ordersDetails.OrdersPaidDetailsActivity">
+
+        </activity>
+        <activity android:name=".view.order.OrderActivity">
+
+        </activity>
+        <activity android:name=".view.locations.LocationsActivity" />
         <activity
             android:name=".view.cart.CartActivity"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".view.notification.NotificationActivity" />
         <activity android:name=".view.Setting.language.LanguageActivity" />
         <activity android:name=".view.Setting.contactUs.ContactUsActivity" />
@@ -29,14 +42,7 @@
         <activity
             android:name=".view.home.HomeActivity"
             android:label="@string/title_activity_store_types"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".view.Main.otp.VerifyPhoneNumberActivity"
             android:windowSoftInputMode="adjustResize" />
