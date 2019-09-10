@@ -59,7 +59,7 @@
     <string name="save">Save</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
-    <string name="cnofirm_password">Cnofirm Password</string>
+    <string name="cnofirm_password">Confirm Password</string>
     <string name="contat_us">Contat Us</string>
     <string name="name">Name</string>
     <string name="message">Message</string>
@@ -69,6 +69,21 @@
     <string name="apply_voucher_code">Apply Voucher Code</string>
     <string name="total">Total</string>
     <string name="check_out">Check Out</string>
+
+    <string name="request_location_permission">Request Location Permission</string>
+    <string name="pause_tracking">Pause tracking</string>
+    <string name="service_running">Location service running</string>
+    <string name="service_not_running">Location service isn\'t running</string>
+    <string name="request_permission">Request Location permission</string>
+    <string name="resume_tracking">Start tracking</string>
+    <string name="your_publishable_key">FLfD1OcSxlMeLaQI3VdkQB9fQmm9lDK_WPyyCG6lqcsE1ql8hVleTk3NLDw-52KUs8r2Z5MTDLV8qYaB7ZjQ3g</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="save_location">Save location</string>
+    <string name="search_hint_location">Delivery Address ___ </string>
+    <string name="click_longer_to_set_the_place">Click longer to choose location</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="direction_not_found">Direction not found</string>
+
 
 </resources>
 

@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.apollographql.android'
 
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
@@ -25,7 +24,6 @@ android {
         targetCompatibility = '1.8'
     }
 }
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -81,6 +79,8 @@ dependencies {
 
     //ripple Animation Click On Button
     implementation 'com.balysv:material-ripple:1.0.2'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 
 
 }
