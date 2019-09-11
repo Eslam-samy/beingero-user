@@ -123,7 +123,7 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_space_button"
+            android:background="@drawable/round_space_button_cancel"
             android:layout_margin="@dimen/app_low_margin"
             android:text="@string/cancel_order"
             android:textColor="@color/rejected"/>
