@@ -45,6 +45,10 @@ dependencies {
 
 
     implementation 'com.apollographql.apollo:apollo-runtime:1.0.0'
+    implementation 'com.apollographql.apollo:apollo-rx2-support:1.0.0'
+    implementation "io.reactivex.rxjava2:rxjava:2.2.9"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
     implementation 'com.apollographql.apollo:apollo-http-cache:1.0.0'
 
@@ -81,6 +85,9 @@ dependencies {
 
     //ripple Animation Click On Button
     implementation 'com.balysv:material-ripple:1.0.2'
+
+
+    implementation group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
 
 
 }

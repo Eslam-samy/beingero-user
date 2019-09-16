@@ -1,0 +1,30 @@
+query getAllCategories{
+    StoreCategoryQuery{
+        getAll{
+            status
+            message
+            errors{
+                code
+                path
+                message
+                validValue
+            }
+            pagination{
+                page
+                limit
+                hasNextPage
+                nextPage
+            }data{
+                _id
+                name
+
+                multiLangs{
+                    name{
+                        ar
+                        en
+                    }
+                }
+            }
+        }
+    }
+}
