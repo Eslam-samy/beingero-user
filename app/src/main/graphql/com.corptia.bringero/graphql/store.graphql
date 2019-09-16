@@ -1,0 +1,51 @@
+query getStoresOfASingleCategory($typeId: ID,$pageNumber:Int,$limit:Int) {
+    StoreQuery {
+        getAll(filter: { storeTypeId: $typeId },pagination:{page:$pageNumber,limit:$limit}) {
+            status
+            message
+            errors {
+                code
+                path
+                message
+                validValue
+            }
+            pagination {
+                hasNextPage
+                nextPage
+                page
+            }
+            Stores : data {
+                _id
+                name
+                imageId
+
+            }
+        }
+    }
+}
+
+
+query singleStoreHeader($storeId: ID) {
+    StoreQuery {
+        get(_id: $storeId) {
+            status
+            message
+            errors {
+                code
+                path
+                message
+            }
+            warnings {
+                code
+                path
+                message
+            }
+            data {
+                _id
+                name
+                productTypeIds
+                imageId
+            }
+        }
+    }
+}

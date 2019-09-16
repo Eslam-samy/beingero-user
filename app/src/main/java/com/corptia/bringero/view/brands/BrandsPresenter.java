@@ -1,7 +1,16 @@
 package com.corptia.bringero.view.brands;
 
+import android.os.Handler;
+
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
 import com.corptia.bringero.model.StoreTypes;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,36 +18,36 @@ import java.util.List;
 public class BrandsPresenter  {
 
     BrandsContract.BrandsView brandsView;
+    Handler handler ;
 
     public BrandsPresenter(BrandsContract.BrandsView brandsView) {
         this.brandsView = brandsView;
+        handler = new Handler();
     }
 
-    void getBrands(){
+    void getStores(String categoryId){
 
         brandsView.showProgressBar();
-        List<StoreTypes> storeTypesList = new ArrayList<>();
 
-        //Set Data
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img5, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img6, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img5, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img6, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img5, "data"));
-        storeTypesList.add(new StoreTypes(R.drawable.img6, "data"));
+        MyApolloClient.getApollowClient().query(GetStoresOfASingleCategoryQuery.builder().typeId(categoryId).build())
+                .enqueue(new ApolloCall.Callback<GetStoresOfASingleCategoryQuery.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<GetStoresOfASingleCategoryQuery.Data> response) {
 
-        brandsView.setBrands(storeTypesList);
+                        if (response.data().StoreQuery().getAll().status() == 200){
+
+                            response.data().StoreQuery().getAll().Stores();
+                            brandsView.setStores(response.data().StoreQuery().getAll().Stores());
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
+
     }
 }

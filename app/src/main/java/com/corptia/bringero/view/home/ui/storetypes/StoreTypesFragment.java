@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.decoration.GridSpacingItemDecoration;
+import com.corptia.bringero.graphql.GetAllCategoriesQuery;
 import com.corptia.bringero.model.StoreTypes;
 import com.corptia.bringero.view.home.ui.storetypes.Adapter.StoreTypesAdapter;
 
@@ -61,14 +62,13 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
     }
 
     @Override
-    public void setStoreTypes(List<StoreTypes> repositoryList) {
+    public void setStoreTypes(List<GetAllCategoriesQuery.StoreCategory> repositoryList) {
 
         recycler_store.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recycler_store.addItemDecoration(new GridSpacingItemDecoration(2, Common.dpToPx(15, getActivity()), true, 0, Common.dpToPx(10, getActivity())));
         adapter = new StoreTypesAdapter(getActivity(), repositoryList);
         recycler_store.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
     }
 
     @Override

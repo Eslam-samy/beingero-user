@@ -1,0 +1,21 @@
+mutation signIn($loginData:loginInput){
+    UserMutation{
+        login(data:$loginData){
+            status
+            message
+            errors{
+                code
+                path
+                message
+                validValue
+            }
+            warnings{
+                code
+                path
+                message
+                validValue
+            }
+            token
+        }
+    }
+}

@@ -1,8 +1,7 @@
 package com.corptia.bringero.view.home.ui.storetypes;
 
-import androidx.annotation.NonNull;
 
-import com.corptia.bringero.model.StoreTypes;
+import com.corptia.bringero.graphql.GetAllCategoriesQuery;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public class StoreTypesContract {
 
         //void displaySearchResults( List<String> repositoryList);
 
-        void setStoreTypes( List<StoreTypes> repositoryList);
+        void setStoreTypes( List<GetAllCategoriesQuery.StoreCategory> repositoryList);
 
         void displayError(String errorMessage);
 

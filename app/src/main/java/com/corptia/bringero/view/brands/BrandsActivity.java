@@ -5,12 +5,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
 import com.corptia.bringero.model.StoreTypes;
 
 import java.util.ArrayList;
@@ -31,6 +34,8 @@ public class BrandsActivity extends AppCompatActivity implements BrandsContract.
 
     BrandsPresenter brandsPresenter;
 
+    //For Store Local Category Id
+    String categoryId = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +43,19 @@ public class BrandsActivity extends AppCompatActivity implements BrandsContract.
 
         ButterKnife.bind(this);
 
+        Intent intent = getIntent();
+        if (intent!=null)
+        {
+            categoryId = intent.getStringExtra(Constants.EXTRA_CATEGOTY_ID);
+        }
+
         brandsPresenter = new BrandsPresenter(this);
 
 
         recycler_brands.setLayoutManager(new LinearLayoutManager(this));
         recycler_brands.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,this)));
 
-        brandsPresenter.getBrands();
+        brandsPresenter.getStores(categoryId);
 
         initActionBar();
     }
@@ -69,10 +80,16 @@ public class BrandsActivity extends AppCompatActivity implements BrandsContract.
     }
 
     @Override
-    public void setBrands(List<StoreTypes> repositoryList) {
+    public void setStores(List<GetStoresOfASingleCategoryQuery.Store> repositoryList) {
 
-        adapter = new BrandsAdapter(this , repositoryList);
-        recycler_brands.setAdapter(adapter);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter = new BrandsAdapter(BrandsActivity.this , repositoryList);
+                recycler_brands.setAdapter(adapter);
+            }
+        });
+
     }
 
 

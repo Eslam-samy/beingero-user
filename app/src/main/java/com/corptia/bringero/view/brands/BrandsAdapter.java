@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.R;
+import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
 import com.corptia.bringero.model.StoreTypes;
 import com.corptia.bringero.view.brandDetail.BrandDetailActivity;
 import com.corptia.bringero.view.home.ui.storetypes.Adapter.StoreTypesAdapter;
@@ -26,9 +27,9 @@ import butterknife.ButterKnife;
 public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.ViewHolder> {
 
     Context context;
-    List<StoreTypes> storeTypesList = new ArrayList<>();
+    List<GetStoresOfASingleCategoryQuery.Store> storeTypesList = new ArrayList<>();
 
-    public BrandsAdapter(Context context, List<StoreTypes> storeTypesList) {
+    public BrandsAdapter(Context context, List<GetStoresOfASingleCategoryQuery.Store> storeTypesList) {
         this.context = context;
         this.storeTypesList = storeTypesList;
     }
@@ -42,12 +43,12 @@ public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        StoreTypes storeTypes = storeTypesList.get(position);
+        GetStoresOfASingleCategoryQuery.Store storeTypes = storeTypesList.get(position);
 
-        Picasso.get().load(storeTypes.getImg())
-                .into(holder.image_brands);
+        //Picasso.get().load(storeTypes.imageId())
+         //       .into(holder.image_brands);
 
-        holder.txt_name_brands.setText("Data " + (position+1));
+        holder.txt_name_brands.setText(storeTypes.name());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
