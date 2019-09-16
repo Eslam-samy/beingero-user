@@ -21,19 +21,19 @@ public class LinearSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         if (position ==0)
         {
-            outRect.top = verticalSpaceHeight;
+            //outRect.top = verticalSpaceHeight;
 
         }
 
-        //outRect.bottom = -30;
-        outRect.bottom = -50;
+        outRect.bottom = -30;
+        //outRect.bottom = -50;
 
         outRect.left = verticalSpaceHeight/2;
         outRect.right = verticalSpaceHeight/2;
 
         final int itemCount = state.getItemCount();
         if (itemCount > 0 && position == itemCount - 1) {
-            outRect.bottom = verticalSpaceHeight+14;
+            //outRect.bottom = verticalSpaceHeight+14;
         }
 
 

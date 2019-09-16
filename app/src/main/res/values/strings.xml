@@ -59,7 +59,7 @@
     <string name="save">Save</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
-    <string name="cnofirm_password">Confirm Password</string>
+    <string name="cnofirm_password">Cnofirm Password</string>
     <string name="contat_us">Contat Us</string>
     <string name="name">Name</string>
     <string name="message">Message</string>
@@ -85,5 +85,21 @@
     <string name="direction_not_found">Direction not found</string>
 
 
+    <string name="orders">Orders</string>
+    <string name="repeattheorder">repeat the order</string>
+    <string name="order_details">Order Details</string>
+    <string name="delivery_status">Delivery Status</string>
+    <string name="order_in_the_way">Order In the way</string>
+    <string name="track_package">Track Package</string>
+    <string name="order_information">Order Information</string>
+    <string name="order_id">Order ID</string>
+    <string name="order_time">Order Time</string>
+    <string name="payment">Payment</string>
+    <string name="cancel_order">Cancel Order</string>
+    <string name="cancellation_reasons">Cancellation Reasons</string>
+    <string name="change_of_mind">Change of mind</string>
+    <string name="wrong_delivery_address">Wrong delivery address</string>
+    <string name="forgot_to_apply_voucher">Forgot to apply voucher</string>
+    <string name="change_payment_method">Change payment method</string>
 </resources>
 

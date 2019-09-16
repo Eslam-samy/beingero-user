@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background_dialog_cancellation">
+
+    <TextView
+        android:id="@+id/txt_lab_cancellation_reasons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancellation_reasons"
+        android:textSize="@dimen/large_text_size"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="@dimen/app_low_margin"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/txt_lab_cancellation_reasons"
+        android:layout_marginTop="@dimen/medium_margin">
+
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            style="@style/RippleStyle">
+
+            <Button
+                android:id="@+id/btn_change_of_mind"
+                android:text="@string/change_of_mind"
+                style="@style/TextSubCancellationReasons"
+                />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            style="@style/RippleStyle">
+
+            <Button
+                android:id="@+id/btn_change_payment_method"
+                android:text="@string/change_payment_method"
+                style="@style/TextSubCancellationReasons"
+                />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            style="@style/RippleStyle">
+
+            <Button
+                android:id="@+id/wrong_delivery_address"
+                android:text="@string/wrong_delivery_address"
+                style="@style/TextSubCancellationReasons"
+                />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            style="@style/RippleStyle">
+
+            <Button
+                android:id="@+id/forgot_to_apply_voucher"
+                android:text="@string/forgot_to_apply_voucher"
+                style="@style/TextSubCancellationReasons"
+                />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/white">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_space_button"
+                android:layout_margin="@dimen/app_low_margin"
+                android:text="@string/cancel_order"
+                android:textColor="@color/colorAccent"/>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
