@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.corptia.bringero.Adapter.ViewPagerAdapter;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.lib.CustomViewPager;
 import com.corptia.bringero.view.Main.login.LoginFragment;
 import com.corptia.bringero.view.Main.signup.SignupFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     //For Fragment
     TabLayout tabLayout;
-    ViewPager viewPager;
+    CustomViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
 
     @Override
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragments(new SignupFragment(), "Signup");
 
         viewPager.setOffscreenPageLimit(0);
+        viewPager.setPagingEnabled(false);
+
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
