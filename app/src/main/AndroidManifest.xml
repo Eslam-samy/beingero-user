@@ -12,8 +12,6 @@
         <activity android:name=".view.order.shopDetail.ShopDetailActivity">
 
 
-
-
         </activity>
         <activity android:name=".view.order.ordersDetails.OrdersPaidDetailsActivity">
 
@@ -52,12 +50,15 @@
         <activity android:name=".view.splash.SplashActivity" />
         <activity
             android:name=".view.Main.MainActivity"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden"></activity>
 
+        <activity
+            android:name=".view.MapWork.MapsActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
-
-
-        </activity>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
     </application>
 
 </manifest>
