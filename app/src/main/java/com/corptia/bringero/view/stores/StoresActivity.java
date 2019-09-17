@@ -1,4 +1,4 @@
-package com.corptia.bringero.view.brands;
+package com.corptia.bringero.view.stores;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,24 +22,24 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BrandsActivity extends AppCompatActivity implements BrandsContract.BrandsView {
+public class StoresActivity extends AppCompatActivity implements StoresContract.BrandsView {
 
     @BindView(R.id.recycler_brands)
     RecyclerView recycler_brands;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    BrandsAdapter adapter ;
+    StoresAdapter adapter ;
     List<StoreTypes> storeTypesList = new ArrayList<>();
 
-    BrandsPresenter brandsPresenter;
+    StoresPresenter brandsPresenter;
 
     //For Store Local Category Id
     String categoryId = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_brands);
+        setContentView(R.layout.activity_stores);
 
         ButterKnife.bind(this);
 
@@ -49,7 +49,7 @@ public class BrandsActivity extends AppCompatActivity implements BrandsContract.
             categoryId = intent.getStringExtra(Constants.EXTRA_CATEGOTY_ID);
         }
 
-        brandsPresenter = new BrandsPresenter(this);
+        brandsPresenter = new StoresPresenter(this);
 
 
         recycler_brands.setLayoutManager(new LinearLayoutManager(this));
@@ -85,7 +85,7 @@ public class BrandsActivity extends AppCompatActivity implements BrandsContract.
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                adapter = new BrandsAdapter(BrandsActivity.this , repositoryList);
+                adapter = new StoresAdapter(StoresActivity.this , repositoryList);
                 recycler_brands.setAdapter(adapter);
             }
         });

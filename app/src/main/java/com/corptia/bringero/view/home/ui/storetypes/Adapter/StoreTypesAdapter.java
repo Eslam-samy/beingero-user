@@ -14,9 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.GetAllCategoriesQuery;
-import com.corptia.bringero.model.StoreTypes;
-import com.corptia.bringero.view.brands.BrandsActivity;
-import com.squareup.picasso.Picasso;
+import com.corptia.bringero.view.stores.StoresActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +51,7 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context , BrandsActivity.class);
+                Intent intent = new Intent(context , StoresActivity.class);
                 intent.putExtra(Constants.EXTRA_CATEGOTY_ID , storeTypes._id());
                 context.startActivity(intent);
             }

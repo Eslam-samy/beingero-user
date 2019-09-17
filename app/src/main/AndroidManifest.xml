@@ -33,8 +33,8 @@
         <activity android:name=".view.Setting.editProfile.EditProfileActivity" />
         <activity android:name=".view.Setting.main.SettingActivity" />
         <activity android:name=".view.productDetail.ProductDetailActivity" />
-        <activity android:name=".view.brandDetail.BrandDetailActivity" />
-        <activity android:name=".view.brands.BrandsActivity" />
+        <activity android:name=".view.storesDetail.StoreDetailActivity" />
+        <activity android:name=".view.stores.StoresActivity" />
         <activity
             android:name=".view.home.HomeActivity"
             android:label="@string/title_activity_store_types"

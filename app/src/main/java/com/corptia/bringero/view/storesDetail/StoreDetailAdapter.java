@@ -1,4 +1,4 @@
-package com.corptia.bringero.view.brandDetail;
+package com.corptia.bringero.view.storesDetail;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -20,12 +20,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BrandDetailAdapter extends RecyclerView.Adapter<BrandDetailAdapter.ViewHolder> {
+public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.ViewHolder> {
 
     Context context;
     List<StoreTypes> storeTypesList = new ArrayList<>();
 
-    public BrandDetailAdapter(Context context, List<StoreTypes> storeTypesList) {
+    public StoreDetailAdapter(Context context, List<StoreTypes> storeTypesList) {
         this.context = context;
         this.storeTypesList = storeTypesList;
     }

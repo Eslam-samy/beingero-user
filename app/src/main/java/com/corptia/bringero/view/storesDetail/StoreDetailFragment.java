@@ -1,4 +1,4 @@
-package com.corptia.bringero.view.brandDetail;
+package com.corptia.bringero.view.storesDetail;
 
 
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.decoration.GridSpacingItemDecoration;
 import com.corptia.bringero.model.StoreTypes;
-import com.corptia.bringero.view.home.ui.storetypes.Adapter.StoreTypesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,14 +25,14 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BrandDetailFragment extends Fragment {
+public class StoreDetailFragment extends Fragment {
 
     @BindView(R.id.recycler_brands_detail)
     RecyclerView recycler_brands_detail;
-    BrandDetailAdapter adapter ;
+    StoreDetailAdapter adapter ;
     List<StoreTypes> storeTypesList = new ArrayList<>();
 
-    public BrandDetailFragment() {
+    public StoreDetailFragment() {
         // Required empty public constructor
     }
 
@@ -67,7 +66,7 @@ public class BrandDetailFragment extends Fragment {
         storeTypesList.add(new StoreTypes(R.drawable.img5, "data17"));
         storeTypesList.add(new StoreTypes(R.drawable.img6, "data18"));
 
-        adapter = new BrandDetailAdapter(getActivity(), storeTypesList);
+        adapter = new StoreDetailAdapter(getActivity(), storeTypesList);
         recycler_brands_detail.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         return view;

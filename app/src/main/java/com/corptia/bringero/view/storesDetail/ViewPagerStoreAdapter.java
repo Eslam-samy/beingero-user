@@ -1,4 +1,4 @@
-package com.corptia.bringero.view.brandDetail;
+package com.corptia.bringero.view.storesDetail;
 
 import android.os.Bundle;
 
@@ -11,18 +11,18 @@ import com.corptia.bringero.model.StoreTypes;
 
 import java.util.List;
 
-public class ViewPagerBrandAdapter  extends FragmentPagerAdapter {
+public class ViewPagerStoreAdapter extends FragmentPagerAdapter {
 
     private List<StoreTypes> brandList;
 
-    public ViewPagerBrandAdapter(FragmentManager fm, List<StoreTypes> brandList) {
+    public ViewPagerStoreAdapter(FragmentManager fm, List<StoreTypes> brandList) {
         super(fm);
         this.brandList = brandList;
     }
 
     @Override
     public Fragment getItem(int i) {
-        BrandDetailFragment fragment = new BrandDetailFragment();
+        StoreDetailFragment fragment = new StoreDetailFragment();
         Bundle args = new Bundle();
 
         //args.putString("EXTRA_DATA_NAME" , brandList.get(i).getStrCategory());

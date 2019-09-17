@@ -1,6 +1,6 @@
-query getAllCategories($pageNumber:Int,$limit:Int){
+query getAllCategories($paginate:paginationInput){
     StoreTypeQuery {
-        getAll(pagination:{page:$pageNumber,limit:$limit}){
+        getAll(pagination:$paginate){
             status
             message
             errors{
@@ -14,7 +14,7 @@ query getAllCategories($pageNumber:Int,$limit:Int){
                 hasNextPage
                 nextPage
             }
-            StoreCategory : data{
+            StoreCategory:data{
                 _id
                 name
             }

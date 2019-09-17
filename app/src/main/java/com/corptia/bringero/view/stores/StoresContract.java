@@ -1,11 +1,10 @@
-package com.corptia.bringero.view.brands;
+package com.corptia.bringero.view.stores;
 
 import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
-import com.corptia.bringero.model.StoreTypes;
 
 import java.util.List;
 
-public class BrandsContract {
+public class StoresContract {
 
     public interface BrandsView
     {

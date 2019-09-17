@@ -1,16 +1,21 @@
-package com.corptia.bringero.view.brandDetail;
+package com.corptia.bringero.view.gallaryStore;
 
-import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.corptia.bringero.R;
 import com.corptia.bringero.model.StoreTypes;
-import com.corptia.bringero.view.home.HomeActivity;
+import com.corptia.bringero.view.storesDetail.ViewPagerStoreAdapter;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -19,34 +24,39 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BrandDetailActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class GallaryFragment extends Fragment {
 
-    @BindView(R.id.toolBar)
-    Toolbar toolbar;
+
+
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
+    @BindView(R.id.image_store)
+    ImageView image_store;
+    @BindView(R.id.txt_status)
+    TextView txt_status;
+    @BindView(R.id.txt_name_store)
+    TextView txt_name_store;
+
     List<StoreTypes> storeTypesList = new ArrayList<>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_brand_detail);
 
-        ButterKnife.bind(this);
-        initActionBar();
-        initIntent();
+    public GallaryFragment() {
 
     }
 
-    private void initIntent() {
 
-        //Intent intent = getIntent();
-        //List<StoreTypes> categories = (List<StoreTypes>) intent.getSerializableExtra(HomeActivity.EXTRA_CATEGORY);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        //int position = intent.getIntExtra(HomeActivity.EXTRA_POSITION,0);
+        View view = inflater.inflate(R.layout.fragment_gallary, container, false);
+        ButterKnife.bind(this,view);
 
 
         storeTypesList.add(new StoreTypes(R.drawable.img1, "data1"));
@@ -68,31 +78,16 @@ public class BrandDetailActivity extends AppCompatActivity {
         storeTypesList.add(new StoreTypes(R.drawable.img5, "data17"));
         storeTypesList.add(new StoreTypes(R.drawable.img6, "data18"));
 
-        ViewPagerBrandAdapter adapter = new ViewPagerBrandAdapter(
-                getSupportFragmentManager(),
+        ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
+                getActivity().getSupportFragmentManager(),
                 storeTypesList);
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
-        viewPager.setCurrentItem(0,true);
+        viewPager.setCurrentItem(0, true);
         adapter.notifyDataSetChanged();
+
+        return view;
     }
 
-    private void initActionBar() {
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-        }
-        return true;
-    }
 }

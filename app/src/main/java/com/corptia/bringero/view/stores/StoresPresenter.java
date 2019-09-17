@@ -1,26 +1,21 @@
-package com.corptia.bringero.view.brands;
+package com.corptia.bringero.view.stores;
 
 import android.os.Handler;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
-import com.corptia.bringero.model.StoreTypes;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+public class StoresPresenter {
 
-public class BrandsPresenter  {
-
-    BrandsContract.BrandsView brandsView;
+    StoresContract.BrandsView brandsView;
     Handler handler ;
 
-    public BrandsPresenter(BrandsContract.BrandsView brandsView) {
+    public StoresPresenter(StoresContract.BrandsView brandsView) {
         this.brandsView = brandsView;
         handler = new Handler();
     }
@@ -48,6 +43,5 @@ public class BrandsPresenter  {
 
                     }
                 });
-
     }
 }

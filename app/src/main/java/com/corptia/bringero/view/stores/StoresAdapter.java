@@ -1,4 +1,4 @@
-package com.corptia.bringero.view.brands;
+package com.corptia.bringero.view.stores;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,12 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
-import com.corptia.bringero.model.StoreTypes;
-import com.corptia.bringero.view.brandDetail.BrandDetailActivity;
-import com.corptia.bringero.view.home.ui.storetypes.Adapter.StoreTypesAdapter;
-import com.squareup.picasso.Picasso;
+import com.corptia.bringero.view.storesDetail.StoreDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +22,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.ViewHolder> {
+public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder> {
 
     Context context;
     List<GetStoresOfASingleCategoryQuery.Store> storeTypesList = new ArrayList<>();
 
-    public BrandsAdapter(Context context, List<GetStoresOfASingleCategoryQuery.Store> storeTypesList) {
+    public StoresAdapter(Context context, List<GetStoresOfASingleCategoryQuery.Store> storeTypesList) {
         this.context = context;
         this.storeTypesList = storeTypesList;
     }
@@ -53,7 +51,9 @@ public class BrandsAdapter extends RecyclerView.Adapter<BrandsAdapter.ViewHolder
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context,BrandDetailActivity.class));
+                Intent intentStore = new Intent(context , StoreDetailActivity.class);
+                intentStore.putExtra(Constants.EXTRA_STORE_ID , storeTypes._id());
+                context.startActivity(intentStore);
             }
         });
 

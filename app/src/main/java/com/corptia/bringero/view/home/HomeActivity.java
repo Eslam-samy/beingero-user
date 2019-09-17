@@ -8,7 +8,10 @@ import com.corptia.bringero.R;
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavGraph;
+import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -46,17 +49,36 @@ public class HomeActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        /*Menu menu = navigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.nav_cart);
+        menuItem.setTitle("Hi Safwaaaaaat");*/
+
+       // navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
         drawerLayout = findViewById(R.id.drawer_layout);
 
         navigationView = findViewById(R.id.nav_view);
 
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);  // Hostfragment
+        NavInflater inflater = navHostFragment.getNavController().getNavInflater();
+        NavGraph graph = inflater.inflate(R.navigation.mobile_navigation);
+        //graph.setDefaultArguments(getIntent().getExtras());
+        //graph.setStartDestination(R.id.gallaryFragment);
+        graph.setStartDestination(R.id.nav_home);
+        navHostFragment.getNavController().setGraph(graph);
+        //navHostFragment.getNavController().getGraph().setDefaultArguments(getIntent().getExtras());
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationUI.setupWithNavController(navigationView, navHostFragment.getNavController());
+        NavigationUI.setupActionBarWithNavController(this, navHostFragment.getNavController(), drawerLayout);
+        ///navigationView.setNavigationItemSelectedListener(this);
+
+        /*navigationView = findViewById(R.id.nav_view);
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout);
-
         NavigationUI.setupWithNavController(navigationView, navController);
-
         navigationView.setNavigationItemSelectedListener(this);
+        navController.navigate(R.id.action_nav_home_to_gallaryFragment);*/
+
         /*FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,6 +132,10 @@ public class HomeActivity extends AppCompatActivity implements
 
             case R.id.nav_settings:
                 startActivity(new Intent(HomeActivity.this, SettingActivity.class));
+                break;
+
+            case R.id.nav_cart:
+
                 break;
 
         }
