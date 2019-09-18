@@ -6,7 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".view.Main.login.LoginFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
             <Button
@@ -46,8 +56,9 @@
                     android:inputType="phone"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:text=""
                     android:background="@drawable/shadow_input"
+                    android:maxLength="11"
+                    android:text="01000000101"
                     />
 
                 <!--android:drawableEnd="@drawable/ic_cheak"-->
@@ -73,11 +84,19 @@
                     android:inputType="textPassword"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:text="asdasdas"
+                    android:text="00000000"
                     />
 
 
             </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </ScrollView>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

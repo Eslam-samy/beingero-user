@@ -1,4 +1,4 @@
-mutation signIn($loginData:loginInput){
+mutation logIn($loginData:loginInput){
     UserMutation{
         login(data:$loginData){
             status
@@ -16,6 +16,30 @@ mutation signIn($loginData:loginInput){
                 validValue
             }
             token
+        }
+    }
+}
+
+query me{
+    UserQuery{
+        me{
+            status
+            message
+            UserData:data{
+                _id
+                phone
+                email
+                firstName
+                lastName
+                roleName
+                status
+                language
+                facilityId
+                workStartDate
+                avatarImageId
+                createdAt
+                updatedAt
+            }
         }
     }
 }

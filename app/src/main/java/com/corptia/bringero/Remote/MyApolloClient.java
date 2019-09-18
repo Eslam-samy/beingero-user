@@ -32,9 +32,8 @@ public class MyApolloClient {
     private static final String BASE_URL = "http://45.77.157.193:8000/graphql";
     private static ApolloClient apolloClient;
 
+    //Without Any Token
     public static ApolloClient getApollowClient(){
-
-
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(message -> Log.e("API" , message));
 
@@ -155,14 +154,14 @@ public class MyApolloClient {
 
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormatParse = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                   // Log.d("decode","decode");
+                    // Log.d("decode","decode");
 
                     //Date date = dateFormatParse.parse(value.value.toString());
                     //Date startDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(value.value.toString()).getTime());
                     Date startDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(value.value.toString()).getTime());
 
 
-                   // Log.d("DateDate" , "Date >> "+startDate);
+                    // Log.d("DateDate" , "Date >> "+startDate);
                     return startDate ;
                 } catch (ParseException e) {
                     throw new RuntimeException(e);
@@ -172,11 +171,10 @@ public class MyApolloClient {
 
             @Override
             public CustomTypeValue encode(Date value) {
-              //  Log.d("encode","encode " + value);
+                //  Log.d("encode","encode " + value);
                 return new CustomTypeValue.GraphQLString(value.toString());
             }
         };
-
 
 
 
@@ -184,7 +182,7 @@ public class MyApolloClient {
             @Override
             public void log(String message) {
 
-             //   Log.e("API", message);
+               Log.e("API", message);
 
             }
         });
@@ -197,10 +195,7 @@ public class MyApolloClient {
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
-                       /* Request request = chain.request();
-                        Request.Builder builder = request.newBuilder();
-                        builder.addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNDA3OWUxYmNiYTRjMjE5MDVlYTliNCIsInBob25lIjoiKzIwMTAxNDA0Njk0NSIsInJvbGUiOiJTYWxlc1BvaW50QWRtaW4iLCJyb2xlSWQiOiI1Yzk2NmM4ZWM0YzVmNjI3MDRmMmNhN2IiLCJmYWNpbGl0eUlkIjoiNWMxYmI5OGY3MDgzNzIzNWRjODE5Y2M5IiwibGFuZ3VhZ2UiOiJlbiIsImlhdCI6MTU1OTA0ODYyMSwiZXhwIjoxNTYwMzQ0NjIxfQ.E9neeSJqSQlvJDVcp1FxYuxQ_XagyETclMnk7BedCI8").build();
-                        builder.method(request.method(), request.body());*/
+
                         Request request = chain.request().newBuilder().addHeader("Authorization", "Bearer "+token).build();
 
                         return chain.proceed(request);
@@ -213,7 +208,7 @@ public class MyApolloClient {
         apolloClient = ApolloClient.builder()
                 .serverUrl(BASE_URL)
                 .okHttpClient(okHttpClient)
-                //.addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
+                .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
                 .build();
 
         return apolloClient;

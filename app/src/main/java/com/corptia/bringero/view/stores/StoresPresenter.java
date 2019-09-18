@@ -24,7 +24,7 @@ public class StoresPresenter {
 
         brandsView.showProgressBar();
 
-        MyApolloClient.getApollowClient().query(GetStoresOfASingleCategoryQuery.builder().typeId(categoryId).build())
+        MyApolloClient.getApollowClientAuthorization().query(GetStoresOfASingleCategoryQuery.builder().typeId(categoryId).build())
                 .enqueue(new ApolloCall.Callback<GetStoresOfASingleCategoryQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GetStoresOfASingleCategoryQuery.Data> response) {

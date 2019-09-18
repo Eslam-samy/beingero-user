@@ -3,6 +3,7 @@ package com.corptia.bringero.view.home;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.view.Setting.main.SettingActivity;
 import com.google.android.material.navigation.NavigationView;
 
@@ -26,50 +28,43 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import butterknife.BindView;
+import butterknife.BindViews;
+import butterknife.ButterKnife;
+
 public class HomeActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener{
+        NavigationView.OnNavigationItemSelectedListener {
 
-   // private AppBarConfiguration mAppBarConfiguration;
-   // public static NavController navController;
+    // private AppBarConfiguration mAppBarConfiguration;
+    // public static NavController navController;
 
+    @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
+    @BindView(R.id.drawer_layout)
     public DrawerLayout drawerLayout;
 
+    @BindView(R.id.nav_view)
+    public NavigationView navigationView;
     public NavController navController;
 
-    public NavigationView navigationView;
+
+    @BindViews({R.id.nav_home, R.id.nav_gallery, R.id.nav_wishlist, R.id.nav_location, R.id.nav_order, R.id.nav_cart, R.id.nav_notifications, R.id.nav_discounts, R.id.nav_terms_conditions, R.id.nav_contact_us, R.id.nav_settings})
+    MenuItem nav_home, nav_gallery, nav_wishlist, nav_location, nav_order, nav_cart, nav_notifications, nav_discounts, nav_terms_conditions, nav_contact_us, nav_settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        /*Menu menu = navigationView.getMenu();
-        MenuItem menuItem = menu.findItem(R.id.nav_cart);
-        menuItem.setTitle("Hi Safwaaaaaat");*/
+        ButterKnife.bind(this);
 
-       // navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        initToolbar();
+        initNavigationView();
 
-        drawerLayout = findViewById(R.id.drawer_layout);
 
-        navigationView = findViewById(R.id.nav_view);
+        // navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);  // Hostfragment
-        NavInflater inflater = navHostFragment.getNavController().getNavInflater();
-        NavGraph graph = inflater.inflate(R.navigation.mobile_navigation);
-        //graph.setDefaultArguments(getIntent().getExtras());
-        //graph.setStartDestination(R.id.gallaryFragment);
-        graph.setStartDestination(R.id.nav_home);
-        navHostFragment.getNavController().setGraph(graph);
-        //navHostFragment.getNavController().getGraph().setDefaultArguments(getIntent().getExtras());
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        NavigationUI.setupWithNavController(navigationView, navHostFragment.getNavController());
-        NavigationUI.setupActionBarWithNavController(this, navHostFragment.getNavController(), drawerLayout);
         ///navigationView.setNavigationItemSelectedListener(this);
 
         /*navigationView = findViewById(R.id.nav_view);
@@ -101,12 +96,47 @@ public class HomeActivity extends AppCompatActivity implements
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 */
+
+        //---------------- Menu ----------------------
+        Menu menu = navigationView.getMenu();
+        MenuItem nav_home = menu.findItem(R.id.nav_home);
+
+    }
+
+    private void initNavigationView() {
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);  // Hostfragment
+        NavInflater inflater = navHostFragment.getNavController().getNavInflater();
+        NavGraph graph = inflater.inflate(R.navigation.mobile_navigation);
+        //graph.setDefaultArguments(getIntent().getExtras());
+        //graph.setStartDestination(R.id.gallaryFragment);
+        if (Common.CURRENT_USER.roleName().rawValue().equalsIgnoreCase(RoleEnum.STOREADMIN.rawValue())) {
+
+            graph.setStartDestination(R.id.nav_gallery);
+        } else {
+            graph.setStartDestination(R.id.nav_home);
+
+        }
+        navHostFragment.getNavController().setGraph(graph);
+        //navHostFragment.getNavController().getGraph().setDefaultArguments(getIntent().getExtras());
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationUI.setupWithNavController(navigationView, navHostFragment.getNavController());
+        NavigationUI.setupActionBarWithNavController(this, navHostFragment.getNavController(), drawerLayout);
+
+    }
+
+    private void initToolbar() {
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-       // getMenuInflater().inflate(R.menu.menu_home, menu);
+        // getMenuInflater().inflate(R.menu.menu_home, menu);
         return true;
     }
 

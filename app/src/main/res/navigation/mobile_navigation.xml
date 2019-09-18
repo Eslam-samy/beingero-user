@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/gallaryFragment">
+    app:startDestination="@id/nav_home">
 
     <!-- home.ui.storetypes.StoreTypesFragment -->
     <fragment
@@ -15,43 +15,9 @@
         />
 
     <fragment
-        android:id="@+id/gallaryFragment"
+        android:id="@+id/nav_gallery"
         android:name="com.corptia.bringero.view.gallaryStore.GallaryFragment"
         android:label="fragment_gallary"
         tools:layout="@layout/fragment_gallary" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.corptia.bringero.view.home.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-
-    <fragment
-        android:id="@+id/nav_tools"
-        android:name="com.corptia.bringero.view.home.ui.tools.ToolsFragment"
-        android:label="@string/menu_tools"
-        tools:layout="@layout/fragment_tools" />
-
-    <fragment
-        android:id="@+id/nav_share"
-        android:name="com.corptia.bringero.view.home.ui.share.ShareFragment"
-        android:label="@string/menu_share"
-        tools:layout="@layout/fragment_share" />
-
-    <fragment
-        android:id="@+id/nav_send"
-        android:name="com.corptia.bringero.view.home.ui.send.SendFragment"
-        android:label="@string/menu_send"
-        tools:layout="@layout/fragment_send" />
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.corptia.bringero.view.Main.login.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
-    <fragment
-        android:id="@+id/settingFragment"
-        android:name="com.corptia.bringero.view.Setting.main.SettingFragment"
-        android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
 
 </navigation>

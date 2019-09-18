@@ -39,12 +39,7 @@
             android:name=".view.home.HomeActivity"
             android:label="@string/title_activity_store_types"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".view.Main.otp.VerifyPhoneNumberActivity"
@@ -52,7 +47,16 @@
         <activity android:name=".view.splash.SplashActivity" />
         <activity
             android:name=".view.Main.MainActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
 
         <activity
             android:name=".view.MapWork.MapsActivity"
