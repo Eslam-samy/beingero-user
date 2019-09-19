@@ -9,10 +9,15 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.LogInMutation;
 import com.corptia.bringero.graphql.MeQuery;
+import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.type.LoginInput;
+import com.corptia.bringero.type.RoleEnum;
+import com.corptia.bringero.type.StoreFilterInput;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class LoginPresenter implements LoginContract.LoginPresenter {
 
@@ -79,25 +84,72 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                     @Override
                     public void onResponse(@NotNull Response<MeQuery.Data> response) {
 
-                        loginView.hideProgress();
+                        MeQuery.UserData userData =response.data().UserQuery().me().UserData();
 
                         if (response.data().UserQuery().me().status() == 200)
                         {
-                            loginView.onLoginSuccess("login success");
-                            Common.CURRENT_USER = response.data().UserQuery().me().UserData();
+
+                            Common.CURRENT_USER = userData;
+                            Common.CURRENT_USER_TOKEN = token;
+
+                            if (userData.roleName().rawValue().equalsIgnoreCase(RoleEnum.STOREADMIN.rawValue()))
+                            {
+                                getStoreTypes(userData._id() ,token);
+                            }
+
+                            else
+                            {
+                                loginView.hideProgress();
+                                loginView.onLoginSuccess("login success");
+
+                            }
                         }
 
                         else
                         {
-
+                            loginView.hideProgress();
+                            loginView.onLoginError("[ERROR GET ME]"+response.data().UserQuery().me().message());
                         }
                     }
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
                         loginView.hideProgress();
-                        loginView.onLoginError("[GET ME]"+e.getMessage());
+                        loginView.onLoginError("[ERROR GET ME]"+e.getMessage());
                         Log.d("HAZEM" , ""+e.toString());
+                    }
+                });
+
+    }
+
+    public void getStoreTypes(String adminUserId , String token){
+
+        StoreFilterInput storeFilterInput = StoreFilterInput.builder().adminUserId(adminUserId).build();
+        MyApolloClient.getApollowClientAuthorization(token).query(SingleStoreQuery.builder().filter(storeFilterInput).build())
+                .enqueue(new ApolloCall.Callback<SingleStoreQuery.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<SingleStoreQuery.Data> response) {
+
+                        SingleStoreQuery.GetAll responseData = response.data().StoreQuery().getAll();
+
+                        if (responseData.status() == 200)
+                        {
+                           Common.CURRENT_STORE = responseData.CurrentStore().get(0);
+                            loginView.hideProgress();
+                            loginView.onLoginSuccess("login success");
+                        }
+
+                        else
+                        {
+                            loginView.onLoginError("[GET DATA STORE]"+responseData.message());
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        loginView.onLoginError("ERROR DATA STORE"+e.getMessage());
                     }
                 });
 

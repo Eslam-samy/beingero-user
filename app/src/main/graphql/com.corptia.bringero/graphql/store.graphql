@@ -50,3 +50,30 @@ query singleStoreHeader($storeId: ID) {
         }
     }
 }
+
+
+query singleStore($filter: StoreFilterInput) {
+    StoreQuery {
+        getAll(filter : $filter) {
+            status
+            message
+            errors {
+                code
+                path
+                message
+            }
+            CurrentStore:data{
+                _id
+                name
+                ProductTypesStore:ProductTypesResponse{
+                    status
+                    message
+                    data{
+                        _id
+                        name
+                    }
+                }
+            }
+        }
+    }
+}

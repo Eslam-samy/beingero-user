@@ -101,5 +101,9 @@
     <string name="wrong_delivery_address">Wrong delivery address</string>
     <string name="forgot_to_apply_voucher">Forgot to apply voucher</string>
     <string name="change_payment_method">Change payment method</string>
+    <string name="menu_pricing">Pricing</string>
+    <string name="price">Price</string>
+    <string name="amount">Amount</string>
+    <string name="add">Add</string>
 </resources>
 

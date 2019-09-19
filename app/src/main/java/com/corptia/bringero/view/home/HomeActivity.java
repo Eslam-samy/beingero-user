@@ -7,8 +7,10 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.NavGraph;
 import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
@@ -25,15 +27,24 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
+/*
+,
+        NavController.OnDestinationChangedListener
+ */
 public class HomeActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener  {
 
     // private AppBarConfiguration mAppBarConfiguration;
     // public static NavController navController;
@@ -46,11 +57,12 @@ public class HomeActivity extends AppCompatActivity implements
 
     @BindView(R.id.nav_view)
     public NavigationView navigationView;
-    public NavController navController;
+    public static NavController navController;
 
-
-    @BindViews({R.id.nav_home, R.id.nav_gallery, R.id.nav_wishlist, R.id.nav_location, R.id.nav_order, R.id.nav_cart, R.id.nav_notifications, R.id.nav_discounts, R.id.nav_terms_conditions, R.id.nav_contact_us, R.id.nav_settings})
-    MenuItem nav_home, nav_gallery, nav_wishlist, nav_location, nav_order, nav_cart, nav_notifications, nav_discounts, nav_terms_conditions, nav_contact_us, nav_settings;
+    Menu menu;
+    //@BindViews({R.id.nav_home, R.id.nav_gallery, R.id.nav_wishlist, R.id.nav_location, R.id.nav_order, R.id.nav_cart, R.id.nav_notifications, R.id.nav_discounts, R.id.nav_terms_conditions, R.id.nav_contact_us, R.id.nav_settings})
+    MenuItem nav_home, nav_gallery, nav_wishlist, nav_location, nav_order, nav_cart, nav_notifications, nav_discounts,
+            nav_terms_conditions, nav_contact_us, nav_settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +71,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         ButterKnife.bind(this);
 
-        initToolbar();
+        initToolbar(toolbar);
         initNavigationView();
 
 
@@ -98,8 +110,7 @@ public class HomeActivity extends AppCompatActivity implements
 */
 
         //---------------- Menu ----------------------
-        Menu menu = navigationView.getMenu();
-        MenuItem nav_home = menu.findItem(R.id.nav_home);
+
 
     }
 
@@ -119,13 +130,58 @@ public class HomeActivity extends AppCompatActivity implements
         }
         navHostFragment.getNavController().setGraph(graph);
         //navHostFragment.getNavController().getGraph().setDefaultArguments(getIntent().getExtras());
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        //NavigationView navigationView = findViewById(R.id.nav_view);
         NavigationUI.setupWithNavController(navigationView, navHostFragment.getNavController());
         NavigationUI.setupActionBarWithNavController(this, navHostFragment.getNavController(), drawerLayout);
 
+
+        menu = navigationView.getMenu();
+
+        defineItems();
+        checkRoleUser(Common.CURRENT_USER.roleName().rawValue());
+
+
+
+
+
     }
 
-    private void initToolbar() {
+    private void checkRoleUser(String rolName) {
+
+        if (rolName != null) {
+
+            if (RoleEnum.CUSTOMER.rawValue().equalsIgnoreCase(rolName)) {
+
+                nav_gallery.setVisible(false);
+
+            } else if (RoleEnum.STOREADMIN.rawValue().equalsIgnoreCase(rolName)) {
+
+                nav_home.setVisible(false);
+
+            }
+
+
+        }
+
+    }
+
+    private void defineItems() {
+
+        nav_home = menu.findItem(R.id.nav_home);
+        nav_gallery = menu.findItem(R.id.nav_gallery);
+        nav_cart = menu.findItem(R.id.nav_cart);
+        nav_contact_us = menu.findItem(R.id.nav_contact_us);
+        nav_discounts = menu.findItem(R.id.nav_discounts);
+        nav_location = menu.findItem(R.id.nav_location);
+        nav_notifications = menu.findItem(R.id.nav_notifications);
+        nav_order = menu.findItem(R.id.nav_order);
+        nav_settings = menu.findItem(R.id.nav_settings);
+        nav_terms_conditions = menu.findItem(R.id.nav_terms_conditions);
+        nav_wishlist = menu.findItem(R.id.nav_wishlist);
+
+    }
+
+    private void initToolbar( Toolbar toolbar) {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -145,7 +201,21 @@ public class HomeActivity extends AppCompatActivity implements
        /* NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();*/
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        /*navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+
+            if (destination.getId() == R.id.nav_settings)
+            {
+                Toast.makeText(HomeActivity.this, "I Click Setting", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(HomeActivity.this, "NOOOOOOOO", Toast.LENGTH_SHORT).show();
+            }
+
+        });*/
+
         return NavigationUI.navigateUp(navController, drawerLayout);
     }
 
@@ -181,4 +251,20 @@ public class HomeActivity extends AppCompatActivity implements
             super.onBackPressed();
         }
     }
+
+//    @Override
+//    public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+//
+//        if (destination.getId() == R.id.nav_settings) {
+//            toolbar.setVisibility(View.GONE);
+//            Log.d("HAZEM" , "YOU CLICK SETTING");
+//
+//        } else {
+//            toolbar.setVisibility(View.VISIBLE);
+//            Log.d("HAZEM" , "BACK");
+//        }
+//
+//        initToolbar(toolbar);
+//    }
+
 }

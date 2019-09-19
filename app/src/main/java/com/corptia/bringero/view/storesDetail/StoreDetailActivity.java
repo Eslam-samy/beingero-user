@@ -6,12 +6,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.graphql.GetProductQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
 import com.corptia.bringero.model.StoreTypes;
 import com.google.android.material.tabs.TabLayout;
@@ -58,6 +61,8 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         String storeId = intent.getStringExtra(Constants.EXTRA_STORE_ID);
         presenter.getStoreDetailHeader(storeId);
 
+        Log.d("HAZEM" , "Welcome Activity Again");
+
     }
 
     private void initIntent() {
@@ -68,10 +73,10 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         //int position = intent.getIntExtra(HomeActivity.EXTRA_POSITION,0);
 
 
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "data1"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "data2"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "data3"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "data4"));
+        storeTypesList.add(new StoreTypes(R.drawable.img1, "اغذيه"));
+        storeTypesList.add(new StoreTypes(R.drawable.img2, "مستحضرات تجميل"));
+        storeTypesList.add(new StoreTypes(R.drawable.img3, "منظفات"));
+        storeTypesList.add(new StoreTypes(R.drawable.img4, "مجمدات"));
         storeTypesList.add(new StoreTypes(R.drawable.img5, "data5"));
         storeTypesList.add(new StoreTypes(R.drawable.img6, "data6"));
         storeTypesList.add(new StoreTypes(R.drawable.img1, "data7"));
@@ -89,7 +94,8 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
 
         ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
                 getSupportFragmentManager(),
-                storeTypesList);
+                Common.CURRENT_STORE.ProductTypesStore().data(),
+                true); //TODO this change And Not Run Becase I work this adapter To StoreAdmin
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -141,6 +147,11 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
 
     @Override
     public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void setProduct(List<GetProductQuery.Product> product) {
 
     }
 }

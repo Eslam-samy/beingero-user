@@ -1,0 +1,53 @@
+query getProductQuery($filter: ProductFilterInput){
+    ProductQuery{
+        getAll(filter: $filter){
+            status
+            message
+            errors{
+                code
+                path
+                message
+                validValue
+            }
+            pagination{
+                page
+                limit
+                hasNextPage
+                nextPage
+            }
+
+            Product:data{
+                _id
+                name
+                customerPrice
+                typeId
+            }
+        }
+    }
+}
+
+
+
+mutation PricingProductMutation($data: createPricingProduct){
+    CreatePricingProduct:PricingProductMutation {
+        create(data :$data)
+        {
+            status
+            message
+            errors{
+                code
+                path
+                message
+                validValue
+            }
+
+            data{
+
+                _id
+                productId
+                storeId
+
+            }
+        }
+    }
+}

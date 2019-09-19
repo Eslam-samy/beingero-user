@@ -19,5 +19,64 @@
         android:name="com.corptia.bringero.view.gallaryStore.GallaryFragment"
         android:label="fragment_gallary"
         tools:layout="@layout/fragment_gallary" />
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.corptia.bringero.view.Setting.main.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_nav_settings_to_changePasswordFragment2"
+            app:destination="@id/changePasswordFragment2"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_nav_settings_to_languageFragment2"
+            app:destination="@id/languageFragment2"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_nav_settings_to_contactUsFragment2"
+            app:destination="@id/contactUsFragment2"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_nav_settings_to_editProfileFragment2"
+            app:destination="@id/editProfileFragment2"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+    <fragment
+        android:id="@+id/contactUsFragment2"
+        android:name="com.corptia.bringero.view.Setting.contactUs.ContactUsFragment"
+        android:label="fragment_contact_us"
+        tools:layout="@layout/fragment_contact_us" />
+    <fragment
+        android:id="@+id/languageFragment2"
+        android:name="com.corptia.bringero.view.Setting.language.LanguageFragment"
+        android:label="fragment_language"
+        tools:layout="@layout/fragment_language" />
+    <fragment
+        android:id="@+id/editProfileFragment2"
+        android:name="com.corptia.bringero.view.Setting.editProfile.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/changePasswordFragment2"
+        android:name="com.corptia.bringero.view.Setting.changePassword.ChangePasswordFragment"
+        android:label="fragment_change_password"
+        tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/nav_pricing"
+        android:name="com.corptia.bringero.view.pricing.PricingProductFragment"
+        android:label="fragment_pricing_product"
+        tools:layout="@layout/fragment_pricing_product" />
 
 </navigation>

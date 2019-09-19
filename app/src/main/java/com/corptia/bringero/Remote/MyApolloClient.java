@@ -145,8 +145,6 @@ public class MyApolloClient {
 
     public static ApolloClient getApollowClientAuthorization(final String token){
 
-
-
         // Custom DateTime Scalar Type
         CustomTypeAdapter dateCustomTypeAdapter = new CustomTypeAdapter<Date>() {
             @Override

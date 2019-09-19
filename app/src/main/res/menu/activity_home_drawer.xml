@@ -16,6 +16,11 @@
         android:title="@string/menu_gallery" />
 
     <item
+        android:id="@+id/nav_pricing"
+        android:icon="@drawable/ic_nav_discounts"
+        android:title="@string/menu_pricing" />
+
+    <item
         android:id="@+id/nav_wishlist"
         android:icon="@drawable/ic_nav_wishlist"
         android:title="@string/menu_wish_list" />

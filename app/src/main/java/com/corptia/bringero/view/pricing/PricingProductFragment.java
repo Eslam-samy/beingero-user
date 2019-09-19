@@ -1,13 +1,11 @@
-package com.corptia.bringero.view.gallaryStore;
+package com.corptia.bringero.view.pricing;
 
 
 import android.os.Bundle;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +14,8 @@ import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.model.StoreTypes;
 import com.corptia.bringero.view.storesDetail.ViewPagerStoreAdapter;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,8 +23,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GallaryFragment extends Fragment   {
-
+public class PricingProductFragment extends Fragment {
 
 
     @BindView(R.id.tabLayout)
@@ -38,36 +31,23 @@ public class GallaryFragment extends Fragment   {
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
-    @BindView(R.id.image_store)
-    ImageView image_store;
-    @BindView(R.id.txt_status)
-    TextView txt_status;
-    @BindView(R.id.txt_name_store)
-    TextView txt_name_store;
 
-
-
-    public GallaryFragment() {
-
+    public PricingProductFragment() {
+        // Required empty public constructor
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.fragment_gallary, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_pricing_product, container, false);
         ButterKnife.bind(this,view);
 
-
-        txt_name_store.setText(Common.CURRENT_USER.firstName());
-
-
-        //this code is very important ( getChildFragmentManager() ) instant getActivity().getSupportFragmentManager()
         ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
                 getChildFragmentManager() ,
                 Common.CURRENT_STORE.ProductTypesStore().data(),
-                true);
+                false);
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

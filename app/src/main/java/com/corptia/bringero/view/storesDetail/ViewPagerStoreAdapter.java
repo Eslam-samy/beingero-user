@@ -7,27 +7,30 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.model.StoreTypes;
 
 import java.util.List;
 
 public class ViewPagerStoreAdapter extends FragmentPagerAdapter {
 
-    private List<StoreTypes> brandList;
+    private List<SingleStoreQuery.Data1> productsTypes;
+    boolean isPrice;
 
-    public ViewPagerStoreAdapter(FragmentManager fm, List<StoreTypes> brandList) {
+    public ViewPagerStoreAdapter(FragmentManager fm, List<SingleStoreQuery.Data1> productsTypes , boolean isPrice) {
         super(fm);
-        this.brandList = brandList;
+        this.productsTypes = productsTypes;
+        this.isPrice = isPrice;
     }
 
     @Override
     public Fragment getItem(int i) {
-        StoreDetailFragment fragment = new StoreDetailFragment();
+
+        StoreDetailFragment fragment = new StoreDetailFragment(isPrice);
         Bundle args = new Bundle();
 
-        //args.putString("EXTRA_DATA_NAME" , brandList.get(i).getStrCategory());
-        //args.putString("EXTRA_DATA_DESC" , brandList.get(i).getStrCategoryDescription());
-        //args.putString("EXTRA_DATA_IMAGE" , brandList.get(i).getStrCategoryThumb());
+        args.putString(Constants.EXTRA_PRODUCT_TYPE_ID, productsTypes.get(i)._id());
 
         fragment.setArguments(args);
         return fragment;
@@ -35,12 +38,12 @@ public class ViewPagerStoreAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return brandList.size();
+        return productsTypes.size();
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        return brandList.get(position).getStoreTypesName();
+        return productsTypes.get(position).name();
     }
 }

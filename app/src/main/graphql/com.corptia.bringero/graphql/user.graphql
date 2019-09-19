@@ -34,7 +34,6 @@ query me{
                 roleName
                 status
                 language
-                facilityId
                 workStartDate
                 avatarImageId
                 createdAt
