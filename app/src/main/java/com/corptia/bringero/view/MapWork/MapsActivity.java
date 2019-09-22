@@ -602,7 +602,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 saveLocationBtn.setVisibility(View.VISIBLE);
                 saveLocationBtn.setText(getString(R.string.save_location) + "\n" + newAddress);
                 URL url = new URL(icon);
-                name = result.optString("name");
+                name = result.optString("firstName");
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                 mMap.clear();
                 TaskGetIcon taskGetIcon = new TaskGetIcon();

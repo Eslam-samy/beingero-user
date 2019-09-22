@@ -58,7 +58,7 @@
         <item name="hintAnimationEnabled">true</item>
         <item name="hintEnabled">true</item>
 
-        <!-- <item name="android:translationY">-10dp</item> -->
+        <!-- <item firstName="android:translationY">-10dp</item> -->
 
     </style>
 

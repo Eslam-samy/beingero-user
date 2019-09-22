@@ -3,12 +3,6 @@ query getStoresOfASingleCategory($typeId: ID,$paginate:paginationInput) {
         getAll(filter: { storeTypeId: $typeId },pagination:$paginate) {
             status
             message
-            errors {
-                code
-                path
-                message
-                validValue
-            }
             pagination {
                 hasNextPage
                 nextPage
@@ -19,7 +13,6 @@ query getStoresOfASingleCategory($typeId: ID,$paginate:paginationInput) {
                 name
                 imageId
                 storeTypeId
-
             }
         }
     }
@@ -31,16 +24,6 @@ query singleStoreHeader($storeId: ID) {
         get(_id: $storeId) {
             status
             message
-            errors {
-                code
-                path
-                message
-            }
-            warnings {
-                code
-                path
-                message
-            }
             StoreDetail:data {
                 _id
                 name
@@ -57,11 +40,6 @@ query singleStore($filter: StoreFilterInput) {
         getAll(filter : $filter) {
             status
             message
-            errors {
-                code
-                path
-                message
-            }
             CurrentStore:data{
                 _id
                 name

@@ -3,18 +3,7 @@ mutation logIn($loginData:loginInput){
         login(data:$loginData){
             status
             message
-            errors{
-                code
-                path
-                message
-                validValue
-            }
-            warnings{
-                code
-                path
-                message
-                validValue
-            }
+
             token
         }
     }
@@ -39,6 +28,25 @@ query me{
                 createdAt
                 updatedAt
             }
+        }
+    }
+}
+
+mutation validatePhoneWithFireBase($phone:String!,$fireBaseToken:String!){
+    UserMutation{
+        validateFireBaseToken(phone:$phone,token:$fireBaseToken){
+            status
+            message
+            token
+        }
+    }
+}
+
+mutation signUpSecondStep($data: signupInput) {
+    UserMutation {
+        signup(data: $data) {
+            status
+            message
         }
     }
 }

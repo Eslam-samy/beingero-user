@@ -46,8 +46,8 @@ public class StoreDetailPresenter {
         ProductFilterInput productFilterInput = null;
         if (isPrice)
             productFilterInput = ProductFilterInput.builder().typeId(typeId).build();
-        else
-            productFilterInput = ProductFilterInput.builder().typeId(typeId).notPricedBy(Common.CURRENT_STORE._id()).build();
+//        else
+//            productFilterInput = ProductFilterInput.builder().typeId(typeId).notPricedBy(Common.CURRENT_STORE._id()).build();
 
         MyApolloClient.getApollowClientAuthorization().query(GetProductQuery.builder().filter(productFilterInput).build())
                 .enqueue(new ApolloCall.Callback<GetProductQuery.Data>() {
