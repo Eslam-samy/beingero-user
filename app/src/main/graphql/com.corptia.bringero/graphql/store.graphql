@@ -19,6 +19,7 @@ query getStoresOfASingleCategory($typeId: ID,$paginate:paginationInput) {
                 name
                 imageId
                 storeTypeId
+                adminUserId
 
             }
         }
@@ -64,6 +65,7 @@ query singleStore($filter: StoreFilterInput) {
             }
             CurrentStore:data{
                 _id
+                adminUserId
                 name
                 ProductTypesStore:ProductTypesResponse{
                     status

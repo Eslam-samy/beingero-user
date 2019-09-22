@@ -26,6 +26,7 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.Utils.decoration.GridSpacingItemDecoration;
 import com.corptia.bringero.graphql.GetProductQuery;
+import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.PricingProductMutation;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
 import com.corptia.bringero.model.StoreTypes;
@@ -81,9 +82,10 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
         if (getArguments() != null) {
 
-            // 13. set Value from argument data to view
+            // set argument data to view
             String typeId = getArguments().getString(Constants.EXTRA_PRODUCT_TYPE_ID);
-            storeDetailPresenter.getProductStore(typeId ,isPrice);
+            String storeId = getArguments().getString(Constants.EXTRA_STORE_ID);
+            storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(),typeId ,isPrice);
             //Here Get Products For This Type
 
         }
@@ -113,7 +115,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     }
 
     @Override
-    public void setProduct(List<GetProductQuery.Product> product) {
+    public void setProduct(List<GetStoreProductsQuery.Product> product) {
 
         handler.post(() -> {
             adapter = new StoreDetailAdapter(getActivity(), product);
@@ -172,21 +174,18 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                         @Override
                         public void onResponse(@NotNull Response<PricingProductMutation.Data> response) {
 
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
+                            handler.post(() -> {
 
-                                    if (response.data().CreatePricingProduct().create().status() == 200)
-                                    {
-                                        bottomSheetDialog.dismiss();
-                                        adapter.removeSelectProduct(position);
-                                    }
-                                    else
-                                    {
-                                        bottomSheetDialog.dismiss();
-                                    }
-
+                                if (response.data().CreatePricingProduct().create().status() == 200)
+                                {
+                                    bottomSheetDialog.dismiss();
+                                    adapter.removeSelectProduct(position);
                                 }
+                                else
+                                {
+                                    bottomSheetDialog.dismiss();
+                                }
+
                             });
 
 

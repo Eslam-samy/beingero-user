@@ -24,7 +24,9 @@
         <activity android:name=".view.Setting.changePassword.ChangePasswordActivity" />
         <activity android:name=".view.Setting.editProfile.EditProfileActivity" />
         <activity android:name=".view.Setting.main.SettingActivity" />
-        <activity android:name=".view.productDetail.ProductDetailActivity" />
+        <activity android:name=".view.productDetail.ProductDetailActivity" >
+
+        </activity>
         <activity android:name=".view.storesDetail.StoreDetailActivity" />
         <activity android:name=".view.stores.StoresActivity" />
         <activity
@@ -38,12 +40,14 @@
         <activity
             android:name=".view.Main.MainActivity"
             android:windowSoftInputMode="stateHidden">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".view.MapWork.MapsActivity"

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.GetProductQuery;
+import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.model.StoreTypes;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
 public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.ViewHolder> {
 
     Context context;
-    List<GetProductQuery.Product> productsList = new ArrayList<>();
+    List<GetStoreProductsQuery.Product> productsList = new ArrayList<>();
 
     IOnRecyclerViewClickListener listener;
 
@@ -34,7 +35,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
         this.listener = listener;
     }
 
-    public StoreDetailAdapter(Context context, List<GetProductQuery.Product> productsList) {
+    public StoreDetailAdapter(Context context, List<GetStoreProductsQuery.Product> productsList) {
         this.context = context;
         this.productsList =   new ArrayList<>(productsList);
     }
@@ -48,9 +49,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        GetProductQuery.Product product = productsList.get(position);
-        holder.txt_price.setText(""+product.customerPrice());
-        holder.txt_name_product.setText(product.name());
+        GetStoreProductsQuery.Product product = productsList.get(position);
+        holder.txt_price.setText(""+product.storePrice());
+        holder.txt_name_product.setText(product.Product().name());
 
         if (listener !=null)
         {
@@ -87,7 +88,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
 
     }
 
-    public GetProductQuery.Product getSelectProduct(int position)
+    public GetStoreProductsQuery.Product getSelectProduct(int position)
     {
         return productsList.get(position);
     }

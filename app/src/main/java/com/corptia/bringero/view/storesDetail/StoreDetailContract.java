@@ -1,6 +1,7 @@
 package com.corptia.bringero.view.storesDetail;
 
 import com.corptia.bringero.graphql.GetProductQuery;
+import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
 
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +18,7 @@ public class StoreDetailContract {
         void showProgressBar();
         void hideProgressBar();
 
-        void setProduct(List<GetProductQuery.Product> product);
+        void setProduct(List<GetStoreProductsQuery.Product> product);
     }
 
 }

@@ -62,7 +62,7 @@ public class HomeActivity extends AppCompatActivity implements
     Menu menu;
     //@BindViews({R.id.nav_home, R.id.nav_gallery, R.id.nav_wishlist, R.id.nav_location, R.id.nav_order, R.id.nav_cart, R.id.nav_notifications, R.id.nav_discounts, R.id.nav_terms_conditions, R.id.nav_contact_us, R.id.nav_settings})
     MenuItem nav_home, nav_gallery, nav_wishlist, nav_location, nav_order, nav_cart, nav_notifications, nav_discounts,
-            nav_terms_conditions, nav_contact_us, nav_settings;
+            nav_terms_conditions, nav_contact_us, nav_settings , nav_pricing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,13 +150,17 @@ public class HomeActivity extends AppCompatActivity implements
 
         if (rolName != null) {
 
+            //If Role is CUSTOMER
             if (RoleEnum.CUSTOMER.rawValue().equalsIgnoreCase(rolName)) {
 
                 nav_gallery.setVisible(false);
+                nav_pricing.setVisible(false);
 
+                //If Role is STORE ADMIN
             } else if (RoleEnum.STOREADMIN.rawValue().equalsIgnoreCase(rolName)) {
 
                 nav_home.setVisible(false);
+                nav_pricing.setVisible(true);
 
             }
 
@@ -178,6 +182,7 @@ public class HomeActivity extends AppCompatActivity implements
         nav_settings = menu.findItem(R.id.nav_settings);
         nav_terms_conditions = menu.findItem(R.id.nav_terms_conditions);
         nav_wishlist = menu.findItem(R.id.nav_wishlist);
+        nav_pricing = menu.findItem(R.id.nav_pricing);
 
     }
 

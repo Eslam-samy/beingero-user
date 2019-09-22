@@ -26,6 +26,54 @@ query getProductQuery($filter: ProductFilterInput){
     }
 }
 
+# ********** - This New - **********
+# getStoreProducts query: use to view Store Gallery
+# pass type Id to filter to get products priced and having type Id
+query getStoreProducts($storeId:ID! , $filter: storeGalleryFilter!){
+
+    PricingProductQuery{
+        getStoreProducts(storeId :$storeId  , filter :$filter){
+            status
+            message
+            pagination{
+                totalDocs
+                hasNextPage
+                hasPrevPage
+                limit
+                page
+                dataCount
+            }
+            Products : data{
+                _id
+                productId
+                storeId
+                storePrice
+                Product{
+                    _id
+                    name
+                    unitId
+                    typeId
+                }
+            }
+        }
+    }
+}
+
+
+# Get not priced By Query :
+#  used in store admin page to select products to add to prcing
+query getNotPricedBy($storeId: ID! , $filter: ProductFilterInput){
+    ProductQuery{
+        getStoreProducts:getNotPricedBy(storeId:$storeId,filter:$filter){
+            status
+            message
+            Products:data{
+                _id
+                name
+            }
+        }
+    }
+}
 
 
 mutation PricingProductMutation($data: createPricingProduct){

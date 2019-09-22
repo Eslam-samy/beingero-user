@@ -58,7 +58,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     android:background="@drawable/shadow_input"
                     android:maxLength="11"
-                    android:text="01000000101"
+                    android:text="01000000201"
                     />
 
                 <!--android:drawableEnd="@drawable/ic_cheak"-->

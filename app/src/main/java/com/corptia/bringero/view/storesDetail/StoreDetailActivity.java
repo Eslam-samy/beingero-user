@@ -11,13 +11,22 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GetProductQuery;
+import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
+import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.model.StoreTypes;
+import com.corptia.bringero.type.StoreFilterInput;
 import com.google.android.material.tabs.TabLayout;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +51,10 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     TextView txt_name_store;
 
 
-    List<StoreTypes> storeTypesList = new ArrayList<>();
-
+    Intent intent;
+    String adminUserId = "";
+    String storeId ="";
+    String storeName="";
     //Presenter
     StoreDetailPresenter presenter ;
 
@@ -53,54 +64,67 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         setContentView(R.layout.activity_store_detail);
 
         ButterKnife.bind(this);
+        Intent intent = getIntent();
+        adminUserId = intent.getStringExtra(Constants.EXTRA_ADMIN_USER_ID);
+        storeId = intent.getStringExtra(Constants.EXTRA_STORE_ID);
+        storeName = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
+        txt_name_store.setText(storeName);
+
         initActionBar();
         initIntent();
 
         presenter = new StoreDetailPresenter(this);
-        Intent intent = getIntent();
-        String storeId = intent.getStringExtra(Constants.EXTRA_STORE_ID);
-        presenter.getStoreDetailHeader(storeId);
-
-        Log.d("HAZEM" , "Welcome Activity Again");
+        //presenter.getStoreDetailHeader(storeId);
 
     }
 
     private void initIntent() {
 
-        //Intent intent = getIntent();
-        //List<StoreTypes> categories = (List<StoreTypes>) intent.getSerializableExtra(HomeActivity.EXTRA_CATEGORY);
+        StoreFilterInput storeFilterInput = StoreFilterInput.builder().adminUserId(adminUserId).build();
+        MyApolloClient.getApollowClientAuthorization(Common.CURRENT_USER_TOKEN).query(SingleStoreQuery.builder().filter(storeFilterInput).build())
+                .enqueue(new ApolloCall.Callback<SingleStoreQuery.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<SingleStoreQuery.Data> response) {
 
-        //int position = intent.getIntExtra(HomeActivity.EXTRA_POSITION,0);
+                        SingleStoreQuery.GetAll responseData = response.data().StoreQuery().getAll();
+
+                        runOnUiThread(() -> {
+
+                            if (responseData.status() == 200)
+                            {
+                                Common.CURRENT_STORE = responseData.CurrentStore().get(0);
 
 
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "اغذيه"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "مستحضرات تجميل"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "منظفات"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "مجمدات"));
-        storeTypesList.add(new StoreTypes(R.drawable.img5, "data5"));
-        storeTypesList.add(new StoreTypes(R.drawable.img6, "data6"));
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "data7"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "data8"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "data9"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "data10"));
-        storeTypesList.add(new StoreTypes(R.drawable.img5, "data11"));
-        storeTypesList.add(new StoreTypes(R.drawable.img6, "data12"));
-        storeTypesList.add(new StoreTypes(R.drawable.img1, "data13"));
-        storeTypesList.add(new StoreTypes(R.drawable.img2, "data14"));
-        storeTypesList.add(new StoreTypes(R.drawable.img3, "data15"));
-        storeTypesList.add(new StoreTypes(R.drawable.img4, "data16"));
-        storeTypesList.add(new StoreTypes(R.drawable.img5, "data17"));
-        storeTypesList.add(new StoreTypes(R.drawable.img6, "data18"));
+                                ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
+                                        getSupportFragmentManager(),
+                                        Common.CURRENT_STORE.ProductTypesStore().data(),
+                                        true);
 
-        ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
-                getSupportFragmentManager(),
-                Common.CURRENT_STORE.ProductTypesStore().data(),
-                true); //TODO this change And Not Run Becase I work this adapter To StoreAdmin
+                                viewPager.setAdapter(adapter);
+                                tabLayout.setupWithViewPager(viewPager);
+                                viewPager.setCurrentItem(0, true);
+                                adapter.notifyDataSetChanged();
 
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-        viewPager.setCurrentItem(0, true);
-        adapter.notifyDataSetChanged();
+                            }
+
+                            else
+                            {
+
+
+                            }
+
+                        });
+
+
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
+
     }
 
     private void initActionBar() {
@@ -128,7 +152,6 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
             @Override
             public void run() {
 
-                txt_name_store.setText(detail.name());
 
             }
         });
@@ -151,7 +174,7 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     }
 
     @Override
-    public void setProduct(List<GetProductQuery.Product> product) {
+    public void setProduct(List<GetStoreProductsQuery.Product> product) {
 
     }
 }
