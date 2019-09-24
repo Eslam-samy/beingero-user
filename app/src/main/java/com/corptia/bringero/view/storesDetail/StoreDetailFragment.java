@@ -25,6 +25,7 @@ import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.Utils.decoration.GridSpacingItemDecoration;
+import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetProductQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.PricingProductMutation;
@@ -34,12 +35,14 @@ import com.corptia.bringero.type.CreatePricingProduct;
 import com.corptia.bringero.type.ProductFilterInput;
 import com.corptia.bringero.view.Main.login.User;
 import com.corptia.bringero.view.home.HomeActivity;
+import com.corptia.bringero.view.pricing.PricingAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.NotNull;
+import org.xml.sax.helpers.ParserAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +57,9 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     @BindView(R.id.recycler_brands_detail)
     RecyclerView recycler_brands_detail;
-    StoreDetailAdapter adapter ;
+
+    StoreDetailAdapter storeDetailAdapter ;
+    PricingAdapter pricingAdapter ;
 
     Handler handler = new Handler();
 
@@ -100,11 +105,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     }
 
     @Override
-    public void displayError(String errorMessage) {
-
-    }
-
-    @Override
     public void showProgressBar() {
 
     }
@@ -115,16 +115,21 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     }
 
     @Override
+    public void showErrorMessage(String Message) {
+
+    }
+
+    @Override
     public void setProduct(List<GetStoreProductsQuery.Product> product) {
 
         handler.post(() -> {
-            adapter = new StoreDetailAdapter(getActivity(), product);
-            recycler_brands_detail.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+            storeDetailAdapter = new StoreDetailAdapter(getActivity(), product);
+            recycler_brands_detail.setAdapter(storeDetailAdapter);
+            storeDetailAdapter.notifyDataSetChanged();
 
             if (isPrice)
             {
-                adapter.setListener(new IOnRecyclerViewClickListener() {
+                storeDetailAdapter.setListener(new IOnRecyclerViewClickListener() {
                     @Override
                     public void onClick(View view, int position) {
                         Toast.makeText(getActivity(), "This is Gallery"+ position, Toast.LENGTH_SHORT).show();
@@ -134,16 +139,37 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             }
             else
             {
-                adapter.setListener((view, position) -> {
-                   // Toast.makeText(getActivity(), "This is Pricing"+ position, Toast.LENGTH_SHORT).show();
-                    showCreatePricingDialog(adapter.getSelectProduct(position)._id() , Common.CURRENT_STORE._id() , position);
-                });
+
             }
 
         });
 
     }
 
+    @Override
+    public void setProductNotPriced(List<GetNotPricedByQuery.Product> product) {
+
+        handler.post(() -> {
+            pricingAdapter= new PricingAdapter(getActivity(), product);
+            recycler_brands_detail.setAdapter(pricingAdapter);
+            pricingAdapter.notifyDataSetChanged();
+
+            if (isPrice)
+            {
+
+
+            }
+            else
+            {
+                pricingAdapter.setListener((view, position) -> {
+                    // Toast.makeText(getActivity(), "This is Pricing"+ position, Toast.LENGTH_SHORT).show();
+                    showCreatePricingDialog(pricingAdapter.getSelectProduct(position)._id() , Common.CURRENT_STORE._id() , position);
+                });
+            }
+
+        });
+
+    }
 
 
     private void showCreatePricingDialog(String productId , String storeId , int position) {
@@ -179,7 +205,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                                 if (response.data().CreatePricingProduct().create().status() == 200)
                                 {
                                     bottomSheetDialog.dismiss();
-                                    adapter.removeSelectProduct(position);
+                                    pricingAdapter.removeSelectProduct(position);
                                 }
                                 else
                                 {

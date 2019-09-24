@@ -24,29 +24,29 @@
         <activity android:name=".view.Setting.changePassword.ChangePasswordActivity" />
         <activity android:name=".view.Setting.editProfile.EditProfileActivity" />
         <activity android:name=".view.Setting.main.SettingActivity" />
-        <activity android:name=".view.productDetail.ProductDetailActivity" >
-
-        </activity>
+        <activity android:name=".view.productDetail.ProductDetailActivity" />
         <activity android:name=".view.storesDetail.StoreDetailActivity" />
         <activity android:name=".view.stores.StoresActivity" />
         <activity
             android:name=".view.home.HomeActivity"
             android:label="@string/title_activity_store_types"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
         <activity
             android:name=".view.Main.otp.VerifyPhoneNumberActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".view.splash.SplashActivity" />
-        <activity
-            android:name=".view.Main.MainActivity"
-            android:windowSoftInputMode="stateHidden">
-
+        <activity android:name=".view.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.Main.MainActivity"
+            android:windowSoftInputMode="stateHidden">
 
         </activity>
         <activity

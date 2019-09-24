@@ -10,7 +10,7 @@ import java.util.List;
 public class Common {
 
     public  static  MeQuery.UserData CURRENT_USER ;
-    public static String CURRENT_NUMBER ;
+
     public static SingleStoreQuery.CurrentStore CURRENT_STORE ;
 
     public static String CURRENT_USER_TOKEN ;

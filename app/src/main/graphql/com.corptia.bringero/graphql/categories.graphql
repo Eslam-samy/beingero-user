@@ -3,12 +3,6 @@ query getAllCategories($paginate:paginationInput){
         getAll(pagination:$paginate){
             status
             message
-            errors{
-                code
-                path
-                message
-                validValue
-            }
             pagination{
                 page
                 hasNextPage

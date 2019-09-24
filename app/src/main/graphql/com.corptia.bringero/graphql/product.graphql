@@ -3,19 +3,12 @@ query getProductQuery($filter: ProductFilterInput){
         getAll(filter: $filter){
             status
             message
-            errors{
-                code
-                path
-                message
-                validValue
-            }
             pagination{
                 page
                 limit
                 hasNextPage
                 nextPage
             }
-
             Product:data{
                 _id
                 name
@@ -82,19 +75,10 @@ mutation PricingProductMutation($data: createPricingProduct){
         {
             status
             message
-            errors{
-                code
-                path
-                message
-                validValue
-            }
-
             data{
-
                 _id
                 productId
                 storeId
-
             }
         }
     }

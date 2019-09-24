@@ -9,6 +9,7 @@ import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
 import com.corptia.bringero.type.ProductFilterInput;
 import com.corptia.bringero.type.StoreGalleryFilter;
+import com.corptia.bringero.view.pricing.PricingContract;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,11 +19,15 @@ import java.util.List;
 public class StoreDetailPresenter {
 
     StoreDetailContract.StoreDetailView view;
+    PricingContract.PricingView pricingView;
 
     public StoreDetailPresenter(StoreDetailContract.StoreDetailView view) {
         this.view = view;
     }
 
+    public StoreDetailPresenter(PricingContract.PricingView pricingView) {
+        this.pricingView = pricingView;
+    }
 
     void getStoreDetailHeader(String storeId) {
 
@@ -51,6 +56,11 @@ public class StoreDetailPresenter {
         //productFilterInput = ProductFilterInput.builder().typeId(typeId).build();
         //else
         //productFilterInput = ProductFilterInput.builder().typeId(typeId).notPricedBy(Common.CURRENT_STORE._id()).build();
+        //  ProductFilterInput productFilterInput = null;
+        //if (isPrice)
+        //    productFilterInput = ProductFilterInput.builder().typeId(typeId).build();
+//        else
+//            productFilterInput = ProductFilterInput.builder().typeId(typeId).notPricedBy(Common.CURRENT_STORE._id()).build();
 
         /*MyApolloClient.getApollowClientAuthorization().query(GetProductQuery.builder().filter(productFilterInput).build())
                 .enqueue(new ApolloCall.Callback<GetProductQuery.Data>() {
@@ -99,7 +109,13 @@ public class StoreDetailPresenter {
                         public void onResponse(@NotNull Response<GetNotPricedByQuery.Data> response) {
                             GetNotPricedByQuery.GetStoreProducts getStoreProducts = response.data().ProductQuery().getStoreProducts();
                             if (getStoreProducts.status() == 200) {
+
                                 List<GetNotPricedByQuery.Product> productList = getStoreProducts.Products();
+
+                                view.setProductNotPriced(productList);
+
+
+
                                 //view.setProduct();
 
                             }
