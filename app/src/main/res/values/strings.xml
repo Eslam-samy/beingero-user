@@ -106,5 +106,6 @@
     <string name="amount">Amount</string>
     <string name="add">Add</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="currency">EGP</string>
 </resources>
 

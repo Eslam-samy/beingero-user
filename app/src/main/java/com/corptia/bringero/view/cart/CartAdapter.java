@@ -1,6 +1,7 @@
 package com.corptia.bringero.view.cart;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.model.CartModel;
 import com.corptia.bringero.model.StoreTypes;
 
@@ -21,15 +23,19 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static androidx.constraintlayout.widget.Constraints.TAG;
+
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     Context context;
-    List<CartModel> cartModels =new ArrayList<>();
+    List<MyCartQuery.StoreDatum> myCartList =new ArrayList<>();
     CartItemsAdapter itemsAdapter;
 
-    public CartAdapter(Context context, List<CartModel> cartModels) {
+    public CartAdapter(Context context, List<MyCartQuery.StoreDatum> cartModels) {
         this.context = context;
-        this.cartModels = cartModels;
+        this.myCartList = cartModels;
+        Log.d("HAZEM", "setMyCart: " + cartModels.size());
+
     }
 
     @NonNull
@@ -41,15 +47,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        CartModel cartModel = cartModels.get(position);
-        itemsAdapter = new CartItemsAdapter(context ,cartModel.getCartItems());
+        MyCartQuery.StoreDatum cartModel = myCartList.get(position);
+        itemsAdapter = new CartItemsAdapter(context ,cartModel.Items());
 
         holder.recycler_items.setAdapter(itemsAdapter);
     }
 
     @Override
     public int getItemCount() {
-        return cartModels.size();
+        return myCartList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

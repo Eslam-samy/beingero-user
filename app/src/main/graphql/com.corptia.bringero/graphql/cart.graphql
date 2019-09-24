@@ -1,0 +1,56 @@
+query MyCartQuery{
+        CartItemQuery{
+            myCart{
+                status
+                message
+                errors{
+                    code
+                    path
+                    message
+                    validValue
+                }
+                storeData:data{
+                    Store{
+                        _id
+                        name
+                    }
+                    Items{
+                        _id
+                        amount
+                        PricingProduct{
+                            Product{
+                                _id
+                                name
+                            }
+                            _id
+                            amount
+                            #createdAt
+                            #updatedAt
+                            storePrice
+                            amount
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+mutation createCartItem($data: createCartItem) {
+    CartItemMutation {
+        create(data :$data) {
+            status
+            message
+            errors {
+                code
+                path
+                message
+            }
+            data {
+                _id
+                userId
+                pricingProductId
+                amount
+            }
+        }
+    }
+}

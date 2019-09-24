@@ -8,4 +8,5 @@ public class Constants {
     public static final String EXTRA_STORE_NAME = "StoreName";
     public static final String EXTRA_ADMIN_USER_ID = "AdminUserId";
     public static final String EXTRA_PRODUCT_TYPE_ID = "ProductTypeId";
+    public static final String EXTRA_PRODUCT_ID = "ProductId";
 }

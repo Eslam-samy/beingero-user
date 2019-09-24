@@ -95,6 +95,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <Button
+        android:id="@+id/btn_addToCart"
         android:text="Add To Cart"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="@dimen/app_margin"

@@ -1,20 +1,18 @@
 package com.corptia.bringero.view.storesDetail;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -26,25 +24,17 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.Utils.decoration.GridSpacingItemDecoration;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
-import com.corptia.bringero.graphql.GetProductQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.PricingProductMutation;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
-import com.corptia.bringero.model.StoreTypes;
 import com.corptia.bringero.type.CreatePricingProduct;
-import com.corptia.bringero.type.ProductFilterInput;
-import com.corptia.bringero.view.Main.login.User;
-import com.corptia.bringero.view.home.HomeActivity;
 import com.corptia.bringero.view.pricing.PricingAdapter;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.corptia.bringero.view.productDetail.ProductDetailActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.NotNull;
-import org.xml.sax.helpers.ParserAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -129,16 +119,15 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
             if (isPrice)
             {
-                storeDetailAdapter.setListener(new IOnRecyclerViewClickListener() {
-                    @Override
-                    public void onClick(View view, int position) {
-                        Toast.makeText(getActivity(), "This is Gallery"+ position, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                storeDetailAdapter.setListener((view, position) -> {
 
-            }
-            else
-            {
+                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
+                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
+                    intent.putExtra(Constants.EXTRA_PRODUCT_ID , mProduct._id());
+                    startActivity(intent);
+
+
+                });
 
             }
 

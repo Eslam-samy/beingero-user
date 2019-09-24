@@ -83,3 +83,40 @@ mutation PricingProductMutation($data: createPricingProduct){
         }
     }
 }
+
+#SingleProduct
+query SingleProduct($_id: ID) {
+    PricingProductQuery {
+        GetSingleProduct:get(_id:$_id) {
+
+            status
+            message
+            errors{
+                code
+                path
+                message
+            }
+
+            Product:data {
+                _id
+                productId
+                storePrice
+                StoreResponse{
+                    data{
+                        name
+                    }
+                }
+                ProductResponse{
+                    ProductData:data{
+                        _id
+                        name
+                        customerPrice
+                        description
+                    }
+                }
+
+
+            }
+        }
+    }
+}
