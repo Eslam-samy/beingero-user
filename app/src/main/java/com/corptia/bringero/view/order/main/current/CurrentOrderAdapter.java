@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.R;
 import com.corptia.bringero.model.CartItems;
-import com.corptia.bringero.model.StoreTypes;
-import com.corptia.bringero.view.cart.CartAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

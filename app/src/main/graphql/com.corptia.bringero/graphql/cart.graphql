@@ -1,39 +1,38 @@
 query MyCartQuery{
-        CartItemQuery{
-            myCart{
-                status
+    CartItemQuery{
+        myCart{
+            status
+            message
+            errors{
+                code
+                path
                 message
-                errors{
-                    code
-                    path
-                    message
-                    validValue
+                validValue
+            }
+            storeData:data{
+                Store{
+                    _id
+                    name
                 }
-                storeData:data{
-                    Store{
-                        _id
-                        name
-                    }
-                    Items{
-                        _id
-                        amount
-                        PricingProduct{
-                            Product{
-                                _id
-                                name
-                            }
+                Items{
+                    _id
+                    amount
+                    PricingProduct{
+                        Product{
                             _id
-                            amount
-                            #createdAt
-                            #updatedAt
-                            storePrice
-                            amount
+                            name
                         }
+                        _id
+                        #createdAt
+                        #updatedAt
+                        storePrice
+                        amount
                     }
                 }
             }
         }
     }
+}
 
 mutation createCartItem($data: createCartItem) {
     CartItemMutation {
@@ -50,6 +49,30 @@ mutation createCartItem($data: createCartItem) {
                 userId
                 pricingProductId
                 amount
+            }
+        }
+    }
+}
+
+
+mutation updateCartItem ($id:ID! , $data :updateCartItem){
+    CartItemMutation {
+        update(_id: $id, data : $data) {
+            status
+            message
+            errors {
+                code
+                path
+                message
+                validValue
+            }
+            data {
+                _id
+                userId
+                pricingProductId
+                amount
+                #                createdAt
+                #                updatedAt
             }
         }
     }

@@ -7,16 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
-import com.corptia.bringero.Adapter.HeaderDataImpl;
-import com.corptia.bringero.Adapter.MyData;
-import com.corptia.bringero.Adapter.NewCartAdapter;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
-import com.corptia.bringero.Utils.stickyheader.stickyView.StickHeaderItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
-import com.corptia.bringero.model.CartItems;
 import com.corptia.bringero.model.CartModel;
+import com.corptia.bringero.view.cart.Adapter.CartAdapter;
+import com.corptia.bringero.view.cart.Adapter.CartItemsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +40,6 @@ public class CartActivity extends AppCompatActivity implements CartContract.Cart
         recycler_cart.setHasFixedSize(true);
         recycler_cart.setLayoutManager(new LinearLayoutManager(this));
 
-
-
-
     }
 
 
@@ -56,6 +50,8 @@ public class CartActivity extends AppCompatActivity implements CartContract.Cart
             recycler_cart.setAdapter(cartAdapter);
             recycler_cart.setLayoutManager(new LinearLayoutManager(CartActivity.this));
             recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,CartActivity.this)));
+
+
         });
 
     }

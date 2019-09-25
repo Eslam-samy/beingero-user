@@ -17,13 +17,12 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
+import com.corptia.bringero.view.cart.Adapter.CartAdapter;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,6 +61,13 @@ public class CartFragment extends Fragment implements CartContract.CartView {
             recycler_cart.setLayoutManager(new LinearLayoutManager(getActivity()));
             recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, getActivity())));
             recycler_cart.setAdapter(cartAdapter);
+
+
+            cartAdapter.setCallBackUpdateCartItemsListener((itemId, amount) -> {
+
+                cartPresenter.updateCartItems(itemId , amount);
+
+            });
         });
 
     }
