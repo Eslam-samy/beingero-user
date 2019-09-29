@@ -7,7 +7,7 @@
     android:background="@color/white">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_image_store"
+        android:id="@+id/card_image_brands"
         android:layout_width="24dp"
         android:layout_height="24dp"
         app:cardCornerRadius="2dp"
@@ -30,9 +30,9 @@
         android:layout_height="wrap_content"
         style="@style/TextCardDefaultStyle"
         android:text="Nike"
-        app:layout_constraintTop_toTopOf="@+id/card_image_store"
-        app:layout_constraintBottom_toBottomOf="@+id/card_image_store"
-        app:layout_constraintStart_toEndOf="@+id/card_image_store"
+        app:layout_constraintTop_toTopOf="@+id/card_image_brands"
+        app:layout_constraintBottom_toBottomOf="@+id/card_image_brands"
+        app:layout_constraintStart_toEndOf="@+id/card_image_brands"
         android:layout_marginStart="@dimen/large_margin"/>
 
 
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorManatee"
-        app:layout_constraintTop_toBottomOf="@+id/card_image_store"
+        app:layout_constraintTop_toBottomOf="@+id/card_image_brands"
         android:layout_marginStart="@dimen/app_margin"
         android:layout_marginTop="@dimen/large_margin"/>
 

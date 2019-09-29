@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.cart.checkOut.CheckOutFragment"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+<!--    <androidx.core.widget.NestedScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+<!--        android:fillViewport="true">-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/card_total"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_margin="@dimen/app_margin"
+                    android:paddingBottom="@dimen/app_padding"
+                    >
+
+                    <TextView
+                        style="@style/TextHeaderSetting"
+                        android:text="@string/check_out"
+                        android:layout_marginStart="0dp"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_cart"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:scrollbars="none"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_lab_setting"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/card_total"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/payment_information"
+                        android:textSize="@dimen/large_text_size"
+                        android:fontFamily="@font/poppinssemibold"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/medium_margin"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="12 Dec 2018, 08:08 • Credit / Debit Card"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/total"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="@dimen/medium_margin"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="USD 300.00"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="@dimen/medium_margin"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="@string/shipping_address"
+                            android:textSize="@dimen/large_text_size"
+                            android:fontFamily="@font/poppinssemibold"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="@dimen/medium_margin"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Change"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:textColor="@color/blueLight"
+                            android:layout_marginTop="@dimen/medium_margin" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="22 Baker Street\nLondon MG91 9AF"
+                        android:textSize="@dimen/medium_text_size"
+                        android:fontFamily="@font/poppinsregular"
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+            </ScrollView>
+
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:cardElevation="@dimen/cardElevationMedium"
+                android:layout_alignParentBottom="true">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/large_padding"
+                    android:paddingTop="@dimen/large_padding">
+
+                    <TextView
+                        android:id="@+id/txt_lab_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/total"
+                        android:textSize="@dimen/medium_text_size"
+                        android:textColor="@color/colorGray"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_apply_voucher_code"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="@dimen/app_margin"
+                        android:layout_marginTop="@dimen/medium_margin"
+                        android:fontFamily="@font/poppinsmedium"
+                        />
+
+                    <TextView
+                        android:id="@+id/total_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="USD 280.00"
+                        android:textSize="@dimen/large_text_size"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_lab_total"
+                        app:layout_constraintStart_toStartOf="@+id/txt_lab_total"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/poppinsmedium"/>
+
+
+                    <Button
+                        android:id="@+id/btn_confirm"
+                        style="@style/ButtonNormalStyle"
+                        android:layout_height="wrap_content"
+                        android:layout_width="146dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txt_lab_total"
+                        app:layout_constraintBottom_toBottomOf="@+id/total_price"
+                        android:text="@string/confirm"/>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+<!--    </androidx.core.widget.NestedScrollView>-->
+
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

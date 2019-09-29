@@ -38,20 +38,26 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
     Context context;
     List<MyCartQuery.Item> cartItems = new ArrayList<>();
     public UpdateCartItemsListener updateCartItemsListener;
+    boolean isCart;
 
     public void setUpdateCartItemsListener(UpdateCartItemsListener updateCartItemsListener) {
         this.updateCartItemsListener = updateCartItemsListener;
     }
 
-    public CartItemsAdapter(Context context, @Nullable List<MyCartQuery.Item> cartItems) {
+    public CartItemsAdapter(Context context, @Nullable List<MyCartQuery.Item> cartItems, boolean isCart) {
         this.context = context;
         this.cartItems = cartItems;
+        this.isCart = isCart;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_cart_shop, parent, false));
+        if (isCart)
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_cart_shop, parent, false));
+        else
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_cart_items_check_out, parent, false));
+
     }
 
     @Override
@@ -62,42 +68,41 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         holder.txt_price.setText("" + item.PricingProduct().storePrice() + " " + context.getString(R.string.currency));
         holder.txt_name_product.setText(item.PricingProduct().Product().name());
 
+        if (isCart) {
+            holder.txt_quantity.setText("" + item.amount());
 
-        holder.txt_quantity.setText("" + item.amount());
+            //Event
+            holder.setListener((view, position1, isDecrease, isDelete) -> {
 
+                if (!isDelete) {
+                    //If not Button delete food From Cart Click
 
-        //Event
-        holder.setListener((view, position1, isDecrease, isDelete) -> {
-
-            if (!isDelete) {
-                //If not Button delete food From Cart Click
-
-                int amount = Integer.parseInt(holder.txt_quantity.getText().toString());
-                if (isDecrease) //if Decrease quantity
-                {
-                    if (amount > 1) {
-                        holder.txt_quantity.setText("" + (amount - 1));
+                    int amount = Integer.parseInt(holder.txt_quantity.getText().toString());
+                    if (isDecrease) //if Decrease quantity
+                    {
+                        if (amount > 1) {
+                            holder.txt_quantity.setText("" + (amount - 1));
+                        }
+                    } else {
+                        if (amount < item.PricingProduct().amount()) {
+                            holder.txt_quantity.setText("" + (amount + 1));
+                        }
                     }
+
+                    if (updateCartItemsListener != null) {
+                        updateCartItemsListener.onUpdateCart(item._id(), Integer.parseInt(holder.txt_quantity.getText().toString()));
+                    }
+
                 } else {
-                    if (amount < item.PricingProduct().amount()) {
-                        holder.txt_quantity.setText("" + (amount + 1));
-                    }
+
+                    Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
+
                 }
 
-                if (updateCartItemsListener!=null)
-                {
-                    updateCartItemsListener.onUpdateCart(item._id(),Integer.parseInt(holder.txt_quantity.getText().toString()));
-                }
 
-            } else {
+            });
+        }
 
-                Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
-
-            }
-
-
-
-        });
 
 //        holder.edt_quantity.setFilters(new InputFilter[]{ new InputFilterMinMax(1, item.PricingProduct().amount())});
 //        holder.edt_quantity.addTextChangedListener(new TextWatcher() {
@@ -141,17 +146,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         @BindView(R.id.image_product)
         ImageView image_product;
 
-        @BindView(R.id.txt_quantity)
+        //@BindView(R.id.txt_quantity)
         TextView txt_quantity;
-        @BindView(R.id.img_decrease)
+        //@BindView(R.id.img_decrease)
         ImageView img_decrease;
-        @BindView(R.id.img_increase)
+        //@BindView(R.id.img_increase)
         ImageView img_increase;
-
-        @BindView(R.id.img_delete_product)
+        //@BindView(R.id.img_delete_product)
         ImageView img_delete_product;
-
-        @BindView(R.id.chb_select_item)
+        //@BindView(R.id.chb_select_item)
         CheckBox chb_select_item;
 
 
@@ -166,9 +169,19 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            img_decrease.setOnClickListener(this);
-            img_increase.setOnClickListener(this);
-            img_delete_product.setOnClickListener(this);
+
+            if (isCart) {
+
+                txt_quantity = itemView.findViewById(R.id.txt_quantity);
+                img_decrease = itemView.findViewById(R.id.img_decrease);
+                img_increase = itemView.findViewById(R.id.img_increase);
+                img_delete_product = itemView.findViewById(R.id.img_delete_product);
+                chb_select_item = itemView.findViewById(R.id.chb_select_item);
+
+                img_decrease.setOnClickListener(this);
+                img_increase.setOnClickListener(this);
+                img_delete_product.setOnClickListener(this);
+            }
 
         }
 
@@ -189,7 +202,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         }
     }
 
-   public interface UpdateCartItemsListener{
-        void onUpdateCart(String itemId , int amount);
+    public interface UpdateCartItemsListener {
+        void onUpdateCart(String itemId, int amount);
     }
 }

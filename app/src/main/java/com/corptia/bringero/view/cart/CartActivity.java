@@ -46,7 +46,7 @@ public class CartActivity extends AppCompatActivity implements CartContract.Cart
     @Override
     public void setMyCart(List<MyCartQuery.StoreDatum> myCartData) {
         runOnUiThread(() -> {
-            cartAdapter = new CartAdapter(CartActivity.this , myCartData);
+            cartAdapter = new CartAdapter(CartActivity.this , myCartData , true);
             recycler_cart.setAdapter(cartAdapter);
             recycler_cart.setLayoutManager(new LinearLayoutManager(CartActivity.this));
             recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,CartActivity.this)));

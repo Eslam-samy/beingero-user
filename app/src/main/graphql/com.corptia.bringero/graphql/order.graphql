@@ -1,0 +1,62 @@
+query orders {
+    BuyingOrderQuery {
+        getAll(filter: {}) {
+            message
+            status
+            errors {
+                path
+                message
+            }
+            data {
+                _id
+                serial
+                storeId
+                customerUserId
+                ItemsResponse {
+                    status
+                    message
+                    data {
+                        _id
+                        pricingProductId
+                        amount
+                        productId
+                        storePrice
+                        productName
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+mutation createOrderMutation {
+    BuyingOrderMutation {
+        create(data: {
+        }) {
+            status
+            message
+            errors{
+                path
+                message
+            }
+            data {
+                _id
+                serial
+                storeId
+                ItemsResponse {
+                    status
+                    message
+                    data {
+                        _id
+                        pricingProductId
+                        amount
+                        productId
+                        storePrice
+                        productName
+                    }
+                }
+            }
+        }
+    }
+}

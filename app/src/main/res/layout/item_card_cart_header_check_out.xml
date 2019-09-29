@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+
+    <com.github.florent37.expansionpanel.ExpansionHeader
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:expansion_headerIndicator="@id/headerIndicator"
+        app:expansion_layout="@id/expansionLayout"
+        app:expansion_toggleOnClick="true"
+        android:padding="10dp">
+
+        <!-- HEADER -->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_image_store"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:cardCornerRadius="2dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_store"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo_test"
+                    />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/txt_name_store"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextCardDefaultStyle"
+                android:text="Nike"
+                app:layout_constraintTop_toTopOf="@+id/card_image_store"
+                app:layout_constraintBottom_toBottomOf="@+id/card_image_store"
+                app:layout_constraintStart_toEndOf="@+id/card_image_store"
+                android:layout_marginStart="@dimen/large_margin"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <!-- HEADER INDICATOR -->
+        <ImageView
+            android:adjustViewBounds="true"
+            android:id="@+id/headerIndicator"
+            android:layout_gravity="center_vertical|right"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+
+    </com.github.florent37.expansionpanel.ExpansionHeader>
+
+    <com.github.florent37.expansionpanel.ExpansionLayout
+        android:id="@+id/expansionLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        >
+
+        <!-- CONTENT -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </com.github.florent37.expansionpanel.ExpansionLayout>
+
+
+
+    <!--    <androidx.cardview.widget.CardView-->
+    <!--        android:id="@+id/card_image_store"-->
+    <!--        android:layout_width="24dp"-->
+    <!--        android:layout_height="24dp"-->
+    <!--        app:cardCornerRadius="2dp"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        android:layout_margin="@dimen/app_margin">-->
+
+    <!--        <ImageView-->
+    <!--            android:id="@+id/image_store"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="match_parent"-->
+    <!--            android:scaleType="centerCrop"-->
+    <!--            android:src="@drawable/logo_test"-->
+    <!--            />-->
+    <!--    </androidx.cardview.widget.CardView>-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt_name_store"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        style="@style/TextCardDefaultStyle"-->
+    <!--        android:text="Nike"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/card_image_store"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/card_image_store"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/card_image_store"-->
+    <!--        android:layout_marginStart="@dimen/large_margin"/>-->
+
+
+    <!--    <View-->
+    <!--        android:id="@+id/line"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="1dp"-->
+    <!--        android:background="@color/colorManatee"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/card_image_store"-->
+    <!--        android:layout_marginStart="@dimen/app_margin"-->
+    <!--        android:layout_marginTop="@dimen/large_margin"/>-->
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/recycler_items"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/line"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/line"-->
+    <!--        android:visibility="visible"/>-->
+
+
+</LinearLayout>

@@ -32,4 +32,6 @@
     <color name="shipped">#1F74FF</color>
     <color name="requested">#ffba00</color>
 
+    <color name="blueLight">#4C69FF</color>
+
 </resources>
