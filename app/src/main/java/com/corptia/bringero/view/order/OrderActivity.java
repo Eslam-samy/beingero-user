@@ -40,8 +40,8 @@ public class OrderActivity extends AppCompatActivity {
 
         //************ For Fragment ************
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(new CurrentOrderFragment(), "Current");
-        viewPagerAdapter.addFragments(new LastOrderFragment(), "Last Order");
+        viewPagerAdapter.addFragments(new CurrentOrderFragment(), getString(R.string.current));
+        viewPagerAdapter.addFragments(new LastOrderFragment(),  getString(R.string.last_order));
 
         viewPager.setOffscreenPageLimit(0);
         viewPager.setAdapter(viewPagerAdapter);
@@ -49,9 +49,7 @@ public class OrderActivity extends AppCompatActivity {
 
         initActionBar();
 
-
     }
-
 
     private void initActionBar() {
         setSupportActionBar(toolbar);

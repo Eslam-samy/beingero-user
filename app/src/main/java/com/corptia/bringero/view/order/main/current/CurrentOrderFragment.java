@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.graphql.DeliveryOrdersQuery;
 import com.corptia.bringero.model.CartItems;
 import com.corptia.bringero.model.CartModel;
 import com.corptia.bringero.model.StoreTypes;
@@ -27,15 +29,19 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CurrentOrderFragment extends Fragment {
+public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
 
 
-    CurrentOrderVer2Adapter adapter;
+    CurrentOrderAdapter adapter;
     @BindView(R.id.recycler_current_order)
     RecyclerView recycler_current_order;
+    Handler handler = new Handler();
+
+    CurrentOrderPresenter currentOrderPresenter ;
 
     public CurrentOrderFragment() {
         // Required empty public constructor
+        currentOrderPresenter = new CurrentOrderPresenter(this);
     }
 
 
@@ -95,12 +101,44 @@ public class CurrentOrderFragment extends Fragment {
         storeTypes.add(new CartModel("", cartItems));
 
 
-        adapter = new CurrentOrderVer2Adapter(getActivity() ,storeTypes );
 
-        recycler_current_order.setAdapter(adapter);
 
 
         return view;
     }
 
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void showErrorMessage(String Message) {
+
+    }
+
+    @Override
+    public void DeliveryOrders(List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderData) {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                adapter = new CurrentOrderAdapter(getActivity() ,deliveryOrderData );
+                recycler_current_order.setAdapter(adapter);
+
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        currentOrderPresenter.getDeliveryOrder();
+    }
 }

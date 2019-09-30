@@ -1,0 +1,12 @@
+package com.corptia.bringero.view.order.main.current;
+
+import com.corptia.bringero.base.BaseView;
+import com.corptia.bringero.graphql.DeliveryOrdersQuery;
+
+import java.util.List;
+
+public interface CurrentOrderView extends BaseView {
+
+    void DeliveryOrders(List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderData);
+
+}

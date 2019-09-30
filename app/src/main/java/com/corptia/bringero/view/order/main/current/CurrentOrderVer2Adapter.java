@@ -42,7 +42,7 @@ public class CurrentOrderVer2Adapter extends RecyclerView.Adapter<CurrentOrderVe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        adapter = new CurrentOrderAdapter(context , cartItems.get(position).getCartItems());
+        //adapter = new CurrentOrderAdapter(context , cartItems.get(position).getCartItems());
         holder.recycler_brands.setAdapter(adapter);
     }
 

@@ -133,7 +133,7 @@ public class MyApolloClient {
         apolloClient = ApolloClient.builder()
                 .serverUrl(BASE_URL)
                 .okHttpClient(okHttpClient)
-                //.addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
+                .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
                 .build();
 
         return apolloClient;

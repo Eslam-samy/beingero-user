@@ -110,5 +110,10 @@
     <string name="payment_information">Payment Information</string>
     <string name="shipping_address">Shipping Address</string>
     <string name="confirm">Confirm</string>
+    <string name="current">Current</string>
+    <string name="last_order">Last Order</string>
+    <string name="cart">Cart</string>
+    <string name="product_pricing">Product pricing</string>
+    <string name="gallery">Gallery</string>
 </resources>
 

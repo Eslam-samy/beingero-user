@@ -1,6 +1,7 @@
-query orders {
+#this use for store only
+query BuyingOrderQuery {
     BuyingOrderQuery {
-        getAll(filter: {}) {
+        getAll(filter: {  }) {
             message
             status
             errors {
@@ -9,9 +10,39 @@ query orders {
             }
             data {
                 _id
+                deliveryOrderId
                 serial
                 storeId
+                DeliveryOrderResponse {
+                    status
+                    data {
+                        _id
+                        serial
+                    }
+                }
+                StoreResponse {
+                    data {
+                        _id
+                        name
+                        CityReponse {
+                            data {
+                                _id
+                                name
+                            }
+                        }
+                    }
+                }
                 customerUserId
+                CustomerUserResponse {
+                    data {
+                        firstName
+                        lastName
+                        status
+                        roleName
+                    }
+                }
+                orderMaxPreparingMinutes
+
                 ItemsResponse {
                     status
                     message
@@ -30,30 +61,124 @@ query orders {
 }
 
 
-mutation createOrderMutation {
-    BuyingOrderMutation {
-        create(data: {
-        }) {
+query deliveryOrders {
+    DeliveryOrderQuery {
+        getAll(filter: {}) {
+
             status
             message
             errors{
+                code
                 path
+                message
+            }
+
+            DeliveryOrderData :data {
+                _id
+                serial
+                customerUserId
+                status
+                pilotId
+                createdAt
+                BuyingOrderResponse {
+                    status
+                    message
+                    BuyingOrderResponseData:data {
+                        _id
+                        deliveryOrderId
+                        serial
+                        storeId
+                        DeliveryOrderResponse {
+                            status
+                            data {
+                                _id
+                                serial
+                            }
+                        }
+                        StoreResponse {
+                            data {
+                                _id
+                                name
+                                CityReponse {
+                                    data {
+                                        _id
+                                        name
+                                    }
+                                }
+                            }
+                        }
+                        customerUserId
+                        CustomerUserResponse {
+                            data {
+                                firstName
+                                lastName
+                                status
+                                roleName
+                            }
+                        }
+                        orderMaxPreparingMinutes
+
+                        ItemsResponse {
+                            status
+                            message
+                            data {
+                                _id
+                                pricingProductId
+                                amount
+                                productId
+                                storePrice
+                                productName
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+mutation createOrderMutation {
+    BuyingOrderMutation {
+        create(data: {}) {
+            status
+            message
+            errors {
+                path
+                code
                 message
             }
             data {
                 _id
                 serial
-                storeId
-                ItemsResponse {
+                customerUserId
+                status
+                BuyingOrderResponse {
                     status
                     message
+                    errors {
+                        path
+                        code
+                    }
                     data {
                         _id
-                        pricingProductId
-                        amount
-                        productId
-                        storePrice
-                        productName
+                        serial
+                        storeId
+                        ItemsResponse {
+                            status
+                            message
+                            data {
+                                _id
+                                pricingProductId
+                                amount
+                                productId
+                                storePrice
+                                productName
+                            }
+                        }
                     }
                 }
             }
