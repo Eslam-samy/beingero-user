@@ -115,5 +115,7 @@
     <string name="cart">Cart</string>
     <string name="product_pricing">Product pricing</string>
     <string name="gallery">Gallery</string>
+    <string name="default_notification_channel_id">fire_base_notification</string>
+    <string name="fcm_message">fcm_mesage</string>
 </resources>
 
