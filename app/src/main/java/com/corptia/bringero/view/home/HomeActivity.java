@@ -20,6 +20,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.view.Setting.main.SettingActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -140,6 +141,17 @@ public class HomeActivity extends AppCompatActivity implements
         defineItems();
         checkRoleUser(Common.CURRENT_USER.roleName().rawValue());
 
+
+        //----------- For Nav Buttom --------------
+        BottomNavigationView navView = findViewById(R.id.nav_view_bottom);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+//                R.id.nav_home, R.id.nav_order, R.id.nav_cart)
+//                .build();
+//        //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        NavigationUI.setupWithNavController(navView, navController);
 
 
 

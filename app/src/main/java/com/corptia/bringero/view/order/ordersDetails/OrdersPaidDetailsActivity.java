@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.DialogBlur;
+import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.model.CartItems;
 import com.corptia.bringero.model.CartModel;
 import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,15 +39,19 @@ import butterknife.ButterKnife;
 
 import static com.corptia.bringero.Utils.DialogBlur.fastblur;
 
-public class OrdersPaidDetailsActivity extends AppCompatActivity {
+public class OrdersPaidDetailsActivity extends AppCompatActivity implements OrdersPaidDetailsView {
 
     @BindView(R.id.recycler_order)
     RecyclerView recycler_order;
     @BindView(R.id.btn_cancel_order)
     Button btn_cancel_order;
+    @BindView(R.id.txt_order_id)
+    TextView txt_order_id;
     OrdersPaidDetailsAdapter adapter ;
 
     List<CartModel> cartModelList = new ArrayList<>();
+
+    OrdersPaidDetailsPresenter detailsPresenter = new OrdersPaidDetailsPresenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,39 +60,20 @@ public class OrdersPaidDetailsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        List<CartItems> brand1 = new ArrayList<>();
-        brand1.add(new CartItems("Product 11"));
-        brand1.add(new CartItems("Product 11"));
-        brand1.add(new CartItems("Product 11"));
-        brand1.add(new CartItems("Product 11"));
-
-
-        List<CartItems> brand2 = new ArrayList<>();
-        brand2.add(new CartItems("Product 11"));
-        brand2.add(new CartItems("Product 11"));
-        brand2.add(new CartItems("Product 11"));
-        brand2.add(new CartItems("Product 11"));
-
-
-        List<CartItems> brand3 = new ArrayList<>();
-        brand3.add(new CartItems("Product 11"));
-        brand3.add(new CartItems("Product 11"));
-        brand3.add(new CartItems("Product 11"));
-        brand3.add(new CartItems("Product 11"));
-        brand3.add(new CartItems("Product 11"));
-        brand3.add(new CartItems("Product 11"));
-        brand3.add(new CartItems("Product 11"));
-
-
-        cartModelList.add(new CartModel("Hazem" , brand1));
-        cartModelList.add(new CartModel("Hazem" , brand2));
-        cartModelList.add(new CartModel("Hazem" , brand3));
-
-
         recycler_order.setLayoutManager(new LinearLayoutManager(this));
+        recycler_order.setNestedScrollingEnabled(true);
 
-        adapter = new OrdersPaidDetailsAdapter(this , cartModelList);
-        recycler_order.setAdapter(adapter);
+        Intent intent = getIntent();
+        if (intent != null) {
+            String orderid = intent.getStringExtra(Constants.EXTRA_ORDER_ID);
+            int serialOrder = intent.getIntExtra(Constants.EXTRA_ORDER_SERIAL , 0);
+            txt_order_id.setText(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
+
+            detailsPresenter.getSingleOrder(orderid);
+
+
+        }
+
 
         btn_cancel_order.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,5 +159,37 @@ public class OrdersPaidDetailsActivity extends AppCompatActivity {
 
         dialog.setCancelable(true);
         dialog.show();
+    }
+
+    @Override
+    public void setSingleOrder(DeliveryOneOrderQuery.DeliveryOrderData deliveryOrderData) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                adapter = new OrdersPaidDetailsAdapter(OrdersPaidDetailsActivity.this ,
+                        deliveryOrderData.BuyingOrderResponse().BuyingOrderResponseData());
+
+                recycler_order.setAdapter(adapter);
+            }
+        });
+
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void showErrorMessage(String Message) {
+
     }
 }

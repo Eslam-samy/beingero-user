@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,299 +7,313 @@
     tools:context=".view.order.ordersDetails.OrdersPaidDetailsActivity"
     android:background="@color/white">
 
-    <TextView
-        android:id="@+id/txt_order_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Order ID #860368"
-        style="@style/TextHeaderSetting"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_order_id"
-        app:layout_constraintBottom_toTopOf="@+id/cart_cancel"
-        android:fillViewport="true"
-        >
-        
-        <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/txt_order_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Order ID #860368"
+            style="@style/TextHeaderSetting"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.core.widget.NestedScrollView
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintTop_toBottomOf="@+id/txt_order_id"
+            app:layout_constraintBottom_toTopOf="@+id/cart_cancel">
 
 
-            <LinearLayout
-                android:id="@+id/header_layout"
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_height="match_parent">
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_order"
+                <LinearLayout
+                    android:id="@+id/header_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toTopOf="parent">
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="none"
+                        android:clipToPadding="false"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/delivery_status"
+                        android:layout_marginStart="@dimen/app_margin"
+                        android:textSize="@dimen/large_text_size"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/poppinsmedium"/>
+
+
+
+                </LinearLayout>
+
+
+
+
+                <View
+                    android:id="@+id/time_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/colorGray"
+                    android:layout_marginEnd="@dimen/app_margin"
+                    android:layout_marginStart="@dimen/app_margin"
+                    app:layout_constraintTop_toBottomOf="@+id/header_layout"
+                    android:layout_marginTop="@dimen/app_margin"/>
+
+                <ImageView
+                    android:id="@+id/img_timeline_status_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_timeline_check_blue"
+                    app:layout_constraintEnd_toStartOf="@+id/time_line"
+                    app:layout_constraintTop_toTopOf="@+id/time_line"
+                    app:layout_constraintBottom_toBottomOf="@+id/time_line"/>
+
+                <ImageView
+                    android:id="@+id/img_timeline_status_last"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_timeline_empty"
+                    app:layout_constraintStart_toEndOf="@+id/time_line"
+                    app:layout_constraintTop_toTopOf="@+id/time_line"
+                    app:layout_constraintBottom_toBottomOf="@+id/time_line"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_timeline_check_blue"
+                    app:layout_constraintStart_toStartOf="@+id/time_line"
+                    app:layout_constraintEnd_toEndOf="@+id/time_line"
+                    app:layout_constraintTop_toTopOf="@+id/time_line"
+                    app:layout_constraintBottom_toBottomOf="@+id/time_line"/>
+
+                <TextView
+                    android:id="@+id/txt_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="@+id/img_timeline_status_start"
+                    app:layout_constraintTop_toBottomOf="@+id/time_line"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:textColor="@color/colorOuterSpace"
+                    android:textSize="@dimen/medium_text_size"
+                    android:text="@string/order_in_the_way"/>
+
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/delivery_status"
+                    app:layout_constraintEnd_toEndOf="@+id/img_timeline_status_last"
+                    app:layout_constraintTop_toBottomOf="@+id/time_line"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text_size"
+                    android:text="20 Oct 2018, 13:08"/>
+
+                <Button
+                    android:id="@+id/btn_track_package"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_space_button"
+                    android:textSize="@dimen/medium_text_size"
+                    android:textColor="@color/colorAccent"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginEnd="@dimen/app_margin"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_status"
+                    android:layout_marginTop="@dimen/app_low_margin"
+                    android:text="@string/track_package"
+                    android:fontFamily="@font/poppinsmedium"/>
+
+                <View
+                    android:id="@+id/view_order_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/colorGray"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_track_package"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginTop="@dimen/app_low_margin"
+                    />
+
+
+                <TextView
+                    android:id="@+id/txt_lab_order_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_information"
                     android:layout_marginStart="@dimen/app_margin"
                     android:textSize="@dimen/large_text_size"
                     android:textColor="@color/black"
-                    android:fontFamily="@font/poppinsmedium"/>
+                    android:fontFamily="@font/poppinsmedium"
+                    app:layout_constraintTop_toBottomOf="@+id/view_order_info"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="@dimen/app_low_margin"
+
+                    />
+
+                <TextView
+                    android:id="@+id/txt_date_credit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12 Dec 2018, 08:08 • Credit / Debit Card"
+                    android:textSize="@dimen/medium_text_size"
+                    android:textColor="@color/colorManatee"
+                    android:fontFamily="@font/poppinsregular"
+                    app:layout_constraintStart_toStartOf="@+id/txt_lab_order_information"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_lab_order_information"/>
 
 
+                <TextView
+                    android:id="@+id/txt_lab_order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:textColor="@color/colorOuterSpace"
+                    android:textSize="@dimen/medium_text_size"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_date_credit"
+                    app:layout_constraintStart_toStartOf="@+id/txt_date_credit"
+                    android:text="@string/order_id"
+                    />
 
-            </LinearLayout>
+                <TextView
+                    android:id="@+id/txt_info_order_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text_size"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_date_credit"
+                    android:text="#860368"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="@dimen/app_margin"
+                    />
 
+                <TextView
+                    android:id="@+id/txt_lab_order_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/low_margin"
+                    android:textColor="@color/colorOuterSpace"
+                    android:textSize="@dimen/medium_text_size"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_lab_order_id"
+                    app:layout_constraintStart_toStartOf="@+id/txt_date_credit"
+                    android:text="@string/order_time"
+                    />
 
+                <TextView
+                    android:id="@+id/txt_info_order_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text_size"
+                    android:text="12 Dec 2018, 08:06"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/txt_lab_order_time"
+                    android:layout_marginEnd="@dimen/app_margin"
+                    />
 
+                <TextView
+                    android:id="@+id/txt_lab_payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/low_margin"
+                    android:textColor="@color/colorOuterSpace"
+                    android:textSize="@dimen/medium_text_size"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_lab_order_time"
+                    app:layout_constraintStart_toStartOf="@+id/txt_date_credit"
+                    android:text="@string/payment"
+                    />
 
-            <View
-                android:id="@+id/time_line"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorGray"
-                android:layout_marginEnd="@dimen/app_margin"
-                android:layout_marginStart="@dimen/app_margin"
-                app:layout_constraintTop_toBottomOf="@+id/header_layout"
-                android:layout_marginTop="@dimen/app_margin"/>
-
-            <ImageView
-                android:id="@+id/img_timeline_status_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_timeline_check_blue"
-                app:layout_constraintEnd_toStartOf="@+id/time_line"
-                app:layout_constraintTop_toTopOf="@+id/time_line"
-                app:layout_constraintBottom_toBottomOf="@+id/time_line"/>
-
-            <ImageView
-                android:id="@+id/img_timeline_status_last"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_timeline_empty"
-                app:layout_constraintStart_toEndOf="@+id/time_line"
-                app:layout_constraintTop_toTopOf="@+id/time_line"
-                app:layout_constraintBottom_toBottomOf="@+id/time_line"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_timeline_check_blue"
-                app:layout_constraintStart_toStartOf="@+id/time_line"
-                app:layout_constraintEnd_toEndOf="@+id/time_line"
-                app:layout_constraintTop_toTopOf="@+id/time_line"
-                app:layout_constraintBottom_toBottomOf="@+id/time_line"/>
-
-            <TextView
-                android:id="@+id/txt_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@+id/img_timeline_status_start"
-                app:layout_constraintTop_toBottomOf="@+id/time_line"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:textColor="@color/colorOuterSpace"
-                android:textSize="@dimen/medium_text_size"
-                android:text="@string/order_in_the_way"/>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="@+id/img_timeline_status_last"
-                app:layout_constraintTop_toBottomOf="@+id/time_line"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:textColor="@color/black"
-                android:textSize="@dimen/medium_text_size"
-                android:text="20 Oct 2018, 13:08"/>
-            
-            <Button
-                android:id="@+id/btn_track_package"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_space_button"
-                android:textSize="@dimen/medium_text_size"
-                android:textColor="@color/colorAccent"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginEnd="@dimen/app_margin"
-                app:layout_constraintTop_toBottomOf="@+id/txt_status"
-                android:layout_marginTop="@dimen/app_low_margin"
-                android:text="@string/track_package"
-                android:fontFamily="@font/poppinsmedium"/>
-            
-            <View
-                android:id="@+id/view_order_info"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/colorGray"
-                app:layout_constraintTop_toBottomOf="@+id/btn_track_package"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="@dimen/app_low_margin"
-                />
+                <TextView
+                    android:id="@+id/txt_info_payment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text_size"
+                    android:text="USD 30.00"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/txt_lab_payment"
+                    android:layout_marginEnd="@dimen/app_margin"
+                    />
 
 
-            <TextView
-                android:id="@+id/txt_lab_order_information"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/order_information"
-                android:layout_marginStart="@dimen/app_margin"
-                android:textSize="@dimen/large_text_size"
-                android:textColor="@color/black"
-                android:fontFamily="@font/poppinsmedium"
-                app:layout_constraintTop_toBottomOf="@+id/view_order_info"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="@dimen/app_low_margin"
+                <View
+                    android:id="@+id/view_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/colorGray"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_info_payment"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginTop="@dimen/app_low_margin"
+                    />
 
-                />
-            
-            <TextView
-                android:id="@+id/txt_date_credit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12 Dec 2018, 08:08 • Credit / Debit Card"
-                android:textSize="@dimen/medium_text_size"
-                android:textColor="@color/colorManatee"
-                android:fontFamily="@font/poppinsregular"
-                app:layout_constraintStart_toStartOf="@+id/txt_lab_order_information"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_order_information"/>
-            
+                <TextView
+                    android:id="@+id/txt_lab_shipping_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_information"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:textSize="@dimen/large_text_size"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppinsmedium"
+                    app:layout_constraintTop_toBottomOf="@+id/view_address"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="@dimen/app_low_margin"
+                    />
 
-            <TextView
-                android:id="@+id/txt_lab_order_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:textColor="@color/colorOuterSpace"
-                android:textSize="@dimen/medium_text_size"
-                app:layout_constraintTop_toBottomOf="@+id/txt_date_credit"
-                app:layout_constraintStart_toStartOf="@+id/txt_date_credit"
-                android:text="@string/order_id"
-                />
+                <TextView
+                    android:id="@+id/txt_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_lab_shipping_address"
+                    app:layout_constraintStart_toStartOf="@+id/txt_lab_shipping_address"
+                    android:textSize="@dimen/medium_text_size"
+                    android:text="22 Baker Street London MG91 9AF"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="@dimen/low_margin"/>
 
-            <TextView
-                android:id="@+id/txt_info_order_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:textColor="@color/black"
-                android:textSize="@dimen/medium_text_size"
-                app:layout_constraintTop_toBottomOf="@+id/txt_date_credit"
-                android:text="#860368"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/app_margin"
-                />
-
-            <TextView
-                android:id="@+id/txt_lab_order_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/low_margin"
-                android:textColor="@color/colorOuterSpace"
-                android:textSize="@dimen/medium_text_size"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_order_id"
-                app:layout_constraintStart_toStartOf="@+id/txt_date_credit"
-                android:text="@string/order_time"
-                />
-
-            <TextView
-                android:id="@+id/txt_info_order_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/medium_text_size"
-                android:text="12 Dec 2018, 08:06"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txt_lab_order_time"
-                android:layout_marginEnd="@dimen/app_margin"
-                />
-
-            <TextView
-                android:id="@+id/txt_lab_payment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/low_margin"
-                android:textColor="@color/colorOuterSpace"
-                android:textSize="@dimen/medium_text_size"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_order_time"
-                app:layout_constraintStart_toStartOf="@+id/txt_date_credit"
-                android:text="@string/payment"
-                />
-
-            <TextView
-                android:id="@+id/txt_info_payment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/medium_text_size"
-                android:text="USD 30.00"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txt_lab_payment"
-                android:layout_marginEnd="@dimen/app_margin"
-                />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <View
-                android:id="@+id/view_address"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/colorGray"
-                app:layout_constraintTop_toBottomOf="@+id/txt_info_payment"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="@dimen/app_low_margin"
-                />
+        </androidx.core.widget.NestedScrollView>
 
-            <TextView
-                android:id="@+id/txt_lab_shipping_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/order_information"
-                android:layout_marginStart="@dimen/app_margin"
-                android:textSize="@dimen/large_text_size"
-                android:textColor="@color/black"
-                android:fontFamily="@font/poppinsmedium"
-                app:layout_constraintTop_toBottomOf="@+id/view_address"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="@dimen/app_low_margin"
-                />
-
-            <TextView
-                android:id="@+id/txt_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_shipping_address"
-                app:layout_constraintStart_toStartOf="@+id/txt_lab_shipping_address"
-                android:textSize="@dimen/medium_text_size"
-                android:text="22 Baker Street London MG91 9AF"
-                android:textColor="@color/black"
-                android:layout_marginTop="@dimen/low_margin"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        
-    </ScrollView>
-
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/cart_cancel"
-        >
-
-        <Button
-            android:id="@+id/btn_cancel_order"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cart_cancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_space_button_cancel"
-            android:layout_margin="@dimen/app_low_margin"
-            android:text="@string/cancel_order"
-            android:textColor="@color/rejected"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
 
-    </androidx.cardview.widget.CardView>
+            <Button
+                android:id="@+id/btn_cancel_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_space_button_cancel"
+                android:layout_margin="@dimen/app_low_margin"
+                android:text="@string/cancel_order"
+                android:textColor="@color/rejected"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

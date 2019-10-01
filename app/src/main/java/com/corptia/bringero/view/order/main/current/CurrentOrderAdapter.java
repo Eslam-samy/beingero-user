@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.DeliveryOrdersQuery;
 import com.corptia.bringero.model.CartItems;
@@ -24,6 +25,12 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<CurrentOrderAdapte
 
     Context context;
     List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderList = new ArrayList<>();
+
+    IOnRecyclerViewClickListener clickListener;
+
+    public void setClickListener(IOnRecyclerViewClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     public CurrentOrderAdapter(Context context, List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderList) {
         this.context = context;
@@ -44,6 +51,10 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<CurrentOrderAdapte
         holder.txt_date_order.setText(orderDatum.createdAt().toString());
         holder.txt_status.setText(orderDatum.status().rawValue());
         holder.txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
+
+        if (clickListener!=null)
+            holder.itemView.setOnClickListener(view -> clickListener.onClick(view , position));
+
     }
 
     @Override
@@ -72,5 +83,15 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<CurrentOrderAdapte
             ButterKnife.bind(this, itemView);
             image_store.setVisibility(View.GONE);
         }
+    }
+
+    public String getIdOrder (int position){
+
+        return deliveryOrderList.get(position)._id();
+    }
+
+    public int getSerialOrder (int position){
+
+        return deliveryOrderList.get(position).serial();
     }
 }

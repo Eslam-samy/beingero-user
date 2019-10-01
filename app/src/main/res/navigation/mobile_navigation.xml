@@ -99,10 +99,13 @@
         android:label="@string/check_out"
         tools:layout="@layout/fragment_check_out" >
     </fragment>
+
     <fragment
         android:id="@+id/nav_order"
         android:name="com.corptia.bringero.view.order.OrderFragment"
         android:label="@string/orders"
-        tools:layout="@layout/fragment_order" />
+        tools:layout="@layout/fragment_order" >
+
+    </fragment>
 
 </navigation>

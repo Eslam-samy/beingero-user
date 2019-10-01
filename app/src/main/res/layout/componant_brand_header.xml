@@ -17,7 +17,7 @@
 
 
         <ImageView
-            android:id="@+id/image_brands"
+            android:id="@+id/image_store"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="24dp"
@@ -28,13 +28,13 @@
             app:layout_constraintVertical_bias="0.355" />
 
         <TextView
-            android:id="@+id/txt_name_brands"
+            android:id="@+id/txt_name_store"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Xiaomi"
-            app:layout_constraintTop_toTopOf="@+id/image_brands"
-            app:layout_constraintBottom_toBottomOf="@+id/image_brands"
-            app:layout_constraintStart_toEndOf="@+id/image_brands"
+            app:layout_constraintTop_toTopOf="@+id/image_store"
+            app:layout_constraintBottom_toBottomOf="@+id/image_store"
+            app:layout_constraintStart_toEndOf="@+id/image_store"
             android:layout_marginStart="@dimen/medium_margin"/>
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="28dp"
-            android:text="preparing"
+            android:text="Preparing"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

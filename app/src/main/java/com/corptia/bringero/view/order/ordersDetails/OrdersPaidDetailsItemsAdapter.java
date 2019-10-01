@@ -4,23 +4,31 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.R;
+import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.model.CartItems;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class OrdersPaidDetailsItemsAdapter extends RecyclerView.Adapter<OrdersPaidDetailsItemsAdapter.ViewHolder> {
 
     Context context;
-    List<CartItems> cartItems;
+    List<DeliveryOneOrderQuery.Data5> orderItems;
 
-    public OrdersPaidDetailsItemsAdapter(Context context, List<CartItems> cartItems) {
+    public OrdersPaidDetailsItemsAdapter(Context context, @Nullable List<DeliveryOneOrderQuery.Data5> orderItems) {
         this.context = context;
-        this.cartItems = cartItems;
+        this.orderItems = orderItems;
     }
 
     @NonNull
@@ -32,16 +40,30 @@ public class OrdersPaidDetailsItemsAdapter extends RecyclerView.Adapter<OrdersPa
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        DeliveryOneOrderQuery.Data5 items = orderItems.get(position);
+
+        holder.txt_name_product.setText(items.productName());
+        holder.txt_price.setText(new StringBuilder().append(items.storePrice()).append(context.getString(R.string.currency)));
+
     }
 
     @Override
     public int getItemCount() {
-        return cartItems.size();
+        return orderItems.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.txt_name_product)
+        TextView txt_name_product;
+        @BindView(R.id.txt_price)
+        TextView txt_price;
+        @BindView(R.id.image_product)
+        ImageView image_product;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            ButterKnife.bind(this,itemView);
         }
     }
 }

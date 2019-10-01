@@ -1,6 +1,7 @@
 package com.corptia.bringero.view.order.main.current;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,12 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.DeliveryOrdersQuery;
 import com.corptia.bringero.model.CartItems;
 import com.corptia.bringero.model.CartModel;
 import com.corptia.bringero.model.StoreTypes;
+import com.corptia.bringero.view.order.ordersDetails.OrdersPaidDetailsActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +135,20 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
 
                 adapter = new CurrentOrderAdapter(getActivity() ,deliveryOrderData );
                 recycler_current_order.setAdapter(adapter);
+
+                adapter.setClickListener(new IOnRecyclerViewClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+
+                        Intent intent = new Intent(getActivity() , OrdersPaidDetailsActivity.class);
+                        String orderId = adapter.getIdOrder(position);
+                        int serialOrder = adapter.getSerialOrder(position);
+                        intent.putExtra(Constants.EXTRA_ORDER_ID , orderId);
+                        intent.putExtra(Constants.EXTRA_ORDER_SERIAL , serialOrder);
+                        startActivity(intent);
+
+                    }
+                });
 
             }
         });
