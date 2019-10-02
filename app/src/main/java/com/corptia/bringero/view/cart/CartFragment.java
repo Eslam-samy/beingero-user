@@ -75,6 +75,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                     btn_next.setOnClickListener(view1 -> {
                         HomeActivity.navController.navigate(R.id.action_nav_cart_to_checkOutFragment);
+                        HomeActivity.bottomNavigationView.setVisibility(View.GONE);
+                        HomeActivity.fab.hide();
                     });
                 }
             }

@@ -70,7 +70,13 @@ public class CheckOutFragment extends Fragment implements CheckOutView{
             @Override
             public void onClick(View view) {
 
-                checkOutPresenter.sendOrder();
+                HomeActivity.navController.popBackStack();
+                HomeActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+                HomeActivity.fab.show();
+
+
+
+                //checkOutPresenter.sendOrder();
 
                // HomeActivity.navController.navigate(R.id.action_checkOutFragment_to_nav_cart);
                 //requireActivity().finish();
@@ -115,7 +121,6 @@ public class CheckOutFragment extends Fragment implements CheckOutView{
             @Override
             public void run() {
                 Toasty.success(getActivity() , Message).show();
-                HomeActivity.navController.popBackStack();
             }
         });
 

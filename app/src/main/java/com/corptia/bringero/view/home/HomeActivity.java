@@ -18,9 +18,11 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.corptia.bringero.Utils.lib.CustomBottomNavigationView;
 import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.view.Setting.main.SettingActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -45,7 +47,7 @@ import butterknife.ButterKnife;
         NavController.OnDestinationChangedListener
  */
 public class HomeActivity extends AppCompatActivity implements
-        NavigationView.OnNavigationItemSelectedListener  {
+        NavigationView.OnNavigationItemSelectedListener {
 
     // private AppBarConfiguration mAppBarConfiguration;
     // public static NavController navController;
@@ -60,10 +62,14 @@ public class HomeActivity extends AppCompatActivity implements
     public NavigationView navigationView;
     public static NavController navController;
 
+    public static CustomBottomNavigationView bottomNavigationView;
+    public static FloatingActionButton fab;
+
+
     Menu menu;
     //@BindViews({R.id.nav_home, R.id.nav_gallery, R.id.nav_wishlist, R.id.nav_location, R.id.nav_order, R.id.nav_cart, R.id.nav_notifications, R.id.nav_discounts, R.id.nav_terms_conditions, R.id.nav_contact_us, R.id.nav_settings})
     MenuItem nav_home, nav_gallery, nav_wishlist, nav_location, nav_order, nav_cart, nav_notifications, nav_discounts,
-            nav_terms_conditions, nav_contact_us, nav_settings , nav_pricing;
+            nav_terms_conditions, nav_contact_us, nav_settings, nav_pricing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,9 @@ public class HomeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_home);
 
         ButterKnife.bind(this);
+
+        bottomNavigationView = findViewById(R.id.nav_view_bottom);
+        fab = findViewById(R.id.fab);
 
         initToolbar(toolbar);
         initNavigationView();
@@ -117,41 +126,43 @@ public class HomeActivity extends AppCompatActivity implements
 
     private void initNavigationView() {
 
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);  // Hostfragment
-        NavInflater inflater = navHostFragment.getNavController().getNavInflater();
-        NavGraph graph = inflater.inflate(R.navigation.mobile_navigation);
-        //graph.setDefaultArguments(getIntent().getExtras());
-        //graph.setStartDestination(R.id.gallaryFragment);
-        if (Common.CURRENT_USER.roleName().rawValue().equalsIgnoreCase(RoleEnum.STOREADMIN.rawValue())) {
-
-            graph.setStartDestination(R.id.nav_gallery);
-        } else {
-            graph.setStartDestination(R.id.nav_home);
-
-        }
-        navHostFragment.getNavController().setGraph(graph);
-        //navHostFragment.getNavController().getGraph().setDefaultArguments(getIntent().getExtras());
-        //NavigationView navigationView = findViewById(R.id.nav_view);
-        NavigationUI.setupWithNavController(navigationView, navHostFragment.getNavController());
-        NavigationUI.setupActionBarWithNavController(this, navHostFragment.getNavController(), drawerLayout);
-
-
-        menu = navigationView.getMenu();
-
-        defineItems();
-        checkRoleUser(Common.CURRENT_USER.roleName().rawValue());
+//        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);  // Hostfragment
+//        NavInflater inflater = navHostFragment.getNavController().getNavInflater();
+//        NavGraph graph = inflater.inflate(R.navigation.mobile_navigation);
+//        //graph.setDefaultArguments(getIntent().getExtras());
+//        //graph.setStartDestination(R.id.gallaryFragment);
+//        if (Common.CURRENT_USER.roleName().rawValue().equalsIgnoreCase(RoleEnum.STOREADMIN.rawValue())) {
+//
+//            graph.setStartDestination(R.id.nav_gallery);
+//        } else {
+//            graph.setStartDestination(R.id.nav_home);
+//
+//        }
+//        navHostFragment.getNavController().setGraph(graph);
+//        //navHostFragment.getNavController().getGraph().setDefaultArguments(getIntent().getExtras());
+//        //NavigationView navigationView = findViewById(R.id.nav_view);
+//        NavigationUI.setupWithNavController(navigationView, navHostFragment.getNavController());
+//        NavigationUI.setupActionBarWithNavController(this, navHostFragment.getNavController(), drawerLayout);
+//
+//
+//        menu = navigationView.getMenu();
+//
+//        defineItems();
+//        checkRoleUser(Common.CURRENT_USER.roleName().rawValue());
 
 
         //----------- For Nav Buttom --------------
-//        BottomNavigationView navView = findViewById(R.id.nav_view_bottom);
-//        // Passing each menu ID as a set of Ids because each
-//        // menu should be considered as top level destinations.
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.nav_home, R.id.nav_order, R.id.nav_cart)
-//                .build();
-//        //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//        NavigationUI.setupWithNavController(navView, navController);
+
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_home, R.id.nav_order, R.id.nav_cart)
+                .build();
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
 
 
     }
@@ -196,7 +207,7 @@ public class HomeActivity extends AppCompatActivity implements
 
     }
 
-    private void initToolbar( Toolbar toolbar) {
+    private void initToolbar(Toolbar toolbar) {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -260,14 +271,13 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+
+        super.onBackPressed();
+        HomeActivity.bottomNavigationView.setVisibility(View.VISIBLE);
+        HomeActivity.fab.show();
     }
 
-//    @Override
+    //    @Override
 //    public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
 //
 //        if (destination.getId() == R.id.nav_settings) {
@@ -281,5 +291,14 @@ public class HomeActivity extends AppCompatActivity implements
 //
 //        initToolbar(toolbar);
 //    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
 
 }
