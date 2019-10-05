@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.corptia.bringero.R;
@@ -25,6 +26,7 @@ import dmax.dialog.SpotsDialog;
 /**
  * A simple {@link Fragment} subclass.
  */
+
 public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
     @BindView(R.id.btn_login)
@@ -35,6 +37,9 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
     TextInputLayout input_password;
 
     LoginPresenter loginPresenter;
+
+    @BindView(R.id.progress_Loading)
+    ProgressBar progress_Loading;
 
     AlertDialog waitingDialog;
 
@@ -65,17 +70,30 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
         return view;
     }
 
+    private void showBtnHideBar(View viewToShow, View viewToHide) {
+        viewToHide.setVisibility(View.GONE);
+        ((Button) viewToShow).setText(getString(R.string.login));
+    }
+
+    private void showBarHideBtn(View viewToShow, View viewToHide) {
+        ((Button) viewToHide).setText("");
+        viewToShow.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void showProgress() {
-
-        waitingDialog.show();
+        showBarHideBtn(progress_Loading, btn_login);
+//        waitingDialog.show();
 
 
     }
 
     @Override
     public void hideProgress() {
-        handler.post(() -> waitingDialog.dismiss());
+        handler.post(() ->
+                showBarHideBtn(progress_Loading, btn_login));
+
+        //waitingDialog.dismiss());
 
     }
 
@@ -94,7 +112,8 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
     public void onLoginError(String message) {
 
         handler.post(() -> {
-            waitingDialog.dismiss();
+            showBtnHideBar(btn_login, progress_Loading);
+//            waitingDialog.dismiss();
             Toast.makeText(getActivity(), "" + message, Toast.LENGTH_SHORT).show();
         });
 
