@@ -83,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     AutoCompleteAdapter adapter;
     public static ArrayList<MyLatLng> listPoints;
 
-    Toolbar toolbar;
+//    Toolbar toolbar;
 
     //This Local Data Will Store After Click On Map To get Tour Location
     double latitude, longitude, newLatitude, newLongitude;
@@ -104,10 +104,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         dataPlacesAutoComplete = new ArrayList<>();
         placesIDS = new ArrayList<>();
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         failedTimes = 0;
         isMapReady = false;

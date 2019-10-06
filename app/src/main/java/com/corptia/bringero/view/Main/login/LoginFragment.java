@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.corptia.bringero.R;
-import com.corptia.bringero.view.home.HomeActivity;
+import com.corptia.bringero.view.location.deliveryLocation.SelectDeliveryLocationActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import butterknife.BindView;
@@ -101,7 +101,8 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
     public void onLoginSuccess(String message) {
 
         handler.post(() -> {
-            startActivity(new Intent(getActivity(), HomeActivity.class));
+
+            startActivity(new Intent(getActivity(), SelectDeliveryLocationActivity.class));
             getActivity().finish();
         });
 

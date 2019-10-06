@@ -118,5 +118,15 @@
     <string name="default_notification_channel_id">fire_base_notification</string>
     <string name="fcm_message">fcm_mesage</string>
     <string name="search">Search</string>
+    <string name="deliver_to">Deliver To</string>
+    <string name="set_location">Set location</string>
+    <string name="region">Region</string>
+    <string name="address_name">Address Name</string>
+    <string name="flatType">Flat Type</string>
+    <string name="street">Street</string>
+    <string name="building">Building</string>
+    <string name="floor">Floor</string>
+    <string name="flat">Flat</string>
+    <string name="save_address">Save Address</string>
 </resources>
 

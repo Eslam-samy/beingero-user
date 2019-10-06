@@ -55,7 +55,9 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                             if (response.data().UserMutation().login().status() == 200)
                             {
-                                getMe(response.data().UserMutation().login().token());
+                                getMe(response.data().UserMutation().login().token(), userData -> {
+
+                                });
                             }
                             else
                             {
@@ -76,7 +78,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
     }
 
 
-    public void getMe(String token){
+    public void getMe(String token , onSuccessCall onSuccessCall){
 
         MyApolloClient.getApollowClientAuthorization(token)
                 .query(MeQuery.builder().build())
@@ -103,6 +105,8 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                                 loginView.onLoginSuccess("login success");
 
                             }
+
+                            onSuccessCall.CallBack(userData);
                         }
 
                         else
@@ -153,5 +157,9 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                     }
                 });
 
+    }
+
+    public interface onSuccessCall{
+        void CallBack(MeQuery.UserData userData);
     }
 }

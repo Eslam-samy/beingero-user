@@ -27,6 +27,32 @@ query me{
                 avatarImageId
                 createdAt
                 updatedAt
+
+                currentDeliveryAddress {
+                    _id
+                    name
+                    street
+                    region
+                    locationPoint {
+                        lat
+                        lng
+                    }
+                }
+                deliveryAddresses {
+                    _id
+                    locationPoint {
+                        lat
+                        lng
+                    }
+                    name
+                    cityId
+                    region
+                    building
+                    floor
+                    flat
+                    flatType
+                    street
+                }
             }
         }
     }
@@ -47,6 +73,42 @@ mutation signUpSecondStep($data: signupInput) {
         signup(data: $data) {
             status
             message
+        }
+    }
+}
+
+
+mutation updateUserInfo($data: userInfo) {
+    UserMutation {
+        updateInfo(data : $data)
+        {
+            status
+            message
+            token
+            errors {
+                path
+                message
+                code
+            }
+            data {
+                phone
+                language
+                currentDeliveryAddress {
+                    name
+                    locationPoint {
+                        lat
+                        lng
+                    }
+                }
+                deliveryAddresses {
+                    name
+                    locationPoint {
+                        lat
+                        lng
+                    }
+                }
+            }
+            token
         }
     }
 }

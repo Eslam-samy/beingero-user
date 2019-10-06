@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.corptia.bringero">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,10 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.pricingProduct.PricingProductActivity"></activity>
-        <activity android:name=".view.order.shopDetail.ShopDetailActivity"></activity>
-        <activity android:name=".view.order.ordersDetails.OrdersPaidDetailsActivity"></activity>
-        <activity android:name=".view.order.OrderActivity"></activity>
+        <activity android:name=".view.location.addNewLocation.AddNewLocationActivity"></activity>
+        <activity android:name=".view.location.deliveryLocation.SelectDeliveryLocationActivity"></activity>
+        <activity android:name=".view.pricingProduct.PricingProductActivity" />
+        <activity android:name=".view.order.shopDetail.ShopDetailActivity" />
+        <activity android:name=".view.order.ordersDetails.OrdersPaidDetailsActivity" />
+        <activity android:name=".view.order.OrderActivity" />
         <activity android:name=".view.locations.LocationsActivity" />
         <activity
             android:name=".view.cart.CartActivity"
@@ -33,9 +33,7 @@
             android:name=".view.home.HomeActivity"
             android:label="@string/title_activity_store_types"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".view.Main.otp.VerifyPhoneNumberActivity"
             android:windowSoftInputMode="adjustResize" />
@@ -49,9 +47,7 @@
         </activity>
         <activity
             android:name=".view.Main.MainActivity"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".view.MapWork.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -83,6 +79,9 @@
                 android:resource="@color/colorAccent" />
         </service>
     </application>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
