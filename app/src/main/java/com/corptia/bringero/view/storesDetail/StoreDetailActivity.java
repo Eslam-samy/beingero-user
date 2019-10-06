@@ -175,6 +175,11 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     }
 
     @Override
+    public void onSuccessMessage(String message) {
+
+    }
+
+    @Override
     public void setProduct(List<GetStoreProductsQuery.Product> product) {
 
     }

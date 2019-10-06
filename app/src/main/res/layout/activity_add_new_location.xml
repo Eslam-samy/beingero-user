@@ -1,106 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.location.addNewLocation.AddNewLocationActivity"
-    android:orientation="vertical"
-    android:layout_marginStart="@dimen/app_margin"
-    android:layout_marginEnd="@dimen/app_margin"
-    android:layout_marginTop="@dimen/app_margin">
+    tools:context=".view.location.addNewLocation.AddNewLocationActivity">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_region"
+    <include
+        layout="@layout/layout_toolbar"/>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_save"
+        app:layout_constraintTop_toBottomOf="@+id/bar">
 
-        <EditText
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/region"
-            android:text="asdasdasd"
-            />
+            android:orientation="vertical"
+            android:layout_marginStart="@dimen/app_margin"
+            android:layout_marginEnd="@dimen/app_margin"
+            android:layout_marginTop="@dimen/app_margin">
 
-    </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_address_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                tools:context="net.corptia.talabyat.MapsActivity" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/address_name" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/region"
+                    android:inputType="text"
+                    />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_flatType"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/flatType" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_address_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/address_name"
+                    android:inputType="text"
+                    />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_street"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/street" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <Spinner
+                android:id="@+id/spinner_flatType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog"
+                android:textSize="15sp"
+                android:padding="@dimen/large_padding"
+                />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_building"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/building" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_street"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/street"
+                    android:inputType="text"
+                    />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_floor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/floor" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_building"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/building"
+                    android:inputType="number"
+                    />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/input_flat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/flat" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_floor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/floor"
+                    android:inputType="number"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_flat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/flat"
+                    android:inputType="number"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
 
 
     <Button
         android:id="@+id/btn_save"
         style="@style/ButtonNormalStyle"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
-        android:text="@string/save_address"/>
-</LinearLayout>
+        android:text="@string/save_address"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="@dimen/app_margin"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

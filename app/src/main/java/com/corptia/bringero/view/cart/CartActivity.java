@@ -71,6 +71,11 @@ public class CartActivity extends AppCompatActivity implements CartContract.Cart
 
     }
 
+    @Override
+    public void onSuccessMessage(String message) {
+
+    }
+
  /*   private void setData(NewCartAdapter adapter) {
         HeaderDataImpl headerData1 = new HeaderDataImpl(HeaderDataImpl.HEADER_TYPE_1, R.layout.item_card_cart_header);
 

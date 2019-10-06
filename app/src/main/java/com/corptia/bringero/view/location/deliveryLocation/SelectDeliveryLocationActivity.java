@@ -92,6 +92,7 @@ public class SelectDeliveryLocationActivity extends AppCompatActivity implements
             public void onClick(View view) {
                 //Here Open Maps
                 startActivity(new Intent(SelectDeliveryLocationActivity.this , MapsActivity.class));
+                bottomSheetDialog.dismiss();
             }
         });
 
@@ -107,24 +108,23 @@ public class SelectDeliveryLocationActivity extends AppCompatActivity implements
         startActivity(new Intent(SelectDeliveryLocationActivity.this , HomeActivity.class));
     }
 
-
     @Override
-    public void showProgress() {
+    public void showProgressBar() {
 
     }
 
     @Override
-    public void hideProgress() {
+    public void hideProgressBar() {
 
     }
 
     @Override
-    public void onLoginSuccess(String message) {
+    public void showErrorMessage(String Message) {
 
     }
 
     @Override
-    public void onLoginError(String message) {
+    public void onSuccessMessage(String message) {
 
     }
 }

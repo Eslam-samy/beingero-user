@@ -110,6 +110,11 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     }
 
     @Override
+    public void onSuccessMessage(String message) {
+
+    }
+
+    @Override
     public void setProduct(List<GetStoreProductsQuery.Product> product) {
 
         handler.post(() -> {

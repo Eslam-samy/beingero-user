@@ -7,6 +7,10 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.graphql.UpdateUserInfoMutation;
+import com.corptia.bringero.type.DeliveryAddressInput;
+import com.corptia.bringero.type.DeliveryAddressSingles;
+import com.corptia.bringero.type.FlatType;
+import com.corptia.bringero.type.PointCooridinatesInput;
 import com.corptia.bringero.type.UserInfo;
 import com.corptia.bringero.view.Main.login.LoginPresenter;
 
@@ -24,7 +28,7 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
 
     public void userUpdateCurrentLocation(String currentDeliveryAddressID) {
 
-        view.showProgress();
+        view.showProgressBar();
         UserInfo userInfo = UserInfo.builder().currentDeliveryAddressID(currentDeliveryAddressID).build();
         MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
                 .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
@@ -32,7 +36,7 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
                     public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
 
                         UpdateUserInfoMutation.@Nullable UpdateInfo updateInfo = response.data().UserMutation().updateInfo();
-                        view.hideProgress();
+                        view.hideProgressBar();
                         if (updateInfo.status() == 200) {
                             getMe(response.data().UserMutation().updateInfo().token(), new onSuccessCall() {
                                 @Override
@@ -42,21 +46,69 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
                                 }
                             });
                         } else {
-                            view.onLoginError(updateInfo.message());
+                            view.showErrorMessage(updateInfo.message());
                         }
                     }
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
-                        view.hideProgress();
-                        view.onLoginError(e.getMessage());
+                        view.hideProgressBar();
+                        view.showErrorMessage(e.getMessage());
 
                     }
                 });
 
     }
 
-    public void addNewAddress(String region  , String addressName){
+    public void addNewAddress(String name, String region, String street, FlatType flatType, int floor, int flat, int building, double lat, double lng) {
+
+        view.showProgressBar();
+
+
+        PointCooridinatesInput inputLocationPoint = PointCooridinatesInput.builder().lat(lat).lng(lng).build();
+
+        DeliveryAddressInput deliveryAddressInput = DeliveryAddressInput.builder()
+                .name(name)
+                .region(region)
+                .street(street)
+                .flatType(flatType)
+                .floor(floor)
+                .flat(flat)
+                .building(building)
+                .locationPoint(inputLocationPoint).build();
+
+        DeliveryAddressSingles singles = DeliveryAddressSingles.builder().deliveryAddresses(deliveryAddressInput).build();
+
+        UserInfo userInfo = UserInfo.builder().pUSH_SINGLE(singles).build();
+
+        MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
+                .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
+
+                        view.hideProgressBar();
+                        UpdateUserInfoMutation.UpdateInfo responseUpdateInfo = response.data().UserMutation().updateInfo();
+                        if (responseUpdateInfo.status() == 200) {
+
+                            //userUpdateCurrentLocation("");
+
+                            getMe(responseUpdateInfo.token(), userData -> {
+                                view.onSuccessUpdateCurrentLocation();
+                            });
+                        } else {
+                            view.showErrorMessage(responseUpdateInfo.message());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        view.showErrorMessage(e.getMessage());
+                        view.hideProgressBar();
+
+
+                    }
+                });
 
     }
 }

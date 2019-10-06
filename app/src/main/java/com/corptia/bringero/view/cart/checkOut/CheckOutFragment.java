@@ -128,5 +128,10 @@ public class CheckOutFragment extends Fragment implements CheckOutView{
 
     }
 
+    @Override
+    public void onSuccessMessage(String message) {
+
+    }
+
 
 }

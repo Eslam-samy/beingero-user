@@ -80,43 +80,40 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
         viewToShow.setVisibility(View.VISIBLE);
     }
 
-    @Override
-    public void showProgress() {
-        showBarHideBtn(progress_Loading, btn_login);
-//        waitingDialog.show();
 
+
+
+
+    @Override
+    public void showProgressBar() {
+        showBarHideBtn(progress_Loading, btn_login);
 
     }
 
     @Override
-    public void hideProgress() {
+    public void hideProgressBar() {
         handler.post(() ->
                 showBarHideBtn(progress_Loading, btn_login));
+    }
 
-        //waitingDialog.dismiss());
+    @Override
+    public void showErrorMessage(String Message) {
+
+        handler.post(() -> {
+            showBtnHideBar(btn_login, progress_Loading);
+//            waitingDialog.dismiss();
+            Toast.makeText(getActivity(), "" + Message, Toast.LENGTH_SHORT).show();
+        });
 
     }
 
     @Override
-    public void onLoginSuccess(String message) {
+    public void onSuccessMessage(String message) {
 
         handler.post(() -> {
 
             startActivity(new Intent(getActivity(), SelectDeliveryLocationActivity.class));
             getActivity().finish();
         });
-
-
-    }
-
-    @Override
-    public void onLoginError(String message) {
-
-        handler.post(() -> {
-            showBtnHideBar(btn_login, progress_Loading);
-//            waitingDialog.dismiss();
-            Toast.makeText(getActivity(), "" + message, Toast.LENGTH_SHORT).show();
-        });
-
     }
 }

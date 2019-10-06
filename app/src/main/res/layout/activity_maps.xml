@@ -7,13 +7,13 @@
 
     <Button
         android:id="@+id/saveLocationBtn"
-        style="@style/MapButtonStyle"
         android:layout_marginBottom="20dp"
         android:onClick="saveLocation"
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/save_location" />
+        tools:text="@string/save_location"
+        style="@style/ButtonNormalStyle"/>
 
     <fragment
         android:id="@+id/map"
@@ -39,6 +39,16 @@
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
         map:layout_constraintTop_toTopOf="@+id/map" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/opin"
+        map:layout_constraintTop_toTopOf="@+id/map"
+        map:layout_constraintBottom_toBottomOf="@id/map"
+        map:layout_constraintStart_toStartOf="@id/map"
+        map:layout_constraintEnd_toEndOf="@+id/map"
+        android:layout_marginBottom="15dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

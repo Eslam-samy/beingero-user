@@ -128,5 +128,16 @@
     <string name="floor">Floor</string>
     <string name="flat">Flat</string>
     <string name="save_address">Save Address</string>
+    <string name="no_address_found">No Address Found</string>
+    <string name="no_location_data_provided">No location data provided</string>
+    <string name="service_not_available">Service not available</string>
+    <string name="invalid_lat_long_used">Invalid lat long used</string>
+
+    <string name="title_location_permission">Location Permission Needed</string>
+    <string name="text_location_permission">Allow GoFair to acccess your Location</string>
+    <string name="ok">OK</string>
+
+
+
 </resources>
 

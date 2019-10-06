@@ -1,13 +1,10 @@
 package com.corptia.bringero.view.Main.login;
 
+import com.corptia.bringero.base.BaseView;
+
 public class LoginContract {
 
-    public interface LoginView{
-
-        void showProgress();
-        void hideProgress();
-        void onLoginSuccess(String message);
-        void onLoginError(String message);
+    public interface LoginView extends BaseView {
 
         //void login(String username, String password, OnLoginFinishedListener listener);
 

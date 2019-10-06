@@ -103,4 +103,9 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     public void showErrorMessage(String Message) {
 
     }
+
+    @Override
+    public void onSuccessMessage(String message) {
+
+    }
 }

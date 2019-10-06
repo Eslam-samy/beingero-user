@@ -33,16 +33,16 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
         User user = new User(password, phone);
         int isSuccess = user.isValidatieDate();
         if (isSuccess == 0) {
-            loginView.onLoginError("phone number is Empty");
+            loginView.showErrorMessage("phone number is Empty");
         } else if (isSuccess == 1)
-            loginView.onLoginError("phone not matches");
+            loginView.showErrorMessage("phone not matches");
 
         else if (isSuccess == 2)
-            loginView.onLoginError("password is too short");
+            loginView.showErrorMessage("password is too short");
 
         else {
 
-            loginView.showProgress();
+            loginView.showProgressBar();
 
 
             LoginInput loginInput = LoginInput.builder().phone(phone).password(password).build();
@@ -61,15 +61,15 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                             }
                             else
                             {
-                                loginView.hideProgress();
-                                loginView.onLoginError("" + response.data().UserMutation().login().message());
+                                loginView.hideProgressBar();
+                                loginView.showErrorMessage("" + response.data().UserMutation().login().message());
                             }
                         }
 
                         @Override
                         public void onFailure(@NotNull ApolloException e) {
-                            loginView.hideProgress();
-                            loginView.onLoginError("[LOG IN]"+e.getMessage());
+                            loginView.hideProgressBar();
+                            loginView.showErrorMessage("[LOG IN]"+e.getMessage());
 
                         }
                     });
@@ -101,8 +101,8 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                             else
                             {
-                                loginView.hideProgress();
-                                loginView.onLoginSuccess("login success");
+                                loginView.hideProgressBar();
+                                loginView.onSuccessMessage("login success");
 
                             }
 
@@ -111,15 +111,15 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                         else
                         {
-                            loginView.hideProgress();
-                            loginView.onLoginError("[ERROR GET ME]"+response.data().UserQuery().me().message());
+                            loginView.hideProgressBar();
+                            loginView.showErrorMessage("[ERROR GET ME]"+response.data().UserQuery().me().message());
                         }
                     }
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
-                        loginView.hideProgress();
-                        loginView.onLoginError("[ERROR GET ME]"+e.getMessage());
+                        loginView.hideProgressBar();
+                        loginView.showErrorMessage("[ERROR GET ME]"+e.getMessage());
                         Log.d("HAZEM" , ""+e.toString());
                     }
                 });
@@ -139,13 +139,13 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                         if (responseData.status() == 200)
                         {
                            Common.CURRENT_STORE = responseData.CurrentStore().get(0);
-                            loginView.hideProgress();
-                            loginView.onLoginSuccess("login success");
+                            loginView.hideProgressBar();
+                            loginView.onSuccessMessage("login success");
                         }
 
                         else
                         {
-                            loginView.onLoginError("[GET DATA STORE]"+responseData.message());
+                            loginView.showErrorMessage("[GET DATA STORE]"+responseData.message());
 
                         }
 
@@ -153,7 +153,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
-                        loginView.onLoginError("ERROR DATA STORE"+e.getMessage());
+                        loginView.showErrorMessage("ERROR DATA STORE"+e.getMessage());
                     }
                 });
 

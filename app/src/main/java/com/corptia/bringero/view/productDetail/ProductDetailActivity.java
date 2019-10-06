@@ -110,4 +110,9 @@ public class ProductDetailActivity extends AppCompatActivity implements ProductD
         runOnUiThread(() -> Toast.makeText(ProductDetailActivity.this, ""+Message, Toast.LENGTH_SHORT).show());
 
     }
+
+    @Override
+    public void onSuccessMessage(String message) {
+
+    }
 }

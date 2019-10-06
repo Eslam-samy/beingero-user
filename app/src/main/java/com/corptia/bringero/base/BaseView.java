@@ -9,6 +9,6 @@ public interface BaseView {
     void showProgressBar();
     void hideProgressBar();
     void showErrorMessage(String Message);
-
+    void onSuccessMessage(String message);
 
 }

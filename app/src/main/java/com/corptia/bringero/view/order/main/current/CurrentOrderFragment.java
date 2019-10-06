@@ -127,6 +127,11 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
     }
 
     @Override
+    public void onSuccessMessage(String message) {
+
+    }
+
+    @Override
     public void DeliveryOrders(List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderData) {
 
         handler.post(new Runnable() {

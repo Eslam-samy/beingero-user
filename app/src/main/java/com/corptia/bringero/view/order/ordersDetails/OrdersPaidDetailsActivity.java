@@ -192,4 +192,9 @@ public class OrdersPaidDetailsActivity extends AppCompatActivity implements Orde
     public void showErrorMessage(String Message) {
 
     }
+
+    @Override
+    public void onSuccessMessage(String message) {
+
+    }
 }
