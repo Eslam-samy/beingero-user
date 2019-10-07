@@ -1,25 +1,30 @@
 package com.corptia.bringero.view.location.addNewLocation;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.model.FlatTypeModel;
 import com.corptia.bringero.type.FlatType;
+import com.corptia.bringero.view.MapWork.MapsActivity;
 import com.corptia.bringero.view.location.deliveryLocation.SelectDeliveryLocationPresenter;
 import com.corptia.bringero.view.location.deliveryLocation.SelectDeliveryLocationView;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -50,7 +55,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
     TextInputLayout input_building;
     @BindView(R.id.input_floor)
     TextInputLayout input_floor;
-    @BindView(R.id.input_flat)
+    @BindView(R.id.input__flat)
     TextInputLayout input_flat;
     @BindView(R.id.btn_save)
     Button btn_save;
@@ -69,6 +74,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
     //For Map
     private GoogleMap mMap;
     Marker marker;
+
 
 
     @Override
@@ -121,7 +127,6 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
 
         });
 
-
         fillSpinnerLanguage();
 
         spinner_flatType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -147,6 +152,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
         if (intent != null) {
             latitude = intent.getDoubleExtra("latitude", 0);
             longitude = intent.getDoubleExtra("longitude", 0);
+
         }
 
 
@@ -158,6 +164,10 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
         ButterKnife.bind(this);
 
         alertDialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
     }
 
@@ -250,12 +260,49 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
                         .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                 .title("ME"));
 
+        mMap.setOnMapClickListener(latLng1 -> {
+
+            Intent intent = new Intent(AddNewLocationActivity.this , MapsActivity.class);
+            intent.putExtra(Constants.EXTRA_LATITUDE, latitude);
+            intent.putExtra(Constants.EXTRA_LONGITUDE, longitude);
+            intent.putExtra("UPDATE", "UPDATE");
+            startActivityForResult(intent , 1000);
+
+        });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data != null) {
+
+            if (data.hasExtra("UPDATE")) {
+
+                double latitudeIntent = data.getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
+                double longitudeIntent = data.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
+
+                latitude = latitudeIntent;
+                longitude = longitudeIntent;
+
+                LatLng latLng = new LatLng(latitude , longitude);
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                marker.remove();
+                marker = mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .snippet("")
+                        .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        .title("ME"));
+
+            }
 
 
+        } else {
 
-
-
-
-
+        }
     }
 }

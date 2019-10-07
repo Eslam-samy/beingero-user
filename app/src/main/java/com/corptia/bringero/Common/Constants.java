@@ -11,4 +11,7 @@ public class Constants {
     public static final String EXTRA_PRODUCT_ID = "ProductId";
     public static final String EXTRA_ORDER_ID = "OrderId";
     public static final String EXTRA_ORDER_SERIAL = "OrderSerial";
+
+    public static final String EXTRA_LATITUDE = "latitude";
+    public static final String EXTRA_LONGITUDE = "longitude";
 }

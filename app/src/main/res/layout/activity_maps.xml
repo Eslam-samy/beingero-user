@@ -12,7 +12,7 @@
         map:layout_constraintBottom_toBottomOf="parent"
         map:layout_constraintEnd_toEndOf="parent"
         map:layout_constraintStart_toStartOf="parent"
-        tools:text="@string/save_location"
+        android:text="@string/save_location"
         style="@style/ButtonNormalStyle"/>
 
     <fragment

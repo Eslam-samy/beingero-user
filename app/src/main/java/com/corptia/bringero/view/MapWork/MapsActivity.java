@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.view.location.addNewLocation.AddNewLocationActivity;
 import com.google.android.gms.common.ConnectionResult;
@@ -176,6 +177,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mMap.setMyLocationEnabled(true);
             }
         }
+
         mMap = googleMap;
         isMapReady = true;
         mMap.getUiSettings().setZoomControlsEnabled(true);
@@ -202,12 +204,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             //Log.d("latLnglatLng","Address : "+getCompleteAddressString(latLng.latitude , latLng.longitude));
             saveLocationBtn.setVisibility(View.VISIBLE);
-            saveLocationBtn.setText(getString(R.string.save_location) + "\n" + address);
+            // saveLocationBtn.setText(getString(R.string.save_location) + "\n" + address);
             if (marker != null) {
                 marker.remove();
             }
 
         }
+
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
@@ -232,7 +235,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         .title("ME"));*/
 
                 saveLocationBtn.setVisibility(View.VISIBLE);
-                saveLocationBtn.setText(getString(R.string.save_location) + "\n" + address);
+                // saveLocationBtn.setText(getString(R.string.save_location) + "\n" + address);
                 return false;
             }
         });
@@ -278,8 +281,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mMap.setOnCameraChangeListener(cameraPosition -> {
 
-            latitude = cameraPosition.target.latitude;
-            longitude = cameraPosition.target.longitude;
+            newLatitude = cameraPosition.target.latitude;
+            newLongitude = cameraPosition.target.longitude;
+
         });
     }
 
@@ -326,11 +330,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 public void onLocationResult(LocationResult locationResult) {
                     if (locationResult.getLastLocation() != null) {
                         currentLocation = locationResult.getLastLocation();
-                        latitude = currentLocation.getLatitude();
-                        longitude = currentLocation.getLongitude();
-                        LatLng myLatLng = new LatLng(latitude, longitude);
+
+                        double newlatitude ;
+                        double newlongitude ;
+                        if (getIntent().hasExtra("UPDATE")) {
+
+                            newlatitude = getIntent().getDoubleExtra(Constants.EXTRA_LATITUDE , 0);
+                            newlongitude = getIntent().getDoubleExtra(Constants.EXTRA_LONGITUDE , 0);
+
+                            Log.d("HAZEM" , "newlatitude " + newlatitude);
+                            Log.d("HAZEM" , "newlongitude " + newlongitude);
+                        } else {
+                            newlatitude = currentLocation.getLatitude();
+                            newlongitude = currentLocation.getLongitude();
+                        }
+
+
+                        LatLng myLatLng = new LatLng(newlatitude, newlongitude);
                         if (firstTime) {
-                            //zoom to my location\zoooooooooooooooom
+                            //zoom to my location
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
                             //mMap.addMarker(new MarkerOptions().position(myLatLng));
                             firstTime = false;
@@ -514,7 +532,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 newAddress = getCompleteAddressString(lat, lng);
                 String icon = result.optString("icon");
                 saveLocationBtn.setVisibility(View.VISIBLE);
-                saveLocationBtn.setText(getString(R.string.save_location) + "\n" + newAddress);
+                //saveLocationBtn.setText(getString(R.string.save_location) + "\n" + newAddress);
                 URL url = new URL(icon);
                 name = result.optString("firstName");
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -584,32 +602,57 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void saveLocation(View view) {
 
-        Intent intent = new Intent(this , AddNewLocationActivity.class);
-        if (!newAddress.equals("")) {
-            intent.putExtra("address", newAddress);
-        } else if (!searchAddress.equals("")) {
-            intent.putExtra("address", searchAddress);
-        } else {
-            intent.putExtra("address", address);
+        if (getIntent()!=null)
+        {
+            if (getIntent().hasExtra("UPDATE"))
+            {
+
+                Intent intent = new Intent();
+                intent.putExtra("latitude", newLatitude);
+                intent.putExtra("longitude", newLongitude);
+
+                setResult(1000, intent);
+                finish();
+            }
+            else
+            {
+                Intent intent = new Intent(this, AddNewLocationActivity.class);
+                intent.putExtra("latitude", newLatitude);
+                intent.putExtra("longitude", newLongitude);
+                startActivity(intent);
+                finish();
+            }
+
         }
 
-        if (newLatitude != 0) {
-            intent.putExtra("latitude", newLatitude);
-        } else if (latLng != null) {
-            if (latLng.latitude != 0) intent.putExtra("latitude", latLng.latitude);
-        } else {
-            intent.putExtra("latitude", latitude);
-        }
 
-        if (newLongitude != 0) {
-            intent.putExtra("longitude", newLongitude);
-        } else if (latLng != null) {
-            if (latLng.longitude != 0) intent.putExtra("longitude", latLng.longitude);
-        } else {
-            intent.putExtra("longitude", longitude);
-        }
-        startActivity(intent);
-        finish();
+
+
+
+//        if (!newAddress.equals("")) {
+//            intent.putExtra("address", newAddress);
+//        } else if (!searchAddress.equals("")) {
+//            intent.putExtra("address", searchAddress);
+//        } else {
+//            intent.putExtra("address", address);
+//        }
+//
+//        if (newLatitude != 0) {
+//            intent.putExtra("latitude", newLatitude);
+//        } else if (latLng != null) {
+//            if (latLng.latitude != 0) intent.putExtra("latitude", latLng.latitude);
+//        } else {
+//            intent.putExtra("latitude", latitude);
+//        }
+//
+//        if (newLongitude != 0) {
+//            intent.putExtra("longitude", newLongitude);
+//        } else if (latLng != null) {
+//            if (latLng.longitude != 0) intent.putExtra("longitude", latLng.longitude);
+//        } else {
+//            intent.putExtra("longitude", longitude);
+//        }
+
 
     }
 
