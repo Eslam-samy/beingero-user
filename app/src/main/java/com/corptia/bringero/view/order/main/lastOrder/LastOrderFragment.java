@@ -13,11 +13,9 @@ import android.view.ViewGroup;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.model.CartItems;
 import com.corptia.bringero.model.CartModel;
-import com.corptia.bringero.model.StoreTypes;
-import com.corptia.bringero.view.order.main.current.CurrentOrderAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

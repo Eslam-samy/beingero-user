@@ -14,4 +14,16 @@ public class Constants {
 
     public static final String EXTRA_LATITUDE = "latitude";
     public static final String EXTRA_LONGITUDE = "longitude";
+    public static final String EXTRA_IS_UPDATE_CURRENT_LOCATION = "isUpdateCurrentLocation";
+    public static final int EXTRA_RESULT_CODE_CURRENT_LOCATION = 1000;
+
+    public static final String EXTRA_ADDRESS_NAME = "AddressName";
+    public static final String EXTRA_ADDRESS_ID = "AddressId";
+    public static final String EXTRA_ADDRESS_FLAT_TYPE = "AddressFlatType";
+    public static final String EXTRA_ADDRESS_REGION = "AddressRegion";
+    public static final String EXTRA_ADDRESS_FLAT = "AddressFlat";
+    public static final String EXTRA_ADDRESS_FLOOR = "AddressFloor";
+    public static final String EXTRA_ADDRESS_BUILDING = "AddressBuilding";
+    public static final String EXTRA_ADDRESS_STREET = "AddressStreet";
+    public static final String EXTRA_UPDATE = "Update";
 }

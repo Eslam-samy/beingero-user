@@ -1,4 +1,4 @@
-package com.corptia.bringero.Utils.decoration;
+package com.corptia.bringero.Utils.recyclerview.decoration;
 
 import android.graphics.Rect;
 import android.view.View;

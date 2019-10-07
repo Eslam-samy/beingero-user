@@ -38,13 +38,15 @@ public class SelectDeliveryLocationActivity extends AppCompatActivity implements
 
         initView();
 
-        if (Common.CURRENT_USER.currentDeliveryAddress() != null)
-            btn_select_location.setText(new StringBuilder().append(Common.CURRENT_USER.currentDeliveryAddress().name())
-                    .append(" (")
-                    .append(Common.CURRENT_USER.currentDeliveryAddress().region())
-                    .append(")") );
-        else
-            btn_select_location.setText("Select Location");
+        if (Common.CURRENT_USER!=null) {
+            if (Common.CURRENT_USER.currentDeliveryAddress() != null) {
+                btn_select_location.setText(new StringBuilder().append(Common.CURRENT_USER.currentDeliveryAddress().name())
+                        .append(" (")
+                        .append(Common.CURRENT_USER.currentDeliveryAddress().region())
+                        .append(")"));
+            } else
+                btn_select_location.setText("Select Location");
+        }
 
         btn_select_location.setOnClickListener(view -> showDialogSelectLocation());
 
@@ -106,6 +108,11 @@ public class SelectDeliveryLocationActivity extends AppCompatActivity implements
         bottomSheetDialog.dismiss();
         //Here Refresh get me ^_^
         startActivity(new Intent(SelectDeliveryLocationActivity.this , HomeActivity.class));
+    }
+
+    @Override
+    public void onSuccessUpdateNestedLocation() {
+
     }
 
     @Override

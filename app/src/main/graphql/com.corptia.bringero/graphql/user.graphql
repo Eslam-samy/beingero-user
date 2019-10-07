@@ -94,6 +94,7 @@ mutation updateUserInfo($data: userInfo) {
                 phone
                 language
                 currentDeliveryAddress {
+                    _id
                     name
                     locationPoint {
                         lat
@@ -101,6 +102,7 @@ mutation updateUserInfo($data: userInfo) {
                     }
                 }
                 deliveryAddresses {
+                    _id
                     name
                     locationPoint {
                         lat

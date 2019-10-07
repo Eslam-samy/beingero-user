@@ -13,15 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.DeliveryOrdersQuery;
 import com.corptia.bringero.model.CartItems;
 import com.corptia.bringero.model.CartModel;
-import com.corptia.bringero.model.StoreTypes;
 import com.corptia.bringero.view.order.ordersDetails.OrdersPaidDetailsActivity;
 
 import java.util.ArrayList;

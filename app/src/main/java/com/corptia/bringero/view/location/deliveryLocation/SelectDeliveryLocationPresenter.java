@@ -9,9 +9,11 @@ import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.graphql.UpdateUserInfoMutation;
 import com.corptia.bringero.type.DeliveryAddressInput;
 import com.corptia.bringero.type.DeliveryAddressSingles;
+import com.corptia.bringero.type.DeliveryAddressesNested;
 import com.corptia.bringero.type.FlatType;
 import com.corptia.bringero.type.PointCooridinatesInput;
 import com.corptia.bringero.type.UserInfo;
+import com.corptia.bringero.type.User_UPDATE_NESTED;
 import com.corptia.bringero.view.Main.login.LoginPresenter;
 
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +62,7 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
 
     }
 
-    public void addNewAddress(String name, String region, String street, FlatType flatType, int floor, int flat, int building, double lat, double lng) {
+    public void addNewAddress(String name, String region, String street, FlatType flatType, int floor, int flat, int building, double lat, double lng, boolean isUpdateCurrentLocation) {
 
         view.showProgressBar();
 
@@ -90,11 +92,18 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
                         UpdateUserInfoMutation.UpdateInfo responseUpdateInfo = response.data().UserMutation().updateInfo();
                         if (responseUpdateInfo.status() == 200) {
 
+                            if (isUpdateCurrentLocation) {
+                                String newDeliveryAddressesID = responseUpdateInfo.data().deliveryAddresses().get(responseUpdateInfo.data().deliveryAddresses().size() - 1)._id();
+                                userUpdateCurrentLocation(newDeliveryAddressesID);
+                            } else {
+                                getMe(responseUpdateInfo.token(), userData -> {
+                                    view.onSuccessUpdateCurrentLocation();
+                                });
+                            }
+
                             //userUpdateCurrentLocation("");
 
-                            getMe(responseUpdateInfo.token(), userData -> {
-                                view.onSuccessUpdateCurrentLocation();
-                            });
+
                         } else {
                             view.showErrorMessage(responseUpdateInfo.message());
                         }
@@ -109,6 +118,62 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
 
                     }
                 });
-
     }
+
+
+    public void updateLocation(String LocationID, String name, String region, String street, FlatType flatType, int floor, int flat, int building, double lat, double lng) {
+
+        view.showProgressBar();
+
+        PointCooridinatesInput inputLocationPoint = PointCooridinatesInput.builder().lat(lat).lng(lng).build();
+
+        DeliveryAddressInput deliveryAddressInput = DeliveryAddressInput.builder()
+                .name(name)
+                .region(region)
+                .street(street)
+                .flatType(flatType)
+                .floor(floor)
+                .flat(flat)
+                .building(building)
+                .locationPoint(inputLocationPoint).build();
+
+        User_UPDATE_NESTED user_update_nested = User_UPDATE_NESTED.builder()
+                .deliveryAddresses(DeliveryAddressesNested.builder()
+                        .filter(DeliveryAddressInput.builder()._id(LocationID).build())
+                        .data(deliveryAddressInput)
+                        .build())
+                .build();
+
+        UserInfo userInfo = UserInfo.builder().uPDATE_NESTED(user_update_nested).build();
+
+        MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
+                .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
+
+                        view.hideProgressBar();
+                        UpdateUserInfoMutation.UpdateInfo responseUpdateInfo = response.data().UserMutation().updateInfo();
+
+                        if (responseUpdateInfo.status() == 200) {
+
+                            getMe(responseUpdateInfo.token(), userData -> {
+                                view.onSuccessUpdateNestedLocation();
+                            });
+
+                        } else {
+                            view.showErrorMessage(responseUpdateInfo.message());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        view.showErrorMessage(e.getMessage());
+                        view.hideProgressBar();
+
+
+                    }
+                });
+    }
+
 }

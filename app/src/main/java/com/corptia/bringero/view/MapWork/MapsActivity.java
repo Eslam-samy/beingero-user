@@ -96,6 +96,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     Button saveLocationBtn;
 
+    LocationCallback locationCallback;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -325,21 +327,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (mMap != null && isMapReady) {
                 mMap.setMyLocationEnabled(true);
             }
-            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
+
+            locationCallback = new LocationCallback() {
+
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
                     if (locationResult.getLastLocation() != null) {
                         currentLocation = locationResult.getLastLocation();
 
-                        double newlatitude ;
-                        double newlongitude ;
+                        double newlatitude;
+                        double newlongitude;
                         if (getIntent().hasExtra("UPDATE")) {
 
-                            newlatitude = getIntent().getDoubleExtra(Constants.EXTRA_LATITUDE , 0);
-                            newlongitude = getIntent().getDoubleExtra(Constants.EXTRA_LONGITUDE , 0);
+                            newlatitude = getIntent().getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
+                            newlongitude = getIntent().getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
 
-                            Log.d("HAZEM" , "newlatitude " + newlatitude);
-                            Log.d("HAZEM" , "newlongitude " + newlongitude);
+                            Log.d("HAZEM", "newlatitude " + newlatitude);
+                            Log.d("HAZEM", "newlongitude " + newlongitude);
                         } else {
                             newlatitude = currentLocation.getLatitude();
                             newlongitude = currentLocation.getLongitude();
@@ -355,7 +359,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     }
                 }
-            }, null);
+            };
+
+            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationCallback, null);
+
         }
     }
 
@@ -602,20 +609,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void saveLocation(View view) {
 
-        if (getIntent()!=null)
-        {
-            if (getIntent().hasExtra("UPDATE"))
-            {
+        if (getIntent() != null) {
+            if (getIntent().hasExtra("UPDATE")) {
 
                 Intent intent = new Intent();
                 intent.putExtra("latitude", newLatitude);
                 intent.putExtra("longitude", newLongitude);
+                intent.putExtra("longitude", true);
 
-                setResult(1000, intent);
+
+                setResult(Constants.EXTRA_RESULT_CODE_CURRENT_LOCATION, intent);
                 finish();
-            }
-            else
-            {
+
+            } else {
                 Intent intent = new Intent(this, AddNewLocationActivity.class);
                 intent.putExtra("latitude", newLatitude);
                 intent.putExtra("longitude", newLongitude);
@@ -624,9 +630,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         }
-
-
-
 
 
 //        if (!newAddress.equals("")) {
@@ -664,4 +667,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
+
+    }
 }

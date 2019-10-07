@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.model.StoreTypes;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class LocationsActivity extends AppCompatActivity {
         storeTypes.add(new StoreTypes(1,"asd"));
         storeTypes.add(new StoreTypes(1,"asd"));
 
-        adapter = new LocationAdapter(this , storeTypes);
+       // adapter = new LocationAdapter(this , storeTypes);
 
         recyclerView.setAdapter(adapter);
         initActionBar();

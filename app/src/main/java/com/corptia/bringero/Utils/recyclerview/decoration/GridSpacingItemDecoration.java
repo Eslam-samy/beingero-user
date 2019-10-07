@@ -1,12 +1,9 @@
-package com.corptia.bringero.Utils.decoration;
+package com.corptia.bringero.Utils.recyclerview.decoration;
 
-import android.content.Context;
 import android.graphics.Rect;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.corptia.bringero.Common.Common;
 
 public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 

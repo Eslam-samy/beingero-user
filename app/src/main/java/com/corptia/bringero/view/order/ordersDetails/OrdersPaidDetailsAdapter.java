@@ -13,11 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.PicassoUtils;
-import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
-import com.corptia.bringero.model.CartModel;
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Nullable;
 

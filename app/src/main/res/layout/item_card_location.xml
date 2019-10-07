@@ -8,25 +8,25 @@
 
 
     <TextView
-        android:id="@+id/txt_name_brands"
+        android:id="@+id/txt_address_name"
         style="@style/TextCardDefaultStyle"
-        app:layout_constraintBottom_toTopOf="@+id/txt_staus"
+        app:layout_constraintBottom_toTopOf="@+id/txt_street"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="New Damietta - 33 Masr Street"
+        tools:text="New Damietta - 33 Masr Street"
         app:layout_constraintVertical_chainStyle="packed"
         android:fontFamily="@font/poppinsregular"
         android:layout_marginStart="@dimen/app_margin"/>
 
     <TextView
-        android:id="@+id/txt_staus"
+        android:id="@+id/txt_street"
         style="@style/TextCardDefaultStyle"
         android:textColor="@color/colorDavyGray"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/txt_name_brands"
-        app:layout_constraintTop_toBottomOf="@+id/txt_name_brands"
+        app:layout_constraintStart_toStartOf="@+id/txt_address_name"
+        app:layout_constraintTop_toBottomOf="@+id/txt_address_name"
         android:layout_marginStart="0dp"
-        android:text="56 Shops"
+        tools:text="56 Shops"
         android:fontFamily="@font/poppinsregular"
         android:textSize="@dimen/low_x_text_size" />
 

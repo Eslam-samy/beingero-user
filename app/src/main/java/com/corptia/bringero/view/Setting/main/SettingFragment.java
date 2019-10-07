@@ -17,6 +17,8 @@ import android.widget.Toast;
 import com.corptia.bringero.R;
 import com.corptia.bringero.view.Main.MainActivity;
 import com.corptia.bringero.view.home.HomeActivity;
+import com.corptia.bringero.view.location.AllLocation.LocationsDeliveryActivity;
+import com.corptia.bringero.view.location.addNewLocation.AddNewLocationActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,25 +77,25 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
 
         switch (view.getId()) {
             case R.id.btn_edit_profile:
-                //navController.navigate(R.id.action_settingFragment2_to_editProfileFragment);
-                HomeActivity.navController.navigate(R.id.action_nav_settings_to_editProfileFragment2);
+                navController.navigate(R.id.action_settingFragment2_to_editProfileFragment);
+                //HomeActivity.navController.navigate(R.id.action_nav_settings_to_editProfileFragment2);
                 break;
             case R.id.btn_address:
-                // navController.navigate(R.id.action_settingFragment2_to_editProfileFragment);
-                Toasty.warning(getActivity(), "Change Address").show();
+                 startActivity(new Intent(getActivity() , LocationsDeliveryActivity.class));
+                //Toasty.warning(getActivity(), "Change Address").show();
                 break;
             case R.id.btn_change_password:
-                //navController.navigate(R.id.action_settingFragment2_to_changePasswordFragment);
-                HomeActivity.navController.navigate(R.id.action_nav_settings_to_changePasswordFragment2);
+                navController.navigate(R.id.action_settingFragment2_to_changePasswordFragment);
+                //HomeActivity.navController.navigate(R.id.action_nav_settings_to_changePasswordFragment2);
 
                 break;
             case R.id.btn_contact_us:
-                //navController.navigate(R.id.action_settingFragment2_to_contactUsFragment);
-                HomeActivity.navController.navigate(R.id.action_nav_settings_to_contactUsFragment2);
+                navController.navigate(R.id.action_settingFragment2_to_contactUsFragment);
+                //HomeActivity.navController.navigate(R.id.action_nav_settings_to_contactUsFragment2);
                 break;
             case R.id.btn_language:
-                //navController.navigate(R.id.action_settingFragment2_to_languageFragment);
-                HomeActivity.navController.navigate(R.id.action_nav_settings_to_languageFragment2);
+                navController.navigate(R.id.action_settingFragment2_to_languageFragment);
+                //HomeActivity.navController.navigate(R.id.action_nav_settings_to_languageFragment2);
                 break;
             case R.id.btn_log_out:
                 //Toasty.warning(getActivity() , "LogOut").show();

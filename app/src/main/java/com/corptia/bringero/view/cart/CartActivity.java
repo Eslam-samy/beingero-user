@@ -9,11 +9,10 @@ import android.os.Bundle;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.model.CartModel;
 import com.corptia.bringero.view.cart.Adapter.CartAdapter;
-import com.corptia.bringero.view.cart.Adapter.CartItemsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

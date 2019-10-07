@@ -5,4 +5,5 @@ import com.corptia.bringero.view.Main.login.LoginContract;
 public interface SelectDeliveryLocationView extends LoginContract.LoginView {
 
     void onSuccessUpdateCurrentLocation();
+    void onSuccessUpdateNestedLocation();
 }

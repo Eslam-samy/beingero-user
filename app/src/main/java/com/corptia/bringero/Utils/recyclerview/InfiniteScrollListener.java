@@ -1,4 +1,4 @@
-package com.corptia.bringero.Utils;
+package com.corptia.bringero.Utils.recyclerview;
 
 
 import androidx.annotation.NonNull;

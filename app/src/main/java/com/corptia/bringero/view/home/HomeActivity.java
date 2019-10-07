@@ -8,6 +8,7 @@ import com.corptia.bringero.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -83,6 +84,7 @@ public class HomeActivity extends AppCompatActivity implements
 
         initToolbar(toolbar);
         initNavigationView();
+        initDrawerView();
 
 
         // navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -121,6 +123,18 @@ public class HomeActivity extends AppCompatActivity implements
 
         //---------------- Menu ----------------------
 
+
+    }
+
+    private void initDrawerView() {
+
+        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
 
     }
 
