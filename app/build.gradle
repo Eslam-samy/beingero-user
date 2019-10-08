@@ -12,6 +12,18 @@ android {
         versionName "0.01"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    //--------------- من صفوت ------------
+//    signingConfigs {
+////        debug {
+////            storeFile file("D:\\Hazem\\Brengeroo\\googlePlay\\bringero.jks")
+////            storePassword "bringero123456"
+////            keyAlias "bringero_key"
+////            keyPassword "bringero123456"
+////        }
+////    }
+    //---------------
+
     buildTypes {
         release {
             minifyEnabled false

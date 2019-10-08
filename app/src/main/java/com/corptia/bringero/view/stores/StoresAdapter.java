@@ -11,8 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
 import com.corptia.bringero.view.storesDetail.StoreDetailActivity;
 
@@ -46,6 +48,11 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
         //Picasso.get().load(storeTypes.imageId())
          //       .into(holder.image_brands);
 
+        if (storeTypes.ImageResponse().data()!=null)
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_brands);
+        else
+            PicassoUtils.setImage( holder.image_brands);
+
         holder.txt_name_brands.setText(storeTypes.name());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +62,11 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
                 intentStore.putExtra(Constants.EXTRA_STORE_ID , storeTypes._id());
                 intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID , storeTypes.adminUserId());
                 intentStore.putExtra(Constants.EXTRA_STORE_NAME , storeTypes.name());
+                if (storeTypes.ImageResponse().data()!=null)
+                intentStore.putExtra(Constants.EXTRA_STORE_IMAGE , storeTypes.ImageResponse().data().name());
+                else
+                    intentStore.putExtra(Constants.EXTRA_STORE_IMAGE , "null");
+
 
                 context.startActivity(intentStore);
             }

@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.model.CartItems;
 
@@ -24,9 +26,9 @@ import butterknife.ButterKnife;
 public class OrdersPaidDetailsItemsAdapter extends RecyclerView.Adapter<OrdersPaidDetailsItemsAdapter.ViewHolder> {
 
     Context context;
-    List<DeliveryOneOrderQuery.Data5> orderItems;
+    List<DeliveryOneOrderQuery.Data6> orderItems;
 
-    public OrdersPaidDetailsItemsAdapter(Context context, @Nullable List<DeliveryOneOrderQuery.Data5> orderItems) {
+    public OrdersPaidDetailsItemsAdapter(Context context, @Nullable List<DeliveryOneOrderQuery.Data6> orderItems) {
         this.context = context;
         this.orderItems = orderItems;
     }
@@ -40,10 +42,15 @@ public class OrdersPaidDetailsItemsAdapter extends RecyclerView.Adapter<OrdersPa
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        DeliveryOneOrderQuery.Data5 items = orderItems.get(position);
+        DeliveryOneOrderQuery.Data6 items = orderItems.get(position);
 
         holder.txt_name_product.setText(items.productName());
         holder.txt_price.setText(new StringBuilder().append(items.storePrice()).append(context.getString(R.string.currency)));
+
+//        if (items..StoreResponse().data().ImageResponse().data()!=null)
+//            PicassoUtils.setImage(Common.BASE_URL_IMAGE + items.StoreResponse().data().ImageResponse().data().name() , holder.image_store);
+//        else
+//            PicassoUtils.setImage( holder.image_store);
 
     }
 

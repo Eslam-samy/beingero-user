@@ -26,4 +26,6 @@ public class Constants {
     public static final String EXTRA_ADDRESS_BUILDING = "AddressBuilding";
     public static final String EXTRA_ADDRESS_STREET = "AddressStreet";
     public static final String EXTRA_UPDATE = "Update";
+    public static final String EXTRA_PRODUCT_IMAGE = "ProductImage";
+    public static final String EXTRA_STORE_IMAGE = "StoreImage";
 }

@@ -2,6 +2,7 @@ package com.corptia.bringero.view.location.AllLocation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +11,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -19,6 +22,7 @@ import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.recyclerview.SwipeToDeleteCallback;
 import com.corptia.bringero.graphql.MeQuery;
+import com.corptia.bringero.view.MapWork.MapsActivity;
 import com.corptia.bringero.view.location.addNewLocation.AddNewLocationActivity;
 import com.corptia.bringero.view.location.deliveryLocation.SelectDeliveryLocationPresenter;
 import com.corptia.bringero.view.location.deliveryLocation.SelectDeliveryLocationView;
@@ -32,6 +36,8 @@ import es.dmoral.toasty.Toasty;
 
 public class LocationsDeliveryActivity extends AppCompatActivity implements LocationsDeliveryView {
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.recycler_location)
     RecyclerView recycler_location;
 
@@ -46,7 +52,7 @@ public class LocationsDeliveryActivity extends AppCompatActivity implements Loca
 
     LocationsDeliveryPresenter presenter = new LocationsDeliveryPresenter(this);
 
-    AlertDialog dialog ;
+    AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,11 @@ public class LocationsDeliveryActivity extends AppCompatActivity implements Loca
         setContentView(R.layout.activity_locations_delivery);
 
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Location");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
 
@@ -161,7 +172,7 @@ public class LocationsDeliveryActivity extends AppCompatActivity implements Loca
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toasty.error(LocationsDeliveryActivity.this , Message);
+                Toasty.error(LocationsDeliveryActivity.this, Message);
             }
         });
     }
@@ -188,10 +199,14 @@ public class LocationsDeliveryActivity extends AppCompatActivity implements Loca
                     @Override
                     public void onClick(View view) {
 
-                        presenter.addNewAddress(item.name() , item.region() , item.street() , item.flatType() ,
-                                item.floor() , item.flat() , item.building() ,
-                                item.locationPoint().lat() ,
-                                item.locationPoint().lng() ,
+                        presenter.addNewAddress(item.name(),
+                                item.region(),
+                                item.street(),
+                                item.flatType(),
+                                item.floor(), item.flat(),
+                                item.building(),
+                                item.locationPoint().lat(),
+                                item.locationPoint().lng(),
                                 false);
 
 
@@ -205,6 +220,35 @@ public class LocationsDeliveryActivity extends AppCompatActivity implements Loca
         });
 
 
+    }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_location, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_menu_add:
+                Intent intent = new Intent(LocationsDeliveryActivity.this , MapsActivity.class);
+                intent.putExtra(Constants.EXTRA_IS_UPDATE_CURRENT_LOCATION  , false);
+                Common.isUpdateCurrentLocation = false;
+                startActivity(intent);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
+
+    //When Back Arrow
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

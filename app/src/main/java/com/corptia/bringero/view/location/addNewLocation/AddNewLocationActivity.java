@@ -2,6 +2,7 @@ package com.corptia.bringero.view.location.addNewLocation;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.model.FlatTypeModel;
@@ -44,6 +46,8 @@ import es.dmoral.toasty.Toasty;
 
 public class AddNewLocationActivity extends AppCompatActivity implements SelectDeliveryLocationView, OnMapReadyCallback {
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     @BindView(R.id.input_region)
     TextInputLayout input_region;
     @BindView(R.id.input_address_name)
@@ -78,7 +82,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
 
     FlatType mflatType;
 
-    //Fore Check if user no have any location and add new one must after add update current location
+    //For Check if user no have any location and add new one must after add update current location
     boolean isUpdateCurrentLocation;
     String name , _id_Address , flatType , region , street ;
     int flat , floor , building;
@@ -147,7 +151,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
                         Integer.parseInt(building),
                         latitude,
                         longitude,
-                        true);
+                        Common.isUpdateCurrentLocation);
             }
 
 
@@ -176,11 +180,18 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
 
         fillSpinnerLanguage();
 
+        //Toolbar
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         intent = getIntent();
         if (intent != null) {
 
             if (intent.hasExtra(Constants.EXTRA_UPDATE)) {
+
+                getSupportActionBar().setTitle(R.string.update_location);
 
                 _id_Address = intent.getStringExtra(Constants.EXTRA_ADDRESS_ID);
                 name = intent.getStringExtra(Constants.EXTRA_ADDRESS_NAME);
@@ -205,12 +216,18 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
 
 
             } else {
+
+                getSupportActionBar().setTitle(R.string.add_new_location);
+
+
                 latitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
                 longitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
                 isUpdateCurrentLocation = intent.getBooleanExtra(Constants.EXTRA_IS_UPDATE_CURRENT_LOCATION, false);
             }
 
         }
+
+
 
 
     }
@@ -246,7 +263,9 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
             @Override
             public void run() {
 
+                if (Common.isUpdateCurrentLocation)
                 startActivity(new Intent(AddNewLocationActivity.this, HomeActivity.class));
+                else finish();
             }
         });
 
@@ -351,7 +370,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
 
         if (data != null) {
 
-            if (requestCode == 1000) {
+            if (requestCode == Constants.EXTRA_RESULT_CODE_CURRENT_LOCATION) {
 
                 double latitudeIntent = data.getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
                 double longitudeIntent = data.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
@@ -361,7 +380,7 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
 
                 LatLng latLng = new LatLng(latitude, longitude);
 
-                Log.d("HAZEM", "New Update " + latitude + " " + longitude);
+                Log.d("HAZEM", "onActivityResult Update " + latitude + " " + longitude);
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
@@ -379,5 +398,13 @@ public class AddNewLocationActivity extends AppCompatActivity implements SelectD
         } else {
 
         }
+    }
+
+
+    //When Back Arrow
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

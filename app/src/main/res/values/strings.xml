@@ -136,6 +136,8 @@
     <string name="title_location_permission">Location Permission Needed</string>
     <string name="text_location_permission">Allow GoFair to acccess your Location</string>
     <string name="ok">OK</string>
+    <string name="add_new_location">Add new location</string>
+    <string name="update_location">Update Location</string>
 
 
 </resources>

@@ -29,7 +29,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public class MyApolloClient {
 
     //TODO private static final DEMO String BASE_URL = "";
-    private static final String BASE_URL = "http://45.77.157.193:8000/graphql";
     private static ApolloClient apolloClient;
 
     //Without Any Token
@@ -44,7 +43,7 @@ public class MyApolloClient {
                 .build();
 
         apolloClient = ApolloClient.builder()
-                .serverUrl(BASE_URL)
+                .serverUrl(Common.BASE_URL)
                 .okHttpClient(okHttpClient)
                 .build();
 
@@ -131,7 +130,7 @@ public class MyApolloClient {
                 .build();
 
         apolloClient = ApolloClient.builder()
-                .serverUrl(BASE_URL)
+                .serverUrl(Common.BASE_URL)
                 .okHttpClient(okHttpClient)
                 .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
                 .build();
@@ -204,7 +203,7 @@ public class MyApolloClient {
                 .build();
 
         apolloClient = ApolloClient.builder()
-                .serverUrl(BASE_URL)
+                .serverUrl(Common.BASE_URL)
                 .okHttpClient(okHttpClient)
                 .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
                 .build();

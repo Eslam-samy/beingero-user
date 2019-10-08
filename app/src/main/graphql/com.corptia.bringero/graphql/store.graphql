@@ -11,7 +11,11 @@ query getStoresOfASingleCategory($typeId: ID,$paginate:paginationInput) {
             Stores : data {
                 _id
                 name
-                imageId
+                ImageResponse {
+                    data {
+                        name
+                    }
+                }
                 storeTypeId
                 adminUserId
             }
@@ -29,7 +33,11 @@ query singleStoreHeader($storeId: ID) {
                 _id
                 name
                 productTypeIds
-                imageId
+                ImageResponse {
+                    data {
+                        name
+                    }
+                }
             }
         }
     }
@@ -50,6 +58,11 @@ query singleStore($filter: StoreFilterInput) {
                     data{
                         _id
                         name
+                        ImageResponse {
+                            data {
+                                name
+                            }
+                        }
                     }
                 }
             }

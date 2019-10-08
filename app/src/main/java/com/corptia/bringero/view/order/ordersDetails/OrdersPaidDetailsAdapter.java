@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 
@@ -49,6 +50,11 @@ public class OrdersPaidDetailsAdapter extends RecyclerView.Adapter<OrdersPaidDet
         //PicassoUtils.setImage("",holder.image_store);
         holder.txt_status.setText(order.status().rawValue());
         holder.txt_name_store.setText(order.StoreResponse().data().name());
+
+        if (order.StoreResponse().data().ImageResponse().data()!=null)
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + order.StoreResponse().data().ImageResponse().data().name() , holder.image_store);
+        else
+            PicassoUtils.setImage( holder.image_store);
 
         adapterItems = new OrdersPaidDetailsItemsAdapter(context , order.ItemsResponse().data());
         holder.recycler_items.setLayoutManager(new LinearLayoutManager(context));

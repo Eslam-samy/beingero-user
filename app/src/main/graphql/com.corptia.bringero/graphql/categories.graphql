@@ -11,6 +11,12 @@ query getAllCategories($paginate:paginationInput){
             StoreCategory:data{
                 _id
                 name
+                ImageResponse{
+                    data{
+                        name
+                    }
+                }
+
             }
         }
     }
