@@ -16,6 +16,10 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
+import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +67,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.recycler_items.setAdapter(itemsAdapter);
 
         holder.txt_name_store.setText(cartModel.Store().name());
+        //holder.txt_total_price.setText(""+cartModel.TotalPrice());
 
         if (cartModel.Store().ImageResponse().data()!=null)
         PicassoUtils.setImage(Common.BASE_URL_IMAGE + cartModel.Store().ImageResponse().data().name(), holder.image_store);
@@ -98,6 +103,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         ImageView image_store;
         @BindView(R.id.txt_name_store)
         TextView txt_name_store;
+//        @BindView(R.id.txt_total_price)
+//        TextView txt_total_price;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -111,4 +118,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public interface CallBackUpdateCartItemsListener {
         void callBack(String itemId, int amount);
     }
+
+
 }

@@ -38,6 +38,7 @@ query MyCartQuery {
                         updatedAt
                         storePrice
                         storePrice
+                        amount
 
                     }
                     amount

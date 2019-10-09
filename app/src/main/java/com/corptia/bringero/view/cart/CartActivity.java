@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
@@ -26,6 +27,8 @@ public class CartActivity extends AppCompatActivity implements CartContract.Cart
     RecyclerView recycler_cart;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.total_price)
+    TextView total_price;
 
     CartAdapter cartAdapter ;
     List<CartModel> cartItemsList = new ArrayList<>();
@@ -42,18 +45,18 @@ public class CartActivity extends AppCompatActivity implements CartContract.Cart
     }
 
 
-    @Override
-    public void setMyCart(List<MyCartQuery.StoreDatum> myCartData) {
-        runOnUiThread(() -> {
-            cartAdapter = new CartAdapter(CartActivity.this , myCartData , true);
-            recycler_cart.setAdapter(cartAdapter);
-            recycler_cart.setLayoutManager(new LinearLayoutManager(CartActivity.this));
-            recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,CartActivity.this)));
-
-
-        });
-
-    }
+//    @Override
+//    public void setMyCart(List<MyCartQuery.StoreDatum> myCartData) {
+//        runOnUiThread(() -> {
+//            cartAdapter = new CartAdapter(CartActivity.this , myCartData , true);
+//            recycler_cart.setAdapter(cartAdapter);
+//            recycler_cart.setLayoutManager(new LinearLayoutManager(CartActivity.this));
+//            recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,CartActivity.this)));
+//
+//
+//        });
+//
+//    }
 
     @Override
     public void showProgressBar() {
@@ -72,6 +75,11 @@ public class CartActivity extends AppCompatActivity implements CartContract.Cart
 
     @Override
     public void onSuccessMessage(String message) {
+
+    }
+
+    @Override
+    public void setMyCart(MyCartQuery.MyCart myCartData) {
 
     }
 

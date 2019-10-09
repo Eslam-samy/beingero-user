@@ -11,7 +11,7 @@ public class CartContract {
 
     public interface CartView extends BaseView {
 
-        void setMyCart(List<MyCartQuery.StoreDatum> myCartData);
+        void setMyCart(MyCartQuery.MyCart myCartData);
 
     }
 }

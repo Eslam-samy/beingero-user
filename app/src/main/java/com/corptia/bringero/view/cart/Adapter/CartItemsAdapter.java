@@ -18,7 +18,9 @@ import com.corptia.bringero.Interface.IOnImageViewAdapterClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.graphql.MyCartQuery;
+import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -62,37 +64,52 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         holder.txt_price.setText("" + item.PricingProduct().storePrice() + " " + context.getString(R.string.currency));
         holder.txt_name_product.setText(item.PricingProduct().Product().name());
 
-        if (item.PricingProduct().Product().ImageResponse().data()!=null)
-        PicassoUtils.setImage(Common.BASE_URL_IMAGE + item.PricingProduct().Product().ImageResponse().data().name() , holder.image_product);
+
+        if (item.PricingProduct().Product().ImageResponse().data() != null)
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + item.PricingProduct().Product().ImageResponse().data().name(), holder.image_product);
         else
-            PicassoUtils.setImage( holder.image_product);
+            PicassoUtils.setImage(holder.image_product);
 
         //Log.d("HAZEM" , "FULL : " +Common.BASE_URL_IMAGE +item.PricingProduct().Product().imageId() );
 
 
         if (isCart) {
             holder.txt_quantity.setText("" + item.amount());
+            holder.txt_total_price.setText("" + item.totalPrice());
 
             //Event
             holder.setListener((view, position1, isDecrease, isDelete) -> {
 
                 if (!isDelete) {
                     //If not Button delete food From Cart Click
-
+                    int totalAmountStore = 9999;
+                    if (item.PricingProduct().amount() != null)
+                        totalAmountStore = item.PricingProduct().amount();
                     int amount = Integer.parseInt(holder.txt_quantity.getText().toString());
+
                     if (isDecrease) //if Decrease quantity
                     {
                         if (amount > 1) {
                             holder.txt_quantity.setText("" + (amount - 1));
+                            EventBus.getDefault().postSticky(new CalculatePriceEvent(item._id(), amount - 1, -item.PricingProduct().storePrice()));
+                            holder.txt_total_price.setText("" + ((amount - 1) * item.PricingProduct().storePrice()));
+
+
                         }
                     } else {
-                        if (amount < item.PricingProduct().amount()) {
+                        if (amount < totalAmountStore) {
                             holder.txt_quantity.setText("" + (amount + 1));
+                            EventBus.getDefault().postSticky(new CalculatePriceEvent(item._id(), amount + 1, item.PricingProduct().storePrice()));
+                            holder.txt_total_price.setText("" + ((amount + 1) * item.PricingProduct().storePrice()));
+
                         }
+
+
                     }
 
+
                     if (updateCartItemsListener != null) {
-                        updateCartItemsListener.onUpdateCart(item._id(), Integer.parseInt(holder.txt_quantity.getText().toString()));
+                        //updateCartItemsListener.onUpdateCart(item._id(), Integer.parseInt(holder.txt_quantity.getText().toString()));
                     }
 
                 } else {
@@ -159,6 +176,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         //@BindView(R.id.chb_select_item)
         CheckBox chb_select_item;
 
+        TextView txt_total_price;
+
 
         IOnImageViewAdapterClickListener listener;
 
@@ -179,6 +198,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                 img_increase = itemView.findViewById(R.id.img_increase);
                 img_delete_product = itemView.findViewById(R.id.img_delete_product);
                 chb_select_item = itemView.findViewById(R.id.chb_select_item);
+                txt_total_price = itemView.findViewById(R.id.txt_total_price);
 
                 img_decrease.setOnClickListener(this);
                 img_increase.setOnClickListener(this);

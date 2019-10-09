@@ -31,7 +31,7 @@ public class CartPresenter {
                     public void onResponse(@NotNull Response<MyCartQuery.Data> response) {
                         MyCartQuery.MyCart myCart = response.data().CartItemQuery().myCart();
                         if (myCart.status() == 200) {
-                            view.setMyCart(myCart.storeData());
+                            view.setMyCart(myCart);
                         }
 
                         else

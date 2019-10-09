@@ -35,6 +35,19 @@
         app:layout_constraintStart_toEndOf="@+id/card_image_brands"
         android:layout_marginStart="@dimen/large_margin"/>
 
+    <TextView
+        android:id="@+id/txt_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/app_margin"
+        app:layout_constraintTop_toTopOf="@+id/card_image_brands"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/card_image_brands"
+        tools:text="250 EGP"
+        android:textColor="@color/colorAccent"
+        android:visibility="gone"
+        />
+
 
     <View
         android:id="@+id/line"

@@ -106,6 +106,7 @@ dependencies {
 
     implementation 'com.github.florent37:expansionpanel:1.2.2'
     implementation 'com.facebook.shimmer:shimmer:0.4.0@aar'
+    implementation 'org.greenrobot:eventbus:3.1.1'
 
 
 }

@@ -12,13 +12,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
+import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 import com.corptia.bringero.view.cart.Adapter.CartAdapter;
 import com.corptia.bringero.view.home.HomeActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -33,9 +39,13 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     private CartAdapter cartAdapter;
     @BindView(R.id.btn_next)
     Button btn_next;
+    @BindView(R.id.total_price)
+    TextView total_price;
 
     Handler handler = new Handler();
     CartPresenter cartPresenter = new CartPresenter(this);
+
+    double totalPrice = 0;
 
     public CartFragment() {
         // Required empty public constructor
@@ -55,13 +65,14 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     }
 
     @Override
-    public void setMyCart(List<MyCartQuery.StoreDatum> myCartData) {
-
+    public void setMyCart(MyCartQuery.MyCart myCartData) {
 
         handler.post(() -> {
 
+            totalPrice = myCartData.TotalPrice() ;
+
             //stickyRecyclerView.setDataSource(myCartData);
-            cartAdapter = new CartAdapter(getActivity(), myCartData , true);
+            cartAdapter = new CartAdapter(getActivity(), myCartData.storeData() , true);
             recycler_cart.setLayoutManager(new LinearLayoutManager(getActivity()));
             recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, getActivity())));
             recycler_cart.setAdapter(cartAdapter);
@@ -69,8 +80,12 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
             if (myCartData!= null)
             {
-                if (myCartData.size()!=0) {
-                    Common.CURRENT_CART = myCartData;
+                if (myCartData.storeData().size()!=0) {
+
+                    Common.CURRENT_CART = myCartData.storeData();
+
+                    total_price.setText(new StringBuilder().append(totalPrice).append(getString(R.string.currency)));
+
 
                     btn_next.setOnClickListener(view1 -> {
                         HomeActivity.navController.navigate(R.id.action_nav_cart_to_checkOutFragment);
@@ -80,7 +95,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                 }
             }
             cartAdapter.setCallBackUpdateCartItemsListener((itemId, amount) -> {
-                cartPresenter.updateCartItems(itemId , amount);
+                //cartPresenter.updateCartItems(itemId , amount);
             });
 
 
@@ -106,5 +121,41 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @Override
     public void onSuccessMessage(String message) {
 
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void calculatePrice(CalculatePriceEvent event) {
+        if (event != null) {
+            calculateCartTotalPrice(event.getProductId() , event.getAmount() , event.getStorePrice());
+        }
+    }
+
+    private void calculateCartTotalPrice(String productId, int amount, double storePrice) {
+
+        cartPresenter.updateCartItems(productId , amount);
+
+        totalPrice += storePrice;
+
+        total_price.setText(new StringBuilder().append(totalPrice).append(getString(R.string.currency)));
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }
