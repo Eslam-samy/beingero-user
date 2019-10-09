@@ -52,7 +52,7 @@ import com.google.firebase.messaging.RemoteMessage;
  */
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private static final String USER_TOKEN = "user_token";
+    public static final String USER_TOKEN = "user_token";
 
     private static final String TAG = "MyFirebaseMsgService";
 
@@ -68,7 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         String messageBody = "Hello!";
-        Log.e(TAG, "onMessageReceived: YesssssssssssSSSSSSSSSSS" );
+        //Log.e(TAG, "onMessageReceived: YesssssssssssSSSSSSSSSSS" );
         sendNotification(messageBody);
     }
 
