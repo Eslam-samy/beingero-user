@@ -11,8 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.graphql.GetAllCategoriesQuery;
 import com.corptia.bringero.view.stores.StoresActivity;
 
@@ -45,6 +47,13 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
 
         //Picasso.get().load(storeTypes.g())
          //       .into(holder.image_storetype);
+
+        //PicassoUtils.setImage(storeTypes.);
+
+        if ( storeTypes.ImageResponse().data()!=null)
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_storetype);
+        else
+            PicassoUtils.setImage( holder.image_storetype);
 
         holder.txt_name_storetype.setText(storeTypes.name());
 

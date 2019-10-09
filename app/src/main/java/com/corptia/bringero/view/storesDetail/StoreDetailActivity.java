@@ -18,6 +18,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetProductQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
@@ -51,11 +52,10 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
     @BindView(R.id.txt_name_store)
     TextView txt_name_store;
 
-
-    Intent intent;
     String adminUserId = "";
     String storeId ="";
     String storeName="";
+    String storeImage="";
     //Presenter
     StoreDetailPresenter presenter ;
 
@@ -69,6 +69,10 @@ public class StoreDetailActivity extends AppCompatActivity implements StoreDetai
         adminUserId = intent.getStringExtra(Constants.EXTRA_ADMIN_USER_ID);
         storeId = intent.getStringExtra(Constants.EXTRA_STORE_ID);
         storeName = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
+        storeImage = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
+
+        PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeImage ,image_store);
+
         txt_name_store.setText(storeName);
 
         initActionBar();

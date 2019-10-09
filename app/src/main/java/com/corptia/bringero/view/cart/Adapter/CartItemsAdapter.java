@@ -1,17 +1,11 @@
 package com.corptia.bringero.view.cart.Adapter;
 
 import android.content.Context;
-import android.media.Image;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,11 +13,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnImageViewAdapterClickListener;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.EditText.InputFilterMinMax;
+import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.graphql.MyCartQuery;
-import com.corptia.bringero.view.cart.CartPresenter;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -67,6 +61,14 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
         holder.txt_price.setText("" + item.PricingProduct().storePrice() + " " + context.getString(R.string.currency));
         holder.txt_name_product.setText(item.PricingProduct().Product().name());
+
+        if (item.PricingProduct().Product().ImageResponse().data()!=null)
+        PicassoUtils.setImage(Common.BASE_URL_IMAGE + item.PricingProduct().Product().ImageResponse().data().name() , holder.image_product);
+        else
+            PicassoUtils.setImage( holder.image_product);
+
+        //Log.d("HAZEM" , "FULL : " +Common.BASE_URL_IMAGE +item.PricingProduct().Product().imageId() );
+
 
         if (isCart) {
             holder.txt_quantity.setText("" + item.amount());

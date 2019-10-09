@@ -93,6 +93,7 @@ public class SelectDeliveryLocationActivity extends AppCompatActivity implements
             @Override
             public void onClick(View view) {
                 //Here Open Maps
+                Common.isUpdateCurrentLocation = true;
                 startActivity(new Intent(SelectDeliveryLocationActivity.this , MapsActivity.class));
                 bottomSheetDialog.dismiss();
             }

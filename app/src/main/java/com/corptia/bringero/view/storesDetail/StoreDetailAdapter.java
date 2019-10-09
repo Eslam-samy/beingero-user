@@ -12,8 +12,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.graphql.GetProductQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.model.StoreTypes;
@@ -52,6 +54,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
         GetStoreProductsQuery.Product product = productsList.get(position);
         holder.txt_price.setText(""+product.storePrice());
         holder.txt_name_product.setText(product.Product().name());
+
+        if (product.Product().ImageResponse().data()!=null)
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + product.Product().ImageResponse().data().name() , holder.image_product);
+        else
+            PicassoUtils.setImage( holder.image_product);
 
         if (listener !=null)
         {

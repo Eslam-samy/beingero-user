@@ -128,6 +128,8 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                     Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
                     GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
                     intent.putExtra(Constants.EXTRA_PRODUCT_ID , mProduct._id());
+                    if (mProduct.Product().ImageResponse().data()!=null)
+                    intent.putExtra(Constants.EXTRA_PRODUCT_IMAGE , mProduct.Product().ImageResponse().data().name());
                     startActivity(intent);
 
 

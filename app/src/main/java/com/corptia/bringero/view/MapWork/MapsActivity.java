@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.view.location.addNewLocation.AddNewLocationActivity;
@@ -86,7 +87,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static ArrayList<MyLatLng> listPoints;
 
     Boolean firstTime;
-//    Toolbar toolbar;
+
+    //Toolbar toolbar;
 
     //This Local Data Will Store After Click On Map To get Tour Location
     double latitude, longitude, newLatitude, newLongitude;
@@ -613,20 +615,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (getIntent().hasExtra("UPDATE")) {
 
                 Intent intent = new Intent();
-                intent.putExtra("latitude", newLatitude);
-                intent.putExtra("longitude", newLongitude);
-                intent.putExtra("longitude", true);
+                intent.putExtra(Constants.EXTRA_LATITUDE, newLatitude);
+                intent.putExtra(Constants.EXTRA_LONGITUDE, newLongitude);
+                //intent.putExtra("longitude", true);
 
+                //Log.d("HAZEM" , "This From Update : " + newLatitude + " - " + newLongitude);
 
                 setResult(Constants.EXTRA_RESULT_CODE_CURRENT_LOCATION, intent);
                 finish();
 
             } else {
                 Intent intent = new Intent(this, AddNewLocationActivity.class);
-                intent.putExtra("latitude", newLatitude);
-                intent.putExtra("longitude", newLongitude);
+                intent.putExtra(Constants.EXTRA_LATITUDE, newLatitude);
+                intent.putExtra(Constants.EXTRA_LONGITUDE, newLongitude);
                 startActivity(intent);
                 finish();
+
+                //Log.d("HAZEM" , "First Time : " + newLatitude + " - " + newLongitude);
+
             }
 
         }
@@ -662,7 +668,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     //When Back Arrow
     @Override
     public boolean onSupportNavigateUp() {
-
         finish();
         return true;
     }

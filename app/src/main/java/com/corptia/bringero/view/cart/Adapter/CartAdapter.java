@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
 
@@ -35,7 +36,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         this.callBackUpdateCartItemsListener = callBackUpdateCartItemsListener;
     }
 
-    public CartAdapter(Context context, List<MyCartQuery.StoreDatum> cartModels , boolean isCart) {
+    public CartAdapter(Context context, List<MyCartQuery.StoreDatum> cartModels, boolean isCart) {
         this.context = context;
         this.myCartList = cartModels;
         this.isCart = isCart;
@@ -45,7 +46,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (isCart)
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_cart_header, parent, false));
+            return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_cart_header, parent, false));
         else
             return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_cart_header_check_out, parent, false));
     }
@@ -54,7 +55,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         MyCartQuery.StoreDatum cartModel = myCartList.get(position);
-        itemsAdapter = new CartItemsAdapter(context, cartModel.Items() ,isCart);
+        itemsAdapter = new CartItemsAdapter(context, cartModel.Items(), isCart);
 
         holder.recycler_items.setNestedScrollingEnabled(false);
         holder.recycler_items.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
@@ -62,6 +63,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.recycler_items.setAdapter(itemsAdapter);
 
         holder.txt_name_store.setText(cartModel.Store().name());
+
+        if (cartModel.Store().ImageResponse().data()!=null)
+        PicassoUtils.setImage(Common.BASE_URL_IMAGE + cartModel.Store().ImageResponse().data().name(), holder.image_store);
+        else
+            PicassoUtils.setImage( holder.image_store);
+
+        //Log.d("HAZEM" , "FULL : " +Common.BASE_URL_IMAGE + cartModel.Store().imageId());
+
 
         if (callBackUpdateCartItemsListener != null) {
 

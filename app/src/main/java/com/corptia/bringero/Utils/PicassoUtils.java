@@ -2,6 +2,7 @@ package com.corptia.bringero.Utils;
 
 import android.widget.ImageView;
 
+import com.corptia.bringero.R;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -26,15 +27,48 @@ public class PicassoUtils {
 
     public static void setImage(String url, ImageView target){
 
-        Picasso.get()
-                .load(url)
-                //.resize(size,size)
-                //.transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
-                .onlyScaleDown()
-                //.centerCrop()
-                .networkPolicy(NetworkPolicy.OFFLINE)
-                .into(target);
+
+        if (!url.contains("null"))
+        {
+
+            Picasso.get()
+                    .load(url)
+                    //.resize(size,size)
+                    //.transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
+//                    .onlyScaleDown()
+                    //.centerCrop()
+                    //.networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(target);
+        }
+        else
+        {
+
+            Picasso.get()
+                    .load(R.drawable.ic_placeholder_product)
+                    //.resize(size,size)
+                    //.transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
+                    //.onlyScaleDown()
+                    //.centerCrop()
+                    //.networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(target);
+        }
+
 
     }
+
+    public static void setImage(ImageView target){
+
+            Picasso.get()
+                    .load(R.drawable.ic_placeholder_product)
+                    //.resize(size,size)
+                    //.transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
+                    //.onlyScaleDown()
+                    //.centerCrop()
+                    //.networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(target);
+
+    }
+
+
 
 }

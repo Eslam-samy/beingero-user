@@ -1,42 +1,58 @@
-query MyCartQuery{
-    CartItemQuery{
-        myCart{
+query MyCartQuery {
+    CartItemQuery {
+        myCart {
             status
             message
-            errors{
+            errors {
                 code
                 path
                 message
                 validValue
             }
-            storeData:data{
-                Store{
+            storeData: data {
+                Store {
                     _id
                     name
-                }
-                Items{
-                    _id
-                    amount
-                    PricingProduct{
-                        Product{
-                            _id
+
+                    ImageResponse {
+                        data {
                             name
                         }
-                        _id
-                        #createdAt
-                        #updatedAt
-                        storePrice
-                        amount
                     }
                 }
+                Items {
+                    _id
+
+                    PricingProduct {
+                        Product {
+                            _id
+                            name
+                            ImageResponse {
+                                data {
+                                    name
+                                }
+                            }
+                        }
+                        _id
+                        createdAt
+                        updatedAt
+                        storePrice
+                        storePrice
+
+                    }
+                    amount
+                    totalPrice
+                }
+                TotalPrice
             }
+            TotalPrice
         }
     }
 }
 
 mutation createCartItem($data: createCartItem) {
     CartItemMutation {
-        create(data :$data) {
+        create(data: $data) {
             status
             message
             errors {
@@ -54,10 +70,9 @@ mutation createCartItem($data: createCartItem) {
     }
 }
 
-
-mutation updateCartItem ($id:ID! , $data :updateCartItem){
+mutation updateCartItem($id: ID!, $data: updateCartItem) {
     CartItemMutation {
-        update(_id: $id, data : $data) {
+        update(_id: $id, data: $data) {
             status
             message
             errors {
@@ -71,8 +86,8 @@ mutation updateCartItem ($id:ID! , $data :updateCartItem){
                 userId
                 pricingProductId
                 amount
-                #                createdAt
-                #                updatedAt
+                createdAt
+                updatedAt
             }
         }
     }

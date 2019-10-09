@@ -46,6 +46,11 @@ query getStoreProducts($storeId:ID! , $filter: storeGalleryFilter!){
                     name
                     unitId
                     typeId
+                    ImageResponse {
+                        data {
+                            name
+                        }
+                    }
                 }
             }
         }
@@ -63,6 +68,11 @@ query getNotPricedBy($storeId: ID! , $filter: ProductFilterInput){
             Products:data{
                 _id
                 name
+                ImageResponse {
+                    data {
+                        name
+                    }
+                }
             }
         }
     }
@@ -104,6 +114,11 @@ query SingleProduct($_id: ID) {
                 StoreResponse{
                     data{
                         name
+                        ImageResponse {
+                            data {
+                                name
+                            }
+                        }
                     }
                 }
                 ProductResponse{
@@ -112,6 +127,11 @@ query SingleProduct($_id: ID) {
                         name
                         customerPrice
                         description
+                        ImageResponse {
+                            data {
+                                name
+                            }
+                        }
                     }
                 }
 

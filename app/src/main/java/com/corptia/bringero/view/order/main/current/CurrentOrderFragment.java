@@ -60,52 +60,6 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
         //recycler_current_order.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,getActivity())));
 
 
-        List<CartModel> storeTypes = new ArrayList<>();
-
-        List<CartItems> cartItems = new ArrayList<>();
-        cartItems.add(new CartItems("Asd"));
-        cartItems.add(new CartItems("Asd"));
-        cartItems.add(new CartItems("Asd"));
-        cartItems.add(new CartItems("Asd"));
-        cartItems.add(new CartItems("Asd"));
-        cartItems.add(new CartItems("Asd"));
-        cartItems.add(new CartItems("Asd"));
-        storeTypes.add(new CartModel("", cartItems));
-
-        List<CartItems> cartItems2 = new ArrayList<>();
-
-        cartItems2.add(new CartItems("Asd"));
-        cartItems2.add(new CartItems("Asd"));
-        cartItems2.add(new CartItems("Asd"));
-        cartItems2.add(new CartItems("Asd"));
-        cartItems2.add(new CartItems("Asd"));
-        cartItems2.add(new CartItems("Asd"));
-        storeTypes.add(new CartModel("", cartItems2));
-
-        List<CartItems> cartItems3 = new ArrayList<>();
-
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        cartItems3.add(new CartItems("Asd"));
-        storeTypes.add(new CartModel("", cartItems));
-
-
-
-
-
         return view;
     }
 

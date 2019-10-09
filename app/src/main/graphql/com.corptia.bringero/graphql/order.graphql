@@ -177,7 +177,11 @@ query deliveryOneOrder($filter: DeliveryOrderFilterInput) {
                             data {
                                 _id
                                 name
-                                imageId
+                                ImageResponse {
+                                    data {
+                                        name
+                                    }
+                                }
                                 CityReponse {
                                     data {
                                         _id
