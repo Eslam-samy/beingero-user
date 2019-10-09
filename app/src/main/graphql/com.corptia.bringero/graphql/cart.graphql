@@ -22,7 +22,7 @@ query MyCartQuery {
                 }
                 Items {
                     _id
-                    amount
+
                     PricingProduct {
                         Product {
                             _id
@@ -37,10 +37,15 @@ query MyCartQuery {
                         createdAt
                         updatedAt
                         storePrice
-                        amount
+                        storePrice
+
                     }
+                    amount
+                    totalPrice
                 }
+                TotalPrice
             }
+            TotalPrice
         }
     }
 }
