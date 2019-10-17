@@ -73,6 +73,11 @@ mutation signUpSecondStep($data: signupInput) {
         signup(data: $data) {
             status
             message
+            errors {
+                path
+                message
+                code
+            }
         }
     }
 }
@@ -111,6 +116,25 @@ mutation updateUserInfo($data: userInfo) {
                 }
             }
             token
+        }
+    }
+}
+
+
+#For Cheack if user here before or no
+mutation validatePhone($data: loginInput){
+    UserMutation {
+        login(data :$data)
+        {
+            status
+            message
+            errors{
+                code
+                path
+                message
+                validValue
+            }
+
         }
     }
 }

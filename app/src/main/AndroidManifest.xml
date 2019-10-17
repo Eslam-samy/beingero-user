@@ -10,8 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.location.AllLocation.LocationsDeliveryActivity"></activity>
-        <activity android:name=".view.location.addNewLocation.AddNewLocationActivity"></activity>
+
+        <activity android:name=".view.location.AllLocation.LocationsDeliveryActivity"/>
+        <activity android:name=".view.location.addNewLocation.AddNewLocationActivity"/>
         <activity android:name=".view.location.deliveryLocation.SelectDeliveryLocationActivity" />
         <activity android:name=".view.pricingProduct.PricingProductActivity" />
         <activity android:name=".view.order.shopDetail.ShopDetailActivity" />

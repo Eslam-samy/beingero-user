@@ -18,6 +18,7 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -630,6 +631,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 intent.putExtra(Constants.EXTRA_LONGITUDE, newLongitude);
                 startActivity(intent);
                 finish();
+
 
                 //Log.d("HAZEM" , "First Time : " + newLatitude + " - " + newLongitude);
 

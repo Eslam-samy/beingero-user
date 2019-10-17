@@ -60,7 +60,7 @@ query getStoreProducts($storeId:ID! , $filter: storeGalleryFilter!){
 
 # Get not priced By Query :
 #  used in store admin page to select products to add to prcing
-query getNotPricedBy($storeId: ID! , $filter: ProductFilterInput){
+query getNotPricedBy($storeId: ID! , $filter: ProductFilterInput!){
     ProductQuery{
         getStoreProducts:getNotPricedBy(storeId:$storeId,filter:$filter){
             status
