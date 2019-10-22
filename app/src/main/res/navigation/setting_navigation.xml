@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/settingFragment2"
-        android:name="com.corptia.bringero.view.Setting.main.SettingFragment"
+        android:name="com.corptia.bringero.ui.Setting.main.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" >
         <action
@@ -42,22 +42,22 @@
 
     <fragment
         android:id="@+id/languageFragment"
-        android:name="com.corptia.bringero.view.Setting.language.LanguageFragment"
+        android:name="com.corptia.bringero.ui.Setting.language.LanguageFragment"
         android:label="fragment_language"
         tools:layout="@layout/fragment_language" />
     <fragment
         android:id="@+id/editProfileFragment"
-        android:name="com.corptia.bringero.view.Setting.editProfile.EditProfileFragment"
+        android:name="com.corptia.bringero.ui.Setting.editProfile.EditProfileFragment"
         android:label="fragment_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="com.corptia.bringero.view.Setting.changePassword.ChangePasswordFragment"
+        android:name="com.corptia.bringero.ui.Setting.changePassword.ChangePasswordFragment"
         android:label="fragment_change_password"
         tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/contactUsFragment"
-        android:name="com.corptia.bringero.view.Setting.contactUs.ContactUsFragment"
+        android:name="com.corptia.bringero.ui.Setting.contactUs.ContactUsFragment"
         android:label="fragment_contact_us"
         tools:layout="@layout/fragment_contact_us" />
 </navigation>

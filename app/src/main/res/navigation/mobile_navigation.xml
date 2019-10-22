@@ -8,7 +8,7 @@
     <!-- home.ui.storetypes.StoreTypesFragment -->
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.corptia.bringero.view.home.ui.storetypes.StoreTypesFragment"
+        android:name="com.corptia.bringero.ui.home.ui.storetypes.StoreTypesFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_store_types"
         app:popUpToInclusive="false"
@@ -16,12 +16,12 @@
 
     <fragment
         android:id="@+id/nav_gallery"
-        android:name="com.corptia.bringero.view.gallaryStore.GallaryFragment"
+        android:name="com.corptia.bringero.ui.gallaryStore.GallaryFragment"
         android:label="@string/gallery"
         tools:layout="@layout/fragment_gallary" />
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.corptia.bringero.view.Setting.main.SettingFragment"
+        android:name="com.corptia.bringero.ui.Setting.main.SettingFragment"
         android:label="@string/setting"
         tools:layout="@layout/fragment_setting" >
         <action
@@ -55,32 +55,32 @@
     </fragment>
     <fragment
         android:id="@+id/contactUsFragment2"
-        android:name="com.corptia.bringero.view.Setting.contactUs.ContactUsFragment"
+        android:name="com.corptia.bringero.ui.Setting.contactUs.ContactUsFragment"
         android:label="@string/contact_us"
         tools:layout="@layout/fragment_contact_us" />
     <fragment
         android:id="@+id/languageFragment2"
-        android:name="com.corptia.bringero.view.Setting.language.LanguageFragment"
+        android:name="com.corptia.bringero.ui.Setting.language.LanguageFragment"
         android:label="@string/language"
         tools:layout="@layout/fragment_language" />
     <fragment
         android:id="@+id/editProfileFragment2"
-        android:name="com.corptia.bringero.view.Setting.editProfile.EditProfileFragment"
+        android:name="com.corptia.bringero.ui.Setting.editProfile.EditProfileFragment"
         android:label="@string/edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/changePasswordFragment2"
-        android:name="com.corptia.bringero.view.Setting.changePassword.ChangePasswordFragment"
+        android:name="com.corptia.bringero.ui.Setting.changePassword.ChangePasswordFragment"
         android:label="@string/change_password"
         tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/nav_pricing"
-        android:name="com.corptia.bringero.view.pricing.PricingProductFragment"
+        android:name="com.corptia.bringero.ui.pricing.PricingProductFragment"
         android:label="@string/product_pricing"
         tools:layout="@layout/fragment_pricing_product" />
     <fragment
         android:id="@+id/nav_cart"
-        android:name="com.corptia.bringero.view.cart.CartFragment"
+        android:name="com.corptia.bringero.ui.cart.CartFragment"
         android:label="@string/cart"
         tools:layout="@layout/fragment_cart" >
         <action
@@ -93,14 +93,14 @@
     </fragment>
     <fragment
         android:id="@+id/checkOutFragment"
-        android:name="com.corptia.bringero.view.cart.checkOut.CheckOutFragment"
+        android:name="com.corptia.bringero.ui.cart.checkOut.CheckOutFragment"
         android:label="@string/check_out"
         tools:layout="@layout/fragment_check_out" >
     </fragment>
 
     <fragment
         android:id="@+id/nav_order"
-        android:name="com.corptia.bringero.view.order.OrderFragment"
+        android:name="com.corptia.bringero.ui.order.OrderFragment"
         android:label="@string/orders"
         tools:layout="@layout/fragment_order" >
 

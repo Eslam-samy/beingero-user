@@ -6,40 +6,40 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".view.location.AllLocation.LocationsDeliveryActivity"/>
-        <activity android:name=".view.location.addNewLocation.AddNewLocationActivity"/>
-        <activity android:name=".view.location.deliveryLocation.SelectDeliveryLocationActivity" />
-        <activity android:name=".view.pricingProduct.PricingProductActivity" />
-        <activity android:name=".view.order.shopDetail.ShopDetailActivity" />
-        <activity android:name=".view.order.ordersDetails.OrdersPaidDetailsActivity" />
-        <activity android:name=".view.order.OrderActivity" />
-        <activity android:name=".view.locations.LocationsActivity" />
+        <activity android:name=".ui.location.AllLocation.LocationsDeliveryActivity"/>
+        <activity android:name=".ui.location.addNewLocation.AddNewLocationActivity"/>
+        <activity android:name=".ui.location.deliveryLocation.SelectDeliveryLocationActivity" />
+        <activity android:name=".ui.pricingProduct.PricingProductActivity" />
+        <activity android:name=".ui.order.shopDetail.ShopDetailActivity" />
+        <activity android:name=".ui.order.ordersDetails.OrdersPaidDetailsActivity" />
+        <activity android:name=".ui.order.OrderActivity" />
+        <activity android:name=".ui.locations.LocationsActivity" />
         <activity
-            android:name=".view.cart.CartActivity"
+            android:name=".ui.cart.CartActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".view.notification.NotificationActivity" />
-        <activity android:name=".view.Setting.language.LanguageActivity" />
-        <activity android:name=".view.Setting.contactUs.ContactUsActivity" />
-        <activity android:name=".view.Setting.changePassword.ChangePasswordActivity" />
-        <activity android:name=".view.Setting.editProfile.EditProfileActivity" />
-        <activity android:name=".view.Setting.main.SettingActivity" />
-        <activity android:name=".view.productDetail.ProductDetailActivity" />
-        <activity android:name=".view.storesDetail.StoreDetailActivity" />
-        <activity android:name=".view.stores.StoresActivity" />
+        <activity android:name=".ui.notification.NotificationActivity" />
+        <activity android:name=".ui.Setting.language.LanguageActivity" />
+        <activity android:name=".ui.Setting.contactUs.ContactUsActivity" />
+        <activity android:name=".ui.Setting.changePassword.ChangePasswordActivity" />
+        <activity android:name=".ui.Setting.editProfile.EditProfileActivity" />
+        <activity android:name=".ui.Setting.main.SettingActivity" />
+        <activity android:name=".ui.productDetail.ProductDetailActivity" />
+        <activity android:name=".ui.storesDetail.StoreDetailActivity" />
+        <activity android:name=".ui.stores.StoresActivity" />
         <activity
-            android:name=".view.home.HomeActivity"
+            android:name=".ui.home.HomeActivity"
             android:label="@string/title_activity_store_types"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".view.Main.otp.VerifyPhoneNumberActivity"
+            android:name=".ui.Main.otp.VerifyPhoneNumberActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".view.splash.SplashActivity">
+        <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -48,10 +48,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.Main.MainActivity"
+            android:name=".ui.Main.MainActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".view.MapWork.MapsActivity"
+            android:name=".ui.MapWork.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data

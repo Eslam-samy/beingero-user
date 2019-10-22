@@ -34,7 +34,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.corptia.bringero.R;
-import com.corptia.bringero.view.splash.SplashActivity;
+import com.corptia.bringero.ui.splash.SplashActivity;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;

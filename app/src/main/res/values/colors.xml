@@ -33,5 +33,6 @@
 
     <color name="blueLight">#4C69FF</color>
     <color name="backgroundSplash">#23192d</color>
+    <color name="state_bottom_nav">#6E798A</color>
 
 </resources>

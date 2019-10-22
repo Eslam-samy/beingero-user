@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.order.main.lastOrder.LastOrderFragment">
+    tools:context=".ui.order.main.lastOrder.LastOrderFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_last_order"
