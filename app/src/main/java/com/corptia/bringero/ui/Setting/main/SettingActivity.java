@@ -8,11 +8,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

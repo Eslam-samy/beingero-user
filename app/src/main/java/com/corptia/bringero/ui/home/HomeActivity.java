@@ -15,6 +15,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.corptia.bringero.Utils.lib.CustomBottomNavigationView;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.ui.Setting.main.SettingActivity;
 import com.corptia.bringero.ui.cart.CartFragment;
@@ -39,7 +40,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class HomeActivity extends AppCompatActivity implements
+public class HomeActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener {
 
 

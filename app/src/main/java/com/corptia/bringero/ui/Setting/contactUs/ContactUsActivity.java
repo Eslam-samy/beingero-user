@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 
-public class ContactUsActivity extends AppCompatActivity {
+public class ContactUsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

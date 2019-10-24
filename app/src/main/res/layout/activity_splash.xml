@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.splash.SplashActivity"
-    android:background="@color/backgroundSplash">
+    android:background="@color/backgroundSplash"
+    android:id="@+id/root">
 
 
     <com.facebook.shimmer.ShimmerFrameLayout
@@ -22,9 +23,11 @@
         >
 
         <ImageView
+            android:id="@+id/img_logo"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/ic_splash_logo" />
+            android:src="@drawable/ic_splash_logo"
+            />
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 

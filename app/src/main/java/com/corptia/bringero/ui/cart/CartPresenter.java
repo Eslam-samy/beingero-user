@@ -29,9 +29,9 @@ public class CartPresenter {
                             view.setMyCart(myCart);
                         }
 
-                        else
+                        else  if (myCart.status() == 404)
                         {
-
+                            view.setPlaceholder();
                         }
                     }
 

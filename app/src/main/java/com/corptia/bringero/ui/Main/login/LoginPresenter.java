@@ -7,12 +7,14 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.Utils.language.LocaleHelper;
 import com.corptia.bringero.graphql.LogInMutation;
 import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.type.LoginInput;
 import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.type.StoreFilterInput;
+import com.corptia.bringero.ui.splash.SplashActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -53,6 +55,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                             if (response.data().UserMutation().login().status() == 200)
                             {
                                 getMe(response.data().UserMutation().login().token(), userData -> {
+
 
                                 });
                             }

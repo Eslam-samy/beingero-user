@@ -13,6 +13,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
 import com.corptia.bringero.model.StoreTypes;
 
@@ -22,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StoresActivity extends AppCompatActivity implements StoresContract.BrandsView {
+public class StoresActivity extends BaseActivity implements StoresContract.BrandsView {
 
     @BindView(R.id.recycler_brands)
     RecyclerView recycler_brands;

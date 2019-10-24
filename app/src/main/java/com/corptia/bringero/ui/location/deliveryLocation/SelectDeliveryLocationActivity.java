@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.home.HomeActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -19,7 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SelectDeliveryLocationActivity extends AppCompatActivity implements SelectDeliveryLocationView {
+public class SelectDeliveryLocationActivity extends BaseActivity implements SelectDeliveryLocationView {
 
     @BindView(R.id.btn_select_location)
     Button btn_select_location;
@@ -45,7 +46,7 @@ public class SelectDeliveryLocationActivity extends AppCompatActivity implements
                         .append(Common.CURRENT_USER.currentDeliveryAddress().region())
                         .append(")"));
             } else
-                btn_select_location.setText("Select Location");
+                btn_select_location.setText(getString(R.string.select_location));
         }
 
         btn_select_location.setOnClickListener(view -> showDialogSelectLocation());

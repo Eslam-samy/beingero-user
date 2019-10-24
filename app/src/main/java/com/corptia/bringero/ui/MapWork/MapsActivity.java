@@ -27,6 +27,7 @@ import android.widget.Button;
 
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.location.addNewLocation.AddNewLocationActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -57,7 +58,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, TextWatcher {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, TextWatcher {
 
     private GoogleMap mMap;
     private static final String TAG = "MapsActivity";

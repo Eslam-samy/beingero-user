@@ -18,6 +18,7 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.Utils.PicassoUtils;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
@@ -32,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StoreDetailActivity extends AppCompatActivity implements StoreDetailContract.StoreDetailView {
+public class StoreDetailActivity extends BaseActivity implements StoreDetailContract.StoreDetailView {
 
     @BindView(R.id.toolBar)
     Toolbar toolbar;

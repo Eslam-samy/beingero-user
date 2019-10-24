@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.sharedPref.PrefKeys;
+import com.corptia.bringero.Utils.sharedPref.PrefUtils;
 import com.corptia.bringero.ui.Main.MainActivity;
 import com.corptia.bringero.ui.location.AllLocation.LocationsDeliveryActivity;
 
@@ -97,6 +99,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 //Toasty.warning(getActivity() , "LogOut").show();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                PrefUtils.saveToPrefs(getActivity() , PrefKeys.USER_LOGIN,false);
                 //getActivity().finishAffinity();
                 startActivity(intent);
                 break;

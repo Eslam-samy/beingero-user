@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 
-public class PricingProductActivity extends AppCompatActivity {
+public class PricingProductActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

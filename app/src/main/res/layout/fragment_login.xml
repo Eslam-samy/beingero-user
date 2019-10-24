@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.Main.login.LoginFragment">
+    tools:context=".ui.Main.login.LoginFragment"
+    android:background="@color/white"
+    android:layoutDirection="rtl"
+>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,18 +34,19 @@
 
 
             <ProgressBar
-                tools:visibility="visible"
-                android:visibility="gone"
-android:elevation="4dp"
                 android:id="@+id/progress_Loading"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
+                android:elevation="4dp"
                 android:indeterminateDrawable="@drawable/progress"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_login"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/btn_login"
-                tools:layout_editor_absoluteX="20dp" />
+                tools:layout_editor_absoluteX="20dp"
+                tools:visibility="visible" />
+
             <TextView
                 android:id="@+id/txt_forgot_password"
                 android:layout_width="wrap_content"
@@ -86,9 +90,7 @@ android:elevation="4dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/input_phone_number"
                 app:passwordToggleDrawable="@drawable/selector_password_toggle_drawable"
-                app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/colorAccent"
-
                 >
 
                 <EditText
@@ -97,7 +99,8 @@ android:elevation="4dp"
                     android:inputType="textPassword"
                     android:text="00000000"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
 
 
             </com.google.android.material.textfield.TextInputLayout>

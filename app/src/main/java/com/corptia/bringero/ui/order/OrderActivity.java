@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.corptia.bringero.Adapter.ViewPagerAdapter;
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.order.main.current.CurrentOrderFragment;
 import com.corptia.bringero.ui.order.main.lastOrder.LastOrderFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -16,7 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderActivity extends AppCompatActivity {
+public class OrderActivity extends BaseActivity {
 
     //For Fragment
     TabLayout tabLayout;

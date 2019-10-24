@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.model.CartModel;
 
@@ -25,7 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrdersPaidDetailsActivity extends AppCompatActivity implements OrdersPaidDetailsView {
+public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPaidDetailsView {
 
     @BindView(R.id.recycler_order)
     RecyclerView recycler_order;

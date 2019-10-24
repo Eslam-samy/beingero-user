@@ -21,6 +21,7 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.recyclerview.SwipeToDeleteCallback;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.location.addNewLocation.AddNewLocationActivity;
@@ -32,7 +33,7 @@ import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 
-public class LocationsDeliveryActivity extends AppCompatActivity implements LocationsDeliveryView {
+public class LocationsDeliveryActivity extends BaseActivity implements LocationsDeliveryView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -60,7 +61,7 @@ public class LocationsDeliveryActivity extends AppCompatActivity implements Loca
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Location");
+        getSupportActionBar().setTitle(getString(R.string.location));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

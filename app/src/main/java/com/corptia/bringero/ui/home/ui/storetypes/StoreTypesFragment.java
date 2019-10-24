@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -38,6 +40,8 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
 
     StoreTypesPresenter storeTypesPresenter;
 
+    LayoutAnimationController layoutAnimationController;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +49,8 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
         View root = inflater.inflate(R.layout.fragment_store_types, container, false);
 
         ButterKnife.bind(this, root);
+
+        layoutAnimationController = AnimationUtils.loadLayoutAnimation(getContext() , R.anim.layout_item_from_left);
 
         //final TextView textView = root.findViewById(R.id.text_home);
 
@@ -64,10 +70,12 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
     @Override
     public void setStoreTypes(List<GetAllCategoriesQuery.StoreCategory> repositoryList) {
 
+        recycler_store.setLayoutAnimation(layoutAnimationController);
         recycler_store.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recycler_store.addItemDecoration(new GridSpacingItemDecoration(2, Common.dpToPx(15, getActivity()), true, 0, Common.dpToPx(10, getActivity())));
         adapter = new StoreTypesAdapter(getActivity(), repositoryList);
         recycler_store.setAdapter(adapter);
+
         adapter.notifyDataSetChanged();
     }
 

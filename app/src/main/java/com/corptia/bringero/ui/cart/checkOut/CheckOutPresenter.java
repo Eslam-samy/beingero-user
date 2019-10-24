@@ -30,7 +30,6 @@ public class CheckOutPresenter {
 
                             view.showErrorMessage(response.data().BuyingOrderMutation().create().message());
 
-
                         }
                         else
                         {

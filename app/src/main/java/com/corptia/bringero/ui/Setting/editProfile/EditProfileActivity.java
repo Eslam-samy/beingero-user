@@ -6,11 +6,12 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

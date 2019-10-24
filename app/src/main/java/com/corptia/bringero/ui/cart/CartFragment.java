@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.cart;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecor
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 import com.corptia.bringero.ui.cart.Adapter.CartAdapter;
+import com.corptia.bringero.ui.cart.checkOut.CheckOutActivity;
 import com.corptia.bringero.ui.home.HomeActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -56,7 +58,6 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         ButterKnife.bind(this, view);
-        cartPresenter.getMyCart();
 
 
         return view;
@@ -89,16 +90,32 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 //                        HomeActivity.navController.navigate(R.id.action_nav_cart_to_checkOutFragment);
 //                        HomeActivity.bottomNavigationView.setVisibility(View.GONE);
 //                        HomeActivity.fab.hide();
+
+
+                        startActivity(new Intent(getActivity() , CheckOutActivity.class));
+
+
                     });
                 }
             }
             cartAdapter.setCallBackUpdateCartItemsListener((itemId, amount) -> {
-                //cartPresenter.updateCartItems(itemId , amount);
+                cartPresenter.updateCartItems(itemId , amount);
             });
 
 
         });
 
+    }
+
+    @Override
+    public void setPlaceholder() {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                recycler_cart.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -155,5 +172,11 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cartPresenter.getMyCart();
     }
 }

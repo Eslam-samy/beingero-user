@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".ui.location.AllLocation.LocationsDeliveryActivity"/>
-        <activity android:name=".ui.location.addNewLocation.AddNewLocationActivity"/>
+        <activity android:name=".ui.cart.checkOut.CheckOutActivity"></activity>
+        <activity android:name=".ui.location.AllLocation.LocationsDeliveryActivity" />
+        <activity android:name=".ui.location.addNewLocation.AddNewLocationActivity" />
         <activity android:name=".ui.location.deliveryLocation.SelectDeliveryLocationActivity" />
         <activity android:name=".ui.pricingProduct.PricingProductActivity" />
         <activity android:name=".ui.order.shopDetail.ShopDetailActivity" />
@@ -39,7 +39,8 @@
         <activity
             android:name=".ui.Main.otp.VerifyPhoneNumberActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".ui.splash.SplashActivity">
+        <activity android:name=".ui.splash.SplashActivity"
+            android:theme="@style/FullWindow">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -81,9 +82,9 @@
                 android:resource="@color/colorAccent" />
         </service>
     </application>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 </manifest>

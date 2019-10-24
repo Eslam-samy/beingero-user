@@ -9,5 +9,7 @@ public class CartContract {
 
         void setMyCart(MyCartQuery.MyCart myCartData);
 
+        void setPlaceholder();
+
     }
 }

@@ -17,6 +17,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.PicassoUtils;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.SingleProductQuery;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -24,7 +25,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProductDetailActivity extends AppCompatActivity implements ProductDetailContract.ProductDetailView {
+public class ProductDetailActivity extends BaseActivity implements ProductDetailContract.ProductDetailView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

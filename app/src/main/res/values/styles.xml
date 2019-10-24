@@ -8,6 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+<!--        <item name="android:windowBackground">@color/backgroundSplash</item>-->
+
     </style>
 
     <style name="AppTheme.NoActionBar" parent="AppTheme">
@@ -16,6 +19,15 @@
         <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent
         </item>
         <item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>
+    </style>
+
+    <style name="FullWindow" parent="AppTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@null</item>
+        <item name="colorPrimaryDark">@color/backgroundSplash</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/backgroundSplash</item>
     </style>
 
     <!-- No Action Bar -->
@@ -117,6 +129,7 @@
         <item name="android:gravity">start|center</item>
         <item name="android:textSize">@dimen/medium_margin</item>
         <item name="android:drawableEnd">@drawable/ic_arrow_right</item>
+<!--        <item name="android:drawableEnd">@drawable/ic_arrow_back</item>-->
         <item name="android:paddingStart">@dimen/app_low_padding</item>
         <item name="android:paddingEnd">@dimen/app_low_padding</item>
         <item name="android:layout_marginTop">5dp</item>

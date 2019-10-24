@@ -18,6 +18,7 @@ import com.apollographql.apollo.exception.ApolloException;
 import com.chaos.view.PinView;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.SignUpSecondStepMutation;
 import com.corptia.bringero.graphql.ValidatePhoneWithFireBaseMutation;
 import com.corptia.bringero.type.RoleEnum;
@@ -46,7 +47,7 @@ import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 
-public class VerifyPhoneNumberActivity extends AppCompatActivity {
+public class VerifyPhoneNumberActivity extends BaseActivity {
 
     private static final String TAG = "TryCustomToken";
     @BindView(R.id.pinView)

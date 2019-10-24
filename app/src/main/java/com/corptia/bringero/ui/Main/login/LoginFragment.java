@@ -15,8 +15,13 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.language.LocaleHelper;
+import com.corptia.bringero.Utils.sharedPref.PrefKeys;
+import com.corptia.bringero.Utils.sharedPref.PrefUtils;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
+import com.corptia.bringero.ui.splash.SplashActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import butterknife.BindView;
@@ -112,7 +117,15 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
         handler.post(() -> {
 
+            LocaleHelper.setLocale(getActivity(), Common.CURRENT_USER.language().toLowerCase());
+
+
             startActivity(new Intent(getActivity(), SelectDeliveryLocationActivity.class));
+
+            PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_LOGIN,true);
+            PrefUtils.saveToPrefs(getActivity(),PrefKeys.USER_PHONE,input_phone_number.getEditText().getText().toString());
+            PrefUtils.saveToPrefs(getActivity(),PrefKeys.USER_PASSWORD,input_password.getEditText().getText().toString());
+
             getActivity().finish();
         });
     }

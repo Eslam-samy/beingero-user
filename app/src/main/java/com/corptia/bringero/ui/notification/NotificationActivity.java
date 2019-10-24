@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.model.StoreTypes;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationActivity extends BaseActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

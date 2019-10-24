@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.model.FlatTypeModel;
 import com.corptia.bringero.type.FlatType;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
@@ -41,7 +42,7 @@ import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
 
-public class AddNewLocationActivity extends AppCompatActivity implements SelectDeliveryLocationView, OnMapReadyCallback {
+public class AddNewLocationActivity extends BaseActivity implements SelectDeliveryLocationView, OnMapReadyCallback {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;

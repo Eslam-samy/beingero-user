@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.corptia.bringero.R;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.model.CartModel;
 import com.corptia.bringero.ui.cart.Adapter.CartAdapter;
@@ -19,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CartActivity extends AppCompatActivity implements CartContract.CartView {
+public class CartActivity extends BaseActivity implements CartContract.CartView {
 
     @BindView(R.id.recycler_cart)
     RecyclerView recycler_cart;
@@ -78,6 +79,11 @@ public class CartActivity extends AppCompatActivity implements CartContract.Cart
 
     @Override
     public void setMyCart(MyCartQuery.MyCart myCartData) {
+
+    }
+
+    @Override
+    public void setPlaceholder() {
 
     }
 
