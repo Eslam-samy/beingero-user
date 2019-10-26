@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,18 +69,18 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
         handler.post(() -> {
 
-            totalPrice = myCartData.TotalPrice() ;
+            totalPrice = myCartData.TotalPrice();
+            Log.d("HAZEM" , "OROGINAL TOTLA :: " + myCartData.TotalPrice());
 
             //stickyRecyclerView.setDataSource(myCartData);
-            cartAdapter = new CartAdapter(getActivity(), myCartData.storeData() , true);
+            cartAdapter = new CartAdapter(getActivity(), myCartData.storeData(), true);
             recycler_cart.setLayoutManager(new LinearLayoutManager(getActivity()));
             recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, getActivity())));
             recycler_cart.setAdapter(cartAdapter);
 
 
-            if (myCartData!= null)
-            {
-                if (myCartData.storeData().size()!=0) {
+            if (myCartData != null) {
+                if (myCartData.storeData().size() != 0) {
 
                     Common.CURRENT_CART = myCartData.storeData();
 
@@ -92,14 +93,14 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 //                        HomeActivity.fab.hide();
 
 
-                        startActivity(new Intent(getActivity() , CheckOutActivity.class));
+                        startActivity(new Intent(getActivity(), CheckOutActivity.class));
 
 
                     });
                 }
             }
             cartAdapter.setCallBackUpdateCartItemsListener((itemId, amount) -> {
-                cartPresenter.updateCartItems(itemId , amount);
+                cartPresenter.updateCartItems(itemId, amount);
             });
 
 
@@ -141,16 +142,26 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void calculatePrice(CalculatePriceEvent event) {
         if (event != null) {
-            if (event.getProductId()!=null)
-            calculateCartTotalPrice(event.getProductId() , event.getAmount() , event.getStorePrice());
-            else
-                total_price.setText("Here");
+            if (event.getProductId() != null) {
+                calculateCartTotalPrice(event.getProductId(), event.getAmount(), event.getStorePrice());
+
+            } else {
+                //double total = Double.parseDouble(total_price.getText().toString());
+
+                totalPrice -= event.getTotalProductPrice();
+                total_price.setText(""+(totalPrice) + getString(R.string.currency));
+
+            }
+        } else {
+
         }
+
+
     }
 
     private void calculateCartTotalPrice(String productId, int amount, double storePrice) {
 
-        cartPresenter.updateCartItems(productId , amount);
+        cartPresenter.updateCartItems(productId, amount);
 
         totalPrice += storePrice;
 

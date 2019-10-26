@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.cart.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     public CartAdapter(Context context, List<MyCartQuery.StoreDatum> cartModels, boolean isCart) {
         this.context = context;
-        this.myCartList = cartModels;
+        this.myCartList  = new ArrayList<>(cartModels);
         this.isCart = isCart;
     }
 
@@ -55,7 +58,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         MyCartQuery.StoreDatum cartModel = myCartList.get(position);
-        itemsAdapter = new CartItemsAdapter(context, cartModel.Items(), isCart);
+        @Nullable List<MyCartQuery.Item> itemList  =new ArrayList<>(cartModel.Items()) ;
+        itemsAdapter = new CartItemsAdapter(context, itemList, isCart, new IClickRecyclerAdapter() {
+            @Override
+            public void onClickAdapter(int positionItems) {
+                itemList.remove(positionItems);
+
+                Log.d("HAZEM" , "DELETE FROM List " + position + " DATA " + cartModel.Store().name());
+
+                if (itemList.size() == 0)
+                {
+
+                    myCartList.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, myCartList.size());
+                }
+            }
+        });
 
         holder.recycler_items.setNestedScrollingEnabled(false);
         holder.recycler_items.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));

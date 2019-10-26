@@ -1,25 +1,33 @@
 package com.corptia.bringero.ui.cart.Adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnImageViewAdapterClickListener;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.graphql.MyCartQuery;
+import com.corptia.bringero.graphql.RemoveCartItemMutation;
 import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -34,15 +42,19 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
     List<MyCartQuery.Item> cartItems = new ArrayList<>();
     public UpdateCartItemsListener updateCartItemsListener;
     boolean isCart;
+    IClickRecyclerAdapter iClickRecyclerAdapter;
+    Handler handler ;
 
     public void setUpdateCartItemsListener(UpdateCartItemsListener updateCartItemsListener) {
         this.updateCartItemsListener = updateCartItemsListener;
     }
 
-    public CartItemsAdapter(Context context, @Nullable List<MyCartQuery.Item> cartItems, boolean isCart) {
+    public CartItemsAdapter(Context context, @Nullable List<MyCartQuery.Item> cartItems, boolean isCart, IClickRecyclerAdapter iClickRecyclerAdapter) {
         this.context = context;
         this.cartItems = new ArrayList<>(cartItems);
         this.isCart = isCart;
+        this.iClickRecyclerAdapter = iClickRecyclerAdapter;
+        handler = new Handler();
     }
 
     @NonNull
@@ -79,12 +91,14 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
             //Event
             holder.setListener((view, position1, isDecrease, isDelete) -> {
 
+                int amount = Integer.parseInt(holder.txt_quantity.getText().toString());
+
+
                 if (!isDelete) {
                     //If not Button delete food From Cart Click
                     int totalAmountStore = 9999;
                     if (item.PricingProduct().amount() != null)
                         totalAmountStore = item.PricingProduct().amount();
-                    int amount = Integer.parseInt(holder.txt_quantity.getText().toString());
 
                     if (isDecrease) //if Decrease quantity
                     {
@@ -113,14 +127,52 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
                 } else {
 
-                    Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
+                    holder.progress_circular.setVisibility(View.VISIBLE);
+                    holder.img_delete_product.setVisibility(View.GONE);
+                    MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(item._id()).build())
+                            .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
+                                @Override
+                                public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
 
 
-                    cartItems.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, cartItems.size());
+                                            if (response.data().CartItemMutation().remove().status() ==200)
+                                            {
 
-                    EventBus.getDefault().postSticky(new CalculatePriceEvent());
+                                                Toast.makeText(context, "Items Deleted !", Toast.LENGTH_SHORT).show();
+
+                                                cartItems.remove(position);
+                                                notifyItemRemoved(position);
+                                                notifyItemRangeChanged(position, cartItems.size());
+
+                                                double totalProductPrice = amount * item.PricingProduct().storePrice();
+
+                                                EventBus.getDefault().postSticky(new CalculatePriceEvent(totalProductPrice));
+
+                                                iClickRecyclerAdapter.onClickAdapter(position);
+
+                                            }
+                                            else
+                                            {
+                                                holder.progress_circular.setVisibility(View.GONE);
+                                                holder.img_delete_product.setVisibility(View.VISIBLE);
+                                            }
+
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onFailure(@NotNull ApolloException e) {
+
+                                }
+                            });
+
+
 
 
                 }
@@ -184,6 +236,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         CheckBox chb_select_item;
 
         TextView txt_total_price;
+        ProgressBar progress_circular;
 
 
         IOnImageViewAdapterClickListener listener;
@@ -206,6 +259,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                 img_delete_product = itemView.findViewById(R.id.img_delete_product);
                 chb_select_item = itemView.findViewById(R.id.chb_select_item);
                 txt_total_price = itemView.findViewById(R.id.txt_total_price);
+                progress_circular = itemView.findViewById(R.id.progress_circular);
 
                 img_decrease.setOnClickListener(this);
                 img_increase.setOnClickListener(this);

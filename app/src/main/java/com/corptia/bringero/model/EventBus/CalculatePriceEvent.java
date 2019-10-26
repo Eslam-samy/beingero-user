@@ -5,6 +5,7 @@ public class CalculatePriceEvent {
     String productId;
     int amount;
     double storePrice;
+    double totalProductPrice;
 //    int totalPriceItem ;
 //    int totalPriceStore ;
 //    int totalPriceCart ;
@@ -16,6 +17,17 @@ public class CalculatePriceEvent {
 
     }
 
+    public CalculatePriceEvent(double totalProductPrice) {
+        this.totalProductPrice = totalProductPrice;
+    }
+
+    public double getTotalProductPrice() {
+        return totalProductPrice;
+    }
+
+    public void setTotalProductPrice(double totalProductPrice) {
+        this.totalProductPrice = totalProductPrice;
+    }
 
     public CalculatePriceEvent() {
     }

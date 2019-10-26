@@ -100,7 +100,7 @@ mutation updateCartItem($id: ID!, $data: updateCartItem) {
 }
 
 
-mutation CartItemMutation($_id: ID!){
+mutation RemoveCartItem($_id: ID!){
     CartItemMutation{
         remove(_id:$_id)
         {
