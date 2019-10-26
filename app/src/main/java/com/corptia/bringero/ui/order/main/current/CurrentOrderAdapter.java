@@ -50,6 +50,24 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<CurrentOrderAdapte
         holder.txt_date_order.setText(orderDatum.createdAt().toString());
         holder.txt_status.setText(orderDatum.status().rawValue());
         holder.txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
+        //holder.txt_content_count.setText(new StringBuilder().append(orderDatum.BuyingOrderResponse().));
+
+        int countStore =0 , countItems=0 ;
+
+        countStore =  orderDatum.BuyingOrderResponse().BuyingOrderResponseData().size();
+
+//        for(DeliveryOrdersQuery.BuyingOrderResponseDatum store : orderDatum.BuyingOrderResponse().BuyingOrderResponseData())
+//        {
+//            countStore +=countStore;
+//            countItems = store.ItemsResponse().data().size();
+//
+//            for (DeliveryOrdersQuery.Data5 data :store.ItemsResponse().data())
+//            {
+//
+//                countData+=countData;
+//
+//            }
+//        }
 
 
 

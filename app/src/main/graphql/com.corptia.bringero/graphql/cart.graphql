@@ -41,12 +41,17 @@ query MyCartQuery {
                         amount
 
                     }
+
                     amount
                     totalPrice
+
                 }
+                ItemsCount
                 TotalPrice
             }
+            ItemsCount
             TotalPrice
+            StoresCount
         }
     }
 }
@@ -89,6 +94,20 @@ mutation updateCartItem($id: ID!, $data: updateCartItem) {
                 amount
                 createdAt
                 updatedAt
+            }
+        }
+    }
+}
+
+
+mutation CartItemMutation($_id: ID!){
+    CartItemMutation{
+        remove(_id:$_id)
+        {
+            status
+            data{
+                _id
+                totalPrice
             }
         }
     }

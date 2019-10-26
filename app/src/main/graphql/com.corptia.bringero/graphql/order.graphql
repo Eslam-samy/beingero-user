@@ -1,66 +1,3 @@
-#this use for store only
-query BuyingOrderQuery {
-    BuyingOrderQuery {
-        getAll(filter: {  }) {
-            message
-            status
-            errors {
-                path
-                message
-            }
-            data {
-                _id
-                deliveryOrderId
-                serial
-                storeId
-                DeliveryOrderResponse {
-                    status
-                    data {
-                        _id
-                        serial
-                    }
-                }
-                StoreResponse {
-                    data {
-                        _id
-                        name
-                        CityReponse {
-                            data {
-                                _id
-                                name
-                            }
-                        }
-                    }
-                }
-                customerUserId
-                CustomerUserResponse {
-                    data {
-                        firstName
-                        lastName
-                        status
-                        roleName
-                    }
-                }
-                orderMaxPreparingMinutes
-
-                ItemsResponse {
-                    status
-                    message
-                    data {
-                        _id
-                        pricingProductId
-                        amount
-                        productId
-                        storePrice
-                        productName
-                    }
-                }
-            }
-        }
-    }
-}
-
-
 #For Get All
 query deliveryOrders {
     DeliveryOrderQuery {
@@ -211,6 +148,26 @@ query deliveryOneOrder($filter: DeliveryOrderFilterInput) {
                                 productId
                                 storePrice
                                 productName
+
+                                PricingProductResponse{
+                                    status
+                                    data{
+                                        ProductResponse{
+                                            status
+                                            data{
+                                                ImageResponse{
+                                                    status
+                                                    data{
+                                                        name
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+
+                                }
+
                             }
                         }
                     }
@@ -266,3 +223,67 @@ mutation createOrderMutation {
         }
     }
 }
+
+
+#---------------------- Delete That if you do'nt need ----------------------
+##this use for store only
+#query BuyingOrderQuery {
+#    BuyingOrderQuery {
+#        getAll(filter: {  }) {
+#            message
+#            status
+#            errors {
+#                path
+#                message
+#            }
+#            data {
+#                _id
+#                deliveryOrderId
+#                serial
+#                storeId
+#                DeliveryOrderResponse {
+#                    status
+#                    data {
+#                        _id
+#                        serial
+#                    }
+#                }
+#                StoreResponse {
+#                    data {
+#                        _id
+#                        name
+#                        CityReponse {
+#                            data {
+#                                _id
+#                                name
+#                            }
+#                        }
+#                    }
+#                }
+#                customerUserId
+#                CustomerUserResponse {
+#                    data {
+#                        firstName
+#                        lastName
+#                        status
+#                        roleName
+#                    }
+#                }
+#                orderMaxPreparingMinutes
+#
+#                ItemsResponse {
+#                    status
+#                    message
+#                    data {
+#                        _id
+#                        pricingProductId
+#                        amount
+#                        productId
+#                        storePrice
+#                        productName
+#                    }
+#                }
+#            }
+#        }
+#    }
+#}

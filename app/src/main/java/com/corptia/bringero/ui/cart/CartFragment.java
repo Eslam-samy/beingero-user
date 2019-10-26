@@ -141,7 +141,10 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void calculatePrice(CalculatePriceEvent event) {
         if (event != null) {
+            if (event.getProductId()!=null)
             calculateCartTotalPrice(event.getProductId() , event.getAmount() , event.getStorePrice());
+            else
+                total_price.setText("Here");
         }
     }
 
@@ -152,7 +155,6 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         totalPrice += storePrice;
 
         total_price.setText(new StringBuilder().append(totalPrice).append(getString(R.string.currency)));
-
 
     }
 

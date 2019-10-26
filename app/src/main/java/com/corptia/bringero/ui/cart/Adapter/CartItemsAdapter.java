@@ -41,7 +41,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
     public CartItemsAdapter(Context context, @Nullable List<MyCartQuery.Item> cartItems, boolean isCart) {
         this.context = context;
-        this.cartItems = cartItems;
+        this.cartItems = new ArrayList<>(cartItems);
         this.isCart = isCart;
     }
 
@@ -114,6 +114,14 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                 } else {
 
                     Toast.makeText(context, "Deleted", Toast.LENGTH_SHORT).show();
+
+
+                    cartItems.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, cartItems.size());
+
+                    EventBus.getDefault().postSticky(new CalculatePriceEvent());
+
 
                 }
 
@@ -225,5 +233,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
     public interface UpdateCartItemsListener {
         void onUpdateCart(String itemId, int amount);
+    }
+
+    public interface IDeleteCartItemsListener {
+        void onDeleteCart(int position);
     }
 }

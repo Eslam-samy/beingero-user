@@ -10,7 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Utils.PicassoUtils;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 
 import org.jetbrains.annotations.Nullable;
@@ -43,6 +45,9 @@ public class OrdersPaidDetailsItemsAdapter extends RecyclerView.Adapter<OrdersPa
 
         holder.txt_name_product.setText(items.productName());
         holder.txt_price.setText(new StringBuilder().append(items.storePrice()).append(context.getString(R.string.currency)));
+
+        PicassoUtils.setImage(Common.BASE_URL_IMAGE + items.PricingProductResponse().data().ProductResponse().data().ImageResponse().data().name() ,
+                holder.image_product);
 
 //        if (items..StoreResponse().data().ImageResponse().data()!=null)
 //            PicassoUtils.setImage(Common.BASE_URL_IMAGE + items.StoreResponse().data().ImageResponse().data().name() , holder.image_store);
