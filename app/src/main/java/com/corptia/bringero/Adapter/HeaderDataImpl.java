@@ -2,7 +2,7 @@ package com.corptia.bringero.Adapter;
 
 import androidx.annotation.LayoutRes;
 
-import com.corptia.bringero.Utils.stickyheader.stickyData.HeaderData;
+import com.corptia.bringero.utils.stickyheader.stickyData.HeaderData;
 
 public class HeaderDataImpl implements HeaderData {
 

@@ -1,7 +1,6 @@
 package com.corptia.bringero.ui.location.AllLocation;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +19,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.recyclerview.SwipeToDeleteCallback;
+import com.corptia.bringero.utils.recyclerview.SwipeToDeleteCallback;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.ui.MapWork.MapsActivity;

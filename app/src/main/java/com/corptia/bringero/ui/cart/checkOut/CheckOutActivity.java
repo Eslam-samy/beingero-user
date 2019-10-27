@@ -1,7 +1,6 @@
 package com.corptia.bringero.ui.cart.checkOut;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,13 +9,12 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.cart.Adapter.CartAdapter;
 

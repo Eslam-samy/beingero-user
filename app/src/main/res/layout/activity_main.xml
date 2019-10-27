@@ -36,11 +36,11 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.corptia.bringero.Utils.lib.CustomViewPager
+    <com.corptia.bringero.utils.lib.CustomViewPager
         android:id="@+id/viewPaper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </com.corptia.bringero.Utils.lib.CustomViewPager>
+    </com.corptia.bringero.utils.lib.CustomViewPager>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

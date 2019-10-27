@@ -9,32 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import com.corptia.bringero.Utils.lib.CustomBottomNavigationView;
 import com.corptia.bringero.base.BaseActivity;
-import com.corptia.bringero.type.RoleEnum;
-import com.corptia.bringero.ui.Setting.main.SettingActivity;
+import com.corptia.bringero.ui.setting.main.SettingActivity;
 import com.corptia.bringero.ui.cart.CartFragment;
-import com.corptia.bringero.ui.home.ui.gallery.GalleryFragment;
 import com.corptia.bringero.ui.home.ui.storetypes.StoreTypesFragment;
 import com.corptia.bringero.ui.order.OrderFragment;
-import com.corptia.bringero.ui.storesDetail.StoreDetailFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -134,6 +123,7 @@ public class HomeActivity extends BaseActivity implements
         switch (id) {
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingActivity.class));
+                finish();
                 break;
 
         }

@@ -18,12 +18,11 @@ import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 import com.corptia.bringero.ui.cart.Adapter.CartAdapter;
 import com.corptia.bringero.ui.cart.checkOut.CheckOutActivity;
-import com.corptia.bringero.ui.home.HomeActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

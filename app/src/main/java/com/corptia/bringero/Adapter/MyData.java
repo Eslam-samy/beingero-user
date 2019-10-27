@@ -1,6 +1,6 @@
 package com.corptia.bringero.Adapter;
 
-import com.corptia.bringero.Utils.stickyheader.stickyData.StickyMainData;
+import com.corptia.bringero.utils.stickyheader.stickyData.StickyMainData;
 import com.corptia.bringero.model.CartItems;
 
 import java.util.List;

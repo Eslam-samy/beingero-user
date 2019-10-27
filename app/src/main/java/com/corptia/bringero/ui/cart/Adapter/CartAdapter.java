@@ -13,9 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Interface.IClickRecyclerAdapter;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.PicassoUtils;
-import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.utils.PicassoUtils;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
 
 import org.jetbrains.annotations.Nullable;

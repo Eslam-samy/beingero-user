@@ -1,6 +1,5 @@
 package com.corptia.bringero.ui.storesDetail;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
@@ -17,7 +16,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
-import com.corptia.bringero.Utils.PicassoUtils;
+import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;

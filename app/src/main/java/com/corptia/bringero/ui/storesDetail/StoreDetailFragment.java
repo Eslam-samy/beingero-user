@@ -21,7 +21,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
-import com.corptia.bringero.Utils.recyclerview.decoration.GridSpacingItemDecoration;
+import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.PricingProductMutation;

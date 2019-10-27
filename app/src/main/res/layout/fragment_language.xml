@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.Setting.language.LanguageFragment">
+    tools:context=".ui.setting.language.LanguageFragment">
 
     <TextView
         android:id="@+id/txt_lab_setting"
@@ -24,12 +24,14 @@
         />
 
     <Spinner
+        android:id="@+id/spinner_language"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shadow_input"
         app:layout_constraintTop_toBottomOf="@+id/txt_hint_language"
         android:layout_marginStart="@dimen/medium_margin"
-        android:layout_marginEnd="@dimen/medium_margin"/>
+        android:layout_marginEnd="@dimen/medium_margin"
+        android:spinnerMode="dialog"/>
 
 
     <Button

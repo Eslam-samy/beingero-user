@@ -1,15 +1,10 @@
 package com.corptia.bringero.base;
 
 import android.content.Context;
-import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.corptia.bringero.Utils.language.LocaleHelper;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import com.corptia.bringero.utils.language.LocaleHelper;
 
 public  abstract class BaseActivity extends AppCompatActivity {
 

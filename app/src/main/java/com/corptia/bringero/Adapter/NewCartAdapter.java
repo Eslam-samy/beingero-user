@@ -1,6 +1,5 @@
 package com.corptia.bringero.Adapter;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.stickyheader.stickyView.StickHeaderRecyclerView;
+import com.corptia.bringero.utils.stickyheader.stickyView.StickHeaderRecyclerView;
 
 public class NewCartAdapter extends StickHeaderRecyclerView<MyData, HeaderDataImpl> {
 

@@ -16,9 +16,8 @@ import android.widget.Button;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.ui.cart.Adapter.CartAdapter;
-import com.corptia.bringero.ui.home.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

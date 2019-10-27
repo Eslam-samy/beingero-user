@@ -1,13 +1,11 @@
 package com.corptia.bringero.ui.Main;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.corptia.bringero.Adapter.ViewPagerAdapter;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.lib.CustomViewPager;
+import com.corptia.bringero.utils.lib.CustomViewPager;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.Main.login.LoginFragment;
 import com.corptia.bringero.ui.Main.signup.SignupFragment;

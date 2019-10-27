@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.PicassoUtils;
+import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.graphql.GetAllCategoriesQuery;
 import com.corptia.bringero.ui.stores.StoresActivity;
 

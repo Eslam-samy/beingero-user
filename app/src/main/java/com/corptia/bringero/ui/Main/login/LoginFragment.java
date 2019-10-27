@@ -17,11 +17,10 @@ import android.widget.Toast;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.language.LocaleHelper;
-import com.corptia.bringero.Utils.sharedPref.PrefKeys;
-import com.corptia.bringero.Utils.sharedPref.PrefUtils;
+import com.corptia.bringero.utils.language.LocaleHelper;
+import com.corptia.bringero.utils.sharedPref.PrefKeys;
+import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
-import com.corptia.bringero.ui.splash.SplashActivity;
 import com.google.android.material.textfield.TextInputLayout;
 
 import butterknife.BindView;

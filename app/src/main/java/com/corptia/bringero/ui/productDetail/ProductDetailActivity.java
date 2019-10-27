@@ -1,7 +1,6 @@
 package com.corptia.bringero.ui.productDetail;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
@@ -16,7 +15,7 @@ import android.widget.Toast;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.PicassoUtils;
+import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.SingleProductQuery;
 import com.google.android.material.appbar.AppBarLayout;

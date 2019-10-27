@@ -23,11 +23,11 @@
             android:name=".ui.cart.CartActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.notification.NotificationActivity" />
-        <activity android:name=".ui.Setting.language.LanguageActivity" />
-        <activity android:name=".ui.Setting.contactUs.ContactUsActivity" />
-        <activity android:name=".ui.Setting.changePassword.ChangePasswordActivity" />
-        <activity android:name=".ui.Setting.editProfile.EditProfileActivity" />
-        <activity android:name=".ui.Setting.main.SettingActivity" />
+        <activity android:name=".ui.setting.language.LanguageActivity" />
+        <activity android:name=".ui.setting.contactUs.ContactUsActivity" />
+        <activity android:name=".ui.setting.changePassword.ChangePasswordActivity" />
+        <activity android:name=".ui.setting.editProfile.EditProfileActivity" />
+        <activity android:name=".ui.setting.main.SettingActivity" />
         <activity android:name=".ui.productDetail.ProductDetailActivity" />
         <activity android:name=".ui.storesDetail.StoreDetailActivity" />
         <activity android:name=".ui.stores.StoresActivity" />
@@ -81,10 +81,27 @@
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorAccent" />
         </service>
+
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
+
+
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

@@ -1,6 +1,5 @@
 package com.corptia.bringero.ui.stores;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +11,7 @@ import android.view.MenuItem;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
 import com.corptia.bringero.model.StoreTypes;
