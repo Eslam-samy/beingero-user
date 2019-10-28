@@ -4,6 +4,7 @@ package com.corptia.bringero.ui.storesDetail;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -46,6 +47,8 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     @BindView(R.id.recycler_brands_detail)
     RecyclerView recycler_brands_detail;
+    @BindView(R.id.root)
+    ConstraintLayout root;
 
     StoreDetailAdapter storeDetailAdapter ;
     PricingAdapter pricingAdapter ;
@@ -71,6 +74,11 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
         View view = inflater.inflate(R.layout.fragment_brand_detail, container, false);
         ButterKnife.bind(this , view);
 
+        if (Common.CURRENT_USER!=null)
+            if (Common.CURRENT_USER.language().equalsIgnoreCase("ar"))
+        {
+            root.setRotationY(180);
+        }
         recycler_brands_detail.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         recycler_brands_detail.addItemDecoration(new GridSpacingItemDecoration(2, Common.dpToPx(15, getActivity()), true, 0, Common.dpToPx(10, getActivity())));
 

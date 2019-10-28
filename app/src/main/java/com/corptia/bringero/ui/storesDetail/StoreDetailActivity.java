@@ -61,6 +61,12 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         setContentView(R.layout.activity_store_detail);
 
         ButterKnife.bind(this);
+
+        if (Common.CURRENT_USER.language().equalsIgnoreCase("ar"))
+        {
+            viewPager.setRotationY(180);
+        }
+
         Intent intent = getIntent();
         adminUserId = intent.getStringExtra(Constants.EXTRA_ADMIN_USER_ID);
         storeId = intent.getStringExtra(Constants.EXTRA_STORE_ID);
