@@ -47,6 +47,7 @@ query getStoreProducts($storeId:ID! , $filter: storeGalleryFilter!){
                     unitId
                     typeId
                     ImageResponse {
+                        status
                         data {
                             name
                         }
@@ -69,6 +70,7 @@ query getNotPricedBy($storeId: ID! , $filter: ProductFilterInput!){
                 _id
                 name
                 ImageResponse {
+                    status
                     data {
                         name
                     }
@@ -115,6 +117,7 @@ query SingleProduct($_id: ID) {
                     data{
                         name
                         ImageResponse {
+                            status
                             data {
                                 name
                             }
@@ -128,6 +131,7 @@ query SingleProduct($_id: ID) {
                         customerPrice
                         description
                         ImageResponse {
+                            status
                             data {
                                 name
                             }

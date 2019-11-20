@@ -80,7 +80,7 @@ public class StoreDetailPresenter {
                 });*/
 
         if (isPrice) {
-            StoreGalleryFilter storeGalleryFilter = StoreGalleryFilter.builder().typeId(typeId).build();
+            StoreGalleryFilter storeGalleryFilter = StoreGalleryFilter.builder().typeId(typeId).isAvailable(true).build();
             MyApolloClient.getApollowClientAuthorization().query(GetStoreProductsQuery.builder().storeId(storeId).filter(storeGalleryFilter).build())
                     .enqueue(new ApolloCall.Callback<GetStoreProductsQuery.Data>() {
                         @Override

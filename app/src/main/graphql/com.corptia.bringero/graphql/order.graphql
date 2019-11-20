@@ -18,14 +18,17 @@ query deliveryOrders {
                 status
                 pilotId
                 createdAt
+
                 BuyingOrderResponse {
                     status
                     message
+
                     BuyingOrderResponseData:data {
                         _id
                         deliveryOrderId
                         serial
                         storeId
+                        TotalPrice
                         DeliveryOrderResponse {
                             status
                             data {
@@ -115,6 +118,7 @@ query deliveryOneOrder($filter: DeliveryOrderFilterInput) {
                                 _id
                                 name
                                 ImageResponse {
+                                    status
                                     data {
                                         name
                                     }
