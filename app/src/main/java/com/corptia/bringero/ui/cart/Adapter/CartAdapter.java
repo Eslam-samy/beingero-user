@@ -87,8 +87,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         if (cartModel.Store().ImageResponse().data()!=null)
         PicassoUtils.setImage(Common.BASE_URL_IMAGE + cartModel.Store().ImageResponse().data().name(), holder.image_store);
-        else
-            PicassoUtils.setImage( holder.image_store);
 
         //Log.d("HAZEM" , "FULL : " +Common.BASE_URL_IMAGE + cartModel.Store().imageId());
 

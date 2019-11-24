@@ -73,7 +73,9 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         storeName = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
         storeImage = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
 
+        if (!storeImage.equalsIgnoreCase("null"))
         PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeImage ,image_store);
+
 
         txt_name_store.setText(storeName);
 

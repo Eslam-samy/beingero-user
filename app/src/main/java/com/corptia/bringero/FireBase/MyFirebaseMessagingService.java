@@ -33,9 +33,11 @@ import androidx.core.app.NotificationCompat;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.ui.splash.SplashActivity;
 
+import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -186,9 +188,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }/////////////////
 
     private void editSharedPref(String name, String check) {
+        Common.TOKEN_FIREBASE = check;
         definePreferences();
         editor.putString(name, check);
         editor.commit();
+
+        PrefUtils.saveToPrefs(getApplicationContext() , name , check);
+
     }/////////////////
 
     private SharedPreferences getSharedPreferences() {

@@ -25,8 +25,8 @@
                 <ImageView
                     android:id="@+id/image_product"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    tools:src="@drawable/img5"
+                    android:layout_height="300dp"
+                    android:src="@drawable/ic_placeholder_product"
                     android:background="@drawable/shadow_product_detail"
                     android:layout_marginStart="@dimen/medium_margin"
                     android:layout_marginEnd="@dimen/medium_margin"

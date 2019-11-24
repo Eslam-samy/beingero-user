@@ -53,7 +53,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img1"
+                android:src="@drawable/ic_placeholder_product"
                 />
 
         </androidx.cardview.widget.CardView>

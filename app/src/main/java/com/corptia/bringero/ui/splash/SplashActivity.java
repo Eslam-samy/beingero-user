@@ -42,6 +42,9 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Common.TOKEN_FIREBASE = (String) PrefUtils.getFromPrefs(this, "user_token", "");
+
+
         setTheme(R.style.FullWindow);
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);

@@ -13,6 +13,8 @@ import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.type.LoginInput;
 import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.type.StoreFilterInput;
+import com.corptia.bringero.type.UserDeviceInput;
+import com.corptia.bringero.type.UserDeviceType;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +44,8 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
             loginView.showProgressBar();
 
 
-            LoginInput loginInput = LoginInput.builder().phone(phone).password(password).build();
+            UserDeviceInput userDeviceInput = UserDeviceInput.builder().deviceType(UserDeviceType.ANDROID).token(Common.TOKEN_FIREBASE).build();
+            LoginInput loginInput = LoginInput.builder().phone(phone).password(password).device(userDeviceInput).build();
 
             MyApolloClient.getApollowClient().mutate(LogInMutation.builder().loginData(loginInput).build())
                     .enqueue(new ApolloCall.Callback<LogInMutation.Data>() {

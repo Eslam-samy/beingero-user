@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/logo_test"
+                    android:src="@drawable/ic_placeholder_store"
                     />
 
             </androidx.cardview.widget.CardView>

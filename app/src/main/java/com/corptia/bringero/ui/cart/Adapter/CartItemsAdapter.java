@@ -79,8 +79,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
         if (item.PricingProduct().Product().ImageResponse().data() != null)
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + item.PricingProduct().Product().ImageResponse().data().name(), holder.image_product);
-        else
-            PicassoUtils.setImage(holder.image_product);
 
         //Log.d("HAZEM" , "FULL : " +Common.BASE_URL_IMAGE +item.PricingProduct().Product().imageId() );
 

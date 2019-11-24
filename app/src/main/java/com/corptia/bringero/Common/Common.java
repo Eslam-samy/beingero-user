@@ -20,9 +20,11 @@ import java.util.List;
 
 public class Common {
 
-    public static final String BASE_URL = "http://45.77.157.193:8000/graphql";
-    public static final String BASE_URL_IMAGE = "http://45.77.157.193:8000/images/";
-    public static final String BASE_URL_IMAGE_UPLOAD = "http://45.77.157.193:8000/images/";
+//        public static final String BASE_URL = "http://45.77.157.193:8000/graphql";
+    public static final String BASE_URL = "http://bringero.site:8000/graphql";
+    public static final String BASE_URL_IMAGE = "http://bringero.site:8000/images/";
+    public static final String BASE_URL_IMAGE_UPLOAD = "http://bringero.site:8000/images/";
+    public static String TOKEN_FIREBASE = "";
 
     public static List<MyCartQuery.StoreDatum> CURRENT_CART;
     public static MeQuery.UserData CURRENT_USER;

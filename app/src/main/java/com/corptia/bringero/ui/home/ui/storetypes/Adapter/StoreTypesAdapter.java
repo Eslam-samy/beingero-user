@@ -50,10 +50,10 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
 
         //PicassoUtils.setImage(storeTypes.);
 
-        if ( storeTypes.ImageResponse().data()!=null)
-            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_storetype);
-        else
-            PicassoUtils.setImage( holder.image_storetype);
+//        if ( storeTypes.ImageResponse().data()!=null)
+//            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_storetype);
+//        else
+//            PicassoUtils.setImage( holder.image_storetype);
 
         holder.txt_name_storetype.setText(storeTypes.name());
 

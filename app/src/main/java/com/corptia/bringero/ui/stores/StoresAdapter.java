@@ -50,8 +50,6 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
 
         if (storeTypes.ImageResponse().data()!=null)
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_brands);
-        else
-            PicassoUtils.setImage( holder.image_brands);
 
         holder.txt_name_brands.setText(storeTypes.name());
 
