@@ -5,9 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.Main.login.LoginFragment"
-    android:background="@color/white"
-    android:layoutDirection="rtl"
->
+    android:background="@color/white">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -91,6 +89,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/input_phone_number"
                 app:passwordToggleDrawable="@drawable/selector_password_toggle_drawable"
                 app:passwordToggleTint="@color/colorAccent"
+                app:passwordToggleEnabled="true"
                 >
 
                 <EditText
