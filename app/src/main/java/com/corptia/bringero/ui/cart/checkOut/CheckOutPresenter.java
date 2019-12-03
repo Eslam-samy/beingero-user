@@ -9,13 +9,13 @@ import com.corptia.bringero.graphql.CreateOrderMutation;
 import org.jetbrains.annotations.NotNull;
 
 public class CheckOutPresenter {
-    CheckOutView view ;
+    CheckOutView view;
 
     public CheckOutPresenter(CheckOutView view) {
         this.view = view;
     }
 
-    public void sendOrder(){
+    public void sendOrder() {
 
         view.showProgressBar();
 
@@ -26,13 +26,11 @@ public class CheckOutPresenter {
 
                         view.hideProgressBar();
 
-                        if (response.data().BuyingOrderMutation().create().status() == 200){
+                        if (response.data().BuyingOrderMutation().create().status() == 200) {
 
                             view.showErrorMessage(response.data().BuyingOrderMutation().create().message());
-
-                        }
-                        else
-                        {
+                            view.onSuccessMessage("");
+                        } else {
 
                         }
                     }
