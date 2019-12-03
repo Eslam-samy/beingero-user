@@ -64,6 +64,7 @@ public class ProductDetailPresenter {
                         if (createResponse.status() == 200)
                         {
                             view.showErrorMessage("Done");
+                            view.onSuccessMessage("");
                         }
                         else
                         {

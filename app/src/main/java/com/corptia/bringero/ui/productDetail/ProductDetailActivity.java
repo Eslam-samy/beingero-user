@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.SingleProductQuery;
@@ -132,14 +133,16 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
 
     @Override
     public void onSuccessMessage(String message) {
-
+        Intent intent = new Intent(ProductDetailActivity.this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home)
-        {
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);

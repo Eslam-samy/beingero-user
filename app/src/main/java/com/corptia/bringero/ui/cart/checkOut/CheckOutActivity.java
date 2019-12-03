@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.cart.Adapter.CartAdapter;
@@ -34,10 +36,11 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
     @BindView(R.id.btn_confirm)
     Button btn_confirm;
 
-    CheckOutPresenter checkOutPresenter = new CheckOutPresenter(this);;
+    CheckOutPresenter checkOutPresenter = new CheckOutPresenter(this);
+    ;
     Handler handler = new Handler();
 
-    AlertDialog alertDialog ;
+    AlertDialog alertDialog;
 
 
     @Override
@@ -51,9 +54,9 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
 
         alertDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
 
-        cartAdapter = new CartAdapter(this, Common.CURRENT_CART , false);
+        cartAdapter = new CartAdapter(this, Common.CURRENT_CART, false);
         recycler_cart.setLayoutManager(new LinearLayoutManager(this));
-        recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,this)));
+        recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, this)));
         recycler_cart.setAdapter(cartAdapter);
 
         btn_confirm.setOnClickListener(view -> {
@@ -61,7 +64,6 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
 //                HomeActivity.navController.popBackStack();
 //                HomeActivity.bottomNavigationView.setVisibility(View.VISIBLE);
 //                HomeActivity.fab.show();
-
 
 
             checkOutPresenter.sendOrder();
@@ -75,11 +77,7 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
             //NavHostFragment.findNavController(CheckOutFragment.this).popBackStack();
 
 
-
-
-
         });
-
 
 
     }
@@ -96,7 +94,7 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -125,7 +123,7 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(CheckOutActivity.this, ""+Message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckOutActivity.this, "" + Message, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -137,7 +135,11 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(CheckOutActivity.this, ""+message, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckOutActivity.this, "" + message, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CheckOutActivity.this, HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
 
