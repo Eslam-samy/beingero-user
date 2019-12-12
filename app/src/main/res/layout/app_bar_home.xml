@@ -19,7 +19,22 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+
+            <TextView
+                android:id="@+id/txt_location"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/round_search"
+                android:layout_marginEnd="@dimen/app_margin"
+                android:textColor="@color/colorDarkGray"
+                android:drawableEnd="@drawable/ic_location"
+                android:gravity="start|center"
+                android:paddingEnd="@dimen/medium_padding"
+                android:paddingStart="@dimen/medium_padding"
+                tools:text="asdasdasddfgsdfgsdfg"/>
+
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

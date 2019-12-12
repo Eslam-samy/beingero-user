@@ -2,7 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@drawable/round_up_bottom_sheet">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/recent_address"
+        android:textColor="@color/black"
+        android:textSize="@dimen/large_text_size"
+        android:fontFamily="@font/poppinsregular"
+        android:layout_marginStart="@dimen/app_margin"
+        android:layout_marginTop="@dimen/app_margin"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_delivery_location"

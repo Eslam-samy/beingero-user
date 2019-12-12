@@ -96,7 +96,7 @@
                     style="@style/EditTextStyle"
                     android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:text="100200300"
+                    android:text="110220330"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     />

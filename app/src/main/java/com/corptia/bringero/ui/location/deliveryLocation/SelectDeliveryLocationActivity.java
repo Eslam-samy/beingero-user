@@ -3,11 +3,13 @@ package com.corptia.bringero.ui.location.deliveryLocation;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.util.StringUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
@@ -23,7 +25,7 @@ import butterknife.ButterKnife;
 public class SelectDeliveryLocationActivity extends BaseActivity implements SelectDeliveryLocationView {
 
     @BindView(R.id.btn_select_location)
-    Button btn_select_location;
+    TextView btn_select_location;
     @BindView(R.id.btn_set_location)
     Button btn_set_location;
 
@@ -41,10 +43,15 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
 
         if (Common.CURRENT_USER!=null) {
             if (Common.CURRENT_USER.currentDeliveryAddress() != null) {
-                btn_select_location.setText(new StringBuilder().append(Common.CURRENT_USER.currentDeliveryAddress().name())
+
+                String region = Common.CURRENT_USER.currentDeliveryAddress().region();
+                String name = Common.CURRENT_USER.currentDeliveryAddress().name();
+
+                btn_select_location.setText(new StringBuilder().append(name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase())
                         .append(" (")
-                        .append(Common.CURRENT_USER.currentDeliveryAddress().region())
+                        .append(region.substring(0,1).toUpperCase() + region.substring(1).toLowerCase())
                         .append(")"));
+
             } else
                 btn_select_location.setText(getString(R.string.select_location));
         }

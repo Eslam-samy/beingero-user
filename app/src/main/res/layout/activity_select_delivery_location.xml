@@ -7,34 +7,41 @@
     tools:context=".ui.location.deliveryLocation.SelectDeliveryLocationActivity"
     android:background="@color/white">
 
-    <View
+<!--    <View-->
+<!--        android:id="@+id/viewBgLogo"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="220dp"-->
+<!--        android:paddingTop="@dimen/low_padding"-->
+<!--        android:background="@color/white"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+
+
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/viewBgLogo"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:paddingTop="@dimen/low_padding"
-        android:background="@color/white"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardElevation="@dimen/cardElevationMedium">
+
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_logo_app"
+            android:layout_gravity="center"
+            />
+
+    </androidx.cardview.widget.CardView>
 
 
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:src="@drawable/ic_logo_app"
-        android:layout_gravity="center"
-        app:layout_constraintTop_toTopOf="@+id/viewBgLogo"
-        app:layout_constraintBottom_toBottomOf="@+id/viewBgLogo"
-        app:layout_constraintStart_toStartOf="@+id/viewBgLogo"
-        app:layout_constraintEnd_toEndOf="@+id/viewBgLogo"
-        />
-
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/viewBgLogo"
-        android:layout_marginStart="@dimen/app_margin"
         android:layout_marginTop="@dimen/app_margin"
         app:layout_constraintStart_toStartOf="parent"
         android:orientation="vertical">
@@ -43,35 +50,40 @@
             android:id="@+id/lab_deliverTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/deliver_to" />
+            android:text="@string/deliver_to"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/app_margin"/>
 
-        <Button
+        <TextView
             android:id="@+id/btn_select_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/lab_deliverTo"
-            style="@style/ButtonNormalStyle"
             android:text="new Damietta - 33 nasr street"
-            android:layout_marginStart="0dp"
-            android:background="@color/white"
+            android:background="@drawable/my_shadow"
             android:textColor="@color/black"
-            android:drawableStart="@drawable/ic_location_black"
-            android:paddingStart="@dimen/medium_padding"
+            android:drawableStart="@drawable/ic_location"
             android:gravity="center"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginEnd="@dimen/medium_margin"
+            android:paddingStart="@dimen/app_margin"
+            android:textStyle="bold"
             />
 
         <Button
             android:id="@+id/btn_set_location"
+            style="@style/ButtonNormalStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/lab_deliverTo"
-            style="@style/ButtonNormalStyle"
+            android:layout_marginTop="12dp"
             android:text="@string/set_location"
-            android:layout_marginStart="0dp"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_select_location" />
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 

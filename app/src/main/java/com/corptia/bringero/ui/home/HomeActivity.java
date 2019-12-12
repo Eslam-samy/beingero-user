@@ -1,8 +1,12 @@
 package com.corptia.bringero.ui.home;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 
 import androidx.annotation.NonNull;
@@ -11,26 +15,37 @@ import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.corptia.bringero.base.BaseActivity;
+import com.corptia.bringero.ui.MapWork.MapsActivity;
+import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
+import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationAdapter;
+import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
+import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationView;
 import com.corptia.bringero.ui.setting.main.SettingActivity;
 import com.corptia.bringero.ui.cart.CartFragment;
 import com.corptia.bringero.ui.home.ui.storetypes.StoreTypesFragment;
 import com.corptia.bringero.ui.order.OrderFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class HomeActivity extends BaseActivity implements
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, SelectDeliveryLocationView {
 
 
     @BindView(R.id.toolbar)
@@ -49,6 +64,14 @@ public class HomeActivity extends BaseActivity implements
     MenuItem nav_home, nav_gallery, nav_wishlist, nav_location, nav_order, nav_cart, nav_notifications, nav_discounts,
             nav_terms_conditions, nav_contact_us, nav_settings, nav_pricing;
 
+    @BindView(R.id.txt_location)
+    TextView txt_location;
+
+    //For Select Location
+    BottomSheetDialog bottomSheetDialog;
+    SelectDeliveryLocationAdapter adapter;
+    SelectDeliveryLocationPresenter presenter = new SelectDeliveryLocationPresenter(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +85,36 @@ public class HomeActivity extends BaseActivity implements
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
+        //Set CurrentLocation
+        setCurrentLocation();
+
+        txt_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                showDialogSelectLocation();
+
+            }
+        });
+
+    }
+
+    private void setCurrentLocation() {
+
+        if (Common.CURRENT_USER!=null) {
+            if (Common.CURRENT_USER.currentDeliveryAddress() != null) {
+
+                String region = Common.CURRENT_USER.currentDeliveryAddress().region();
+                String name = Common.CURRENT_USER.currentDeliveryAddress().name();
+
+                txt_location.setText(new StringBuilder().append(name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase())
+                        .append(" (")
+                        .append(region.substring(0,1).toUpperCase() + region.substring(1).toLowerCase())
+                        .append(")"));
+
+            } else
+                txt_location.setText(getString(R.string.select_location));
+        }
 
     }
 
@@ -199,4 +252,80 @@ public class HomeActivity extends BaseActivity implements
         return true;
     }
 
+    private void showDialogSelectLocation() {
+
+        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setTitle(getString(R.string.set_location));
+        bottomSheetDialog.setCanceledOnTouchOutside(true);
+        bottomSheetDialog.setCancelable(true);
+        View sheetView = getLayoutInflater().inflate(R.layout.layout_select_delivery_location, null);
+
+        RecyclerView recycler_delivery_location = sheetView.findViewById(R.id.recycler_delivery_location);
+        Button btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
+
+        recycler_delivery_location.setHasFixedSize(true);
+        recycler_delivery_location.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new SelectDeliveryLocationAdapter(this, Common.CURRENT_USER.deliveryAddresses());
+        recycler_delivery_location.setAdapter(adapter);
+
+        adapter.setClickListener(new IOnRecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //Here Update Location Yo CuttentLocation
+
+                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID(position));
+            }
+        });
+
+        btn_select_location_from_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Here Open Maps
+                Common.isUpdateCurrentLocation = true;
+                startActivity(new Intent(HomeActivity.this , MapsActivity.class));
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+//        bottomSheetDialog.getWindow().setBackgroundDrawableResource(R.drawable.round_up_bottom_sheet);
+        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        bottomSheetDialog.setContentView(sheetView);
+        bottomSheetDialog.setCancelable(false);
+        bottomSheetDialog.show();
+    }
+
+    @Override
+    public void onSuccessUpdateCurrentLocation() {
+        runOnUiThread(() -> {
+            bottomSheetDialog.dismiss();
+            setCurrentLocation();
+        });
+
+    }
+
+    @Override
+    public void onSuccessUpdateNestedLocation() {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void showErrorMessage(String Message) {
+
+    }
+
+    @Override
+    public void onSuccessMessage(String message) {
+
+    }
 }
