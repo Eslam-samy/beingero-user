@@ -10,6 +10,7 @@
 
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -28,18 +29,53 @@
                 android:background="@drawable/round_search"
                 android:layout_marginEnd="@dimen/app_margin"
                 android:textColor="@color/colorDarkGray"
-                android:drawableEnd="@drawable/ic_location"
-                android:drawableStart="@drawable/ic_arrow_down"
+                android:drawableStart="@drawable/ic_location"
+                android:drawableEnd="@drawable/ic_arrow_down"
                 android:gravity="start|center"
                 android:paddingEnd="@dimen/medium_padding"
                 android:paddingStart="@dimen/medium_padding"
-                tools:text="asdasdasddfgsdfgsdfg"/>
+                tools:text="asdasdasddfgsdfgsdfg"
+                android:visibility="gone"/>
 
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_home" />
+<!--    <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--        android:theme="@style/AppBarLayoutTheme"-->
+<!--        android:background="@color/white"-->
+<!--        app:elevation="0dp"-->
+<!--        android:elevation="0dp"-->
+<!--        xmlns:android="http://schemas.android.com/apk/res/android">-->
+
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolbar"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="?attr/actionBarSize"-->
+<!--            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+<!--            >-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/txt_location"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:background="@drawable/round_search"-->
+<!--                            android:layout_marginEnd="@dimen/app_margin"-->
+<!--                            android:textColor="@color/colorDarkGray"-->
+<!--                            android:drawableStart="@drawable/ic_location"-->
+<!--                            android:drawableEnd="@drawable/ic_arrow_down"-->
+<!--                            android:gravity="start|center"-->
+<!--                            android:paddingEnd="@dimen/medium_padding"-->
+<!--                            android:paddingStart="@dimen/medium_padding"-->
+<!--                            tools:text="Location .."/>-->
+<!--                    </androidx.appcompat.widget.Toolbar>-->
+
+<!--                </com.google.android.material.appbar.AppBarLayout>-->
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+                <include layout="@layout/content_home" />
+
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>

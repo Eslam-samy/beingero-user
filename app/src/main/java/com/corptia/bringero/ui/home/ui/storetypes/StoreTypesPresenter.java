@@ -28,7 +28,7 @@ public class StoreTypesPresenter {
         //Set Data
         //storeTypesList.add(new StoreTypes(R.drawable.img1, "data"));
 
-        MyApolloClient.getApollowClient().query(GetAllCategoriesQuery.builder().build())
+        MyApolloClient.getApollowClientAuthorization().query(GetAllCategoriesQuery.builder().build())
                 .enqueue(new ApolloCall.Callback<GetAllCategoriesQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GetAllCategoriesQuery.Data> response) {

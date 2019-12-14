@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:background="@drawable/shadow_brands">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_image_brands"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="@dimen/large_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="@dimen/radius_normal"
+        app:cardElevation="@dimen/cardElevationLow"
+        app:cardUseCompatPadding="true">
+
+
+        <ImageView
+            android:id="@+id/image_brands"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_placeholder_store"
+            android:padding="10dp"
+            />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <TextView
+        android:id="@+id/txt_name_brands"
+        style="@style/TextCardDefaultStyle"
+        android:fontFamily="@font/poppinssemibold"
+        app:layout_constraintBottom_toTopOf="@+id/layout_data"
+        app:layout_constraintStart_toEndOf="@+id/card_image_brands"
+        app:layout_constraintTop_toTopOf="@+id/card_image_brands"
+        tools:text="Nike Official" />
+
+
+    <LinearLayout
+        android:id="@+id/layout_data"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center|start"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        app:layout_constraintBottom_toBottomOf="@+id/card_image_brands"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/txt_name_brands"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name_brands">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_rating_on"
+                android:drawablePadding="@dimen/low_padding"
+                android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/black"
+                android:textSize="@dimen/low_xx_text_size"
+                android:text="4.8" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/low_margin"
+                android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/colorDavyGray"
+                android:textSize="@dimen/low_x_text_size"
+                android:text="(233 ratings)" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_min"
+            android:fontFamily="@font/poppinsregular"
+            android:gravity="center"
+            android:text="Min : 10 EGP"
+            style="@style/textCardStore"/>
+
+
+        <TextView
+            android:id="@+id/txt_watch"
+            android:drawableStart="@drawable/ic_stopwatch"
+            android:drawablePadding="@dimen/low_margin"
+            android:gravity="start"
+            android:text="10 to 30"
+            style="@style/textCardStore"/>
+
+
+    </LinearLayout>
+
+    <!--        <TextView-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="El Saidei Street - 33 topic El Saidei"-->
+    <!--            android:textSize="@dimen/normal_text_size"-->
+    <!--            android:drawableStart="@drawable/ic_location_gray"-->
+    <!--            android:paddingStart="@dimen/low_padding"/>-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/txt_staus"-->
+<!--        style="@style/TextCardDefaultStyle"-->
+<!--        android:textColor="@color/colorAccent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/txt_name_brands"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/txt_name_brands"-->
+<!--        android:layout_marginStart="0dp"-->
+<!--        android:text="Verified"-->
+<!--        android:fontFamily="@font/poppinsregular"-->
+<!--        android:visibility="gone"/>-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

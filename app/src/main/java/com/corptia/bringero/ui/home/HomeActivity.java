@@ -26,6 +26,7 @@ import com.corptia.bringero.ui.home.ui.storetypes.StoreTypesFragment;
 import com.corptia.bringero.ui.order.OrderFragment;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
@@ -68,6 +69,8 @@ public class HomeActivity extends BaseActivity implements
 
     @BindView(R.id.txt_location)
     TextView txt_location;
+    @BindView(R.id.appbar)
+    AppBarLayout appbar;
 
     //For Select Location
     BottomSheetDialog bottomSheetDialog;
@@ -147,6 +150,7 @@ public class HomeActivity extends BaseActivity implements
                 if (!(selectedFragment instanceof StoreTypesFragment)) {
                     selectedFragment = new StoreTypesFragment();
                     getSupportActionBar().setTitle(R.string.gallery);
+                    txt_location.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -154,6 +158,9 @@ public class HomeActivity extends BaseActivity implements
                 if (!(selectedFragment instanceof OrderFragment)) {
                     selectedFragment = new OrderFragment();
                     getSupportActionBar().setTitle(R.string.orders);
+                    txt_location.setVisibility(View.GONE);
+                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
+                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
                 }
                 break;
 
@@ -161,6 +168,9 @@ public class HomeActivity extends BaseActivity implements
                 if (!(selectedFragment instanceof CartFragment)) {
                     selectedFragment = new CartFragment();
                     getSupportActionBar().setTitle(R.string.cart);
+                    txt_location.setVisibility(View.GONE);
+                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
+                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
                 }
                 break;
 

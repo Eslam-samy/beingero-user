@@ -224,4 +224,16 @@
         <item name="android:background">@drawable/round_up_bottom_sheet</item>
     </style>
 
+    <!-- Style for text card store -->
+    <style name="textCardStore">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/low_xx_text_size</item>
+        <item name="android:fontFamily">@font/poppinsregular</item>
+        <item name="android:textColor">@color/colorDavyGray</item>
+
+    </style>
+
+
 </resources>

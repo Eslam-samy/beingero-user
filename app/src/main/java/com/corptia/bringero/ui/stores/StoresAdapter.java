@@ -37,7 +37,7 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_brands, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_stores, parent, false));
     }
 
     @Override

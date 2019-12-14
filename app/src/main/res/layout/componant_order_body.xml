@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:src="@drawable/logo_test"
+        android:src="@drawable/ic_logo_app"
         android:visibility="visible"/>
 
 
