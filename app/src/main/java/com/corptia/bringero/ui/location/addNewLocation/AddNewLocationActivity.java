@@ -82,8 +82,8 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 
     //For Check if user no have any location and add new one must after add update current location
     boolean isUpdateCurrentLocation;
-    String name , _id_Address , flatType , region , street ;
-    int flat , floor , building;
+    String name, _id_Address, flatType, region, street;
+    int flat, floor, building;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,9 +124,7 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
             }
 
 
-
-            if (getIntent().hasExtra(Constants.EXTRA_UPDATE))
-            {
+            if (getIntent().hasExtra(Constants.EXTRA_UPDATE)) {
                 presenter.updateLocation(_id_Address,
                         address_name,
                         region,
@@ -137,9 +135,7 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                         Integer.parseInt(building),
                         latitude,
                         longitude);
-            }
-
-            else {
+            } else {
                 presenter.addNewAddress(address_name,
                         region,
                         street,
@@ -151,7 +147,6 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                         longitude,
                         Common.isUpdateCurrentLocation);
             }
-
 
 
         });
@@ -196,17 +191,17 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                 flatType = intent.getStringExtra(Constants.EXTRA_ADDRESS_FLAT_TYPE);
                 region = intent.getStringExtra(Constants.EXTRA_ADDRESS_REGION);
                 street = intent.getStringExtra(Constants.EXTRA_ADDRESS_STREET);
-                flat = intent.getIntExtra(Constants.EXTRA_ADDRESS_FLAT,0);
-                floor = intent.getIntExtra(Constants.EXTRA_ADDRESS_FLOOR,0);
-                building =  intent.getIntExtra(Constants.EXTRA_ADDRESS_BUILDING,0);
+                flat = intent.getIntExtra(Constants.EXTRA_ADDRESS_FLAT, 0);
+                floor = intent.getIntExtra(Constants.EXTRA_ADDRESS_FLOOR, 0);
+                building = intent.getIntExtra(Constants.EXTRA_ADDRESS_BUILDING, 0);
 
                 //Set Defult Value
                 input_address_name.getEditText().setText(name);
                 input_region.getEditText().setText(region);
                 input_street.getEditText().setText(street);
-                input_flat.getEditText().setText(""+flat);
-                input_floor.getEditText().setText(""+floor);
-                input_building.getEditText().setText(""+building);
+                input_flat.getEditText().setText("" + flat);
+                input_floor.getEditText().setText("" + floor);
+                input_building.getEditText().setText("" + building);
 
                 latitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
                 longitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
@@ -224,8 +219,6 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
             }
 
         }
-
-
 
 
     }
@@ -261,9 +254,10 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
             @Override
             public void run() {
 
-                if (Common.isUpdateCurrentLocation)
-                startActivity(new Intent(AddNewLocationActivity.this, HomeActivity.class));
-                else finish();
+                if (Common.isUpdateCurrentLocation) {
+                    finish();
+                    startActivity(new Intent(AddNewLocationActivity.this, HomeActivity.class));
+                } else finish();
             }
         });
 
@@ -337,7 +331,7 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 //        mMap.setMyLocationEnabled(true);
         //First zoom
 
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(13f));
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(17f));
         LatLng latLng = new LatLng(latitude, longitude);
 
 

@@ -254,7 +254,7 @@ public class HomeActivity extends BaseActivity implements
 
     private void showDialogSelectLocation() {
 
-        bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog = new BottomSheetDialog(this ,R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setTitle(getString(R.string.set_location));
         bottomSheetDialog.setCanceledOnTouchOutside(true);
         bottomSheetDialog.setCancelable(true);
@@ -262,6 +262,7 @@ public class HomeActivity extends BaseActivity implements
 
         RecyclerView recycler_delivery_location = sheetView.findViewById(R.id.recycler_delivery_location);
         Button btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
+        Button btn_apply_location = sheetView.findViewById(R.id.btn_apply_location);
 
         recycler_delivery_location.setHasFixedSize(true);
         recycler_delivery_location.setLayoutManager(new LinearLayoutManager(this));
@@ -272,7 +273,6 @@ public class HomeActivity extends BaseActivity implements
             @Override
             public void onClick(View view, int position) {
                 //Here Update Location Yo CuttentLocation
-
                 presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID(position));
             }
         });
@@ -287,8 +287,8 @@ public class HomeActivity extends BaseActivity implements
             }
         });
 
-//        bottomSheetDialog.getWindow().setBackgroundDrawableResource(R.drawable.round_up_bottom_sheet);
         bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        bottomSheetDialog.getWindow().setBackgroundDrawableResource(R.drawable.round_up_bottom_sheet);
 
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.setCancelable(false);

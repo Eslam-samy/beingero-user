@@ -166,6 +166,7 @@
     <string name="last_name_field_is_required">Last name field is required</string>
     <string name="save_failed">Save failed</string>
     <string name="recent_address">Recent Address</string>
+    <string name="apply_location">Apply Location</string>
 
 
 </resources>
