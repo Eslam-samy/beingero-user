@@ -15,6 +15,7 @@ import androidx.core.view.ViewPropertyAnimatorCompat;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
@@ -112,8 +113,11 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
         runOnUiThread(() -> {
 
-            startActivity(new Intent(SplashActivity.this, SelectDeliveryLocationActivity.class));
             LocaleHelper.setLocale(SplashActivity.this, Common.CURRENT_USER.language().toLowerCase());
+            if (Common.CURRENT_USER.currentDeliveryAddress() != null)
+            startActivity(new Intent(SplashActivity.this, SelectDeliveryLocationActivity.class));
+            else
+                startActivity(new Intent(SplashActivity.this, MapsActivity.class));
             finish();
 
         });
