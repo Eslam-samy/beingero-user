@@ -24,6 +24,8 @@ import com.corptia.bringero.ui.setting.main.SettingActivity;
 import com.corptia.bringero.ui.cart.CartFragment;
 import com.corptia.bringero.ui.home.ui.storetypes.StoreTypesFragment;
 import com.corptia.bringero.ui.order.OrderFragment;
+import com.corptia.bringero.utils.CustomLoading;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
@@ -72,6 +74,8 @@ public class HomeActivity extends BaseActivity implements
     SelectDeliveryLocationAdapter adapter;
     SelectDeliveryLocationPresenter presenter = new SelectDeliveryLocationPresenter(this);
 
+    CustomLoading loading ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +85,10 @@ public class HomeActivity extends BaseActivity implements
 
         initToolbar(toolbar);
         initNavigationView();
+
+
+
+        loading = new CustomLoading(this  , true);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
@@ -92,7 +100,7 @@ public class HomeActivity extends BaseActivity implements
             @Override
             public void onClick(View view) {
 
-                showDialogSelectLocation();
+                bottomSheetDialog = Common.showDialogSelectLocation(HomeActivity.this ,bottomSheetDialog , presenter);
 
             }
         });
@@ -252,48 +260,57 @@ public class HomeActivity extends BaseActivity implements
         return true;
     }
 
-    private void showDialogSelectLocation() {
-
-        bottomSheetDialog = new BottomSheetDialog(this ,R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setTitle(getString(R.string.set_location));
-        bottomSheetDialog.setCanceledOnTouchOutside(true);
-        bottomSheetDialog.setCancelable(true);
-        View sheetView = getLayoutInflater().inflate(R.layout.layout_select_delivery_location, null);
-
-        RecyclerView recycler_delivery_location = sheetView.findViewById(R.id.recycler_delivery_location);
-        Button btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
-        Button btn_apply_location = sheetView.findViewById(R.id.btn_apply_location);
-
-        recycler_delivery_location.setHasFixedSize(true);
-        recycler_delivery_location.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SelectDeliveryLocationAdapter(this, Common.CURRENT_USER.deliveryAddresses());
-        recycler_delivery_location.setAdapter(adapter);
-
-        adapter.setClickListener(new IOnRecyclerViewClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                //Here Update Location Yo CuttentLocation
-                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID(position));
-            }
-        });
-
-        btn_select_location_from_map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Here Open Maps
-                Common.isUpdateCurrentLocation = true;
-                startActivity(new Intent(HomeActivity.this , MapsActivity.class));
-                bottomSheetDialog.dismiss();
-            }
-        });
-
-        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        bottomSheetDialog.getWindow().setBackgroundDrawableResource(R.drawable.round_up_bottom_sheet);
-
-        bottomSheetDialog.setContentView(sheetView);
-        bottomSheetDialog.setCancelable(false);
-        bottomSheetDialog.show();
-    }
+//    private void showDialogSelectLocation() {
+//
+//        bottomSheetDialog = new BottomSheetDialog(this ,R.style.AppBottomSheetDialogTheme);
+//        bottomSheetDialog.setTitle(getString(R.string.set_location));
+//        bottomSheetDialog.setCanceledOnTouchOutside(true);
+//        bottomSheetDialog.setCancelable(true);
+//        View sheetView = getLayoutInflater().inflate(R.layout.layout_select_delivery_location, null);
+//
+//        RecyclerView recycler_delivery_location = sheetView.findViewById(R.id.recycler_delivery_location);
+//        Button btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
+//        Button btn_apply_location = sheetView.findViewById(R.id.btn_apply_location);
+//
+//        recycler_delivery_location.setHasFixedSize(true);
+//        recycler_delivery_location.setLayoutManager(new LinearLayoutManager(this));
+//        recycler_delivery_location.setNestedScrollingEnabled(true);
+//        recycler_delivery_location.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,this)));
+//
+//        adapter = new SelectDeliveryLocationAdapter(this, Common.CURRENT_USER.deliveryAddresses());
+//        recycler_delivery_location.setAdapter(adapter);
+//
+//        adapter.setClickListener(new IOnRecyclerViewClickListener() {
+//            @Override
+//            public void onClick(View view, int position) {
+//                //Here Update Location Yo CuttentLocation
+////                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID(position));
+//                adapter.selectCurrentLocation(position);
+//
+//            }
+//        });
+//
+//        btn_select_location_from_map.setOnClickListener(view -> {
+//            //Here Open Maps
+//            Common.isUpdateCurrentLocation = true;
+//            startActivity(new Intent(HomeActivity.this , MapsActivity.class));
+//            bottomSheetDialog.dismiss();
+//        });
+//
+//        btn_apply_location.setOnClickListener(view -> {
+//            if (adapter.isChangeLocation())
+//            presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID());
+//            else
+//                bottomSheetDialog.dismiss();
+//        });
+//
+//        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+////        bottomSheetDialog.getWindow().setBackgroundDrawableResource(R.drawable.round_up_bottom_sheet);
+//
+//        bottomSheetDialog.setContentView(sheetView);
+//        bottomSheetDialog.setCancelable(false);
+//        bottomSheetDialog.show();
+//    }
 
     @Override
     public void onSuccessUpdateCurrentLocation() {
@@ -312,11 +329,18 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public void showProgressBar() {
 
+        loading.showProgressBar(this,false);
     }
 
     @Override
     public void hideProgressBar() {
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loading.hideProgressBar();
+            }
+        });
     }
 
     @Override

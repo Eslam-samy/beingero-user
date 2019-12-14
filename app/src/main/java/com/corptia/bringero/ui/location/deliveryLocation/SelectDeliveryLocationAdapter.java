@@ -26,7 +26,10 @@ public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDe
     Context context;
     List<MeQuery.DeliveryAddress> deliveryAddressList = new ArrayList<>();
 
-    IOnRecyclerViewClickListener clickListener ;
+    IOnRecyclerViewClickListener clickListener;
+
+    public int selectedPosition;
+    int tempCurrentPosition;
 
     public void setClickListener(IOnRecyclerViewClickListener clickListener) {
         this.clickListener = clickListener;
@@ -35,12 +38,13 @@ public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDe
     public SelectDeliveryLocationAdapter(Context context, List<MeQuery.DeliveryAddress> deliveryAddressList) {
         this.context = context;
         this.deliveryAddressList = deliveryAddressList;
+        selectedPosition = -1;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_cart_delivery_location,parent , false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_cart_delivery_location, parent, false));
     }
 
     @Override
@@ -50,21 +54,25 @@ public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDe
         holder.txt_address.setText(address.street());
         holder.txt_title_name_address.setText(address.name());
 
-        if(Common.CURRENT_USER.currentDeliveryAddress()._id().equals(address._id())){
-            holder.image_correct.setVisibility(View.VISIBLE);
+        if (selectedPosition == -1) {
+            if (Common.CURRENT_USER.currentDeliveryAddress()._id().equals(address._id())) {
+                holder.image_correct.setVisibility(View.VISIBLE);
+                selectedPosition = position;
+                tempCurrentPosition = position;
+            } else
+                holder.image_correct.setVisibility(View.INVISIBLE);
+        } else {
+            if (selectedPosition == position) {
+                holder.image_correct.setVisibility(View.VISIBLE);
+            } else holder.image_correct.setVisibility(View.INVISIBLE);
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        holder.itemView.setOnClickListener(view -> {
 
-                if (clickListener!=null)
-                {
-                    clickListener.onClick(view , position);
-                }
-
-
+            if (clickListener != null) {
+                clickListener.onClick(view, position);
             }
+
         });
 
     }
@@ -87,11 +95,20 @@ public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDe
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
-    public String getCurrentDeliveryAddressID ( int position){
-        return deliveryAddressList.get(position)._id();
+    public String getCurrentDeliveryAddressID() {
+        return deliveryAddressList.get(selectedPosition)._id();
+    }
+
+    public void selectCurrentLocation(int position) {
+        selectedPosition = position;
+        notifyDataSetChanged();
+    }
+
+    public boolean isChangeLocation() {
+        return tempCurrentPosition != selectedPosition;
     }
 }

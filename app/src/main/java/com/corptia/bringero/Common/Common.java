@@ -1,18 +1,35 @@
 package com.corptia.bringero.Common;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Interface.CallbackListener;
+import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
+import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.ui.Main.login.LoginPresenter;
+import com.corptia.bringero.ui.MapWork.MapsActivity;
+import com.corptia.bringero.ui.home.HomeActivity;
+import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationAdapter;
+import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -74,4 +91,65 @@ public class Common {
                 });
 
     }
+
+
+
+    public static BottomSheetDialog showDialogSelectLocation(Context context, BottomSheetDialog bottomSheetDialog, SelectDeliveryLocationPresenter presenter) {
+
+        SelectDeliveryLocationAdapter adapter;
+        bottomSheetDialog = new BottomSheetDialog(context , R.style.AppBottomSheetDialogTheme);
+        bottomSheetDialog.setCanceledOnTouchOutside(true);
+        bottomSheetDialog.setCancelable(true);
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE ); //I use this line because this class not activity
+        View sheetView = inflater.inflate(R.layout.layout_select_delivery_location, null);
+
+        RecyclerView recycler_delivery_location = sheetView.findViewById(R.id.recycler_delivery_location);
+        Button btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
+        Button btn_apply_location = sheetView.findViewById(R.id.btn_apply_location);
+
+        recycler_delivery_location.setHasFixedSize(true);
+        recycler_delivery_location.setLayoutManager(new LinearLayoutManager(context));
+        recycler_delivery_location.setNestedScrollingEnabled(true);
+        recycler_delivery_location.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,context)));
+
+        adapter = new SelectDeliveryLocationAdapter(context, Common.CURRENT_USER.deliveryAddresses());
+        recycler_delivery_location.setAdapter(adapter);
+
+        adapter.setClickListener(new IOnRecyclerViewClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                //Here Update Location Yo CuttentLocation
+//                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID(position));
+                adapter.selectCurrentLocation(position);
+
+            }
+        });
+
+        BottomSheetDialog finalBottomSheetDialog = bottomSheetDialog;
+        btn_select_location_from_map.setOnClickListener(view -> {
+            //Here Open Maps
+            Common.isUpdateCurrentLocation = true;
+            context.startActivity(new Intent(context , MapsActivity.class));
+            finalBottomSheetDialog.dismiss();
+        });
+
+        BottomSheetDialog finalBottomSheetDialog1 = bottomSheetDialog;
+        btn_apply_location.setOnClickListener(view -> {
+            if (adapter.isChangeLocation())
+                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID());
+            else
+                finalBottomSheetDialog1.dismiss();
+        });
+
+        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        bottomSheetDialog.getWindow().setBackgroundDrawableResource(R.drawable.round_up_bottom_sheet);
+
+        bottomSheetDialog.setContentView(sheetView);
+        bottomSheetDialog.setCancelable(false);
+        bottomSheetDialog.show();
+
+        return bottomSheetDialog;
+    }
+
 }

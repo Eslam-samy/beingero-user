@@ -29,6 +29,7 @@
                 android:layout_marginEnd="@dimen/app_margin"
                 android:textColor="@color/colorDarkGray"
                 android:drawableEnd="@drawable/ic_location"
+                android:drawableStart="@drawable/ic_arrow_down"
                 android:gravity="start|center"
                 android:paddingEnd="@dimen/medium_padding"
                 android:paddingStart="@dimen/medium_padding"

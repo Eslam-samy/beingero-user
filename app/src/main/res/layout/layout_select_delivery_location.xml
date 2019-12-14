@@ -1,62 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout   xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/recent_address"
-        android:textColor="@color/black"
-        android:textSize="@dimen/large_text_size"
-        android:fontFamily="@font/poppinsregular"
-        android:layout_marginStart="@dimen/app_margin"
-        android:layout_marginTop="@dimen/app_margin"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_delivery_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="10">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_apply_location"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center"
-            style="@style/ButtonNormalStyle"
-            android:text="@string/apply_location"
-            android:textSize="@dimen/normal_text_size"
-            android:layout_weight="7"
-            android:layout_marginBottom="@dimen/app_margin"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/recent_address"
+            android:textColor="@color/black"
+            android:textSize="@dimen/large_text_size"
+            android:fontFamily="@font/poppinsregular"
             android:layout_marginStart="@dimen/app_margin"
-            android:layout_marginEnd="@dimen/medium_margin"
-            android:layout_marginTop="@dimen/app_margin"
-            android:fontFamily="@font/poppinsmedium"/>
+            android:layout_marginTop="@dimen/app_margin"/>
 
-        <Button
-            android:id="@+id/btn_select_location_from_map"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            style="@style/ButtonNormalStyle"
-            android:text="+"
-            android:textSize="30sp"
-            android:layout_marginBottom="@dimen/app_margin"
-            android:layout_marginEnd="@dimen/app_margin"
-            android:layout_weight="2"
-            android:layout_margin="0dp"
-            android:textAlignment="center"
-            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_delivery_location"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:layout_below="@+id/recycler_delivery_location">
+
+                <Button
+                    android:id="@+id/btn_apply_location"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    style="@style/ButtonNormalStyle"
+                    android:text="@string/apply_location"
+                    android:textSize="@dimen/normal_text_size"
+                    android:layout_weight="7"
+                    android:layout_marginBottom="@dimen/app_margin"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginEnd="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/app_margin"
+                    android:fontFamily="@font/poppinsmedium"/>
+
+                <Button
+                    android:id="@+id/btn_select_location_from_map"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    style="@style/ButtonNormalStyle"
+                    android:text="+"
+                    android:textSize="30sp"
+                    android:layout_marginBottom="@dimen/app_margin"
+                    android:layout_marginEnd="@dimen/app_margin"
+                    android:layout_weight="2"
+                    android:layout_margin="0dp"
+                    android:textAlignment="center"
+                    />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
 
     </LinearLayout>
 
 
-</LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

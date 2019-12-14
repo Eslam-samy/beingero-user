@@ -19,6 +19,7 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.home.HomeActivity;
+import com.corptia.bringero.utils.CustomLoading;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -42,13 +43,16 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
     SelectDeliveryLocationAdapter adapter;
 
     SelectDeliveryLocationPresenter presenter = new SelectDeliveryLocationPresenter(this);
-
+    CustomLoading loading ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_delivery_location);
 
         initView();
+
+        loading = new CustomLoading(this  , true);
+
 
         if (Common.CURRENT_USER!=null) {
             if (Common.CURRENT_USER.currentDeliveryAddress() != null) {
@@ -65,7 +69,7 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
                 btn_select_location.setText(getString(R.string.select_location));
         }
 
-        btn_select_location.setOnClickListener(view -> showDialogSelectLocation());
+        btn_select_location.setOnClickListener(view -> bottomSheetDialog = Common.showDialogSelectLocation(SelectDeliveryLocationActivity.this ,bottomSheetDialog , presenter));
 
         btn_set_location.setOnClickListener(view -> {
 
@@ -82,67 +86,67 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
     }
 
 
-    private void showDialogSelectLocation() {
-
-        bottomSheetDialog = new BottomSheetDialog(this , R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setTitle(getString(R.string.set_location));
-        bottomSheetDialog.setCanceledOnTouchOutside(true);
-        bottomSheetDialog.setCancelable(true);
-        View sheetView = getLayoutInflater().inflate(R.layout.layout_select_delivery_location, null);
-
-        RecyclerView recycler_delivery_location = sheetView.findViewById(R.id.recycler_delivery_location);
-        Button btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
-        Button btn_apply_location = sheetView.findViewById(R.id.btn_apply_location);
-
-        recycler_delivery_location.setHasFixedSize(true);
-        recycler_delivery_location.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new SelectDeliveryLocationAdapter(this, Common.CURRENT_USER.deliveryAddresses());
-        recycler_delivery_location.setAdapter(adapter);
-
-        adapter.setClickListener(new IOnRecyclerViewClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                //Here Update Location Yo CuttentLocation
-
-                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID(position));
-            }
-        });
-
-        btn_select_location_from_map.setOnClickListener(view -> {
-
-            Log.d("HAZEM" , "HEre");
-
-            //Here Open Maps
-            Dexter.withActivity(SelectDeliveryLocationActivity.this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    .withListener(new PermissionListener() {
-                        @Override
-                        public void onPermissionGranted(PermissionGrantedResponse response) {
-
-                            Common.isUpdateCurrentLocation = true;
-                            startActivity(new Intent(SelectDeliveryLocationActivity.this , MapsActivity.class));
-                            bottomSheetDialog.dismiss();
-                        }
-
-                        @Override
-                        public void onPermissionDenied(PermissionDeniedResponse response) {
-
-                            Toasty.info(SelectDeliveryLocationActivity.this,"Must Granted ACCESS LOCATION")
-                                    .show();
-                        }
-
-                        @Override
-                        public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                            token.continuePermissionRequest();
-
-                        }
-                    }).check();
-
-
-        });
-
-        bottomSheetDialog.setContentView(sheetView);
-        bottomSheetDialog.show();
-    }
+//    private void showDialogSelectLocation() {
+//
+//        bottomSheetDialog = new BottomSheetDialog(this , R.style.AppBottomSheetDialogTheme);
+//        bottomSheetDialog.setTitle(getString(R.string.set_location));
+//        bottomSheetDialog.setCanceledOnTouchOutside(true);
+//        bottomSheetDialog.setCancelable(true);
+//        View sheetView = getLayoutInflater().inflate(R.layout.layout_select_delivery_location, null);
+//
+//        RecyclerView recycler_delivery_location = sheetView.findViewById(R.id.recycler_delivery_location);
+//        Button btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
+//        Button btn_apply_location = sheetView.findViewById(R.id.btn_apply_location);
+//
+//        recycler_delivery_location.setHasFixedSize(true);
+//        recycler_delivery_location.setLayoutManager(new LinearLayoutManager(this));
+//        adapter = new SelectDeliveryLocationAdapter(this, Common.CURRENT_USER.deliveryAddresses());
+//        recycler_delivery_location.setAdapter(adapter);
+//
+//        adapter.setClickListener(new IOnRecyclerViewClickListener() {
+//            @Override
+//            public void onClick(View view, int position) {
+//                //Here Update Location Yo CuttentLocation
+//
+////                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID(position));
+//            }
+//        });
+//
+//        btn_select_location_from_map.setOnClickListener(view -> {
+//
+//            Log.d("HAZEM" , "HEre");
+//
+//            //Here Open Maps
+//            Dexter.withActivity(SelectDeliveryLocationActivity.this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+//                    .withListener(new PermissionListener() {
+//                        @Override
+//                        public void onPermissionGranted(PermissionGrantedResponse response) {
+//
+//                            Common.isUpdateCurrentLocation = true;
+//                            startActivity(new Intent(SelectDeliveryLocationActivity.this , MapsActivity.class));
+//                            bottomSheetDialog.dismiss();
+//                        }
+//
+//                        @Override
+//                        public void onPermissionDenied(PermissionDeniedResponse response) {
+//
+//                            Toasty.info(SelectDeliveryLocationActivity.this,"Must Granted ACCESS LOCATION")
+//                                    .show();
+//                        }
+//
+//                        @Override
+//                        public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+//                            token.continuePermissionRequest();
+//
+//                        }
+//                    }).check();
+//
+//
+//        });
+//
+//        bottomSheetDialog.setContentView(sheetView);
+//        bottomSheetDialog.show();
+//    }
 
     @Override
     public void onSuccessUpdateCurrentLocation() {
@@ -150,6 +154,7 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
         bottomSheetDialog.dismiss();
         //Here Refresh get me ^_^
         startActivity(new Intent(SelectDeliveryLocationActivity.this , HomeActivity.class));
+        finish();
     }
 
     @Override
@@ -159,12 +164,17 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
 
     @Override
     public void showProgressBar() {
-
+        loading.showProgressBar(this,false);
     }
 
     @Override
     public void hideProgressBar() {
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loading.hideProgressBar();
+            }
+        });
     }
 
     @Override
