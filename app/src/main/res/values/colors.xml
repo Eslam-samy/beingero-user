@@ -36,4 +36,6 @@
     <color name="state_bottom_nav">#6E798A</color>
     <color name="count_store">#6D6D6D</color>
 
+    <color name="theme_secondary_text_inverted">#8affffff</color>
+
 </resources>

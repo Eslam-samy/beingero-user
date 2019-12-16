@@ -144,3 +144,25 @@ query SingleProduct($_id: ID) {
         }
     }
 }
+
+
+#Search
+query getPricedBy($storeId: ID! , $filter: ProductFilterInput!){
+    ProductQuery{
+        getStoreProducts:getPricedBy(storeId:$storeId,filter:$filter){
+            status
+            message
+            Products:data{
+                _id
+                name
+                Price(storeId:$storeId)
+                ImageResponse {
+                    status
+                    data {
+                        name
+                    }
+                }
+            }
+        }
+    }
+}

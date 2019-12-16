@@ -232,8 +232,37 @@
         <item name="android:textSize">@dimen/low_xx_text_size</item>
         <item name="android:fontFamily">@font/poppinsregular</item>
         <item name="android:textColor">@color/colorDavyGray</item>
-
     </style>
 
+
+    <!-- MaterialSearchViewStyle -->
+<!--    <style name="MaterialSearchViewStyle">-->
+<!--        &lt;!&ndash; Background for the search bar&ndash;&gt;-->
+<!--        <item name="searchBackground">@color/white</item>-->
+
+<!--        &lt;!&ndash; Change voice icon&ndash;&gt;-->
+<!--        <item name="searchVoiceIcon">@drawable/ic_voice_search</item>-->
+
+<!--        &lt;!&ndash; Change clear text icon&ndash;&gt;-->
+<!--        <item name="searchCloseIcon">@drawable/ic_close</item>-->
+
+<!--        &lt;!&ndash; Change up icon&ndash;&gt;-->
+<!--        <item name="searchBackIcon">@drawable/ic_arrow_back</item>-->
+
+<!--        &lt;!&ndash; Change icon for the suggestions&ndash;&gt;-->
+<!--        <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>-->
+
+<!--        &lt;!&ndash; Change background for the suggestions list view&ndash;&gt;-->
+<!--        <item name="searchSuggestionBackground">@android:color/white</item>-->
+
+<!--        &lt;!&ndash; Change text color for edit text. This will also be the color of the cursor&ndash;&gt;-->
+<!--        <item name="android:textColor">@color/black</item>-->
+
+<!--        &lt;!&ndash; Change hint text color for edit text&ndash;&gt;-->
+<!--        <item name="android:textColorHint">@color/theme_secondary_text_inverted</item>-->
+
+<!--        &lt;!&ndash; Hint for edit text&ndash;&gt;-->
+<!--        <item name="android:hint">@string/search_hint</item>-->
+<!--    </style>-->
 
 </resources>

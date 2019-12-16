@@ -1,13 +1,18 @@
 package com.corptia.bringero.ui.storesDetail;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -16,6 +21,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.ui.search.SearchProductsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
@@ -49,11 +55,14 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     TextView txt_name_store;
 
     String adminUserId = "";
-    String storeId ="";
-    String storeName="";
-    String storeImage="";
+    String storeId = "";
+    String storeName = "";
+    String storeImage = "";
     //Presenter
-    StoreDetailPresenter presenter ;
+    StoreDetailPresenter presenter;
+
+    //Search
+    public static final int EXTRA_REVEAL_CENTER_PADDING = 40;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +71,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
         ButterKnife.bind(this);
 
-        if (Common.CURRENT_USER.language().equalsIgnoreCase("ar"))
-        {
+        if (Common.CURRENT_USER.language().equalsIgnoreCase("ar")) {
             viewPager.setRotationY(180);
         }
 
@@ -74,7 +82,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         storeImage = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
 
         if (!storeImage.equalsIgnoreCase("null"))
-        PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeImage ,image_store);
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeImage, image_store);
 
 
         txt_name_store.setText(storeName);
@@ -99,8 +107,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
                         runOnUiThread(() -> {
 
-                            if (responseData.status() == 200)
-                            {
+                            if (responseData.status() == 200) {
                                 Common.CURRENT_STORE = responseData.CurrentStore().get(0);
 
 
@@ -114,16 +121,12 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
                                 viewPager.setCurrentItem(0, true);
                                 adapter.notifyDataSetChanged();
 
-                            }
-
-                            else
-                            {
+                            } else {
 
 
                             }
 
                         });
-
 
 
                     }
@@ -144,15 +147,6 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
-        }
-        return true;
-    }
 
     @Override
     public void setStoresDetailHeader(SingleStoreHeaderQuery.StoreDetail detail) {
@@ -196,4 +190,29 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     public void setProductNotPriced(List<GetNotPricedByQuery.Product> product) {
 
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+
+            case R.id.action_search:
+                Intent intent = new Intent(StoreDetailActivity.this, SearchProductsActivity.class);
+                intent.putExtra(Constants.EXTRA_STORE_ID , storeId);
+                startActivity(intent);
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
