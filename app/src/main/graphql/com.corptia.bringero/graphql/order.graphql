@@ -78,9 +78,9 @@ query deliveryOrders {
     }
 }
 #For Get One
-query deliveryOneOrder($filter: DeliveryOrderFilterInput) {
+query deliveryOneOrder($_id: ID) {
     DeliveryOrderQuery {
-        getOne(filter: $filter) {
+        get(_id: $_id) {
 
             status
             message
@@ -174,12 +174,128 @@ query deliveryOneOrder($filter: DeliveryOrderFilterInput) {
 
                             }
                         }
+
+
+                    }
+                }
+
+                AllTrip:TripResponse{
+                    status
+                    message
+                    data{
+                        _id
+                        Tracks:availableTracks{
+                            lat
+                            lng
+                        }
                     }
                 }
             }
         }
     }
 }
+#query deliveryOneOrder($filter: DeliveryOrderFilterInput) {
+#    DeliveryOrderQuery {
+#        getOne(filter: $filter) {
+#
+#            status
+#            message
+#            errors{
+#                code
+#                path
+#                message
+#            }
+#
+#            DeliveryOrderData :data {
+#                _id
+#                serial
+#                customerUserId
+#                pilotId
+#                createdAt
+#                status
+#                BuyingOrderResponse {
+#                    status
+#                    message
+#                    BuyingOrderResponseData:data {
+#                        _id
+#                        deliveryOrderId
+#                        serial
+#                        storeId
+#                        status
+#                        DeliveryOrderResponse {
+#                            status
+#                            data {
+#                                _id
+#                                serial
+#                            }
+#                        }
+#                        StoreResponse {
+#                            data {
+#                                _id
+#                                name
+#                                ImageResponse {
+#                                    status
+#                                    data {
+#                                        name
+#                                    }
+#                                }
+#                                CityReponse {
+#                                    data {
+#                                        _id
+#                                        name
+#                                    }
+#                                }
+#                            }
+#                        }
+#                        customerUserId
+#                        CustomerUserResponse {
+#                            data {
+#                                firstName
+#                                lastName
+#                                status
+#                                roleName
+#                            }
+#                        }
+#                        orderMaxPreparingMinutes
+#
+#                        ItemsResponse {
+#                            status
+#                            message
+#                            data {
+#                                _id
+#                                pricingProductId
+#                                amount
+#                                productId
+#                                storePrice
+#                                productName
+#
+#                                PricingProductResponse{
+#                                    status
+#                                    data{
+#                                        ProductResponse{
+#                                            status
+#                                            data{
+#                                                ImageResponse{
+#                                                    status
+#                                                    data{
+#                                                        name
+#                                                    }
+#                                                }
+#                                            }
+#                                        }
+#                                    }
+#
+#
+#                                }
+#
+#                            }
+#                        }
+#                    }
+#                }
+#            }
+#        }
+#    }
+#}
 
 
 
@@ -291,3 +407,97 @@ mutation createOrderMutation {
 #        }
 #    }
 #}
+
+
+
+
+
+query trip($filter: TrackingTripFilterInput) {
+    TrackingTripQuery {
+        getOne(filter: $filter) {
+            data {
+                _id
+                serial
+                DeliveryOrderResponse {
+                    DeliveryOrderResponseData: data {
+                        DeliveryOrderId: _id
+                        status
+                        BuyingOrderResponse {
+                            BuyingOrderResponseData: data {
+                                BuyingOrderId: _id
+                                status
+                                CustomerUserResponse {
+                                    CustomerUserResponseData: data {
+                                        AvatarResponse {
+                                            status
+                                            data {
+                                                name
+                                            }
+                                        }
+                                        fullName
+                                        currentDeliveryAddress {
+                                            locationPoint {
+                                                lat
+                                                lng
+                                            }
+                                        }
+                                    }
+                                }
+                                ItemsResponse {
+                                    status
+                                    message
+                                    ItemsResponseData: data {
+                                        _id
+                                        orderId
+                                        productName
+                                        amount
+                                        storePrice
+                                    }
+                                }
+                                StoreResponse {
+                                    data {
+                                        name
+                                        adminUserId
+                                        _id
+                                        locationPoint {
+                                            lat
+                                            lng
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        # TripResponse{
+                        #   data{
+                        #     DeliveryOrderResponse{
+                        #       data{
+                        #         BuyingOrderResponse{
+                        #           data{
+                        #             ItemsResponse{
+                        #               data{
+                        #                 productName
+                        #                 amount
+                        #                 storePrice
+                        #               }
+                        #             }
+                        #           }
+                        #         }
+                        #       }
+                        #     }
+                        #   }
+                        # }
+                    }
+                }
+                availableTracks {
+                    lat
+                    lng
+                }
+                realTrack {
+                    lat
+                    lng
+                }
+            }
+        }
+    }
+}

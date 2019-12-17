@@ -91,13 +91,13 @@ dependencies {
     //progress
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
-    //FireBase
-    implementation 'com.google.firebase:firebase-auth:19.0.0'
-
     //ripple Animation Click On Button
     implementation 'com.balysv:material-ripple:1.0.2'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+    // Google Maps Services (needed for directions)
+    implementation 'com.google.maps:google-maps-services:0.2.9'
+    implementation 'org.slf4j:slf4j-nop:1.7.25'
 
     implementation group: 'androidx.work', name: 'work-runtime-ktx', version: '2.3.0-alpha01'
 
@@ -121,8 +121,21 @@ dependencies {
 
     implementation 'com.airbnb.android:lottie:3.0.7'
 
+    implementation 'com.github.tintinscorpion:Dual-color-Polyline-Animation:1.0'
+
 //    implementation 'com.github.Ferfalk:SimpleSearchView:0.1.4'
 //    implementation 'com.michaelgarnerdev.materialsearchview:materialsearchview:0.1.0@aar'
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-core:17.2.1'
+    implementation 'com.google.firebase:firebase-auth:19.2.0'
+    implementation 'com.google.firebase:firebase-database:19.2.0'
+
+    implementation 'com.firebase:geofire-android:3.0.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+
 
 }
 

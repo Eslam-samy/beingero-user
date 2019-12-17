@@ -38,4 +38,9 @@
 
     <color name="theme_secondary_text_inverted">#8affffff</color>
 
+    <color name="blue1">#66a3ff</color>
+
+    <color name="border_marker">#F0EBFE</color>
+
+
 </resources>

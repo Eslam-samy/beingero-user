@@ -6,9 +6,8 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
-import com.corptia.bringero.type.DeliveryOrderFilterInput;
-
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class OrdersPaidDetailsPresenter  {
 
@@ -20,22 +19,21 @@ public class OrdersPaidDetailsPresenter  {
 
     public void getSingleOrder(String idOrder){
 
-        DeliveryOrderFilterInput input = DeliveryOrderFilterInput.builder()._id(idOrder).build();
 
-        MyApolloClient.getApollowClientAuthorization().query(DeliveryOneOrderQuery.builder().filter(input).build())
+        MyApolloClient.getApollowClientAuthorization().query(DeliveryOneOrderQuery.builder()._id(idOrder).build())
                 .enqueue(new ApolloCall.Callback<DeliveryOneOrderQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<DeliveryOneOrderQuery.Data> response) {
 
-                        DeliveryOneOrderQuery.GetOne getOne  = response.data().DeliveryOrderQuery().getOne();
-                        if (getOne.status() ==200)
+                        DeliveryOneOrderQuery.Get responseData   = response.data().DeliveryOrderQuery().get();
+                        if (responseData.status() ==200)
                         {
-                            view.setSingleOrder(getOne.DeliveryOrderData());
+                            view.setSingleOrder(responseData.DeliveryOrderData());
                         }
 
                         else
                         {
-                            view.showErrorMessage(getOne.message());
+                            view.showErrorMessage(responseData.message());
                         }
                     }
 

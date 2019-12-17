@@ -28,4 +28,7 @@ public class Constants {
     public static final String EXTRA_UPDATE = "Update";
     public static final String EXTRA_PRODUCT_IMAGE = "ProductImage";
     public static final String EXTRA_STORE_IMAGE = "StoreImage";
+    public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+
+    public static final String EXTRA_PILOT_ID = "EXTRA_PILOT_ID";
 }

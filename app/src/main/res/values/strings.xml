@@ -166,6 +166,7 @@
     <string name="save_failed">Save failed</string>
     <string name="recent_address">Recent Address</string>
     <string name="apply_location">Apply Location</string>
+    <string name="google_maps_api_key" translatable="false">AIzaSyCFLGLtMef9wqfYyy489n3S21jei9h2Vq0</string>
 
 
 </resources>

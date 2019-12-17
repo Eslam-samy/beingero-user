@@ -4,27 +4,46 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.model.CartModel;
+import com.corptia.bringero.ui.tracking.TrackingActivity;
+import com.corptia.bringero.utils.PicassoUtils;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPaidDetailsView {
 
@@ -32,6 +51,8 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     RecyclerView recycler_order;
     @BindView(R.id.btn_cancel_order)
     Button btn_cancel_order;
+    @BindView(R.id.btn_track_package)
+    Button btn_track_package;
     @BindView(R.id.txt_order_id)
     TextView txt_order_id;
     OrdersPaidDetailsAdapter adapter ;
@@ -39,6 +60,8 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     List<CartModel> cartModelList = new ArrayList<>();
 
     OrdersPaidDetailsPresenter detailsPresenter = new OrdersPaidDetailsPresenter(this);
+
+    String orderid , pilotId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +75,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
         Intent intent = getIntent();
         if (intent != null) {
-            String orderid = intent.getStringExtra(Constants.EXTRA_ORDER_ID);
+            orderid = intent.getStringExtra(Constants.EXTRA_ORDER_ID);
             int serialOrder = intent.getIntExtra(Constants.EXTRA_ORDER_SERIAL , 0);
             txt_order_id.setText(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
 
@@ -67,6 +90,45 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
             public void onClick(View view) {
 
                 showDialogCancelOrder();
+
+            }
+        });
+
+
+        btn_track_package.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Dexter.withActivity(OrdersPaidDetailsActivity.this)
+                        .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                        .withListener(new PermissionListener() {
+                            @Override
+                            public void onPermissionGranted(PermissionGrantedResponse response) {
+
+                                if (pilotId!=null)
+                                {
+                                    Intent intentTrack = new Intent(OrdersPaidDetailsActivity.this , TrackingActivity.class);
+                                    intentTrack.putExtra(Constants.EXTRA_ORDER_ID , orderid);
+                                    intentTrack.putExtra(Constants.EXTRA_PILOT_ID , pilotId);
+                                    startActivity(intentTrack);
+                                }
+
+                            }
+
+                            @Override
+                            public void onPermissionDenied(PermissionDeniedResponse response) {
+
+                                Toasty.info(OrdersPaidDetailsActivity.this , "onPermissionDenied").show();
+
+                            }
+
+                            @Override
+                            public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                                token.continuePermissionRequest();
+                            }
+                        }).check();
+
+
 
             }
         });
@@ -159,6 +221,11 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                         deliveryOrderData.BuyingOrderResponse().BuyingOrderResponseData());
 
                 recycler_order.setAdapter(adapter);
+
+                if (deliveryOrderData.AllTrip().data().Tracks() !=null)
+                Common.CURRENT_TRACK = deliveryOrderData.AllTrip().data().Tracks();
+
+                pilotId = deliveryOrderData.pilotId();
             }
         });
 
@@ -184,4 +251,6 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     public void onSuccessMessage(String message) {
 
     }
+
+
 }

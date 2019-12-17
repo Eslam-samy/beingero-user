@@ -21,3 +21,27 @@ query getAllCategories($paginate:paginationInput){
         }
     }
 }
+
+
+#query storeTypes{
+#    StoreTypeQuery{
+#        getAllStoresCount{
+#
+#            status
+#            message
+#            data{
+#                _id
+#                StoreType{
+#                    _id
+#                    name
+#                    ImageResponse{
+#                        data{
+#                            name
+#                        }
+#                    }
+#                }
+#                storeCount
+#            }
+#        }
+#    }
+#}
