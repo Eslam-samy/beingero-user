@@ -35,11 +35,11 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
     RecyclerView recycler_current_order;
     Handler handler = new Handler();
 
-    CurrentOrderPresenter currentOrderPresenter ;
+    OrderPresenter orderPresenter;
 
     public CurrentOrderFragment() {
         // Required empty public constructor
-        currentOrderPresenter = new CurrentOrderPresenter(this);
+        orderPresenter = new OrderPresenter(this);
     }
 
 
@@ -108,8 +108,47 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
     }
 
     @Override
+    public void CurrentOrders(List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderData) {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                adapter = new CurrentOrderAdapter(getActivity() ,deliveryOrderData );
+                recycler_current_order.setAdapter(adapter);
+
+                adapter.setClickListener(new IOnRecyclerViewClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+
+                        Intent intent = new Intent(getActivity() , OrdersPaidDetailsActivity.class);
+                        String orderId = adapter.getIdOrder(position);
+                        int serialOrder = adapter.getSerialOrder(position);
+                        intent.putExtra(Constants.EXTRA_ORDER_ID , orderId);
+                        intent.putExtra(Constants.EXTRA_ORDER_SERIAL , serialOrder);
+                        startActivity(intent);
+
+                    }
+                });
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onNotFoundCurrentOrders() {
+
+    }
+
+    @Override
+    public void onNotFoundDeliveryOrders() {
+
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-        currentOrderPresenter.getDeliveryOrder();
+        orderPresenter.getDeliveryOrder();
     }
 }

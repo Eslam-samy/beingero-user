@@ -172,6 +172,12 @@
     <string name="subtotal">Subtotal</string>
     <string name="delivery_fees">Delivery Fees</string>
     <string name="cash_on_delivery">Cash on delivery</string>
+    <string name="current_orders">Current Orders</string>
+    <string name="last_orders">Last Orders</string>
+    <string name="packets">Packets</string>
+    <string name="items">Items</string>
+    <string name="start_shopping_now">Start Shopping Now</string>
+    <string name="there_are_no_orders_under_delivery">There are no orders under delivery</string>
 
 
 </resources>

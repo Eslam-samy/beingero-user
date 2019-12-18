@@ -53,6 +53,7 @@ public class Common {
     public static String CURRENT_USER_TOKEN;
 
     public static boolean isUpdateCurrentLocation;
+    public static boolean isFirstTimeAddLocation = false;
 
 
     public static int dpToPx(int dp, Context context) {

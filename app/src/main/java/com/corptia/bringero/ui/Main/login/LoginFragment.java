@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
@@ -26,6 +27,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
+
+import static com.corptia.bringero.Common.Common.isFirstTimeAddLocation;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,9 +88,6 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
     }
 
 
-
-
-
     @Override
     public void showProgressBar() {
         showBarHideBtn(progress_Loading, btn_login);
@@ -118,12 +118,16 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
             LocaleHelper.setLocale(getActivity(), Common.CURRENT_USER.language().toLowerCase());
 
+            PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_LOGIN, true);
+            PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_PHONE, input_phone_number.getEditText().getText().toString());
+            PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_PASSWORD, input_password.getEditText().getText().toString());
 
-            startActivity(new Intent(getActivity(), SelectDeliveryLocationActivity.class));
-
-            PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_LOGIN,true);
-            PrefUtils.saveToPrefs(getActivity(),PrefKeys.USER_PHONE,input_phone_number.getEditText().getText().toString());
-            PrefUtils.saveToPrefs(getActivity(),PrefKeys.USER_PASSWORD,input_password.getEditText().getText().toString());
+            if (Common.CURRENT_USER.currentDeliveryAddress() != null)
+                startActivity(new Intent(getActivity(), SelectDeliveryLocationActivity.class));
+            else {
+                startActivity(new Intent(getActivity(), MapsActivity.class));
+                isFirstTimeAddLocation = true;
+            }
 
             getActivity().finish();
         });

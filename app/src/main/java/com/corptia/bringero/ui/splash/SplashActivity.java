@@ -26,6 +26,8 @@ import com.corptia.bringero.ui.Main.login.LoginPresenter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
+import static com.corptia.bringero.Common.Common.isFirstTimeAddLocation;
+
 public class SplashActivity extends BaseActivity implements LoginContract.LoginView {
 
     public static final int STARTUP_DELAY = 300;
@@ -59,7 +61,6 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
         img_logo = findViewById(R.id.img_logo);
 
 
-
         //Set Lang
         LocaleHelper.setLocale(SplashActivity.this, "ar");
 
@@ -70,14 +71,14 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
             if (isLogin) {
 
-                String phone = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_PHONE,"");
-                String password = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_PASSWORD,"");
+                String phone = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_PHONE, "");
+                String password = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_PASSWORD, "");
 
-                loginPresenter.onLogin(phone , password);
+                loginPresenter.onLogin(phone, password);
 
             } else {
 
-                Intent intent = new Intent(SplashActivity.this , MainActivity.class);
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                 //startActivity(intent,options.toBundle());
                 startActivity(intent);
                 finish();
@@ -115,9 +116,11 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
             LocaleHelper.setLocale(SplashActivity.this, Common.CURRENT_USER.language().toLowerCase());
             if (Common.CURRENT_USER.currentDeliveryAddress() != null)
-            startActivity(new Intent(SplashActivity.this, SelectDeliveryLocationActivity.class));
-            else
+                startActivity(new Intent(SplashActivity.this, SelectDeliveryLocationActivity.class));
+            else {
                 startActivity(new Intent(SplashActivity.this, MapsActivity.class));
+                isFirstTimeAddLocation = true;
+            }
             finish();
 
         });

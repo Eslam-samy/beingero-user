@@ -83,6 +83,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                     Common.CURRENT_CART = myCartData.storeData();
 
+                    if (getContext()!=null)
                     total_price.setText(new StringBuilder().append(totalPrice).append(getString(R.string.currency)));
 
 

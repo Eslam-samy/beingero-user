@@ -254,9 +254,9 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
             @Override
             public void run() {
 
-                if (Common.isUpdateCurrentLocation) {
-                    finish();
+                if (Common.isUpdateCurrentLocation || Common.isFirstTimeAddLocation) {
                     startActivity(new Intent(AddNewLocationActivity.this, HomeActivity.class));
+                    finish();
                 } else finish();
             }
         });
@@ -269,7 +269,10 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                finish();
+                if (Common.isUpdateCurrentLocation || Common.isFirstTimeAddLocation) {
+                    finish();
+                    startActivity(new Intent(AddNewLocationActivity.this, HomeActivity.class));
+                } else finish();
             }
         });
     }

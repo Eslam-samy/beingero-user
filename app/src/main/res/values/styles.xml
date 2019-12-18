@@ -36,6 +36,12 @@
         <item name="titleTextColor">@color/black</item>
     </style>
 
+    <!-- No Action Bar -->
+    <style name="AppBarLayoutThemeWhite" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/white</item>
+        <item name="titleTextColor">@color/white</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

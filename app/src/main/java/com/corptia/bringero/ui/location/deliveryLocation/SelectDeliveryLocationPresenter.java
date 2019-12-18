@@ -92,10 +92,13 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
                         UpdateUserInfoMutation.UpdateInfo responseUpdateInfo = response.data().UserMutation().updateInfo();
                         if (responseUpdateInfo.status() == 200) {
 
-                            if (isUpdateCurrentLocation) {
+                            if (isUpdateCurrentLocation || Common.isFirstTimeAddLocation) {
                                 String newDeliveryAddressesID = responseUpdateInfo.data().deliveryAddresses().get(responseUpdateInfo.data().deliveryAddresses().size() - 1)._id();
                                 userUpdateCurrentLocation(newDeliveryAddressesID);
-                            } else {
+                                Common.isFirstTimeAddLocation = false;
+                            } else if(Common.isFirstTimeAddLocation){
+
+                            } else{
                                 getMe(responseUpdateInfo.token(), userData -> {
                                     view.onSuccessUpdateCurrentLocation();
                                 });

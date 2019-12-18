@@ -1,7 +1,9 @@
 #For Get All
-query deliveryOrders {
+query deliveryOrders($filter: DeliveryOrderFilterInput!
+    $pagination: paginationInput
+    $sorting: DeliveryOrderSortingInput) {
     DeliveryOrderQuery {
-        getAll(filter: {}) {
+        getAll(filter: $filter , pagination:$pagination , sorting:$sorting) {
 
             status
             message
@@ -18,6 +20,8 @@ query deliveryOrders {
                 status
                 pilotId
                 createdAt
+                StoresCount
+                ItemsCount
 
                 BuyingOrderResponse {
                     status
@@ -77,6 +81,8 @@ query deliveryOrders {
         }
     }
 }
+
+
 #For Get One
 query deliveryOneOrder($_id: ID) {
     DeliveryOrderQuery {

@@ -22,11 +22,78 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/white" />
+            android:layout_height="wrap_content"
+            android:background="#5565FB"
+            android:theme="@style/AppBarLayoutThemeWhite">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center"
+                android:gravity="center_horizontal">
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="#5565FB"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+                </androidx.appcompat.widget.Toolbar>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/medium_margin">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/txt_name"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:cardCornerRadius="8dp">
+                        <ImageView
+                            android:id="@+id/img_logo"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_logo_app"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/txt_name"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            android:scaleType="fitXY"/>
+                    </androidx.cardview.widget.CardView>
+
+
+                    <TextView
+                        android:id="@+id/txt_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="@string/search"
+                        app:layout_constraintTop_toTopOf="@+id/card"
+                        app:layout_constraintStart_toEndOf="@+id/card"
+                        app:layout_constraintBottom_toBottomOf="@+id/card"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/large_text_size"
+                        android:textStyle="bold"
+                        android:layout_marginStart="@dimen/medium_margin"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
+
+
+
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
 
 
 
@@ -35,19 +102,55 @@
 
 
 
-    <EditText
-        android:id="@+id/edt_search"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/round_search_toolbar"
-        android:padding="@dimen/medium_padding"
-        android:layout_marginStart="@dimen/app_margin"
-        android:layout_marginEnd="@dimen/app_margin"
-        android:hint="@string/search"
-        android:drawableEnd="@drawable/ic_search_black"
-        android:singleLine="true"
-        android:lines="1"
-        android:imeOptions="actionSearch"/>
+        android:background="#5565FB"
+        android:paddingBottom="@dimen/medium_padding">
+
+
+
+
+
+        <EditText
+            android:id="@+id/edt_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_search_toolbar"
+            android:padding="@dimen/medium_padding"
+            android:layout_marginStart="@dimen/app_low_margin"
+            android:layout_marginEnd="@dimen/app_low_margin"
+            android:hint="@string/search"
+            android:singleLine="true"
+            android:lines="1"
+            android:imeOptions="actionSearch"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/img_clean"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_clean"
+            app:layout_constraintTop_toTopOf="@+id/edt_search"
+            app:layout_constraintEnd_toEndOf="@+id/edt_search"
+            app:layout_constraintBottom_toBottomOf="@+id/edt_search"
+            android:layout_marginEnd="@dimen/medium_margin"/>
+
+
+        <ImageView
+            android:id="@+id/img_speech"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_logo_app"
+            app:layout_constraintTop_toTopOf="@+id/edt_search"
+            app:layout_constraintEnd_toStartOf="@+id/img_clean"
+            app:layout_constraintBottom_toBottomOf="@+id/edt_search"
+            android:layout_marginEnd="@dimen/medium_margin"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_product"

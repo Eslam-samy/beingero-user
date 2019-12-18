@@ -50,11 +50,15 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<CurrentOrderAdapte
         holder.txt_date_order.setText(orderDatum.createdAt().toString());
         holder.txt_status.setText(orderDatum.status().rawValue());
         holder.txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
-        //holder.txt_content_count.setText(new StringBuilder().append(orderDatum.BuyingOrderResponse().));
 
-        int countStore =0 , countItems=0 ;
-
-        countStore =  orderDatum.BuyingOrderResponse().BuyingOrderResponseData().size();
+//        holder.txt_total_price.setText(orderDatum.);
+        holder.txt_content_count.setText(
+                new StringBuilder().append(orderDatum.StoresCount())
+                        .append(" ")
+                        .append(context.getString(R.string.packets))
+                        .append(" , ")
+                        .append(orderDatum.ItemsCount())
+                        .append(context.getString(R.string.items)));
 
 //        for(DeliveryOrdersQuery.BuyingOrderResponseDatum store : orderDatum.BuyingOrderResponse().BuyingOrderResponseData())
 //        {
@@ -70,9 +74,8 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<CurrentOrderAdapte
 //        }
 
 
-
-        if (clickListener!=null)
-            holder.itemView.setOnClickListener(view -> clickListener.onClick(view , position));
+        if (clickListener != null)
+            holder.itemView.setOnClickListener(view -> clickListener.onClick(view, position));
 
     }
 
@@ -104,12 +107,12 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<CurrentOrderAdapte
         }
     }
 
-    public String getIdOrder (int position){
+    public String getIdOrder(int position) {
 
         return deliveryOrderList.get(position)._id();
     }
 
-    public int getSerialOrder (int position){
+    public int getSerialOrder(int position) {
 
         return deliveryOrderList.get(position).serial();
     }

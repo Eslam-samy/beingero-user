@@ -58,6 +58,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     String storeId = "";
     String storeName = "";
     String storeImage = "";
+    String imageUrl = "";
     //Presenter
     StoreDetailPresenter presenter;
 
@@ -81,8 +82,9 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         storeName = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
         storeImage = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
 
+        imageUrl = Common.BASE_URL_IMAGE + storeImage;
         if (!storeImage.equalsIgnoreCase("null"))
-            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeImage, image_store);
+            PicassoUtils.setImage(imageUrl, image_store);
 
 
         txt_name_store.setText(storeName);
@@ -207,7 +209,8 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
             case R.id.action_search:
                 Intent intent = new Intent(StoreDetailActivity.this, SearchProductsActivity.class);
-                intent.putExtra(Constants.EXTRA_STORE_ID , storeId);
+                intent.putExtra(Constants.EXTRA_STORE_ID, storeId);
+                intent.putExtra(Constants.EXTRA_STORE_IMAGE, imageUrl);
                 startActivity(intent);
                 break;
 
