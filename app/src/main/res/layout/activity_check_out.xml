@@ -25,15 +25,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginEnd="@dimen/app_margin"
-                android:paddingBottom="@dimen/app_padding"
                 >
 
                 <TextView
                     style="@style/TextHeaderSetting"
                     android:text="@string/check_out"
-                    android:layout_marginStart="0dp"/>
+                    android:layout_marginStart="@dimen/app_margin" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_cart"
@@ -49,21 +46,99 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/delivery_address"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:textSize="@dimen/large_text_size"
+                    android:fontFamily="@font/poppinssemibold"
+                    android:layout_marginStart="@dimen/app_margin"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginEnd="@dimen/medium_margin">
+                    <include layout="@layout/item_cart_delivery_location"/>
+                </RelativeLayout>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/payment_information"
                     android:textSize="@dimen/large_text_size"
                     android:fontFamily="@font/poppinssemibold"
                     android:textColor="@color/black"
-                    android:layout_marginTop="@dimen/medium_margin"/>
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:layout_marginStart="@dimen/app_margin"/>
                 <TextView
+                    android:id="@+id/txt_date_order"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="12 Dec 2018, 08:08 • Credit / Debit Card"/>
+                    android:text="@string/cash_on_delivery"
+                    android:layout_marginStart="@dimen/app_margin"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:weightSum="3"
+                    android:layout_marginStart="@dimen/app_margin">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/subtotal"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/medium_margin"/>
+
+                    <TextView
+                        android:id="@+id/txt_subtotal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        tools:text="USD 300.00"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/medium_margin"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:layout_marginStart="@dimen/app_margin">
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="@string/delivery_fees"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/medium_margin"/>
+
+                    <TextView
+                        android:id="@+id/txt_delivery_fees"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        tools:text="USD 300.00"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/medium_margin"/>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:layout_marginStart="@dimen/app_margin">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -74,49 +149,16 @@
                         android:layout_marginTop="@dimen/medium_margin"/>
 
                     <TextView
+                        android:id="@+id/txt_total"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="USD 300.00"
+                        tools:text="USD 300.00"
                         android:fontFamily="@font/poppinsmedium"
                         android:textColor="@color/black"
                         android:layout_marginTop="@dimen/medium_margin"/>
 
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:text="@string/shipping_address"
-                        android:textSize="@dimen/large_text_size"
-                        android:fontFamily="@font/poppinssemibold"
-                        android:textColor="@color/black"
-                        android:layout_marginTop="@dimen/medium_margin"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Change"
-                        android:fontFamily="@font/poppinsmedium"
-                        android:textColor="@color/blueLight"
-                        android:layout_marginTop="@dimen/medium_margin" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="22 Baker Street\nLondon MG91 9AF"
-                    android:textSize="@dimen/medium_text_size"
-                    android:fontFamily="@font/poppinsregular"
-                    android:textColor="@color/black"/>
 
             </LinearLayout>
 
@@ -156,7 +198,7 @@
                     android:id="@+id/total_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="USD 280.00"
+                    tools:text="USD 280.00"
                     android:textSize="@dimen/large_text_size"
                     app:layout_constraintTop_toBottomOf="@+id/txt_lab_total"
                     app:layout_constraintStart_toStartOf="@+id/txt_lab_total"

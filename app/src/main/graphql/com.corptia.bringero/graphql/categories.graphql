@@ -1,47 +1,47 @@
-query getAllCategories($paginate:paginationInput){
-    StoreTypeQuery {
-        getAll(pagination:$paginate){
-            status
-            message
-            pagination{
-                page
-                hasNextPage
-                nextPage
-            }
-            StoreCategory:data{
-                _id
-                name
-                ImageResponse{
-                    data{
-                        name
-                    }
-                }
-
-            }
-        }
-    }
-}
-
-
-#query storeTypes{
-#    StoreTypeQuery{
-#        getAllStoresCount{
-#
+#query getAllCategories($paginate:paginationInput){
+#    StoreTypeQuery {
+#        getAll(pagination:$paginate){
 #            status
 #            message
-#            data{
+#            pagination{
+#                page
+#                hasNextPage
+#                nextPage
+#            }
+#            StoreCategory:data{
 #                _id
-#                StoreType{
-#                    _id
-#                    name
-#                    ImageResponse{
-#                        data{
-#                            name
-#                        }
+#                name
+#                ImageResponse{
+#                    data{
+#                        name
 #                    }
 #                }
-#                storeCount
+#
 #            }
 #        }
 #    }
 #}
+
+
+query storeTypes{
+    StoreTypeQuery{
+        getAllStoresCount{
+
+            status
+            message
+            StoreCategory:data{
+                _id
+                StoreType{
+                    _id
+                    name
+                    ImageResponse{
+                        data{
+                            name
+                        }
+                    }
+                }
+                storeCount
+            }
+        }
+    }
+}

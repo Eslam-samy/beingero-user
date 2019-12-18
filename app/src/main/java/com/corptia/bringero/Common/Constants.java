@@ -31,4 +31,5 @@ public class Constants {
     public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
     public static final String EXTRA_PILOT_ID = "EXTRA_PILOT_ID";
+    public static final String EXTRA_TOTAL_CART = "EXTRA_TOTAL_CART";
 }

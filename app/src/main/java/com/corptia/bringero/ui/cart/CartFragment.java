@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
@@ -69,7 +70,6 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         handler.post(() -> {
 
             totalPrice = myCartData.TotalPrice();
-            Log.d("HAZEM" , "OROGINAL TOTLA :: " + myCartData.TotalPrice());
 
             //stickyRecyclerView.setDataSource(myCartData);
             cartAdapter = new CartAdapter(getActivity(), myCartData.storeData(), true);
@@ -91,8 +91,9 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 //                        HomeActivity.bottomNavigationView.setVisibility(View.GONE);
 //                        HomeActivity.fab.hide();
 
-
-                        startActivity(new Intent(getActivity(), CheckOutActivity.class));
+                        Intent intent = new Intent(getActivity(), CheckOutActivity.class);
+                        intent.putExtra(Constants.EXTRA_TOTAL_CART , totalPrice);
+                        startActivity(intent);
 
 
                     });

@@ -180,24 +180,29 @@ public class TrackingActivity extends AppCompatActivity implements
 //                        if (pilotMarker != null)
 //                            pilotMarker.remove();
 //
-////                        pilotMarker = mMap.addMarker(new MarkerOptions().title("الطياااار").position(new LatLng(location.latitude, location.longitude)));
-//                        pilotMarker = mMap.addMarker(new MarkerOptions()
-//                                .position(new LatLng(location.latitude, location.longitude))
-//                                .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_pilot))
-//                                .title("الطيار بيه"));
+//                        pilotMarker = mMap.addMarker(new MarkerOptions().title("الطياااار").position(new LatLng(location.latitude, location.longitude)));
+
+                        if (pilotMarker == null) {
+                            pilotMarker = mMap.addMarker(new MarkerOptions()
+                                    .position(new LatLng(location.latitude, location.longitude))
+                                    .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_pilot))
+                                    .title("الطيار بيه"));
+                        }
 
                         latLng[0] = location.latitude;
                         latLng[1] = location.longitude;
 
-                        if(marker==null){
+                        if (marker == null) {
 //                            marker = new PicassoMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(latLng[0], latLng[1]))));
 //                            Picasso.get().load(R.drawable.ic_pilot).resize( 50,  50)
 //                                    .into(marker);
 
-                                                    pilotMarker = mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(latLng[0], latLng[1]))
-                                .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_pilot))
-                                .title("الطيار بيه"));
+//                            pilotMarker = mMap.addMarker(new MarkerOptions()
+//                                    .position(new LatLng(latLng[0], latLng[1]))
+//                                    .icon(bitmapDescriptorFromVector(
+//                                            TrackingActivity.this,
+//                                            R.drawable.ic_pilot))
+//                                    .title("الطيار بيه"));
 
 //                            googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng[0], latLng[1]), 12.0f));
                         }
@@ -205,9 +210,13 @@ public class TrackingActivity extends AppCompatActivity implements
                         if ((latLng[0] != -1 && latLng[0] != 0) && (latLng[1] != -1 && latLng[1] != 0)) {
                             //googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLatLng, 12.0f));
                             //float bearing = (float) bearingBetweenLocations(driverLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
-                            if (marker != null) {
-                                moveVechile(marker.getmMarker(), location);
-//                                rotateMarker(marker.getmMarker(), 1f, start_rotation);
+                            if (pilotMarker != null) {
+                                moveVechile(pilotMarker, location);
+                                rotateMarker(pilotMarker, 1f, start_rotation);
+
+                                //UpdateLine
+                                updateLine(pilotMarker);
+
                             }
                             driverLatLng = new LatLng(latLng[0], latLng[1]);
                         } else {
@@ -215,9 +224,7 @@ public class TrackingActivity extends AppCompatActivity implements
                         }
 
 
-
 //                        rotateMarker(pilotMarker,bearingBetweenLocations(,1f));
-
 
                     }
 
@@ -235,6 +242,14 @@ public class TrackingActivity extends AppCompatActivity implements
         });
 
 
+    }
+
+    Location closestLocation;
+    int smallestDistance = -1;
+
+    private void updateLine(Marker pilotMarker) {
+        LatLng latLng = pilotMarker.getPosition();
+//        MapAnimator.getInstance().animateRoute(mMap, latLngs);
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
@@ -562,8 +577,6 @@ public class TrackingActivity extends AppCompatActivity implements
             }
         });
     }
-
-
 
 
 }

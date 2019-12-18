@@ -74,7 +74,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         MyCartQuery.Item item = cartItems.get(position);
 
         holder.txt_price.setText("" + item.PricingProduct().storePrice() + " " + context.getString(R.string.currency));
-        holder.txt_name_product.setText(item.PricingProduct().Product().name());
+        String productName = item.PricingProduct().Product().name();
+        holder.txt_name_product.setText(productName.length() > 30 ? productName.substring(0,30) + "..." : productName);
 
 
         if (item.PricingProduct().Product().ImageResponse().data() != null)

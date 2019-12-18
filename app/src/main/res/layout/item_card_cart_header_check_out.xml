@@ -10,18 +10,19 @@
 
 
     <com.github.florent37.expansionpanel.ExpansionHeader
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:expansion_headerIndicator="@id/headerIndicator"
         app:expansion_layout="@id/expansionLayout"
-        app:expansion_toggleOnClick="true"
-        android:padding="10dp">
+        app:expansion_toggleOnClick="true">
 
         <!-- HEADER -->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="@dimen/app_padding"
+            android:background="@drawable/shadow_card_select_location">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_image_store"
@@ -57,9 +58,10 @@
         <ImageView
             android:adjustViewBounds="true"
             android:id="@+id/headerIndicator"
-            android:layout_gravity="center_vertical|right"
+            android:layout_gravity="center_vertical|end"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="@dimen/app_margin"
             android:layout_width="wrap_content"
             app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
 

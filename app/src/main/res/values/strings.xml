@@ -167,6 +167,11 @@
     <string name="recent_address">Recent Address</string>
     <string name="apply_location">Apply Location</string>
     <string name="google_maps_api_key" translatable="false">AIzaSyCFLGLtMef9wqfYyy489n3S21jei9h2Vq0</string>
+    <string name="stores">Stores</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="subtotal">Subtotal</string>
+    <string name="delivery_fees">Delivery Fees</string>
+    <string name="cash_on_delivery">Cash on delivery</string>
 
 
 </resources>

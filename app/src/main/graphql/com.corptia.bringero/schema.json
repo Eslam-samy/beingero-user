@@ -454,6 +454,29 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "getStatusCounts",
+            "description": "",
+            "args": [
+              {
+                "name": "status",
+                "description": "",
+                "type": {
+                  "kind": "ENUM",
+                  "name": "BuyingOrderStatus",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "BuyingOrderStatusCountResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -543,6 +566,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BuyingOrderFilterRange",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "IN",
+            "description": "",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BuyingOrderFilterArray",
               "ofType": null
             },
             "defaultValue": null
@@ -735,6 +768,31 @@
         "description": "The `Boolean` scalar type represents `true` or `false`.",
         "fields": null,
         "inputFields": null,
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "BuyingOrderFilterArray",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "status",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "BuyingOrderStatus",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
         "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
@@ -8154,6 +8212,136 @@
       },
       {
         "kind": "OBJECT",
+        "name": "BuyingOrderStatusCountResponse",
+        "description": "",
+        "fields": [
+          {
+            "name": "status",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "message",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "errors",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PathError",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "warnings",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PathError",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "data",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "ByuingOrderStatusCount",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "ByuingOrderStatusCount",
+        "description": "",
+        "fields": [
+          {
+            "name": "_id",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "BuyingOrderStatus",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "BuyingOrderStatus",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "count",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "BuyingOrderItemQuery",
         "description": "",
         "fields": [
@@ -9391,6 +9579,41 @@
               "kind": "SCALAR",
               "name": "Date",
               "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "IN",
+            "description": "",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "DeliveryOrderFilterArray",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "DeliveryOrderFilterArray",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "status",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "DeliveryOrderStatus",
+                "ofType": null
+              }
             },
             "defaultValue": null
           }
@@ -12255,8 +12478,8 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "NotificatioStatus",
               "ofType": null
             },
             "isDeprecated": false,
@@ -12356,6 +12579,41 @@
           }
         ],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "NotificatioStatus",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "Read",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "Unread",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "Archived",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "Deleted",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -17194,6 +17452,18 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "getAllStoresCount",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "StoreTypeStoresCountResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -17725,6 +17995,136 @@
             "ofType": null
           }
         ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "StoreTypeStoresCountResponse",
+        "description": "",
+        "fields": [
+          {
+            "name": "status",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "message",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "errors",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PathError",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "warnings",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "PathError",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "data",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "StoreTypeStoresCount",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "StoreTypeStoresCount",
+        "description": "",
+        "fields": [
+          {
+            "name": "_id",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "StoreType",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "StoreType",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "storeCount",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -20430,6 +20830,18 @@
             "deprecationReason": null
           },
           {
+            "name": "NotificationMutation",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "NotificationMutation",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "PilotMutation",
             "description": "",
             "args": [],
@@ -22425,6 +22837,71 @@
             "type": {
               "kind": "SCALAR",
               "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "NotificationMutation",
+        "description": "",
+        "fields": [
+          {
+            "name": "update",
+            "description": "",
+            "args": [
+              {
+                "name": "_id",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "data",
+                "description": "",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "updateNotificationInput",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "NotificationSingleResponse",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "updateNotificationInput",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "status",
+            "description": "",
+            "type": {
+              "kind": "ENUM",
+              "name": "NotificatioStatus",
               "ofType": null
             },
             "defaultValue": null
@@ -25574,8 +26051,8 @@
             "name": "status",
             "description": "",
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "NotificatioStatus",
               "ofType": null
             },
             "defaultValue": null

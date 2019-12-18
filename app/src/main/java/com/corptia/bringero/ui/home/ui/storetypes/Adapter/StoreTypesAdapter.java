@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.graphql.StoreTypesQuery;
 import com.corptia.bringero.utils.PicassoUtils;
-import com.corptia.bringero.graphql.GetAllCategoriesQuery;
 import com.corptia.bringero.ui.stores.StoresActivity;
 
 import java.util.ArrayList;
@@ -27,9 +27,9 @@ import butterknife.ButterKnife;
 public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.ViewHolder> {
 
     Context context;
-    List<GetAllCategoriesQuery.StoreCategory>  storeTypesList = new ArrayList<>();
+    List<StoreTypesQuery.StoreCategory>  storeTypesList = new ArrayList<>();
 
-    public StoreTypesAdapter(Context context, List<GetAllCategoriesQuery.StoreCategory>  storeTypesList) {
+    public StoreTypesAdapter(Context context, List<StoreTypesQuery.StoreCategory>  storeTypesList) {
         this.context = context;
         this.storeTypesList = storeTypesList;
     }
@@ -43,25 +43,26 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        GetAllCategoriesQuery.StoreCategory storeTypes = storeTypesList.get(position);
+        StoreTypesQuery.StoreCategory storeTypes = storeTypesList.get(position);
 
         //Picasso.get().load(storeTypes.g())
          //       .into(holder.image_storetype);
 
-        PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_storetype);
+        PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.StoreType().ImageResponse().data().name() , holder.image_storetype);
 
 //        if ( storeTypes.ImageResponse().data()!=null)
 //            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_storetype);
 //        else
 //            PicassoUtils.setImage( holder.image_storetype);
 
-        holder.txt_name_storetype.setText(storeTypes.name());
+        holder.txt_name_storetype.setText(storeTypes.StoreType().name());
+        holder.txt_count_storetype.setText(new StringBuilder().append(storeTypes.storeCount()).append(" ").append(context.getString(R.string.stores)));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context , StoresActivity.class);
-                intent.putExtra(Constants.EXTRA_CATEGOTY_ID , storeTypes._id());
+                intent.putExtra(Constants.EXTRA_CATEGOTY_ID , storeTypes.StoreType()._id());
                 context.startActivity(intent);
             }
         });
@@ -80,6 +81,8 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
         ImageView image_storetype;
         @BindView(R.id.txt_name_storetype)
         TextView txt_name_storetype;
+        @BindView(R.id.txt_count_storetype)
+        TextView txt_count_storetype;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
