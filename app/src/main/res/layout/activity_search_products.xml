@@ -25,7 +25,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#5565FB"
+            android:background="@color/colorPrimary"
             android:theme="@style/AppBarLayoutThemeWhite">
 
             <RelativeLayout
@@ -37,7 +37,7 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:background="#5565FB"
+                    android:background="@color/colorPrimary"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
                 </androidx.appcompat.widget.Toolbar>
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -105,7 +105,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#5565FB"
+        android:background="@color/colorPrimary"
         android:paddingBottom="@dimen/medium_padding">
 
 
