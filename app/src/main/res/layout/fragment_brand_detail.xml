@@ -12,7 +12,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_brands_detail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/app_margin"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

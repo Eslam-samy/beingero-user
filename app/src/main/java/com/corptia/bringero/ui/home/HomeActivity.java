@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 
@@ -77,7 +78,7 @@ public class HomeActivity extends BaseActivity implements
     SelectDeliveryLocationAdapter adapter;
     SelectDeliveryLocationPresenter presenter = new SelectDeliveryLocationPresenter(this);
 
-    CustomLoading loading ;
+    CustomLoading loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +91,13 @@ public class HomeActivity extends BaseActivity implements
         initNavigationView();
 
 
-
-        loading = new CustomLoading(this  , true);
+        loading = new CustomLoading(this, true);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_SPEED_CART)) {
+            bottomNavigationView.setSelectedItemId(R.id.nav_cart);
+        } else
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
         //Set CurrentLocation
         setCurrentLocation();
@@ -102,9 +105,7 @@ public class HomeActivity extends BaseActivity implements
         txt_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                bottomSheetDialog = Common.showDialogSelectLocation(HomeActivity.this ,bottomSheetDialog , presenter);
-
+                bottomSheetDialog = Common.showDialogSelectLocation(HomeActivity.this, bottomSheetDialog, presenter);
             }
         });
 
@@ -112,15 +113,15 @@ public class HomeActivity extends BaseActivity implements
 
     private void setCurrentLocation() {
 
-        if (Common.CURRENT_USER!=null) {
+        if (Common.CURRENT_USER != null) {
             if (Common.CURRENT_USER.currentDeliveryAddress() != null) {
 
                 String region = Common.CURRENT_USER.currentDeliveryAddress().region();
                 String name = Common.CURRENT_USER.currentDeliveryAddress().name();
 
-                txt_location.setText(new StringBuilder().append(name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase())
+                txt_location.setText(new StringBuilder().append(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())
                         .append(" (")
-                        .append(region.substring(0,1).toUpperCase() + region.substring(1).toLowerCase())
+                        .append(region.substring(0, 1).toUpperCase() + region.substring(1).toLowerCase())
                         .append(")"));
 
             } else
@@ -215,9 +216,6 @@ public class HomeActivity extends BaseActivity implements
     }
 
 
-
-
-
     private void defineItems() {
 
         nav_home = menu.findItem(R.id.nav_home);
@@ -242,8 +240,6 @@ public class HomeActivity extends BaseActivity implements
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
-
-
 
 
     //    @Override
@@ -339,7 +335,7 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public void showProgressBar() {
 
-        loading.showProgressBar(this,false);
+        loading.showProgressBar(this, false);
     }
 
     @Override

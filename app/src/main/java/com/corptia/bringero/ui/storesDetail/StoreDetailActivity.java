@@ -1,18 +1,20 @@
 package com.corptia.bringero.ui.storesDetail;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -21,6 +23,10 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.SpeedCartQuery;
+import com.corptia.bringero.model.EventBus.CalculateCartEvent;
+import com.corptia.bringero.ui.Main.MainActivity;
+import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.ui.search.SearchProductsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.base.BaseActivity;
@@ -29,9 +35,15 @@ import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.type.StoreFilterInput;
+import com.corptia.bringero.utils.sharedPref.PrefKeys;
+import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.google.android.material.tabs.TabLayout;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -61,6 +73,19 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     String imageUrl = "";
     //Presenter
     StoreDetailPresenter presenter;
+
+    //Speed Cart
+    double totalPriceCart;
+    int countOfCart;
+    boolean isHaveCart = false;
+    @BindView(R.id.txt_countOfCart)
+    TextView txt_countOfCart;
+    @BindView(R.id.txt_totalPriceCart)
+    TextView txt_totalPriceCart;
+    @BindView(R.id.btn_cart)
+    Button btn_cart;
+    @BindView(R.id.layout_speed_cart)
+    ConstraintLayout layout_speed_cart;
 
     //Search
     public static final int EXTRA_REVEAL_CENTER_PADDING = 40;
@@ -95,6 +120,10 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         presenter = new StoreDetailPresenter(this);
         //presenter.getStoreDetailHeader(storeId);
 
+        //Here Fetch Data From Cart I have Display layout cart
+        //TODO
+
+        getSpeedCart();
     }
 
     private void initIntent() {
@@ -216,6 +245,120 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    private void RunAnimation() {
+        Animation a = AnimationUtils.loadAnimation(this, R.anim.scale_amount_price);
+        a.reset();
+        txt_countOfCart.clearAnimation();
+        txt_countOfCart.startAnimation(a);
+    }
+
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void request(CalculateCartEvent event) {
+        if (event != null) {
+
+            if (event.isSuccess()) {
+
+                if (countOfCart > 0)
+                    txt_countOfCart.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            txt_countOfCart.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                        }
+                    });
+
+                countOfCart += 1;
+                totalPriceCart += event.getProductPrice();
+
+                isHaveCart = true;
+                layout_speed_cart.setVisibility(View.VISIBLE);
+                txt_totalPriceCart.setText(new StringBuilder().append(totalPriceCart).append(" ").append(getString(R.string.currency)));
+                txt_countOfCart.setText("" + countOfCart);
+//                RunAnimation();
+
+
+            } else {
+
+                isHaveCart = false;
+                layout_speed_cart.setVisibility(View.GONE);
+            }
+
+        }
+
+
+    }
+
+    public void getSpeedCart() {
+
+        MyApolloClient.getApollowClientAuthorization().query(SpeedCartQuery.builder().build())
+                .enqueue(new ApolloCall.Callback<SpeedCartQuery.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<SpeedCartQuery.Data> response) {
+
+                        runOnUiThread(() -> {
+
+                            SpeedCartQuery.MyCart dataCart = response.data().CartItemQuery().myCart();
+                            if (dataCart.status() == 200) {
+
+                                isHaveCart = true;
+                                layout_speed_cart.setVisibility(View.VISIBLE);
+                                totalPriceCart = dataCart.TotalPrice();
+                                countOfCart = dataCart.ItemsCount();
+                                txt_totalPriceCart.setText(new StringBuilder().append(totalPriceCart).append(" ").append(getString(R.string.currency)));
+                                txt_countOfCart.setText("" + countOfCart);
+                            } else {
+                                isHaveCart = false;
+                                layout_speed_cart.setVisibility(View.GONE);
+                            }
+
+                        });
+
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
+
+
+        btn_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent = new Intent(StoreDetailActivity.this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(Constants.EXTRA_SPEED_CART , "EXTRA_SPEED_CART");
+                    startActivity(intent);
+                } catch (Throwable throwable) {
+                    throwable.printStackTrace();
+                }
+            }
+        });
+
+
     }
 
 }

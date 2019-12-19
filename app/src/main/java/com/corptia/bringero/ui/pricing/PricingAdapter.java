@@ -69,10 +69,6 @@ public class PricingAdapter extends RecyclerView.Adapter<PricingAdapter.ViewHold
         TextView txt_name_product;
         @BindView(R.id.txt_price)
         TextView txt_price;
-        @BindView(R.id.ratingBar)
-        RatingBar ratingBar;
-        @BindView(R.id.txt_count_available)
-        TextView txt_count_available;
 
 
 

@@ -15,6 +15,8 @@ public class StoreDetailContract {
         void setProduct(List<GetStoreProductsQuery.Product> product);
         void setProductNotPriced(List<GetNotPricedByQuery.Product> product);
 
+
+
     }
 
 }

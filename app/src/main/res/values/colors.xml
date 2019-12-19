@@ -41,6 +41,9 @@
     <color name="blue1">#66a3ff</color>
 
     <color name="border_marker">#F0EBFE</color>
+    <color name="colorOldPrice">#959595</color>
+    <color name="colorProductName">#585A68</color>
+    <color name="colorDelete">#ED1B1B</color>
 
 
 </resources>

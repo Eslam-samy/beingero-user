@@ -7,6 +7,7 @@ import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
+import com.corptia.bringero.graphql.SpeedCartQuery;
 import com.corptia.bringero.type.ProductFilterInput;
 import com.corptia.bringero.type.StoreGalleryFilter;
 import com.corptia.bringero.ui.pricing.PricingContract;
@@ -18,15 +19,11 @@ import java.util.List;
 public class StoreDetailPresenter {
 
     StoreDetailContract.StoreDetailView view;
-    PricingContract.PricingView pricingView;
 
     public StoreDetailPresenter(StoreDetailContract.StoreDetailView view) {
         this.view = view;
     }
 
-    public StoreDetailPresenter(PricingContract.PricingView pricingView) {
-        this.pricingView = pricingView;
-    }
 
     void getStoreDetailHeader(String storeId) {
 
@@ -129,4 +126,7 @@ public class StoreDetailPresenter {
         }
 
     }
+
+
+
 }

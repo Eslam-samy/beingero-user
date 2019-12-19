@@ -22,6 +22,9 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.CreateCartItemMutation;
+import com.corptia.bringero.model.EventBus.CalculateCartEvent;
+import com.corptia.bringero.type.CreateCartItem;
 import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
@@ -33,6 +36,7 @@ import com.corptia.bringero.ui.productDetail.ProductDetailActivity;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -133,13 +137,16 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             {
                 storeDetailAdapter.setListener((view, position) -> {
 
-                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
-                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
-                    intent.putExtra(Constants.EXTRA_PRODUCT_ID , mProduct._id());
-                    if (mProduct.Product().ImageResponse().data()!=null)
-                    intent.putExtra(Constants.EXTRA_PRODUCT_IMAGE , mProduct.Product().ImageResponse().data().name());
-                    startActivity(intent);
+//                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
+//                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
+//                    intent.putExtra(Constants.EXTRA_PRODUCT_ID , mProduct._id());
+//                    if (mProduct.Product().ImageResponse().data()!=null)
+//                    intent.putExtra(Constants.EXTRA_PRODUCT_IMAGE , mProduct.Product().ImageResponse().data().name());
+//                    startActivity(intent);
 
+                    //Here Add To Cart
+                    EventBus.getDefault().postSticky(new CalculateCartEvent(true , storeDetailAdapter.productsList.get(position).storePrice()));
+                    addToCart(storeDetailAdapter.getSelectProduct(position)._id());
 
                 });
 
@@ -147,6 +154,33 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
         });
 
+    }
+
+
+    public void addToCart (String pricingProductId){
+
+        CreateCartItem item = CreateCartItem.builder().amount(1).pricingProductId(pricingProductId).build();
+        MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
+                .enqueue(new ApolloCall.Callback<CreateCartItemMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {
+
+                        CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
+                        if (createResponse.status() == 200)
+                        {
+
+                        }
+                        else
+                        {
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
     }
 
     @Override

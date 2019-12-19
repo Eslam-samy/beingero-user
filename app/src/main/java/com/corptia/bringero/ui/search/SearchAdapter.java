@@ -77,10 +77,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         TextView txt_name_product;
         @BindView(R.id.txt_price)
         TextView txt_price;
-        @BindView(R.id.ratingBar)
-        RatingBar ratingBar;
-        @BindView(R.id.txt_count_available)
-        TextView txt_count_available;
 
 
 

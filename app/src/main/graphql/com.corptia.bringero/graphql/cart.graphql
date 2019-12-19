@@ -112,3 +112,22 @@ mutation RemoveCartItem($_id: ID!){
         }
     }
 }
+
+
+query SpeedCartQuery {
+    CartItemQuery {
+        myCart {
+            status
+            message
+            errors {
+                code
+                path
+                message
+                validValue
+            }
+
+            TotalPrice
+            ItemsCount
+        }
+    }
+}

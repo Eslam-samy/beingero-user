@@ -15,6 +15,12 @@ public class Utils {
         return FoodClient.getFoodClient().create(FoodApi.class);
     }*/
 
+   public static String cutName(String name){
+
+       return name.length() >= 30 ? name.substring(0,30)+"..." : name ;
+
+   }
+
     public static void setImageToPicasso(ImageView imageToPicasso, String id) {
         Picasso.get()
                 .load(id)
