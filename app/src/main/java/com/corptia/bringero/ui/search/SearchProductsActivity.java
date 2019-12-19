@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -114,6 +116,35 @@ public class SearchProductsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 displaySpeechRecognizer();
+            }
+        });
+
+        edt_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (edt_search.getText().toString().isEmpty())
+                {
+                    img_speech.setVisibility(View.VISIBLE);
+                    img_clean.setVisibility(View.GONE);
+                }
+                else
+                {
+                    img_speech.setVisibility(View.GONE);
+                    img_clean.setVisibility(View.VISIBLE);
+                }
+
+
             }
         });
 

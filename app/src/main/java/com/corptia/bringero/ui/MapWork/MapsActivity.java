@@ -17,9 +17,12 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -29,6 +32,7 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.location.addNewLocation.AddNewLocationActivity;
+import com.corptia.bringero.ui.tracking.TrackingActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -88,6 +92,16 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Te
     Button saveLocationBtn;
 
     LocationCallback locationCallback;
+
+
+    //For set Zoom in center
+    private ScaleGestureDetector gestureDetector;
+    private int fingers = 0;
+    private long lastZoomTime = 0;
+    private float lastSpan = -1;
+    private Handler handler = new Handler();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,13 +187,38 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Te
 
         mMap = googleMap;
         isMapReady = true;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setAllGesturesEnabled(true);
-        mMap.getUiSettings().setCompassEnabled(true);
-        mMap.getUiSettings().setMapToolbarEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.getUiSettings().setRotateGesturesEnabled(false);
+        mMap.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(false);
         mMap.setMyLocationEnabled(true);
         //First zoom
         mMap.moveCamera(CameraUpdateFactory.zoomTo(13f));
+
+        gestureDetector = new ScaleGestureDetector(MapsActivity.this, new ScaleGestureDetector.OnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+                if (lastSpan == -1) {
+                    lastSpan = detector.getCurrentSpan();
+                } else if (detector.getEventTime() - lastZoomTime >= 50) {
+                    lastZoomTime = detector.getEventTime();
+                    googleMap.animateCamera(CameraUpdateFactory.zoomBy(getZoomValue(detector.getCurrentSpan(), lastSpan)), 50, null);
+                    lastSpan = detector.getCurrentSpan();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onScaleBegin(ScaleGestureDetector detector) {
+                lastSpan = -1;
+                return true;
+            }
+
+            @Override
+            public void onScaleEnd(ScaleGestureDetector detector) {
+                lastSpan = -1;
+
+            }
+        });
 
 
         if (currentLocation != null) {
@@ -669,4 +708,61 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Te
         mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
     }
+
+
+
+    ///-------- For Zoom Center -----------
+    private float getZoomValue(float currentSpan, float lastSpan) {
+        double value = (Math.log(currentSpan / lastSpan) / Math.log(1.55d));
+        return (float) value;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+
+        switch (ev.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_POINTER_DOWN:
+                fingers = fingers + 1;
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                fingers = fingers - 1;
+                break;
+            case MotionEvent.ACTION_UP:
+                fingers = 0;
+                break;
+            case MotionEvent.ACTION_DOWN:
+                fingers = 1;
+                break;
+        }
+        if (fingers > 1) {
+            disableScrolling();
+        } else if (fingers < 1) {
+            enableScrolling();
+        }
+        if (fingers > 1) {
+            return gestureDetector.onTouchEvent(ev);
+        } else {
+            return super.dispatchTouchEvent(ev);
+        }
+    }
+
+    private void enableScrolling() {
+        if (mMap != null && !mMap.getUiSettings().isScrollGesturesEnabled()) {
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mMap.getUiSettings().setAllGesturesEnabled(true);
+                }
+            }, 50);
+        }
+    }
+
+    private void disableScrolling() {
+        handler.removeCallbacksAndMessages(null);
+        if (mMap != null && mMap.getUiSettings().isScrollGesturesEnabled()) {
+            mMap.getUiSettings().setAllGesturesEnabled(false);
+        }
+    }
+
+    //------------------ End ------------------
 }
