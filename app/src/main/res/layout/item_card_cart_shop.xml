@@ -3,44 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="170dp">
+    android:layout_height="170dp"
+    android:background="@drawable/shadow_cart">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:weightSum="8">
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
-
-            <CheckBox
-                android:id="@+id/chb_select_item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.282"
-                app:layout_constraintHorizontal_bias="0"
-                android:background="@drawable/selector_checkbox"
-                android:button="@null"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/shadow_card"
-            android:layout_weight="7">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_image_product"
@@ -72,36 +37,26 @@
                 app:layout_constraintTop_toTopOf="@+id/card_image_product"
                 app:layout_constraintStart_toEndOf="@+id/card_image_product"/>
 
-            <TextView
-                android:id="@+id/txt_price"
-                style="@style/TextCardDefaultStyle"
-                android:textColor="@color/colorAccent"
-                tools:text="USD 180.00"
-                android:fontFamily="@font/poppinsregular"
-                app:layout_constraintStart_toEndOf="@+id/card_image_product"
-                app:layout_constraintTop_toBottomOf="@+id/txt_name_product"/>
 
+    <TextView
+        android:id="@+id/txt_total_price"
+        style="@style/TextCardDefaultStyle"
+        android:fontFamily="@font/poppinsregular"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="USD 180.00"
+        android:layout_margin="@dimen/app_low_margin"/>
 
-            <TextView
-                android:id="@+id/txt_total_price"
-                style="@style/TextCardDefaultStyle"
-                android:textColor="@color/colorAccent"
-                tools:text="USD 180.00"
-                android:fontFamily="@font/poppinsregular"
-                app:layout_constraintStart_toEndOf="@+id/card_image_product"
-                app:layout_constraintTop_toBottomOf="@+id/txt_price"/>
-
-
-
-            <LinearLayout
+    <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="@dimen/large_margin"
-                android:layout_marginBottom="@dimen/large_margin"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+        app:layout_constraintStart_toStartOf="@+id/txt_discount"
+        app:layout_constraintTop_toBottomOf="@+id/txt_price"
+        android:layout_marginTop="@dimen/medium_margin"
+        >
 
                 <ImageView
                     android:id="@+id/img_decrease"
@@ -134,27 +89,78 @@
                 android:id="@+id/img_delete_product"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete"
+                android:src="@drawable/ic_trash"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_margin="@dimen/large_margin"/>
 
             <ProgressBar
                 android:id="@+id/progress_circular"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_margin="@dimen/large_margin"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                app:layout_constraintTop_toTopOf="@+id/img_delete_product"
+                app:layout_constraintStart_toStartOf="@+id/img_delete_product"
+                app:layout_constraintBottom_toBottomOf="@+id/img_delete_product"
+                app:layout_constraintEnd_toEndOf="@+id/img_delete_product"
                 tools:visibility="visible"
                 android:visibility="gone"/>
 
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Arrange -->
+
+    <TextView
+        android:id="@+id/txt_discount"
+        android:layout_width="35dp"
+        android:layout_height="30dp"
+        android:background="@drawable/round_discount"
+        android:text="10%"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppinsregular"
+        android:textSize="@dimen/normal_text_size"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@+id/txt_name_product"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name_product"
+        android:layout_marginTop="@dimen/medium_margin"
+        />
 
 
-    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_old_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="200 EGP"
+        app:layout_constraintStart_toEndOf="@+id/txt_discount"
+        app:layout_constraintTop_toTopOf="@+id/txt_discount"
+        android:textSize="@dimen/low_x_text_size"
+        android:layout_marginStart="@dimen/low_margin"
+        android:textColor="@color/colorOldPrice"
+        android:fontFamily="@font/poppinsregular"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="@color/colorOldPrice"
+        app:layout_constraintStart_toStartOf="@+id/txt_old_price"
+        app:layout_constraintEnd_toEndOf="@+id/txt_old_price"
+        app:layout_constraintTop_toTopOf="@+id/txt_old_price"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_old_price"/>
+
+
+    <TextView
+        android:id="@+id/txt_price"
+        style="@style/TextCardDefaultStyle"
+        android:fontFamily="@font/poppinsregular"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/low_xx_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_discount"
+        app:layout_constraintStart_toStartOf="@+id/txt_old_price"
+        app:layout_constraintTop_toBottomOf="@+id/txt_old_price"
+        tools:text="USD 180.00"
+        android:layout_marginStart="0dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

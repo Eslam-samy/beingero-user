@@ -34,6 +34,7 @@
         app:cardElevation="@dimen/cardElevationMedium">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_checkOut"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/large_padding"
@@ -50,6 +51,8 @@
                 android:textColor="@color/colorAccent"
                 android:layout_marginStart="@dimen/large_margin"
                 android:fontFamily="@font/poppinssemibold"
+                android:visibility="gone"
+                tools:visibility="visible"
                 />
 
             <TextView
@@ -70,7 +73,7 @@
                 android:id="@+id/total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="USD 280.00"
+                tools:text="USD 280.00"
                 android:textSize="@dimen/large_text_size"
                 app:layout_constraintTop_toBottomOf="@+id/txt_lab_total"
                 app:layout_constraintStart_toStartOf="@+id/txt_lab_total"

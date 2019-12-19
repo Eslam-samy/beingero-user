@@ -257,7 +257,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                 img_decrease = itemView.findViewById(R.id.img_decrease);
                 img_increase = itemView.findViewById(R.id.img_increase);
                 img_delete_product = itemView.findViewById(R.id.img_delete_product);
-                chb_select_item = itemView.findViewById(R.id.chb_select_item);
                 txt_total_price = itemView.findViewById(R.id.txt_total_price);
                 progress_circular = itemView.findViewById(R.id.progress_circular);
 
