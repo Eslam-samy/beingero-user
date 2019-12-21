@@ -75,7 +75,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
         holder.txt_price.setText("" + item.PricingProduct().storePrice() + " " + context.getString(R.string.currency));
         String productName = item.PricingProduct().Product().name();
-        holder.txt_name_product.setText(productName.length() > 30 ? productName.substring(0,30) + "..." : productName);
+        holder.txt_name_product.setText(productName.length() > 30 ? productName.substring(0,20) + "..." : productName);
 
 
         if (item.PricingProduct().Product().ImageResponse().data() != null)
@@ -86,7 +86,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
         if (isCart) {
             holder.txt_quantity.setText("" + item.amount());
-            holder.txt_total_price.setText("" + item.totalPrice());
+            holder.txt_total_price.setText(new StringBuilder().append(item.totalPrice()).append(" ").append(context.getString(R.string.currency)));
 
             //Event
             holder.setListener((view, position1, isDecrease, isDelete) -> {
@@ -110,12 +110,12 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
                         }
                     } else {
-                        if (amount < totalAmountStore) {
+//                        if (amount < totalAmountStore) {
                             holder.txt_quantity.setText("" + (amount + 1));
                             EventBus.getDefault().postSticky(new CalculatePriceEvent(item._id(), amount + 1, item.PricingProduct().storePrice()));
-                            holder.txt_total_price.setText("" + ((amount + 1) * item.PricingProduct().storePrice()));
+                            holder.txt_total_price.setText(new StringBuilder().append(((amount + 1) * item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
 
-                        }
+//                        }
 
 
                     }
@@ -125,10 +125,20 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                         //updateCartItemsListener.onUpdateCart(item._id(), Integer.parseInt(holder.txt_quantity.getText().toString()));
                     }
 
+
+                    holder.txt_quantity.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            holder.txt_quantity.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                        }
+                    });
+
+
+
                 } else {
 
                     holder.progress_circular.setVisibility(View.VISIBLE);
-                    holder.img_delete_product.setVisibility(View.GONE);
+                    holder.img_delete_product.setVisibility(View.INVISIBLE);
                     MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(item._id()).build())
                             .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
                                 @Override
@@ -157,7 +167,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                                             }
                                             else
                                             {
-                                                holder.progress_circular.setVisibility(View.GONE);
+                                                holder.progress_circular.setVisibility(View.INVISIBLE);
                                                 holder.img_delete_product.setVisibility(View.VISIBLE);
                                             }
 

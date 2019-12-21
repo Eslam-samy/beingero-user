@@ -79,7 +79,14 @@ public class SearchProductsActivity extends AppCompatActivity {
         initActionBar();
 
         recycler_product.setLayoutManager(new GridLayoutManager(this, 2));
-        recycler_product.addItemDecoration(new GridSpacingItemDecoration(2, Common.dpToPx(15, this), true, 0, Common.dpToPx(10,this)));
+        recycler_product.addItemDecoration(new GridSpacingItemDecoration(
+                2,
+                Common.dpToPx(30, this),
+                true,
+                0,
+                Common.dpToPx(10, this),
+                Common.dpToPx(10, this),
+                Common.dpToPx(10, this)));
 
         if (getIntent()!=null)
         {

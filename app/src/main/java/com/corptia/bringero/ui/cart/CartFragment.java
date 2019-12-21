@@ -60,6 +60,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         ButterKnife.bind(this, view);
 
+        recycler_cart.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, getActivity())));
 
         return view;
     }
@@ -73,8 +75,6 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
             //stickyRecyclerView.setDataSource(myCartData);
             cartAdapter = new CartAdapter(getActivity(), myCartData.storeData(), true);
-            recycler_cart.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, getActivity())));
             recycler_cart.setAdapter(cartAdapter);
 
 

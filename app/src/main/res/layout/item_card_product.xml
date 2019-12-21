@@ -31,8 +31,8 @@
 
             <TextView
                 android:id="@+id/txt_amount"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/round_count_product"
                 android:text="0"
                 android:textAlignment="center"
@@ -41,27 +41,39 @@
                 android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/large_padding"
-                android:layout_marginTop="@dimen/large_padding"
-                android:visibility="gone"/>
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/large_margin"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
 
             <TextView
-                android:id="@+id/btn_delete"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:id="@+id/bg_delete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:background="@drawable/round_delete"
-                android:text="-"
                 android:textAlignment="center"
-                android:gravity="center"
+                android:gravity="center|center_vertical|clip_horizontal"
                 android:textColor="@color/white"
+                android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/large_padding"
-                android:layout_marginTop="@dimen/large_padding"
+                android:layout_marginEnd="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/large_margin"
                 android:visibility="gone"
-                tools:visibility="visible"
-                android:fontFamily="@font/poppinsregular"
-                android:textStyle="bold"/>
+                tools:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/btn_delete"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_min"
+                app:layout_constraintTop_toTopOf="@+id/bg_delete"
+                app:layout_constraintBottom_toBottomOf="@+id/bg_delete"
+                app:layout_constraintStart_toStartOf="@+id/bg_delete"
+                app:layout_constraintEnd_toEndOf="@+id/bg_delete"
+                android:padding="10dp"/>
+
 
             <TextView
                 android:id="@+id/txt_discount"
@@ -75,7 +87,7 @@
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/large_padding"
+                android:layout_marginStart="@dimen/medium_margin"
                 />
 
 
@@ -86,8 +98,8 @@
             android:layout_height="0dp"
             android:layout_weight="3"
             android:orientation="vertical"
-            android:paddingStart="@dimen/large_padding"
-            android:paddingEnd="@dimen/large_padding"
+            android:paddingStart="@dimen/medium_margin"
+            android:paddingEnd="@dimen/large_margin"
             android:paddingBottom="@dimen/low_padding">
 
             <androidx.constraintlayout.widget.ConstraintLayout

@@ -6,28 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shadow_cart"
-    android:layout_marginBottom="@dimen/medium_margin">
+    android:padding="25dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_image_product"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="@dimen/large_margin"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:cardUseCompatPadding="true">
+
 
 
             <ImageView
                 android:id="@+id/image_product"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/ic_placeholder_product"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:padding="5dp"
                 />
 
-        </androidx.cardview.widget.CardView>
+
 
 
         <TextView
@@ -35,8 +30,8 @@
             style="@style/TextCardDefaultStyle"
             tools:text="Nike Official"
             android:fontFamily="@font/poppinssemibold"
-            app:layout_constraintTop_toTopOf="@+id/card_image_product"
-            app:layout_constraintStart_toEndOf="@+id/card_image_product"/>
+            app:layout_constraintTop_toTopOf="@+id/image_product"
+            app:layout_constraintStart_toEndOf="@+id/image_product"/>
 
         <TextView
             android:id="@+id/txt_price"
@@ -44,7 +39,7 @@
             android:textColor="@color/colorAccent"
             tools:text="USD 180.00"
             android:fontFamily="@font/poppinsregular"
-            app:layout_constraintStart_toEndOf="@+id/card_image_product"
+            app:layout_constraintStart_toEndOf="@+id/image_product"
             app:layout_constraintTop_toBottomOf="@+id/txt_name_product"/>
 
     <TextView

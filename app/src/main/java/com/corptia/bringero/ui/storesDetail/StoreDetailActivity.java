@@ -343,22 +343,21 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
                     }
                 });
 
-
-        btn_cart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    Intent intent = new Intent(StoreDetailActivity.this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra(Constants.EXTRA_SPEED_CART , "EXTRA_SPEED_CART");
-                    startActivity(intent);
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
-            }
-        });
+        btn_cart.setOnClickListener(view -> gotoCart());
+        layout_speed_cart.setOnClickListener(view -> gotoCart());
 
 
+    }
+
+    void gotoCart(){
+        try {
+            Intent intent = new Intent(StoreDetailActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Constants.EXTRA_SPEED_CART , "EXTRA_SPEED_CART");
+            startActivity(intent);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
     }
 
 }

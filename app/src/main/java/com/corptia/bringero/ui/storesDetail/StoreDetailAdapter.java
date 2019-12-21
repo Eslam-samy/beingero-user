@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.storesDetail;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.UpdateCartItemMutation;
+import com.corptia.bringero.type.UpdateCartItem;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.utils.Utils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +75,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
 
                     holder.txt_amount.setVisibility(View.VISIBLE);
                     holder.btn_delete.setVisibility(View.VISIBLE);
+                    holder.bg_delete.setVisibility(View.VISIBLE);
 
                     int count ;
                     count = Integer.parseInt(holder.txt_amount.getText().toString())+1;
@@ -82,6 +92,67 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
                 }
             });
         }
+
+
+
+
+        //TODO Will move this  from here
+        holder.btn_delete.setOnClickListener(view -> {
+
+            int amountNow = Integer.parseInt(holder.txt_amount.getText().toString()) - 1 ;
+
+            if (amountNow == 0)
+            {
+                holder.txt_amount.setVisibility(View.INVISIBLE);
+                holder.btn_delete.setVisibility(View.INVISIBLE);
+                holder.bg_delete.setVisibility(View.INVISIBLE);
+            }
+
+            holder.txt_amount.setText(""+amountNow);
+
+            holder.txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                @Override
+                public void run() {
+                    holder.txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                }
+            });
+
+            //5ddeae6cf154e82fbff3070d
+            Log.d("HAZEM" , product._id());
+            Log.d("HAZEM" , product.productId());
+            Log.d("HAZEM" , product.Product()._id());
+
+            updateCartItems(product._id() , amountNow);
+
+        });
+
+    }
+
+    public void updateCartItems(String itemsId , int amount){
+
+        UpdateCartItem updateAmount = UpdateCartItem.builder().amount(amount).build();
+        MyApolloClient.getApollowClientAuthorization().mutate(UpdateCartItemMutation.builder().id(itemsId).data(updateAmount).build())
+                .enqueue(new ApolloCall.Callback<UpdateCartItemMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateCartItemMutation.Data> response) {
+
+                        if (response.data().CartItemMutation().update().status() == 200)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
+
     }
 
     @Override
@@ -101,9 +172,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
         @BindView(R.id.txt_amount)
         TextView txt_amount;
         @BindView(R.id.btn_delete)
-        TextView btn_delete;
+        ImageView btn_delete;
         @BindView(R.id.txt_discount)
         TextView txt_discount;
+        @BindView(R.id.bg_delete)
+        TextView bg_delete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

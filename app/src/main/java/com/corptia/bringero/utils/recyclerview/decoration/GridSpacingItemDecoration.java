@@ -14,13 +14,17 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
     private boolean includeEdge;
     private int headerNum;
     private int spacingTop;
+    private int left;
+    private int right;
 
-    public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge, int headerNum, int spacingTop) {
+    public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge, int headerNum, int spacingTop , int left , int right) {
         this.spanCount = spanCount;
         this.spacing = spacing;
         this.includeEdge = includeEdge;
         this.headerNum = headerNum;
         this.spacingTop = spacingTop;
+        this.left = left;
+        this.right = right;
     }
 
     @Override
@@ -45,10 +49,10 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
                     if (position % 2 == 0) {
                         outRect.right = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                        outRect.left = -30;
+                        outRect.left = -left;
                     } else {
                         outRect.left = (column + 1) * spacing / spanCount;
-                        outRect.right = -30;
+                        outRect.right = -right;
                     } // (column + 1) * ((1f / spanCount) * spacing)
 
 //                if (position < spanCount) { // top edge
@@ -77,10 +81,10 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
                     if (position % 2 == 0) {
                         outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                        outRect.right = -30;
+                        outRect.right = -right;
                     } else {
                         outRect.right = (column + 1) * spacing / spanCount;
-                        outRect.left = -30;
+                        outRect.left = -left;
                     } // (column + 1) * ((1f / spanCount) * spacing)
 
 //                if (position < spanCount) { // top edge

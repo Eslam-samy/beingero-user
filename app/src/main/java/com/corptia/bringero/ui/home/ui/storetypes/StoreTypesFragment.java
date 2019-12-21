@@ -36,8 +36,6 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
 
     //Data
     StoreTypesAdapter adapter;
-    List<StoreTypes> storeTypesList = new ArrayList<>();
-
     StoreTypesPresenter storeTypesPresenter;
 
     LayoutAnimationController layoutAnimationController;
@@ -50,7 +48,7 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
 
         ButterKnife.bind(this, root);
 
-        layoutAnimationController = AnimationUtils.loadLayoutAnimation(getContext() , R.anim.layout_item_from_left);
+        layoutAnimationController = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_item_from_left);
 
         //final TextView textView = root.findViewById(R.id.text_home);
 
@@ -72,7 +70,14 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
 
         recycler_store.setLayoutAnimation(layoutAnimationController);
         recycler_store.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        recycler_store.addItemDecoration(new GridSpacingItemDecoration(2, Common.dpToPx(15, getActivity()), true, 0, Common.dpToPx(10, getActivity())));
+        recycler_store.addItemDecoration(new GridSpacingItemDecoration(
+                2,
+                Common.dpToPx(15, getActivity()),
+                true,
+                0,
+                Common.dpToPx(10, getActivity()),
+                Common.dpToPx(2, getActivity()),
+                Common.dpToPx(2, getActivity())));
         adapter = new StoreTypesAdapter(getActivity(), repositoryList);
         recycler_store.setAdapter(adapter);
 
@@ -82,7 +87,7 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
     @Override
     public void displayError(String errorMessage) {
 
-        Toasty.error(getActivity() , errorMessage).show();
+        Toasty.error(getActivity(), errorMessage).show();
     }
 
     @Override

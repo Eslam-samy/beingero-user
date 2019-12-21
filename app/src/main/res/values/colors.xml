@@ -44,6 +44,7 @@
     <color name="colorOldPrice">#959595</color>
     <color name="colorProductName">#585A68</color>
     <color name="colorDelete">#ED1B1B</color>
+    <color name="colorStoreCard">#7D7F84</color>
 
 
 </resources>

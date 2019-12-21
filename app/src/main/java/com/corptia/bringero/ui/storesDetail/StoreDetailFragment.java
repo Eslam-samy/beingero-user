@@ -54,12 +54,12 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     @BindView(R.id.root)
     ConstraintLayout root;
 
-    StoreDetailAdapter storeDetailAdapter ;
-    PricingAdapter pricingAdapter ;
+    StoreDetailAdapter storeDetailAdapter;
+    PricingAdapter pricingAdapter;
 
     Handler handler = new Handler();
 
-    StoreDetailPresenter storeDetailPresenter ;
+    StoreDetailPresenter storeDetailPresenter;
     boolean isPrice;
     BottomSheetDialog bottomSheetDialog;
 
@@ -76,22 +76,28 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_brand_detail, container, false);
-        ButterKnife.bind(this , view);
+        ButterKnife.bind(this, view);
 
-        if (Common.CURRENT_USER!=null)
-            if (Common.CURRENT_USER.language().equalsIgnoreCase("ar"))
-        {
-            root.setRotationY(180);
-        }
+        if (Common.CURRENT_USER != null)
+            if (Common.CURRENT_USER.language().equalsIgnoreCase("ar")) {
+                root.setRotationY(180);
+            }
         recycler_brands_detail.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        recycler_brands_detail.addItemDecoration(new GridSpacingItemDecoration(2, Common.dpToPx(15, getActivity()), true, 0, Common.dpToPx(10, getActivity())));
+        recycler_brands_detail.addItemDecoration(new GridSpacingItemDecoration(
+                2,
+                Common.dpToPx(10, getActivity()),
+                true,
+                0,
+                Common.dpToPx(17, getActivity()),
+                Common.dpToPx(2, getActivity()),
+                Common.dpToPx(2, getActivity())));
 
         if (getArguments() != null) {
 
             // set argument data to view
             String typeId = getArguments().getString(Constants.EXTRA_PRODUCT_TYPE_ID);
             String storeId = getArguments().getString(Constants.EXTRA_STORE_ID);
-            storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(),typeId ,isPrice);
+            storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId, isPrice);
             //Here Get Products For This Type
 
         }
@@ -133,8 +139,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             recycler_brands_detail.setAdapter(storeDetailAdapter);
             storeDetailAdapter.notifyDataSetChanged();
 
-            if (isPrice)
-            {
+            if (isPrice) {
                 storeDetailAdapter.setListener((view, position) -> {
 
 //                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
@@ -145,7 +150,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 //                    startActivity(intent);
 
                     //Here Add To Cart
-                    EventBus.getDefault().postSticky(new CalculateCartEvent(true , storeDetailAdapter.productsList.get(position).storePrice()));
+                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, storeDetailAdapter.productsList.get(position).storePrice()));
                     addToCart(storeDetailAdapter.getSelectProduct(position)._id());
 
                 });
@@ -157,7 +162,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     }
 
 
-    public void addToCart (String pricingProductId){
+    public void addToCart(String pricingProductId) {
 
         CreateCartItem item = CreateCartItem.builder().amount(1).pricingProductId(pricingProductId).build();
         MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
@@ -166,12 +171,9 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                     public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {
 
                         CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
-                        if (createResponse.status() == 200)
-                        {
+                        if (createResponse.status() == 200) {
 
-                        }
-                        else
-                        {
+                        } else {
                         }
 
                     }
@@ -187,20 +189,17 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     public void setProductNotPriced(List<GetNotPricedByQuery.Product> product) {
 
         handler.post(() -> {
-            pricingAdapter= new PricingAdapter(getActivity(), product);
+            pricingAdapter = new PricingAdapter(getActivity(), product);
             recycler_brands_detail.setAdapter(pricingAdapter);
             pricingAdapter.notifyDataSetChanged();
 
-            if (isPrice)
-            {
+            if (isPrice) {
 
 
-            }
-            else
-            {
+            } else {
                 pricingAdapter.setListener((view, position) -> {
                     // Toast.makeText(getActivity(), "This is Pricing"+ position, Toast.LENGTH_SHORT).show();
-                    showCreatePricingDialog(pricingAdapter.getSelectProduct(position)._id() , Common.CURRENT_STORE._id() , position);
+                    showCreatePricingDialog(pricingAdapter.getSelectProduct(position)._id(), Common.CURRENT_STORE._id(), position);
                 });
             }
 
@@ -209,7 +208,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     }
 
 
-    private void showCreatePricingDialog(String productId , String storeId , int position) {
+    private void showCreatePricingDialog(String productId, String storeId, int position) {
 
         // init loadingDialog
         bottomSheetDialog = new BottomSheetDialog(getActivity());
@@ -239,13 +238,10 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
                             handler.post(() -> {
 
-                                if (response.data().CreatePricingProduct().create().status() == 200)
-                                {
+                                if (response.data().CreatePricingProduct().create().status() == 200) {
                                     bottomSheetDialog.dismiss();
                                     pricingAdapter.removeSelectProduct(position);
-                                }
-                                else
-                                {
+                                } else {
                                     bottomSheetDialog.dismiss();
                                 }
 

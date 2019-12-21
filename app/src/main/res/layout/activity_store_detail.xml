@@ -20,11 +20,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_scrollFlags="scroll|snap"
                 />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|snap|enterAlways"
+            >
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_image_brands"
@@ -99,17 +102,18 @@
             app:tabIndicatorHeight="5dp"
             app:tabIndicatorColor="@color/colorPrimary"
             app:tabSelectedTextColor="@color/colorPrimary"
-            app:tabMode="scrollable"
-            app:tabContentStart="0dp" />
+            app:tabContentStart="0dp"
+            />
 
     </com.google.android.material.appbar.AppBarLayout>
+
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_speed_cart"
         android:layout_width="match_parent"
@@ -199,6 +203,7 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 

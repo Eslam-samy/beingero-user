@@ -35,7 +35,7 @@ public class StoresActivity extends BaseActivity implements StoresContract.Brand
     StoresPresenter brandsPresenter;
 
     //For Store Local Category Id
-    String categoryId = "";
+    String categoryId = "" , storeTypeName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +47,14 @@ public class StoresActivity extends BaseActivity implements StoresContract.Brand
         if (intent!=null)
         {
             categoryId = intent.getStringExtra(Constants.EXTRA_CATEGOTY_ID);
+            storeTypeName = intent.getStringExtra(Constants.EXTRA_STORE_TYPE_NAME);
         }
 
         brandsPresenter = new StoresPresenter(this);
 
 
         recycler_brands.setLayoutManager(new LinearLayoutManager(this));
-        recycler_brands.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,this)));
+        recycler_brands.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(0,this)));
 
         brandsPresenter.getStores(categoryId);
 
@@ -65,7 +66,8 @@ public class StoresActivity extends BaseActivity implements StoresContract.Brand
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle(storeTypeName);
         }
     }
 

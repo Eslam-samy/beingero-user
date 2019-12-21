@@ -33,4 +33,5 @@ public class Constants {
     public static final String EXTRA_PILOT_ID = "EXTRA_PILOT_ID";
     public static final String EXTRA_TOTAL_CART = "EXTRA_TOTAL_CART";
     public static final String EXTRA_SPEED_CART = "EXTRA_SPEED_CART";
+    public static final String EXTRA_STORE_TYPE_NAME = "EXTRA_STORE_TYPE_NAME";
 }

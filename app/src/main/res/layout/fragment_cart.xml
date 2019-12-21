@@ -36,24 +36,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_checkOut"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/large_padding"
-            android:paddingTop="@dimen/large_padding">
-
-            <TextView
-                android:id="@+id/txt_apply_voucher_code"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/apply_voucher_code"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textSize="@dimen/medium_text_size"
-                android:textColor="@color/colorAccent"
-                android:layout_marginStart="@dimen/large_margin"
-                android:fontFamily="@font/poppinssemibold"
-                android:visibility="gone"
-                tools:visibility="visible"
-                />
+            android:layout_height="80dp">
 
             <TextView
                 android:id="@+id/txt_lab_total"
@@ -62,34 +45,44 @@
                 android:text="@string/total"
                 android:textSize="@dimen/medium_text_size"
                 android:textColor="@color/colorGray"
-                app:layout_constraintTop_toBottomOf="@+id/txt_apply_voucher_code"
+                app:layout_constraintTop_toTopOf="@+id/btn_next"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="@dimen/medium_margin"
                 android:fontFamily="@font/poppinsmedium"
+                android:includeFontPadding="false"
+                app:layout_constraintBottom_toTopOf="@+id/total_price"
+                app:layout_constraintVertical_chainStyle="packed"
+
                 />
 
             <TextView
                 android:id="@+id/total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="USD 280.00"
+                tools:text="280.00 EGP"
                 android:textSize="@dimen/large_text_size"
                 app:layout_constraintTop_toBottomOf="@+id/txt_lab_total"
                 app:layout_constraintStart_toStartOf="@+id/txt_lab_total"
                 android:textColor="@color/black"
-                android:fontFamily="@font/poppinsmedium"/>
+                android:fontFamily="@font/poppinsmedium"
+                android:includeFontPadding="false" />
 
 
             <Button
                 android:id="@+id/btn_next"
-                style="@style/ButtonNormalStyle"
                 android:layout_height="wrap_content"
                 android:layout_width="146dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txt_lab_total"
-                app:layout_constraintBottom_toBottomOf="@+id/total_price"
-                android:text="@string/check_out"/>
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/check_out"
+                android:background="@drawable/round_main_button"
+                android:layout_marginEnd="@dimen/app_margin"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                android:textSize="@dimen/medium_text_size"
+                android:fontFamily="@font/poppinsregular"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
