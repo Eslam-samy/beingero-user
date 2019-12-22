@@ -6,4 +6,6 @@ public interface SelectDeliveryLocationView extends LoginContract.LoginView {
 
     void onSuccessUpdateCurrentLocation();
     void onSuccessUpdateNestedLocation();
+
+    void onSuccessRemovedLocation();
 }

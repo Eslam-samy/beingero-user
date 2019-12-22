@@ -61,8 +61,8 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
         img_logo = findViewById(R.id.img_logo);
 
 
-        //Set Lang
-        LocaleHelper.setLocale(SplashActivity.this, "ar");
+//        //Set Lang
+//        LocaleHelper.setLocale(SplashActivity.this, "ar");
 
 
         new Handler().postDelayed(() -> {
@@ -85,7 +85,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
             }
 
 
-        }, 5000);
+        }, 1000);
     }
 
     @Override
@@ -114,8 +114,9 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
         runOnUiThread(() -> {
 
-            LocaleHelper.setLocale(SplashActivity.this, Common.CURRENT_USER.language().toLowerCase());
-            if (Common.CURRENT_USER.currentDeliveryAddress() != null)
+            LocaleHelper.setLocale(SplashActivity.this, Common.CURRENT_USER.getLanguage().toLowerCase());
+
+            if (Common.CURRENT_USER.getCurrentDeliveryAddress() != null)
                 startActivity(new Intent(SplashActivity.this, SelectDeliveryLocationActivity.class));
             else {
                 startActivity(new Intent(SplashActivity.this, MapsActivity.class));

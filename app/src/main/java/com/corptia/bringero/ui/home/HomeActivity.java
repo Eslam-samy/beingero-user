@@ -114,11 +114,12 @@ public class HomeActivity extends BaseActivity implements
     private void setCurrentLocation() {
 
         if (Common.CURRENT_USER != null) {
-            if (Common.CURRENT_USER.currentDeliveryAddress() != null) {
+            if (Common.CURRENT_USER.getCurrentDeliveryAddress() != null) {
 
-                String region = Common.CURRENT_USER.currentDeliveryAddress().region();
-                String name = Common.CURRENT_USER.currentDeliveryAddress().name();
+                String region = Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion();
+                String name = Common.CURRENT_USER.getCurrentDeliveryAddress().getName();
 
+                if (name!=null && region!=null)
                 txt_location.setText(new StringBuilder().append(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())
                         .append(" (")
                         .append(region.substring(0, 1).toUpperCase() + region.substring(1).toLowerCase())
@@ -219,7 +220,6 @@ public class HomeActivity extends BaseActivity implements
     private void defineItems() {
 
         nav_home = menu.findItem(R.id.nav_home);
-        nav_gallery = menu.findItem(R.id.nav_gallery);
         nav_cart = menu.findItem(R.id.nav_cart);
         nav_contact_us = menu.findItem(R.id.nav_contact_us);
         nav_discounts = menu.findItem(R.id.nav_discounts);
@@ -329,6 +329,11 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public void onSuccessUpdateNestedLocation() {
+
+    }
+
+    @Override
+    public void onSuccessRemovedLocation() {
 
     }
 

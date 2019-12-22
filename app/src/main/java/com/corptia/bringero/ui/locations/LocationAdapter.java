@@ -4,14 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
-import com.corptia.bringero.graphql.MeQuery;
+import com.corptia.bringero.model.DeliveryAddresses;
+import com.corptia.bringero.ui.cart.Adapter.CartAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +25,25 @@ import butterknife.ButterKnife;
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHolder> {
 
     Context context ;
-    List<MeQuery.DeliveryAddress> deliveryAddressesList = new ArrayList<>();
+    List<DeliveryAddresses> deliveryAddressesList = new ArrayList<>();
 
-    IOnRecyclerViewClickListener clickListener ;
+    IOnRecyclerViewClickListener clickListener,clickListenerUpdate ;
+
+    public int selectedPosition;
+    int tempCurrentPosition;
+
+    public void setClickListenerUpdate(IOnRecyclerViewClickListener clickListenerUpdate) {
+        this.clickListenerUpdate = clickListenerUpdate;
+    }
 
     public void setClickListener(IOnRecyclerViewClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
-    public LocationAdapter(Context context, List<MeQuery.DeliveryAddress> deliveryAddressesList ) {
+    public LocationAdapter(Context context, List<DeliveryAddresses> deliveryAddressesList ) {
         this.context = context;
         this.deliveryAddressesList = new ArrayList<>(deliveryAddressesList) ;
+        selectedPosition = -1;
     }
 
     @NonNull
@@ -44,21 +55,47 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        MeQuery.DeliveryAddress address = deliveryAddressesList.get(position);
-        holder.txt_address_name.setText(address.name());
-        holder.txt_street.setText(new StringBuilder().append(address.region()).append(" - ").append(address.street())) ;
+        DeliveryAddresses address = deliveryAddressesList.get(position);
+
+        if (address!=null) {
+            holder.txt_address_name.setText(address.getName());
+            holder.txt_street.setText(new StringBuilder().append(address.getRegion()).append(" - ").append(address.getStreet()));
 
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (clickListener!=null)
-                {
-                    clickListener.onClick(view , position);
-                }
+            if (selectedPosition == -1) {
+                if (Common.CURRENT_USER.getCurrentDeliveryAddress().getId().equals(address.getId())) {
+                    holder.img_selected.setVisibility(View.VISIBLE);
+                    selectedPosition = position;
+                    tempCurrentPosition = position;
+                } else
+                    holder.img_selected.setVisibility(View.INVISIBLE);
+            } else {
+                if (selectedPosition == position) {
+                    holder.img_selected.setVisibility(View.VISIBLE);
+                } else holder.img_selected.setVisibility(View.INVISIBLE);
             }
-        });
+
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (clickListener != null) {
+                        clickListener.onClick(view, position);
+                    }
+                }
+            });
+
+            holder.btn_update.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (clickListenerUpdate != null) {
+                        clickListenerUpdate.onClick(view, position);
+                    }
+                }
+            });
+
+        }
     }
 
     @Override
@@ -74,8 +111,9 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
     }
 
-    public void restoreItem(MeQuery.DeliveryAddress item, int position) {
+    public void restoreItem(DeliveryAddresses item, int position) {
 
+//        Common.CURRENT_USER.getDeliveryAddressesList().add(position,item);
         deliveryAddressesList.add(position, item);
         notifyItemInserted(position);
     }
@@ -86,6 +124,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         TextView txt_address_name;
         @BindView(R.id.txt_street)
         TextView txt_street;
+        @BindView(R.id.btn_update)
+        ImageView btn_update;
+        @BindView(R.id.img_selected)
+        ImageView img_selected;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -95,8 +137,15 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         }
     }
 
-    public  MeQuery.DeliveryAddress getItems(int position)
+    public  DeliveryAddresses getItems(int position)
     {
         return deliveryAddressesList.get(position);
     }
+
+    public void selectCurrentLocation(int position) {
+        selectedPosition = position;
+        notifyDataSetChanged();
+    }
+
+
 }

@@ -1,16 +1,24 @@
 package com.corptia.bringero.ui.location.AllLocation;
 
+import android.util.Log;
+
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Remote.MyApolloClient;
-import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.graphql.UpdateUserInfoMutation;
+import com.corptia.bringero.model.CurrentDeliveryAddress;
+import com.corptia.bringero.model.DeliveryAddresses;
 import com.corptia.bringero.type.DeliveryAddressInput;
 import com.corptia.bringero.type.DeliveryAddressSingles;
+import com.corptia.bringero.type.DeliveryAddressesNested;
+import com.corptia.bringero.type.FlatType;
+import com.corptia.bringero.type.PointCooridinatesInput;
 import com.corptia.bringero.type.UserInfo;
+import com.corptia.bringero.type.User_UPDATE_NESTED;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,13 +49,10 @@ public class LocationsDeliveryPresenter extends SelectDeliveryLocationPresenter 
                         UpdateUserInfoMutation.@Nullable UpdateInfo updateInfo = response.data().UserMutation().updateInfo();
                         view.hideProgressBar();
                         if (updateInfo.status() == 200) {
-                            getMe(response.data().UserMutation().updateInfo().token(), new onSuccessCall() {
-                                @Override
-                                public void CallBack(MeQuery.UserData userData) {
-                                    Common.CURRENT_USER = userData;
-                                    view.onSuccessRemovedLocation();
-                                }
-                            });
+
+                            //TODO Here Miss Refetch and delete old address
+                            view.onSuccessRemovedLocation();
+
                         } else {
                             view.showErrorMessage(updateInfo.message());
                         }
@@ -62,4 +67,190 @@ public class LocationsDeliveryPresenter extends SelectDeliveryLocationPresenter 
                 });
 
     }
+
+    public void userUpdateCurrentLocation(String currentDeliveryAddressID) {
+
+        view.showProgressBar();
+        UserInfo userInfo = UserInfo.builder().currentDeliveryAddressID(currentDeliveryAddressID).build();
+        MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
+                .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
+
+                        UpdateUserInfoMutation.@Nullable UpdateInfo updateInfo = response.data().UserMutation().updateInfo();
+
+                        if (updateInfo.status() ==402) {
+                            Log.d("HAZEM" , "ERROR : " + response);
+                        }
+                            else{
+                            UpdateUserInfoMutation.CurrentDeliveryAddress currentDeliveryAddress = updateInfo.data().currentDeliveryAddress();
+
+                            if (updateInfo.status() == 200) {
+
+                                Common.CURRENT_USER.setToken(updateInfo.token());
+
+                                CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
+                                currentDeliveryAddressModel.setId(updateInfo.data().currentDeliveryAddress()._id());
+                                currentDeliveryAddressModel.setBuilding(currentDeliveryAddress.building());
+                                currentDeliveryAddressModel.setFlatType(currentDeliveryAddress.flatType().rawValue());
+                                currentDeliveryAddressModel.setFloor(currentDeliveryAddress.floor());
+                                currentDeliveryAddressModel.setName(currentDeliveryAddress.name());
+                                currentDeliveryAddressModel.setStreet(currentDeliveryAddress.street());
+                                currentDeliveryAddressModel.setRegion(currentDeliveryAddress.region());
+                                currentDeliveryAddressModel.setFlat(currentDeliveryAddress.flat());
+                                currentDeliveryAddressModel.setLocation(new LatLng(currentDeliveryAddress.locationPoint().lat(), currentDeliveryAddress.locationPoint().lng()));
+                                Common.CURRENT_USER.setCurrentDeliveryAddress(currentDeliveryAddressModel);
+
+                                view.onSuccessUpdateCurrentLocation();
+
+                            } else {
+                                view.showErrorMessage(updateInfo.message());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        view.hideProgressBar();
+                        view.showErrorMessage(e.getMessage());
+
+                    }
+                });
+
+    }
+
+    public void addNewAddress(String name, String region, String street, FlatType flatType, int floor, int flat, int building, double lat, double lng, boolean isUpdateCurrentLocation) {
+
+        view.showProgressBar();
+
+
+        PointCooridinatesInput inputLocationPoint = PointCooridinatesInput.builder().lat(lat).lng(lng).build();
+
+        DeliveryAddressInput deliveryAddressInput = DeliveryAddressInput.builder()
+                .name(name)
+                .region(region)
+                .street(street)
+                .flatType(flatType)
+                .floor(floor)
+                .flat(flat)
+                .building(building)
+                .locationPoint(inputLocationPoint).build();
+
+        DeliveryAddressSingles singles = DeliveryAddressSingles.builder().deliveryAddresses(deliveryAddressInput).build();
+
+        UserInfo userInfo = UserInfo.builder().pUSH_SINGLE(singles).build();
+
+        MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
+                .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
+
+                        view.hideProgressBar();
+                        UpdateUserInfoMutation.UpdateInfo responseUpdateInfo = response.data().UserMutation().updateInfo();
+
+                        if (responseUpdateInfo.status() == 200) {
+
+                            UpdateUserInfoMutation.DeliveryAddress newDeliveryAddress  = responseUpdateInfo.data().deliveryAddresses().get(responseUpdateInfo.data().deliveryAddresses().size() - 1);
+
+                            DeliveryAddresses deliveryAddressesModel = new DeliveryAddresses();
+                            deliveryAddressesModel.setId(newDeliveryAddress._id());
+                            deliveryAddressesModel.setBuilding(newDeliveryAddress.building());
+                            deliveryAddressesModel.setRegion(newDeliveryAddress.region());
+                            deliveryAddressesModel.setName(newDeliveryAddress.name());
+                            deliveryAddressesModel.setStreet(newDeliveryAddress.street());
+                            deliveryAddressesModel.setFlatType(newDeliveryAddress.flatType().rawValue());
+                            deliveryAddressesModel.setFloor(newDeliveryAddress.floor());
+                            deliveryAddressesModel.setFlat(newDeliveryAddress.flat());
+                            deliveryAddressesModel.setLocation(new LatLng(newDeliveryAddress.locationPoint().lat() , newDeliveryAddress.locationPoint().lng()));
+
+                            Common.CURRENT_USER.getDeliveryAddressesList().add(deliveryAddressesModel);
+
+                            if (isUpdateCurrentLocation || Common.isFirstTimeAddLocation) {
+
+
+
+                                String newDeliveryAddressesID = newDeliveryAddress._id();
+                                userUpdateCurrentLocation(newDeliveryAddressesID);
+                                Common.isFirstTimeAddLocation = false;
+
+                            } else {
+                                view.onSuccessUpdateCurrentLocation();
+                                view.onUndoLocation(newDeliveryAddress._id());
+                            }
+
+                            //userUpdateCurrentLocation("");
+
+
+                        } else {
+                            view.showErrorMessage(responseUpdateInfo.message());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        view.showErrorMessage(e.getMessage());
+                        view.hideProgressBar();
+
+
+                    }
+                });
+    }
+
+
+    public void updateLocation(String LocationID, String name, String region, String street, FlatType flatType, int floor, int flat, int building, double lat, double lng) {
+
+        view.showProgressBar();
+
+        PointCooridinatesInput inputLocationPoint = PointCooridinatesInput.builder().lat(lat).lng(lng).build();
+
+        DeliveryAddressInput deliveryAddressInput = DeliveryAddressInput.builder()
+                .name(name)
+                .region(region)
+                .street(street)
+                .flatType(flatType)
+                .floor(floor)
+                .flat(flat)
+                .building(building)
+                .locationPoint(inputLocationPoint).build();
+
+        User_UPDATE_NESTED user_update_nested = User_UPDATE_NESTED.builder()
+                .deliveryAddresses(DeliveryAddressesNested.builder()
+                        .filter(DeliveryAddressInput.builder()._id(LocationID).build())
+                        .data(deliveryAddressInput)
+                        .build())
+                .build();
+
+        UserInfo userInfo = UserInfo.builder().uPDATE_NESTED(user_update_nested).build();
+
+        MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
+                .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
+
+                        view.hideProgressBar();
+                        UpdateUserInfoMutation.UpdateInfo responseUpdateInfo = response.data().UserMutation().updateInfo();
+
+                        if (responseUpdateInfo.status() == 200) {
+
+                            //TODO Miss Here to do reload for all locations
+
+                            view.onSuccessUpdateNestedLocation();
+
+                        } else {
+                            view.showErrorMessage(responseUpdateInfo.message());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        view.showErrorMessage(e.getMessage());
+                        view.hideProgressBar();
+
+
+                    }
+                });
+    }
+
 }

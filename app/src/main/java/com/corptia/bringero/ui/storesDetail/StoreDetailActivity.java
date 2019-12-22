@@ -97,7 +97,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
         ButterKnife.bind(this);
 
-        if (Common.CURRENT_USER.language().equalsIgnoreCase("ar")) {
+        if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")) {
             viewPager.setRotationY(180);
         }
 

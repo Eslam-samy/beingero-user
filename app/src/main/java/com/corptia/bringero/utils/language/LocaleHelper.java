@@ -7,12 +7,13 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.Locale;
 
 public class LocaleHelper {
 
-	private static final String SELECTED_LANGUAGE = "Locale.Helper.Selected.Language";
+	private static final String SELECTED_LANGUAGE = "com.corptia.bringero";
 
 	public static Context onAttach(Context context) {
 		String lang = getPersistedData(context, Locale.getDefault().getLanguage());
@@ -59,6 +60,7 @@ public class LocaleHelper {
 		Configuration configuration = context.getResources().getConfiguration();
 		configuration.setLocale(locale);
 		configuration.setLayoutDirection(locale);
+
 
 		return context.createConfigurationContext(configuration);
 	}

@@ -40,7 +40,6 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
     Button btn_set_location;
 
     BottomSheetDialog bottomSheetDialog;
-    SelectDeliveryLocationAdapter adapter;
 
     SelectDeliveryLocationPresenter presenter = new SelectDeliveryLocationPresenter(this);
     CustomLoading loading ;
@@ -55,15 +54,17 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
 
 
         if (Common.CURRENT_USER!=null) {
-            if (Common.CURRENT_USER.currentDeliveryAddress() != null) {
+            if (Common.CURRENT_USER.getCurrentDeliveryAddress() != null) {
 
-                String region = Common.CURRENT_USER.currentDeliveryAddress().region();
-                String name = Common.CURRENT_USER.currentDeliveryAddress().name();
+                String region = Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion();
+                String name = Common.CURRENT_USER.getCurrentDeliveryAddress().getName();
 
-                btn_select_location.setText(new StringBuilder().append(name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase())
-                        .append(" (")
-                        .append(region.substring(0,1).toUpperCase() + region.substring(1).toLowerCase())
-                        .append(")"));
+                if (name!=null && region!=null) {
+                    btn_select_location.setText(new StringBuilder().append(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())
+                            .append(" (")
+                            .append(region.substring(0, 1).toUpperCase() + region.substring(1).toLowerCase())
+                            .append(")"));
+                }
 
             } else
                 btn_select_location.setText(getString(R.string.select_location));
@@ -159,6 +160,11 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
 
     @Override
     public void onSuccessUpdateNestedLocation() {
+
+    }
+
+    @Override
+    public void onSuccessRemovedLocation() {
 
     }
 

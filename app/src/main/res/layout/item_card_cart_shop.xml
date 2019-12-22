@@ -43,7 +43,7 @@
             android:id="@+id/img_decrease"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_decrease"
+            android:src="@drawable/selector_cart_decrease"
             android:scaleType="center"/>
 
         <TextView
@@ -64,7 +64,7 @@
             android:id="@+id/img_increase"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_increase"
+            android:src="@drawable/selector_cart_increase"
             android:scaleType="center"/>
 
     </LinearLayout>

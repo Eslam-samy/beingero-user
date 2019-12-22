@@ -79,7 +79,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
         ButterKnife.bind(this, view);
 
         if (Common.CURRENT_USER != null)
-            if (Common.CURRENT_USER.language().equalsIgnoreCase("ar")) {
+            if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")) {
                 root.setRotationY(180);
             }
         recycler_brands_detail.setLayoutManager(new GridLayoutManager(getActivity(), 2));

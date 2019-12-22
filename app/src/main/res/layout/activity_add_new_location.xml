@@ -20,8 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginStart="@dimen/app_margin"
-            android:layout_marginEnd="@dimen/app_margin"
             android:layout_marginTop="@dimen/app_margin">
 
 
@@ -30,16 +28,16 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                tools:context="net.corptia.talabyat.MapsActivity" />
+                tools:context="net.corptia.talabyat.MapsActivity"
+                android:layout_marginStart="@dimen/app_margin"
+                android:layout_marginEnd="@dimen/app_margin"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_region"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/TextInputLayoutStyle">
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/EditTextStyle"
                     android:hint="@string/region"
                     android:inputType="text"
                     />
@@ -48,12 +46,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_address_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/TextInputLayoutStyle">
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/EditTextStyle"
                     android:hint="@string/address_name"
                     android:inputType="text"
                     />
@@ -67,17 +63,17 @@
                 android:layout_height="wrap_content"
                 android:spinnerMode="dialog"
                 android:textSize="15sp"
+                android:layout_marginStart="@dimen/app_margin"
+                android:layout_marginEnd="@dimen/app_margin"
                 />
 
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_street"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/TextInputLayoutStyle">
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/EditTextStyle"
                     android:hint="@string/street"
                     android:inputType="text"
                     />
@@ -86,12 +82,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_building"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/TextInputLayoutStyle">
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/EditTextStyle"
                     android:hint="@string/building"
                     android:inputType="number"
                     />
@@ -100,12 +94,10 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_floor"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/TextInputLayoutStyle">
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/EditTextStyle"
                     android:hint="@string/floor"
                     android:inputType="number"
                     />
@@ -115,11 +107,11 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input__flat"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                style="@style/TextInputLayoutStyle">
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/EditTextStyle"
                     android:hint="@string/flat"
                     android:inputType="number"
                     />

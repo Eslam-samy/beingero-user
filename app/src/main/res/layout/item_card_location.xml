@@ -15,8 +15,9 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="New Damietta - 33 Masr Street"
         app:layout_constraintVertical_chainStyle="packed"
-        android:fontFamily="@font/poppinsregular"
-        android:layout_marginStart="@dimen/app_margin"/>
+        android:fontFamily="@font/poppinsmedium"
+        android:layout_marginStart="@dimen/app_low_margin"
+        android:textColor="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/txt_street"
@@ -26,8 +27,32 @@
         app:layout_constraintStart_toStartOf="@+id/txt_address_name"
         app:layout_constraintTop_toBottomOf="@+id/txt_address_name"
         android:layout_marginStart="0dp"
-        tools:text="56 Shops"
+        tools:text="Conoco, Precision Transmition, 2-A"
         android:fontFamily="@font/poppinsregular"
-        android:textSize="@dimen/low_x_text_size" />
+        android:textSize="@dimen/normal_text_size"
+        android:layout_marginTop="@dimen/low_xx_text_size"/>
+
+    <ImageView
+        android:id="@+id/btn_update"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_update"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/app_low_margin"
+        android:padding="@dimen/low_padding"/>
+
+    <ImageView
+        android:id="@+id/img_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_check_mark"
+        app:layout_constraintEnd_toStartOf="@+id/btn_update"
+        app:layout_constraintTop_toTopOf="@+id/btn_update"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_update"
+        android:layout_marginEnd="@dimen/normal_margin"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

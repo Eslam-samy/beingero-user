@@ -6,11 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".ui.location.AllLocation.LocationsDeliveryActivity"
     android:orientation="vertical"
-    android:id="@+id/root">
+    android:id="@+id/root"
+    android:background="@color/white">
 
     <include
-        layout="@layout/layout_toolbar"/>
+        layout="@layout/app_bar_white"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_marginStart="@dimen/app_margin"
+            style="@style/TextHeaderSetting"
+            android:text="@string/address"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"/>
+
+        <TextView
+            android:id="@+id/btn_add"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/app_margin"
+            android:text="@string/add_new"
+            android:gravity="end"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_location"

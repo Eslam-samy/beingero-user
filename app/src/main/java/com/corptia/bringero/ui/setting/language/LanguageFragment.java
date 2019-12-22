@@ -69,7 +69,7 @@ public class LanguageFragment extends Fragment {
         fillSpinnerLanguage();
         dialog = new SpotsDialog.Builder().setContext(getActivity()).setCancelable(false).build();
 
-        if (Common.CURRENT_USER.language().equalsIgnoreCase("ar"))
+        if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar"))
             spinner_language.setSelection(0);
         else spinner_language.setSelection(1);
 
@@ -117,27 +117,20 @@ public class LanguageFragment extends Fragment {
 
                             if (response.data().UserMutation().updateInfo().status() == 200)
                             {
-                                Common.getMe(response.data().UserMutation().updateInfo().token(), new CallbackListener() {
+
+                                handler.post(new Runnable() {
                                     @Override
-                                    public void OnSuccessCallback() {
+                                    public void run() {
 
+                                        updateViews(mlanguage.getId());
+                                        language = null;
+                                        dialog.dismiss();
 
-                                        handler.post(() -> {
-
-                                            updateViews(mlanguage.getId());
-                                            language = null;
-                                            dialog.dismiss();
-
-                                        });
-                                    }
-
-                                    @Override
-                                    public void OnFailedCallback() {
-
-                                        handler.post(() -> dialog.dismiss());
+                                        Common.CURRENT_USER.setLanguage(response.data().UserMutation().updateInfo().data().language());
 
                                     }
                                 });
+
                             }
                             else
                             {

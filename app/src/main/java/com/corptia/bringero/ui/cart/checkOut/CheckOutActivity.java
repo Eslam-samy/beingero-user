@@ -110,8 +110,8 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         if (Common.CURRENT_USER!=null)
         {
             image_correct.setVisibility(View.GONE);
-            txt_title_name_address.setText(Common.CURRENT_USER.currentDeliveryAddress().name());
-            txt_address.setText(Common.CURRENT_USER.currentDeliveryAddress().region() + " - " + Common.CURRENT_USER.currentDeliveryAddress().street());
+            txt_title_name_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
+            txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
 
             txt_subtotal.setText(new StringBuilder().append(totalPrice).append(" ").append(getString(R.string.currency)));
             txt_delivery_fees.setText(new StringBuilder().append(20).append(" ").append(getString(R.string.currency)));

@@ -5,8 +5,9 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Remote.MyApolloClient;
-import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.graphql.UpdateUserInfoMutation;
+import com.corptia.bringero.model.CurrentDeliveryAddress;
+import com.corptia.bringero.model.DeliveryAddresses;
 import com.corptia.bringero.type.DeliveryAddressInput;
 import com.corptia.bringero.type.DeliveryAddressSingles;
 import com.corptia.bringero.type.DeliveryAddressesNested;
@@ -15,16 +16,16 @@ import com.corptia.bringero.type.PointCooridinatesInput;
 import com.corptia.bringero.type.UserInfo;
 import com.corptia.bringero.type.User_UPDATE_NESTED;
 import com.corptia.bringero.ui.Main.login.LoginPresenter;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SelectDeliveryLocationPresenter extends LoginPresenter {
+public class SelectDeliveryLocationPresenter   {
 
     SelectDeliveryLocationView view;
 
     public SelectDeliveryLocationPresenter(SelectDeliveryLocationView view) {
-        super(view);
         this.view = view;
     }
 
@@ -38,15 +39,27 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
                     public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
 
                         UpdateUserInfoMutation.@Nullable UpdateInfo updateInfo = response.data().UserMutation().updateInfo();
+                        UpdateUserInfoMutation.CurrentDeliveryAddress currentDeliveryAddress = updateInfo.data().currentDeliveryAddress();
+
                         view.hideProgressBar();
                         if (updateInfo.status() == 200) {
-                            getMe(response.data().UserMutation().updateInfo().token(), new onSuccessCall() {
-                                @Override
-                                public void CallBack(MeQuery.UserData userData) {
-                                    Common.CURRENT_USER = userData;
-                                    view.onSuccessUpdateCurrentLocation();
-                                }
-                            });
+
+                            Common.CURRENT_USER.setToken(updateInfo.token());
+
+                            CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
+                            currentDeliveryAddressModel.setId(updateInfo.data().currentDeliveryAddress()._id());
+                            currentDeliveryAddressModel.setBuilding(currentDeliveryAddress.building());
+                            currentDeliveryAddressModel.setFlatType(currentDeliveryAddress.flatType().rawValue());
+                            currentDeliveryAddressModel.setFloor(currentDeliveryAddress.floor());
+                            currentDeliveryAddressModel.setName(currentDeliveryAddress.name());
+                            currentDeliveryAddressModel.setStreet(currentDeliveryAddress.street());
+                            currentDeliveryAddressModel.setRegion(currentDeliveryAddress.region());
+                            currentDeliveryAddressModel.setFlat(currentDeliveryAddress.flat());
+                            currentDeliveryAddressModel.setLocation(new LatLng(currentDeliveryAddress.locationPoint().lat(), currentDeliveryAddress.locationPoint().lng()));
+                            Common.CURRENT_USER.setCurrentDeliveryAddress(currentDeliveryAddressModel);
+
+                            view.onSuccessUpdateCurrentLocation();
+
                         } else {
                             view.showErrorMessage(updateInfo.message());
                         }
@@ -90,18 +103,36 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
 
                         view.hideProgressBar();
                         UpdateUserInfoMutation.UpdateInfo responseUpdateInfo = response.data().UserMutation().updateInfo();
+
                         if (responseUpdateInfo.status() == 200) {
 
+                            UpdateUserInfoMutation.DeliveryAddress newDeliveryAddress  = responseUpdateInfo.data().deliveryAddresses().get(responseUpdateInfo.data().deliveryAddresses().size() - 1);
+
+                            DeliveryAddresses deliveryAddressesModel = new DeliveryAddresses();
+                            deliveryAddressesModel.setId(newDeliveryAddress._id());
+                            deliveryAddressesModel.setBuilding(newDeliveryAddress.building());
+                            deliveryAddressesModel.setRegion(newDeliveryAddress.region());
+                            deliveryAddressesModel.setName(newDeliveryAddress.name());
+                            deliveryAddressesModel.setStreet(newDeliveryAddress.street());
+                            deliveryAddressesModel.setFlatType(newDeliveryAddress.flatType().rawValue());
+                            deliveryAddressesModel.setFloor(newDeliveryAddress.floor());
+                            deliveryAddressesModel.setFlat(newDeliveryAddress.flat());
+                            deliveryAddressesModel.setLocation(new LatLng(newDeliveryAddress.locationPoint().lat() , newDeliveryAddress.locationPoint().lng()));
+
+                            Common.CURRENT_USER.getDeliveryAddressesList().add(deliveryAddressesModel);
+
                             if (isUpdateCurrentLocation || Common.isFirstTimeAddLocation) {
-                                String newDeliveryAddressesID = responseUpdateInfo.data().deliveryAddresses().get(responseUpdateInfo.data().deliveryAddresses().size() - 1)._id();
+
+
+
+                                String newDeliveryAddressesID = newDeliveryAddress._id();
                                 userUpdateCurrentLocation(newDeliveryAddressesID);
                                 Common.isFirstTimeAddLocation = false;
-                            } else if(Common.isFirstTimeAddLocation){
 
-                            } else{
-                                getMe(responseUpdateInfo.token(), userData -> {
-                                    view.onSuccessUpdateCurrentLocation();
-                                });
+                            } else if (Common.isFirstTimeAddLocation) {
+
+                            } else {
+                                view.onSuccessUpdateCurrentLocation();
                             }
 
                             //userUpdateCurrentLocation("");
@@ -159,9 +190,9 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
 
                         if (responseUpdateInfo.status() == 200) {
 
-                            getMe(responseUpdateInfo.token(), userData -> {
-                                view.onSuccessUpdateNestedLocation();
-                            });
+                            //TODO Miss Here to do reload for all locations
+
+                            view.onSuccessUpdateNestedLocation();
 
                         } else {
                             view.showErrorMessage(responseUpdateInfo.message());
@@ -178,5 +209,42 @@ public class SelectDeliveryLocationPresenter extends LoginPresenter {
                     }
                 });
     }
+
+    public void removeItems(String currentDeliveryAddressID){
+
+        view.showProgressBar();
+        UserInfo userInfo = UserInfo.builder().pULL(DeliveryAddressSingles.builder()
+                .deliveryAddresses(DeliveryAddressInput.builder()
+                        ._id(currentDeliveryAddressID).build())
+                .build()).build();
+
+        MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
+                .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
+
+                        UpdateUserInfoMutation.@Nullable UpdateInfo updateInfo = response.data().UserMutation().updateInfo();
+                        view.hideProgressBar();
+                        if (updateInfo.status() == 200) {
+
+                            //TODO Here Miss Refetch and delete old address
+                            view.onSuccessRemovedLocation();
+
+                        } else {
+                            view.showErrorMessage(updateInfo.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+                        view.hideProgressBar();
+                        view.showErrorMessage(e.getMessage());
+
+                    }
+                });
+
+    }
+
+
 
 }

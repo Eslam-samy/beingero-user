@@ -1,50 +1,45 @@
-mutation logIn($loginData:loginInput){
-    UserMutation{
-        login(data:$loginData){
+mutation logIn($loginData: loginInput) {
+    UserMutation {
+        login(data: $loginData) {
             status
             message
 
             token
-        }
-    }
-}
-
-query me{
-    UserQuery{
-        me{
-            status
-            message
-            UserData:data{
+            data {
                 _id
-                phone
+                storeId
+                roleName
+                language
                 email
+                fullName
+                status
                 firstName
                 lastName
-                roleName
-                status
-                language
-                workStartDate
+                phone
                 avatarImageId
-                createdAt
-                updatedAt
 
-                AvatarResponse{
+                AvatarResponse {
                     status
-                    data{
+                    data {
                         name
                     }
                 }
 
                 currentDeliveryAddress {
                     _id
-                    name
-                    street
-                    region
                     locationPoint {
                         lat
                         lng
                     }
+                    name
+                    region
+                    street
+                    building
+                    floor
+                    flatType
+                    flat
                 }
+
                 deliveryAddresses {
                     _id
                     locationPoint {
@@ -52,18 +47,75 @@ query me{
                         lng
                     }
                     name
-                    cityId
                     region
+                    street
                     building
                     floor
-                    flat
                     flatType
-                    street
+                    flat
                 }
             }
         }
     }
 }
+
+
+
+#query me{
+#    UserQuery{
+#        me{
+#            status
+#            message
+#            UserData:data{
+#                _id
+#                phone
+#                email
+#                firstName
+#                lastName
+#                roleName
+#                status
+#                language
+#                workStartDate
+#                avatarImageId
+#                createdAt
+#                updatedAt
+#
+#                AvatarResponse{
+#                    status
+#                    data{
+#                        name
+#                    }
+#                }
+#
+#                currentDeliveryAddress {
+#                    _id
+#                    name
+#                    street
+#                    region
+#                    locationPoint {
+#                        lat
+#                        lng
+#                    }
+#                }
+#                deliveryAddresses {
+#                    _id
+#                    locationPoint {
+#                        lat
+#                        lng
+#                    }
+#                    name
+#                    cityId
+#                    region
+#                    building
+#                    floor
+#                    flat
+#                    flatType
+#                    street
+#                }
+#            }
+#        }
+#    }
+#}
 
 mutation validatePhoneWithFireBase($phone:String!,$fireBaseToken:String!){
     UserMutation{
@@ -92,8 +144,7 @@ mutation signUpSecondStep($data: signupInput) {
 
 mutation updateUserInfo($data: userInfo) {
     UserMutation {
-        updateInfo(data : $data)
-        {
+        updateInfo(data: $data) {
             status
             message
             token
@@ -108,24 +159,39 @@ mutation updateUserInfo($data: userInfo) {
                 currentDeliveryAddress {
                     _id
                     name
+                    region
+                    street
+                    building
+                    floor
+                    flat
+                    flatType
+
                     locationPoint {
                         lat
                         lng
                     }
                 }
+
                 deliveryAddresses {
                     _id
                     name
+                    region
+                    street
+                    building
+                    floor
+                    flat
+                    flatType
+
                     locationPoint {
                         lat
                         lng
                     }
                 }
             }
-#            token
         }
     }
 }
+
 
 
 #For Cheack if user here before or no

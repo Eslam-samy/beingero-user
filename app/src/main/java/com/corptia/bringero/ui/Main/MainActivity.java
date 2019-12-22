@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.corptia.bringero.Adapter.ViewPagerAdapter;
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.lib.CustomViewPager;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.Main.login.LoginFragment;
@@ -26,6 +28,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        LocaleHelper.setLocale(this, "ar");
+
         img_logo = findViewById(R.id.img_logo);
 
         //Views fragments
@@ -43,5 +47,12 @@ public class MainActivity extends BaseActivity {
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Common.CURRENT_USER!=null)
+        LocaleHelper.setLocale(this, Common.CURRENT_USER.getLanguage().toLowerCase());
     }
 }

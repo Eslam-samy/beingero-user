@@ -1,5 +1,6 @@
 package com.corptia.bringero.ui.location.addNewLocation;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -8,6 +9,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -278,6 +281,17 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
     }
 
     @Override
+    public void onSuccessRemovedLocation() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+                Common.CURRENT_USER.getDeliveryAddressesList().remove(intent.getIntExtra(Constants.EXTRA_UPDATE,0));
+            }
+        });
+    }
+
+    @Override
     public void showProgressBar() {
 
         runOnUiThread(new Runnable() {
@@ -395,6 +409,32 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
         }
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (intent.hasExtra(Constants.EXTRA_ADDRESS_POSITION))
+        getMenuInflater().inflate(R.menu.menu_location, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_menu_delete:
+
+                if (_id_Address.equalsIgnoreCase(Common.CURRENT_USER.getCurrentDeliveryAddress().getId()))
+                {
+                    Toasty.error(AddNewLocationActivity.this , "لا يمكن حذف العنوان الحالي يجب تغيره").show();
+                }
+                else
+                presenter.removeItems(_id_Address);
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+
+    }
 
     //When Back Arrow
     @Override

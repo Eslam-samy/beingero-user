@@ -116,13 +116,13 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
         handler.post(() -> {
 
-            LocaleHelper.setLocale(getActivity(), Common.CURRENT_USER.language().toLowerCase());
+            LocaleHelper.setLocale(getActivity(), Common.CURRENT_USER.getLanguage().toLowerCase());
 
             PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_LOGIN, true);
             PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_PHONE, input_phone_number.getEditText().getText().toString());
             PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_PASSWORD, input_password.getEditText().getText().toString());
 
-            if (Common.CURRENT_USER.currentDeliveryAddress() != null)
+            if (Common.CURRENT_USER.getCurrentDeliveryAddress() != null)
                 startActivity(new Intent(getActivity(), SelectDeliveryLocationActivity.class));
             else {
                 startActivity(new Intent(getActivity(), MapsActivity.class));

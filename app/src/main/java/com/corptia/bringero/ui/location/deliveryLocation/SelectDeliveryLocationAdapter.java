@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.location.deliveryLocation;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
-import com.corptia.bringero.graphql.MeQuery;
+import com.corptia.bringero.model.DeliveryAddresses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ import butterknife.ButterKnife;
 public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDeliveryLocationAdapter.ViewHolder> {
 
     Context context;
-    List<MeQuery.DeliveryAddress> deliveryAddressList = new ArrayList<>();
+    List<DeliveryAddresses> deliveryAddressList = new ArrayList<>();
 
     IOnRecyclerViewClickListener clickListener;
 
@@ -35,7 +36,7 @@ public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDe
         this.clickListener = clickListener;
     }
 
-    public SelectDeliveryLocationAdapter(Context context, List<MeQuery.DeliveryAddress> deliveryAddressList) {
+    public SelectDeliveryLocationAdapter(Context context, List<DeliveryAddresses> deliveryAddressList) {
         this.context = context;
         this.deliveryAddressList = deliveryAddressList;
         selectedPosition = -1;
@@ -50,12 +51,12 @@ public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDe
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        MeQuery.DeliveryAddress address = deliveryAddressList.get(position);
-        holder.txt_address.setText(address.street());
-        holder.txt_title_name_address.setText(address.name());
+        DeliveryAddresses address = deliveryAddressList.get(position);
+        holder.txt_address.setText(address.getStreet());
+        holder.txt_title_name_address.setText(address.getName());
 
         if (selectedPosition == -1) {
-            if (Common.CURRENT_USER.currentDeliveryAddress()._id().equals(address._id())) {
+            if (Common.CURRENT_USER.getCurrentDeliveryAddress().getId().equals(address.getId())) {
                 holder.image_correct.setVisibility(View.VISIBLE);
                 selectedPosition = position;
                 tempCurrentPosition = position;
@@ -100,7 +101,10 @@ public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDe
     }
 
     public String getCurrentDeliveryAddressID() {
-        return deliveryAddressList.get(selectedPosition)._id();
+        if (selectedPosition == -1)
+            return deliveryAddressList.get(0).getId();
+        else
+            return deliveryAddressList.get(selectedPosition).getId();
     }
 
     public void selectCurrentLocation(int position) {

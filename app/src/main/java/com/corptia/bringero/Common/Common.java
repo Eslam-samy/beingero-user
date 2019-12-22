@@ -20,9 +20,9 @@ import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
-import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
+import com.corptia.bringero.model.UserModel;
 import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.ui.Main.login.LoginPresenter;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
@@ -46,7 +46,7 @@ public class Common {
     public static String TOKEN_FIREBASE = "";
 
     public static List<MyCartQuery.StoreDatum> CURRENT_CART;
-    public static MeQuery.UserData CURRENT_USER;
+    public static UserModel CURRENT_USER;
 
     public static SingleStoreQuery.CurrentStore CURRENT_STORE;
 
@@ -64,36 +64,36 @@ public class Common {
         return 0;
     }
 
-    public static void getMe(String token, CallbackListener listener) {
-
-        MyApolloClient.getApollowClientAuthorization(token)
-                .query(MeQuery.builder().build())
-                .enqueue(new ApolloCall.Callback<MeQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<MeQuery.Data> response) {
-
-                        MeQuery.UserData userData = response.data().UserQuery().me().UserData();
-
-                        if (response.data().UserQuery().me().status() == 200) {
-
-                            Common.CURRENT_USER = userData;
-                            Common.CURRENT_USER_TOKEN = token;
-                            listener.OnSuccessCallback();
-                        } else {
-                            //
-                            listener.OnFailedCallback();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
+//    public static void getMe(String token, CallbackListener listener) {
 //
-                        listener.OnFailedCallback();
-
-                    }
-                });
-
-    }
+//        MyApolloClient.getApollowClientAuthorization(token)
+//                .query(MeQuery.builder().build())
+//                .enqueue(new ApolloCall.Callback<MeQuery.Data>() {
+//                    @Override
+//                    public void onResponse(@NotNull Response<MeQuery.Data> response) {
+//
+//                        MeQuery.UserData userData = response.data().UserQuery().me().UserData();
+//
+//                        if (response.data().UserQuery().me().status() == 200) {
+//
+//                            Common.CURRENT_USER = userData;
+//                            Common.CURRENT_USER_TOKEN = token;
+//                            listener.OnSuccessCallback();
+//                        } else {
+//                            //
+//                            listener.OnFailedCallback();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NotNull ApolloException e) {
+////
+//                        listener.OnFailedCallback();
+//
+//                    }
+//                });
+//
+//    }
 
 
 
@@ -116,7 +116,7 @@ public class Common {
         recycler_delivery_location.setNestedScrollingEnabled(true);
         recycler_delivery_location.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,context)));
 
-        adapter = new SelectDeliveryLocationAdapter(context, Common.CURRENT_USER.deliveryAddresses());
+        adapter = new SelectDeliveryLocationAdapter(context, Common.CURRENT_USER.getDeliveryAddressesList());
         recycler_delivery_location.setAdapter(adapter);
 
         adapter.setClickListener(new IOnRecyclerViewClickListener() {

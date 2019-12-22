@@ -323,8 +323,7 @@ public class TrackingActivity extends AppCompatActivity implements
         zoomRoute(latLngs);
 
         if (Common.CURRENT_USER != null) {
-            String avatar = Common.CURRENT_USER.AvatarResponse().status() == 200 ? Common.CURRENT_USER.AvatarResponse().data().name() : null;
-            Log.d("HAZEM", "AVATAR : " + avatar);
+            String avatar = Common.CURRENT_USER.getAvatarName();
 
             mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude))
@@ -333,7 +332,7 @@ public class TrackingActivity extends AppCompatActivity implements
                                     createCustomMarker(
                                             TrackingActivity.this
                                             , Common.BASE_URL_IMAGE + avatar))))
-                    .setTitle(Common.CURRENT_USER.firstName() + " " + Common.CURRENT_USER.lastName());
+                    .setTitle(Common.CURRENT_USER.getFullName());
         }
     }
 

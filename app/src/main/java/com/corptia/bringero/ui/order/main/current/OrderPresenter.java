@@ -29,7 +29,7 @@ public class OrderPresenter {
         view.showProgressBar();
 
         DeliveryOrderFilterInput filterInput = DeliveryOrderFilterInput.builder()
-                .customerUserId(Common.CURRENT_USER._id())
+                .customerUserId(Common.CURRENT_USER.getId())
                 .status(DeliveryOrderStatus.DELIVERED).build();
         MyApolloClient.getApollowClientAuthorization()
                 .query(DeliveryOrdersQuery.builder().filter(filterInput).build())
@@ -73,7 +73,7 @@ public class OrderPresenter {
         statusList.add(DeliveryOrderStatus.STORESREPLIED);
 
         DeliveryOrderFilterInput filterInput = DeliveryOrderFilterInput.builder()
-                .customerUserId(Common.CURRENT_USER._id())
+                .customerUserId(Common.CURRENT_USER.getId())
                 .iN(DeliveryOrderFilterArray.builder()
                         .status(statusList).build())
                 .status(DeliveryOrderStatus.DELIVERED).build();

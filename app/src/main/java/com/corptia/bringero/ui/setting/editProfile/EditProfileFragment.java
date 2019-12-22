@@ -36,8 +36,8 @@ import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.Remote.Retrofit.Image.UploadImageResponse;
 import com.corptia.bringero.Remote.Retrofit.NetworkClient;
 import com.corptia.bringero.Remote.Retrofit.WebServicesAPI;
-import com.corptia.bringero.graphql.MeQuery;
 import com.corptia.bringero.graphql.UpdateUserInfoMutation;
+import com.corptia.bringero.model.UserModel;
 import com.corptia.bringero.type.UserInfo;
 import com.corptia.bringero.utils.ImageUpload.ImageContract;
 import com.corptia.bringero.utils.ImageUpload.ImagePresenter;
@@ -120,15 +120,15 @@ public class EditProfileFragment extends Fragment implements ImageContract.View 
 
 
         //Here Fetch Local Data (Ok)
-        MeQuery.UserData userData = Common.CURRENT_USER;
-        if (userData.email()!=null)
-            input_email.getEditText().setText(userData.email());
+        UserModel userData = Common.CURRENT_USER;
+        if (userData.getEmail()!=null)
+            input_email.getEditText().setText(userData.getEmail());
 
-        input_firstName.getEditText().setText(userData.firstName());
-        input_lastName.getEditText().setText(userData.lastName());
+        input_firstName.getEditText().setText(userData.getFirstName());
+        input_lastName.getEditText().setText(userData.getLastName());
 
-        if (userData.AvatarResponse().status() == 200)
-        PicassoUtils.setImage(Common.BASE_URL_IMAGE + userData.AvatarResponse().data().name() , img_avatar);
+        if (userData.getAvatarName() !=null )
+        PicassoUtils.setImage(Common.BASE_URL_IMAGE + userData.getAvatarName() , img_avatar);
 
         img_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,7 +172,7 @@ public class EditProfileFragment extends Fragment implements ImageContract.View 
                 }
                 else
                 {
-                    updateInfo(firstName ,lastName,email,userData.avatarImageId());
+                    updateInfo(firstName ,lastName,email,userData.getAvatarImageId());
 
                 }
 
@@ -199,40 +199,22 @@ public class EditProfileFragment extends Fragment implements ImageContract.View 
                     @Override
                     public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
 
+                        //TODO Still Make Update Here
 
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
 
-
-
                                 if (response.data().UserMutation().updateInfo().status() == 200)
                                 {
 
-
-                                    Common.getMe(response.data().UserMutation().updateInfo().token(), new CallbackListener() {
+                                    handler.post(new Runnable() {
                                         @Override
-                                        public void OnSuccessCallback() {
-
-                                            handler.post(() -> {
-                                                dialog.hide();
-                                                Toasty.success(getActivity() , getString(R.string.successful_update)  ).show();
-
-
-                                            });
-                                        }
-
-                                        @Override
-                                        public void OnFailedCallback() {
-
-                                            handler.post(() -> {
-                                                dialog.hide();
-                                                Toasty.error(getActivity() , getString(R.string.save_failed)).show();
-                                            });
+                                        public void run() {
+                                            Toasty.success(getActivity() , getString(R.string.successful_update)  ).show();
+                                            dialog.hide();
                                         }
                                     });
-
-
 
                                 }
 

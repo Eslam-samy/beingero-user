@@ -5,4 +5,6 @@ import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationV
 public interface LocationsDeliveryView extends SelectDeliveryLocationView {
 
    void onSuccessRemovedLocation();
+
+    void onUndoLocation(String id);
 }

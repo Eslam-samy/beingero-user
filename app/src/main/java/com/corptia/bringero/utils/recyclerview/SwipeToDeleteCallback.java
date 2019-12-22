@@ -13,6 +13,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -96,4 +97,6 @@ import com.corptia.bringero.R;
     public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
         return 0.7f;
     }
+
+
 }

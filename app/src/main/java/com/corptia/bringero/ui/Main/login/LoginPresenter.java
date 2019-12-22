@@ -8,15 +8,18 @@ import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.LogInMutation;
-import com.corptia.bringero.graphql.MeQuery;
-import com.corptia.bringero.graphql.SingleStoreQuery;
+import com.corptia.bringero.model.CurrentDeliveryAddress;
+import com.corptia.bringero.model.DeliveryAddresses;
+import com.corptia.bringero.model.UserModel;
 import com.corptia.bringero.type.LoginInput;
-import com.corptia.bringero.type.RoleEnum;
-import com.corptia.bringero.type.StoreFilterInput;
 import com.corptia.bringero.type.UserDeviceInput;
 import com.corptia.bringero.type.UserDeviceType;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginPresenter implements LoginContract.LoginPresenter {
 
@@ -43,7 +46,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
             loginView.showProgressBar();
 
-
             UserDeviceInput userDeviceInput = UserDeviceInput.builder().deviceType(UserDeviceType.ANDROID).token(Common.TOKEN_FIREBASE).build();
             LoginInput loginInput = LoginInput.builder().phone(phone).password(password).device(userDeviceInput).build();
 
@@ -52,13 +54,71 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                         @Override
                         public void onResponse(@NotNull Response<LogInMutation.Data> response) {
 
+                            LogInMutation.Login loginData = response.data().UserMutation().login();
+                            LogInMutation.Data1 userData = loginData.data();
 
-                            if (response.data().UserMutation().login().status() == 200)
+
+                            if (loginData.status() == 200)
                             {
-                                getMe(response.data().UserMutation().login().token(), userData -> {
+
+                                UserModel userModel = new UserModel();
+
+                                List<DeliveryAddresses> deliveryAddressesList = new ArrayList<>();
+                                for (LogInMutation.DeliveryAddress deliveryAddress :userData.deliveryAddresses())
+                                {
+                                    DeliveryAddresses deliveryAddressesModel = new DeliveryAddresses();
+                                    deliveryAddressesModel.setId(deliveryAddress._id());
+                                    deliveryAddressesModel.setName(deliveryAddress.name());
+                                    deliveryAddressesModel.setRegion(deliveryAddress.region());
+                                    deliveryAddressesModel.setStreet(deliveryAddress.street());
+                                    deliveryAddressesModel.setBuilding(deliveryAddress.building());
+                                    deliveryAddressesModel.setFlatType(deliveryAddress.flatType().rawValue());
+                                    deliveryAddressesModel.setFloor(deliveryAddress.floor());
+                                    deliveryAddressesModel.setFlat(deliveryAddress.flat());
+                                    deliveryAddressesModel.setLocation(new LatLng(deliveryAddress.locationPoint().lat() , deliveryAddress.locationPoint().lng()));
 
 
-                                });
+                                    deliveryAddressesList.add(deliveryAddressesModel);
+
+                                }
+
+                                userModel.setDeliveryAddressesList(deliveryAddressesList);
+
+
+
+                                userModel.setToken(loginData.token());
+                                userModel.setId(userData._id());
+                                userModel.setAvatarName(userData.AvatarResponse().status()==200 ? userData.AvatarResponse().data().name() :null);
+                                userModel.setEmail(userData.email());
+                                userModel.setFirstName(userData.firstName());
+                                userModel.setFullName(userData.fullName());
+                                userModel.setLanguage(userData.language());
+                                userModel.setLastName(userData.lastName());
+
+                                userModel.setAvatarImageId(userData.avatarImageId());
+
+                                userModel.setPhone(userData.phone());
+                                userModel.setStatus(userData.status().rawValue());
+
+                                CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
+                                currentDeliveryAddressModel.setId(userData.currentDeliveryAddress()._id());
+                                currentDeliveryAddressModel.setBuilding(userData.currentDeliveryAddress().building());
+                                currentDeliveryAddressModel.setFlatType(userData.currentDeliveryAddress().flatType().rawValue());
+                                currentDeliveryAddressModel.setStreet(userData.currentDeliveryAddress().street());
+                                currentDeliveryAddressModel.setName(userData.currentDeliveryAddress().name());
+                                currentDeliveryAddressModel.setRegion(userData.currentDeliveryAddress().region());
+                                currentDeliveryAddressModel.setFloor(userData.currentDeliveryAddress().floor());
+                                currentDeliveryAddressModel.setFlat(userData.currentDeliveryAddress().flat());
+                                currentDeliveryAddressModel.setLocation(new LatLng(userData.currentDeliveryAddress().locationPoint().lat() , userData.currentDeliveryAddress().locationPoint().lng()));
+
+                                userModel.setCurrentDeliveryAddress(currentDeliveryAddressModel);
+
+
+
+                                Common.CURRENT_USER= userModel;
+
+                                loginView.onSuccessMessage("");
+
                             }
                             else
                             {
@@ -78,89 +138,4 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     }
 
-
-    public void getMe(String token , onSuccessCall onSuccessCall){
-
-        MyApolloClient.getApollowClientAuthorization(token)
-                .query(MeQuery.builder().build())
-                .enqueue(new ApolloCall.Callback<MeQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<MeQuery.Data> response) {
-
-                        MeQuery.UserData userData =response.data().UserQuery().me().UserData();
-
-                        if (response.data().UserQuery().me().status() == 200)
-                        {
-
-                            Common.CURRENT_USER = userData;
-                            Common.CURRENT_USER_TOKEN = token;
-
-                            if (userData.roleName().rawValue().equalsIgnoreCase(RoleEnum.STOREADMIN.rawValue()))
-                            {
-                                getStoreTypes(userData._id() ,token);
-                            }
-
-                            else
-                            {
-                                loginView.hideProgressBar();
-                                loginView.onSuccessMessage("login success");
-
-                            }
-
-                            onSuccessCall.CallBack(userData);
-                        }
-
-                        else
-                        {
-                            loginView.hideProgressBar();
-                            loginView.showErrorMessage("[ERROR GET ME]"+response.data().UserQuery().me().message());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        loginView.hideProgressBar();
-                        loginView.showErrorMessage("[ERROR GET ME]"+e.getMessage());
-                        Log.d("HAZEM" , ""+e.toString());
-                    }
-                });
-
-    }
-
-    public void getStoreTypes(String adminUserId , String token){
-
-        StoreFilterInput storeFilterInput = StoreFilterInput.builder().adminUserId(adminUserId).build();
-        MyApolloClient.getApollowClientAuthorization(token).query(SingleStoreQuery.builder().filter(storeFilterInput).build())
-                .enqueue(new ApolloCall.Callback<SingleStoreQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<SingleStoreQuery.Data> response) {
-
-                        SingleStoreQuery.GetAll responseData = response.data().StoreQuery().getAll();
-
-                        if (responseData.status() == 200)
-                        {
-                           Common.CURRENT_STORE = responseData.CurrentStore().get(0);
-                            loginView.hideProgressBar();
-                            loginView.onSuccessMessage("login success");
-                        }
-
-                        else
-                        {
-                            loginView.showErrorMessage("[GET DATA STORE]"+responseData.message());
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        loginView.showErrorMessage("ERROR DATA STORE"+e.getMessage());
-                    }
-                });
-
-    }
-
-    public interface onSuccessCall{
-        void CallBack(MeQuery.UserData userData);
-    }
 }

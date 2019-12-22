@@ -120,7 +120,7 @@ public class MyApolloClient {
                         Request.Builder builder = request.newBuilder();
                         builder.addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVjNDA3OWUxYmNiYTRjMjE5MDVlYTliNCIsInBob25lIjoiKzIwMTAxNDA0Njk0NSIsInJvbGUiOiJTYWxlc1BvaW50QWRtaW4iLCJyb2xlSWQiOiI1Yzk2NmM4ZWM0YzVmNjI3MDRmMmNhN2IiLCJmYWNpbGl0eUlkIjoiNWMxYmI5OGY3MDgzNzIzNWRjODE5Y2M5IiwibGFuZ3VhZ2UiOiJlbiIsImlhdCI6MTU1OTA0ODYyMSwiZXhwIjoxNTYwMzQ0NjIxfQ.E9neeSJqSQlvJDVcp1FxYuxQ_XagyETclMnk7BedCI8").build();
                         builder.method(request.method(), request.body());*/
-                        Request request = chain.request().newBuilder().addHeader("Authorization", "Bearer "+ Common.CURRENT_USER_TOKEN).build();
+                        Request request = chain.request().newBuilder().addHeader("Authorization", "Bearer "+ Common.CURRENT_USER.getToken()).build();
 
                         return chain.proceed(request);
 

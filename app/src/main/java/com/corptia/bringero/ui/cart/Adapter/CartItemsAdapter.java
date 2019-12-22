@@ -105,7 +105,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                         if (amount > 1) {
                             holder.txt_quantity.setText("" + (amount - 1));
                             EventBus.getDefault().postSticky(new CalculatePriceEvent(item._id(), amount - 1, -item.PricingProduct().storePrice()));
-                            holder.txt_total_price.setText("" + ((amount - 1) * item.PricingProduct().storePrice()));
+                            holder.txt_total_price.setText(new StringBuilder().append(((amount - 1) * item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
 
 
                         }

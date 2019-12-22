@@ -35,7 +35,7 @@ public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
             int column = position % spanCount; // item column
 
             if (Common.CURRENT_USER!=null)
-            if (Common.CURRENT_USER.language().equalsIgnoreCase("ar"))
+            if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar"))
 
             {
 
