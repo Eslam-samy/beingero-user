@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -25,6 +28,8 @@ import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.CreateCartItemMutation;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
 import com.corptia.bringero.type.CreateCartItem;
+import com.corptia.bringero.ui.home.HomeActivity;
+import com.corptia.bringero.utils.recyclerview.PaginationListener;
 import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
@@ -32,7 +37,7 @@ import com.corptia.bringero.graphql.PricingProductMutation;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
 import com.corptia.bringero.type.CreatePricingProduct;
 import com.corptia.bringero.ui.pricing.PricingAdapter;
-import com.corptia.bringero.ui.productDetail.ProductDetailActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -44,10 +49,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+import static com.corptia.bringero.Common.Constants.VIEW_TYPE_ITEM;
+import static com.corptia.bringero.Common.Constants.VIEW_TYPE_LOADING;
+import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_START;
+
 public class StoreDetailFragment extends Fragment implements StoreDetailContract.StoreDetailView {
+
+    //For Pagination
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    int totalPages = 1;
 
     @BindView(R.id.recycler_brands_detail)
     RecyclerView recycler_brands_detail;
@@ -55,22 +67,34 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     ConstraintLayout root;
 
     StoreDetailAdapter storeDetailAdapter;
-    PricingAdapter pricingAdapter;
 
     Handler handler = new Handler();
 
     StoreDetailPresenter storeDetailPresenter;
-    boolean isPrice;
-    BottomSheetDialog bottomSheetDialog;
+
+    GridLayoutManager gridLayoutManager ;
+
+    String typeId , storeId;
+
+    //For Placeholder
+    @BindView(R.id.layout_placeholder)
+    ConstraintLayout layout_placeholder;
+    @BindView(R.id.img_placeholder)
+    ImageView img_placeholder;
+    @BindView(R.id.txt_placeholder_title)
+    TextView txt_placeholder_title;
+    @BindView(R.id.txt_placeholder_dec)
+    TextView txt_placeholder_dec;
+    @BindView(R.id.btn_1)
+    Button btn_1;
+    @BindView(R.id.btn_2)
+    Button btn_2;
 
 
-    public StoreDetailFragment(boolean isPrice) {
-        // Required empty public constructor
+
+    public StoreDetailFragment() {
         storeDetailPresenter = new StoreDetailPresenter(this);
-        this.isPrice = isPrice;
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,7 +106,24 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")) {
                 root.setRotationY(180);
             }
-        recycler_brands_detail.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch (storeDetailAdapter.getItemViewType(position)) {
+                    case VIEW_TYPE_ITEM:
+                        return 1;
+                    case VIEW_TYPE_LOADING:
+                        return 2; //number of columns of the grid
+                    default:
+                        return -1;
+                }
+            }
+        });
+
+        recycler_brands_detail.setLayoutManager(gridLayoutManager);
         recycler_brands_detail.addItemDecoration(new GridSpacingItemDecoration(
                 2,
                 Common.dpToPx(10, getActivity()),
@@ -95,21 +136,46 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
         if (getArguments() != null) {
 
             // set argument data to view
-            String typeId = getArguments().getString(Constants.EXTRA_PRODUCT_TYPE_ID);
-            String storeId = getArguments().getString(Constants.EXTRA_STORE_ID);
-            storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId, isPrice);
+            typeId = getArguments().getString(Constants.EXTRA_PRODUCT_TYPE_ID);
+            storeId = getArguments().getString(Constants.EXTRA_STORE_ID);
+            storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId , currentPage);
             //Here Get Products For This Type
 
         }
 
 
+        recycler_brands_detail.addOnScrollListener(new PaginationListener(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+
+                isLoading = true;
+                currentPage++;
+                if (currentPage <= totalPages) {
+                    storeDetailAdapter.addLoading();
+                    storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId ,currentPage);
+                } else {
+                    isLastPage = true;
+                }
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+
+        storeDetailAdapter = new StoreDetailAdapter(getActivity(), null);
+        recycler_brands_detail.setAdapter(storeDetailAdapter);
+
         return view;
     }
 
-    @Override
-    public void setStoresDetailHeader(SingleStoreHeaderQuery.StoreDetail detail) {
-
-    }
 
     @Override
     public void showProgressBar() {
@@ -132,14 +198,20 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     }
 
     @Override
-    public void setProduct(List<GetStoreProductsQuery.Product> product) {
+    public void setProduct(GetStoreProductsQuery.GetStoreProducts product) {
 
         handler.post(() -> {
-            storeDetailAdapter = new StoreDetailAdapter(getActivity(), product);
-            recycler_brands_detail.setAdapter(storeDetailAdapter);
-            storeDetailAdapter.notifyDataSetChanged();
 
-            if (isPrice) {
+            if (isLoading) {
+                storeDetailAdapter.removeLoading();
+                isLoading = false;
+                Log.d("HAZEM" , "DATA : >> removeLoading " );
+            }
+
+
+            totalPages = product.pagination().totalPages();
+            storeDetailAdapter.addItems(product.Products());
+
                 storeDetailAdapter.setListener((view, position) -> {
 
 //                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
@@ -155,8 +227,40 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
                 });
 
-            }
 
+
+        });
+
+    }
+
+    @Override
+    public void setPlaceholder() {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                recycler_brands_detail.setVisibility(View.GONE);
+
+
+                layout_placeholder.setVisibility(View.VISIBLE);
+                img_placeholder.setImageResource(R.drawable.ic_placeholder_product);
+                btn_1.setText(getString(R.string.another_store));
+                btn_2.setText(getString(R.string.menu_home));
+
+                btn_1.setOnClickListener(view -> getActivity().finish());
+
+                btn_2.setOnClickListener(view -> {
+                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                });
+
+                txt_placeholder_title.setText(getString(R.string.placeholder_title_product));
+                txt_placeholder_dec.setText("");
+
+
+            }
         });
 
     }
@@ -185,80 +289,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 });
     }
 
-    @Override
-    public void setProductNotPriced(List<GetNotPricedByQuery.Product> product) {
-
-        handler.post(() -> {
-            pricingAdapter = new PricingAdapter(getActivity(), product);
-            recycler_brands_detail.setAdapter(pricingAdapter);
-            pricingAdapter.notifyDataSetChanged();
-
-            if (isPrice) {
 
 
-            } else {
-                pricingAdapter.setListener((view, position) -> {
-                    // Toast.makeText(getActivity(), "This is Pricing"+ position, Toast.LENGTH_SHORT).show();
-                    showCreatePricingDialog(pricingAdapter.getSelectProduct(position)._id(), Common.CURRENT_STORE._id(), position);
-                });
-            }
-
-        });
-
-    }
-
-
-    private void showCreatePricingDialog(String productId, String storeId, int position) {
-
-        // init loadingDialog
-        bottomSheetDialog = new BottomSheetDialog(getActivity());
-        bottomSheetDialog.setTitle(getString(R.string.price));
-        bottomSheetDialog.setCanceledOnTouchOutside(true);
-        bottomSheetDialog.setCancelable(true);
-        View sheetView = getLayoutInflater().inflate(R.layout.layout_create_pricing, null);
-
-        Button btn_add = sheetView.findViewById(R.id.btn_add);
-        final TextInputEditText edt_price = sheetView.findViewById(R.id.edt_price);
-        final TextInputEditText edt_amount = sheetView.findViewById(R.id.edt_amount);
-
-        btn_add.setOnClickListener(view -> {
-
-
-            CreatePricingProduct createPricingProduct = CreatePricingProduct.builder()
-                    .productId(productId)
-                    .storeId(storeId)
-                    .storePrice(Double.parseDouble(edt_price.getText().toString()))
-                    .amount(Integer.valueOf(edt_amount.getText().toString()))
-                    .build();
-
-            MyApolloClient.getApollowClientAuthorization().mutate(PricingProductMutation.builder().data(createPricingProduct).build())
-                    .enqueue(new ApolloCall.Callback<PricingProductMutation.Data>() {
-                        @Override
-                        public void onResponse(@NotNull Response<PricingProductMutation.Data> response) {
-
-                            handler.post(() -> {
-
-                                if (response.data().CreatePricingProduct().create().status() == 200) {
-                                    bottomSheetDialog.dismiss();
-                                    pricingAdapter.removeSelectProduct(position);
-                                } else {
-                                    bottomSheetDialog.dismiss();
-                                }
-
-                            });
-
-
-                        }
-
-                        @Override
-                        public void onFailure(@NotNull ApolloException e) {
-
-                        }
-                    });
-
-
-        });
-        bottomSheetDialog.setContentView(sheetView);
-        bottomSheetDialog.show();
-    }
 }

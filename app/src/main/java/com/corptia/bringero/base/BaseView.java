@@ -10,5 +10,4 @@ public interface BaseView {
     void hideProgressBar();
     void showErrorMessage(String Message);
     void onSuccessMessage(String message);
-
 }

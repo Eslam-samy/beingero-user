@@ -8,6 +8,7 @@
     android:background="@color/white"
     >
 
+    <include layout="@layout/layout_placeholder"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_brands_detail"

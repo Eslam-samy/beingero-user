@@ -7,6 +7,7 @@ public class LoginContract {
     public interface LoginView extends BaseView {
 
         //void login(String username, String password, OnLoginFinishedListener listener);
+        void onSuccessLoginToMap();
 
     }
 

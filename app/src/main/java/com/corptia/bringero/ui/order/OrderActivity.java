@@ -47,7 +47,7 @@ public class OrderActivity extends BaseActivity implements CurrentOrderView {
         //All Status Without Delevired
         fetchCurrentOrders();
         //This Delevired only
-        presenter.getDeliveryOrder();
+//        presenter.getDeliveryOrder();
 
         initActionBar();
 
@@ -85,27 +85,27 @@ public class OrderActivity extends BaseActivity implements CurrentOrderView {
     }
 
     @Override
-    public void DeliveryOrders(List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderData) {
+    public void DeliveryOrders(DeliveryOrdersQuery.GetAll deliveryOrderData) {
 
 
-        runOnUiThread(() -> {
-
-            adapter = new CurrentOrderAdapter(OrderActivity.this ,deliveryOrderData );
-            recycler_last_orders.setAdapter(adapter);
-
-            adapter.setClickListener((view, position) -> {
-
-                Intent intent = new Intent(OrderActivity.this , OrdersPaidDetailsActivity.class);
-                String orderId = adapter.getIdOrder(position);
-                int serialOrder = adapter.getSerialOrder(position);
-                intent.putExtra(Constants.EXTRA_ORDER_ID , orderId);
-                intent.putExtra(Constants.EXTRA_ORDER_SERIAL , serialOrder);
-                startActivity(intent);
-
-            });
-
-
-        });
+//        runOnUiThread(() -> {
+//
+//            adapter = new CurrentOrderAdapter(OrderActivity.this ,deliveryOrderData );
+//            recycler_last_orders.setAdapter(adapter);
+//
+//            adapter.setClickListener((view, position) -> {
+//
+//                Intent intent = new Intent(OrderActivity.this , OrdersPaidDetailsActivity.class);
+//                String orderId = adapter.getIdOrder(position);
+//                int serialOrder = adapter.getSerialOrder(position);
+//                intent.putExtra(Constants.EXTRA_ORDER_ID , orderId);
+//                intent.putExtra(Constants.EXTRA_ORDER_SERIAL , serialOrder);
+//                startActivity(intent);
+//
+//            });
+//
+//
+//        });
     }
 
     @Override

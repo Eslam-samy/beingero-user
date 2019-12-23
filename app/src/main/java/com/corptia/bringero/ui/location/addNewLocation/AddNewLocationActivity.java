@@ -258,6 +258,7 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
             public void run() {
 
                 if (Common.isUpdateCurrentLocation || Common.isFirstTimeAddLocation) {
+                    Common.isFirstTimeAddLocation = false;
                     startActivity(new Intent(AddNewLocationActivity.this, HomeActivity.class));
                     finish();
                 } else finish();

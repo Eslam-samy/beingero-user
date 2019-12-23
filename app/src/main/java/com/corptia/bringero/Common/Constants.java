@@ -35,4 +35,7 @@ public class Constants {
     public static final String EXTRA_SPEED_CART = "EXTRA_SPEED_CART";
     public static final String EXTRA_STORE_TYPE_NAME = "EXTRA_STORE_TYPE_NAME";
     public static final String EXTRA_ADDRESS_POSITION = "EXTRA_ADDRESS_POSITION";
+
+    public static final int VIEW_TYPE_ITEM = 0;
+    public static final int VIEW_TYPE_LOADING = 1;
 }

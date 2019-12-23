@@ -19,6 +19,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.base.BaseViewHolder;
 import com.corptia.bringero.graphql.UpdateCartItemMutation;
 import com.corptia.bringero.type.UpdateCartItem;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -33,7 +34,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.ViewHolder> {
+import static com.corptia.bringero.Common.Constants.VIEW_TYPE_ITEM;
+import static com.corptia.bringero.Common.Constants.VIEW_TYPE_LOADING;
+
+public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
+
+    private boolean isLoaderVisible = false;
 
     Context context;
     List<GetStoreProductsQuery.Product> productsList = new ArrayList<>();
@@ -46,86 +52,29 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
 
     public StoreDetailAdapter(Context context, List<GetStoreProductsQuery.Product> productsList) {
         this.context = context;
+        if (productsList!=null)
         this.productsList = new ArrayList<>(productsList);
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_product, parent, false));
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        switch (viewType) {
+            case VIEW_TYPE_ITEM:
+                return new ViewHolder(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_card_product, parent, false));
+            case VIEW_TYPE_LOADING:
+                return new ProgressHolder(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_loading_list_item, parent, false));
+            default:
+                return null;
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        GetStoreProductsQuery.Product product = productsList.get(position);
-        holder.txt_price.setText(new StringBuilder().append(product.storePrice()).append(" ").append(context.getString(R.string.currency)));
-        holder.txt_name_product.setText(Utils.cutName(product.Product().name()));
-
-        if (product.Product().ImageResponse().data() != null)
-            PicassoUtils.setImage(Common.BASE_URL_IMAGE + product.Product().ImageResponse().data().name(), holder.image_product);
-        else
-            PicassoUtils.setImage(holder.image_product);
-
-        if (listener != null) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    listener.onClick(holder.itemView , position);
-
-                    holder.txt_amount.setVisibility(View.VISIBLE);
-                    holder.btn_delete.setVisibility(View.VISIBLE);
-                    holder.bg_delete.setVisibility(View.VISIBLE);
-
-                    int count ;
-                    count = Integer.parseInt(holder.txt_amount.getText().toString())+1;
-                    holder.txt_amount.setText(""+count);
-
-
-                    if (count != 1)
-                        holder.txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                            }
-                        });
-                }
-            });
-        }
-
-
-
-
-        //TODO Will move this  from here
-        holder.btn_delete.setOnClickListener(view -> {
-
-            int amountNow = Integer.parseInt(holder.txt_amount.getText().toString()) - 1 ;
-
-            if (amountNow == 0)
-            {
-                holder.txt_amount.setVisibility(View.INVISIBLE);
-                holder.btn_delete.setVisibility(View.INVISIBLE);
-                holder.bg_delete.setVisibility(View.INVISIBLE);
-            }
-
-            holder.txt_amount.setText(""+amountNow);
-
-            holder.txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                @Override
-                public void run() {
-                    holder.txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                }
-            });
-
-            //5ddeae6cf154e82fbff3070d
-            Log.d("HAZEM" , product._id());
-            Log.d("HAZEM" , product.productId());
-            Log.d("HAZEM" , product.Product()._id());
-
-            updateCartItems(product._id() , amountNow);
-
-        });
-
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+        holder.onBind(position);
     }
 
     public void updateCartItems(String itemsId , int amount){
@@ -157,10 +106,10 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
 
     @Override
     public int getItemCount() {
-        return productsList.size();
+        return productsList!=null ? productsList.size() : 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends BaseViewHolder {
 
         @BindView(R.id.image_product)
         ImageView image_product;
@@ -184,6 +133,81 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
 
         }
 
+        @Override
+        protected void clear() {
+
+        }
+
+        @Override
+        public void onBind(int position) {
+            super.onBind(position);
+
+
+            GetStoreProductsQuery.Product product = productsList.get(position);
+
+            if (product != null) {
+                txt_price.setText(new StringBuilder().append(product.storePrice()).append(" ").append(context.getString(R.string.currency)));
+                txt_name_product.setText(Utils.cutName(product.Product().name()));
+
+                if (product.Product().ImageResponse().data() != null)
+                    PicassoUtils.setImage(Common.BASE_URL_IMAGE + product.Product().ImageResponse().data().name(), image_product);
+                else
+                    PicassoUtils.setImage(image_product);
+
+                if (listener != null) {
+                    itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            listener.onClick(itemView, position);
+
+                            txt_amount.setVisibility(View.VISIBLE);
+                            btn_delete.setVisibility(View.VISIBLE);
+                            bg_delete.setVisibility(View.VISIBLE);
+
+                            int count;
+                            count = Integer.parseInt(txt_amount.getText().toString()) + 1;
+                            txt_amount.setText("" + count);
+
+
+                            if (count != 1)
+                                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                    }
+                                });
+                        }
+                    });
+                }
+
+
+                //TODO Will move this  from here
+                btn_delete.setOnClickListener(view -> {
+
+                    int amountNow = Integer.parseInt(txt_amount.getText().toString()) - 1;
+
+                    if (amountNow == 0) {
+                        txt_amount.setVisibility(View.INVISIBLE);
+                        btn_delete.setVisibility(View.INVISIBLE);
+                        bg_delete.setVisibility(View.INVISIBLE);
+                    }
+
+                    txt_amount.setText("" + amountNow);
+
+                    txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                        }
+                    });
+
+                    updateCartItems(product._id(), amountNow);
+
+                });
+
+
+            }
+        }
     }
 
     public GetStoreProductsQuery.Product getSelectProduct(int position) {
@@ -197,5 +221,53 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<StoreDetailAdapter.
 
     }
 
+    //-----------
+    public void addItems(List<GetStoreProductsQuery.Product> productsList) {
+        this.productsList.addAll(productsList);
+        notifyDataSetChanged();
+    }
+
+    public void addLoading() {
+        isLoaderVisible = true;
+        productsList.add(null);
+        notifyItemInserted(productsList.size() - 1);
+    }
+
+    public void removeLoading() {
+        isLoaderVisible = false;
+        int position = productsList.size() - 1;
+        GetStoreProductsQuery.Product item = getItem(position);
+        if (item == null) {
+            productsList.remove(position);
+            notifyItemRemoved(position);
+        }
+
+    }
+
+    GetStoreProductsQuery.Product getItem(int position) {
+        return productsList.get(position);
+    }
+
+
+
+    public class ProgressHolder extends BaseViewHolder {
+        ProgressHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+
+        @Override
+        protected void clear() {
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isLoaderVisible) {
+            return position == productsList.size() - 1 ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        } else {
+            return VIEW_TYPE_ITEM;
+        }
+    }
 
 }

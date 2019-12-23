@@ -80,13 +80,13 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
     }
 
     @Override
-    public void DeliveryOrders(List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderData) {
+    public void DeliveryOrders(DeliveryOrdersQuery.GetAll deliveryOrderData) {
 
         handler.post(new Runnable() {
             @Override
             public void run() {
 
-                adapter = new CurrentOrderAdapter(getActivity() ,deliveryOrderData );
+//                adapter = new CurrentOrderAdapter(getActivity() ,deliveryOrderData );
                 recycler_current_order.setAdapter(adapter);
 
                 adapter.setClickListener(new IOnRecyclerViewClickListener() {
@@ -149,6 +149,6 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
     @Override
     public void onStart() {
         super.onStart();
-        orderPresenter.getDeliveryOrder();
+//        orderPresenter.getDeliveryOrder();
     }
 }

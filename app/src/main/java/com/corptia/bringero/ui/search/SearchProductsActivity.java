@@ -52,14 +52,14 @@ public class SearchProductsActivity extends AppCompatActivity {
     @BindView(R.id.recycler_product)
     RecyclerView recycler_product;
 
-    SearchAdapter adapter ;
+    SearchAdapter adapter;
 
     String storeId;
 
     @BindView(R.id.img_logo)
-    ImageView img_logo ;
+    ImageView img_logo;
     @BindView(R.id.txt_name)
-    TextView txt_name ;
+    TextView txt_name;
 
     String imageUrl;
 
@@ -88,8 +88,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                 Common.dpToPx(10, this),
                 Common.dpToPx(10, this)));
 
-        if (getIntent()!=null)
-        {
+        if (getIntent() != null) {
             Intent intent = getIntent();
             storeId = intent.getStringExtra(Constants.EXTRA_STORE_ID);
             imageUrl = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
@@ -108,8 +107,8 @@ public class SearchProductsActivity extends AppCompatActivity {
         });
 
         //SetData To Toolbar
-        PicassoUtils.setImage(imageUrl , img_logo);
-        txt_name.setText( Common.CURRENT_STORE.name());
+        PicassoUtils.setImage(imageUrl, img_logo);
+        txt_name.setText(Common.CURRENT_STORE.name());
 
 
         img_clean.setOnClickListener(new View.OnClickListener() {
@@ -140,13 +139,10 @@ public class SearchProductsActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                if (edt_search.getText().toString().isEmpty())
-                {
+                if (edt_search.getText().toString().isEmpty()) {
                     img_speech.setVisibility(View.VISIBLE);
                     img_clean.setVisibility(View.GONE);
-                }
-                else
-                {
+                } else {
                     img_speech.setVisibility(View.GONE);
                     img_clean.setVisibility(View.VISIBLE);
                 }
@@ -166,13 +162,10 @@ public class SearchProductsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(@NotNull Response<GetPricedByQuery.Data> response) {
                         GetPricedByQuery.@Nullable GetStoreProducts data = response.data().ProductQuery().getStoreProducts();
-                        if (data.status() == 200)
-                        {
-                            adapter = new SearchAdapter(SearchProductsActivity.this , data.Products()) ;
+                        if (data.status() == 200) {
+                            adapter = new SearchAdapter(SearchProductsActivity.this, data.Products());
                             recycler_product.setAdapter(adapter);
-                        }
-                        else
-                        {
+                        } else {
 
                         }
                     }
@@ -215,13 +208,14 @@ public class SearchProductsActivity extends AppCompatActivity {
     }
 
 
-
     private void displaySpeechRecognizer() {
+
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-// Start the activity, the intent will be populated with the speech text
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Common.CURRENT_USER.getLanguage().toLowerCase());
+        // Start the activity, the intent will be populated with the speech text
         startActivityForResult(intent, SPEECH_REQUEST_CODE);
+
     }
 
     @Override
@@ -236,7 +230,6 @@ public class SearchProductsActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
 
 }

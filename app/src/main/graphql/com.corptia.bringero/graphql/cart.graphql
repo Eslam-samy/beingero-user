@@ -13,12 +13,14 @@ query MyCartQuery {
                 Store {
                     _id
                     name
-
                     ImageResponse {
+                        status
                         data {
                             name
                         }
                     }
+                    storeTypeId
+                    adminUserId
                 }
                 Items {
                     _id
@@ -39,12 +41,10 @@ query MyCartQuery {
                         storePrice
                         storePrice
                         amount
-
                     }
 
                     amount
                     totalPrice
-
                 }
                 ItemsCount
                 TotalPrice
@@ -55,6 +55,7 @@ query MyCartQuery {
         }
     }
 }
+
 
 mutation createCartItem($data: createCartItem) {
     CartItemMutation {

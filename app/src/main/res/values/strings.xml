@@ -180,7 +180,11 @@
     <string name="total_speed_cart">Total:</string>
     <string name="address">Address</string>
     <string name="add_new">Add New</string>
-
+    <string name="placeholder_title_cart">No products in the cart</string>
+    <string name="placeholder_dec_cart">Start browsing the products from the home page</string>
+    <string name="placeholder_title_product">There are no products to display</string>
+    <string name="placeholder_dec_product">There are no products to display</string>
+    <string name="another_store">Another store</string>
 
 </resources>
 

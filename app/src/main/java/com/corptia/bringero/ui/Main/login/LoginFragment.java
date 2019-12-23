@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.Main.login;
 
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,11 +19,18 @@ import android.widget.Toast;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
+import com.corptia.bringero.ui.splash.SplashActivity;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
 import com.google.android.material.textfield.TextInputLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,14 +130,35 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
             PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_PHONE, input_phone_number.getEditText().getText().toString());
             PrefUtils.saveToPrefs(getActivity(), PrefKeys.USER_PASSWORD, input_password.getEditText().getText().toString());
 
-            if (Common.CURRENT_USER.getCurrentDeliveryAddress() != null)
-                startActivity(new Intent(getActivity(), SelectDeliveryLocationActivity.class));
-            else {
-                startActivity(new Intent(getActivity(), MapsActivity.class));
-                isFirstTimeAddLocation = true;
-            }
+            startActivity(new Intent(getActivity(), SelectDeliveryLocationActivity.class));
+
 
             getActivity().finish();
         });
+    }
+
+    @Override
+    public void onSuccessLoginToMap() {
+        Dexter.withActivity(getActivity()).withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+
+                        startActivity(new Intent(getActivity(), MapsActivity.class));
+                        isFirstTimeAddLocation = true;
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+
     }
 }

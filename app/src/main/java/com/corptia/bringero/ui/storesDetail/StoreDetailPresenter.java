@@ -8,6 +8,7 @@ import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
 import com.corptia.bringero.graphql.SpeedCartQuery;
+import com.corptia.bringero.type.PaginationInput;
 import com.corptia.bringero.type.ProductFilterInput;
 import com.corptia.bringero.type.StoreGalleryFilter;
 import com.corptia.bringero.ui.pricing.PricingContract;
@@ -15,6 +16,8 @@ import com.corptia.bringero.ui.pricing.PricingContract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_SIZE;
 
 public class StoreDetailPresenter {
 
@@ -25,16 +28,26 @@ public class StoreDetailPresenter {
     }
 
 
-    void getStoreDetailHeader(String storeId) {
+    public void getProductStore(String storeId, String typeId, int currentPage) {
 
-        MyApolloClient.getApollowClient().query(SingleStoreHeaderQuery.builder().storeId(storeId).build())
-                .enqueue(new ApolloCall.Callback<SingleStoreHeaderQuery.Data>() {
+        StoreGalleryFilter storeGalleryFilter = StoreGalleryFilter.builder()
+                .typeId(typeId)
+                .isAvailable(true).build();
+
+        PaginationInput paginationInput = PaginationInput.builder().limit(PAGE_SIZE).page(currentPage).build();
+
+        MyApolloClient.getApollowClientAuthorization().query(GetStoreProductsQuery.builder()
+                .pagination(paginationInput)
+                .storeId(storeId).filter(storeGalleryFilter).build())
+                .enqueue(new ApolloCall.Callback<GetStoreProductsQuery.Data>() {
                     @Override
-                    public void onResponse(@NotNull Response<SingleStoreHeaderQuery.Data> response) {
+                    public void onResponse(@NotNull Response<GetStoreProductsQuery.Data> response) {
+                        GetStoreProductsQuery.GetStoreProducts getStoreProducts = response.data().PricingProductQuery().getStoreProducts();
 
-                        SingleStoreHeaderQuery.Get data = response.data().StoreQuery().get();
-                        if (data.status() == 200) {
-                            view.setStoresDetailHeader(data.StoreDetail());
+                        if (getStoreProducts.status() == 200) {
+                            view.setProduct(getStoreProducts);
+                        } else {
+                            view.setPlaceholder();
                         }
                     }
 
@@ -44,89 +57,6 @@ public class StoreDetailPresenter {
                     }
                 });
     }
-
-
-    public void getProductStore(String storeId, String typeId, boolean isPrice) {
-
-        // ProductFilterInput productFilterInput = null;
-        //productFilterInput = ProductFilterInput.builder().typeId(typeId).build();
-        //else
-        //productFilterInput = ProductFilterInput.builder().typeId(typeId).notPricedBy(Common.CURRENT_STORE._id()).build();
-        //  ProductFilterInput productFilterInput = null;
-        //if (isPrice)
-        //    productFilterInput = ProductFilterInput.builder().typeId(typeId).build();
-//        else
-//            productFilterInput = ProductFilterInput.builder().typeId(typeId).notPricedBy(Common.CURRENT_STORE._id()).build();
-
-        /*MyApolloClient.getApollowClientAuthorization().query(GetProductQuery.builder().filter(productFilterInput).build())
-                .enqueue(new ApolloCall.Callback<GetProductQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<GetProductQuery.Data> response) {
-
-
-                        if (response.data().ProductQuery().getAll().status() == 200) {
-                            view.setProduct(response.data().ProductQuery().getAll().Product());
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-
-                    }
-                });*/
-
-        if (isPrice) {
-            StoreGalleryFilter storeGalleryFilter = StoreGalleryFilter.builder().typeId(typeId).isAvailable(true).build();
-            MyApolloClient.getApollowClientAuthorization().query(GetStoreProductsQuery.builder().storeId(storeId).filter(storeGalleryFilter).build())
-                    .enqueue(new ApolloCall.Callback<GetStoreProductsQuery.Data>() {
-                        @Override
-                        public void onResponse(@NotNull Response<GetStoreProductsQuery.Data> response) {
-                            GetStoreProductsQuery.GetStoreProducts getStoreProducts = response.data().PricingProductQuery().getStoreProducts();
-
-                            if (getStoreProducts.status() == 200) {
-                                view.setProduct(getStoreProducts.Products());
-                            } else {
-
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(@NotNull ApolloException e) {
-
-                        }
-                    });
-        } else {
-
-            ProductFilterInput productFilterInput = ProductFilterInput.builder().typeId(typeId).build();
-            MyApolloClient.getApollowClientAuthorization().query(GetNotPricedByQuery.builder().storeId(storeId).filter(productFilterInput).build())
-                    .enqueue(new ApolloCall.Callback<GetNotPricedByQuery.Data>() {
-                        @Override
-                        public void onResponse(@NotNull Response<GetNotPricedByQuery.Data> response) {
-                            GetNotPricedByQuery.GetStoreProducts getStoreProducts = response.data().ProductQuery().getStoreProducts();
-                            if (getStoreProducts.status() == 200) {
-
-                                List<GetNotPricedByQuery.Product> productList = getStoreProducts.Products();
-
-                                view.setProductNotPriced(productList);
-
-
-
-                                //view.setProduct();
-
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(@NotNull ApolloException e) {
-
-                        }
-                    });
-
-        }
-
-    }
-
 
 
 }

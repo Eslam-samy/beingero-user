@@ -1,5 +1,6 @@
 package com.corptia.bringero.ui.splash;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,6 +26,12 @@ import com.corptia.bringero.ui.Main.login.LoginContract;
 import com.corptia.bringero.ui.Main.login.LoginPresenter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import static com.corptia.bringero.Common.Common.isFirstTimeAddLocation;
 
@@ -116,15 +123,40 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
             LocaleHelper.setLocale(SplashActivity.this, Common.CURRENT_USER.getLanguage().toLowerCase());
 
-            if (Common.CURRENT_USER.getCurrentDeliveryAddress() != null)
-                startActivity(new Intent(SplashActivity.this, SelectDeliveryLocationActivity.class));
-            else {
-                startActivity(new Intent(SplashActivity.this, MapsActivity.class));
-                isFirstTimeAddLocation = true;
-            }
+            startActivity(new Intent(SplashActivity.this, SelectDeliveryLocationActivity.class));
+
             finish();
 
+
         });
+
+    }
+
+    @Override
+    public void onSuccessLoginToMap() {
+
+        Dexter.withActivity(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+
+                        startActivity(new Intent(SplashActivity.this, MapsActivity.class));
+                        isFirstTimeAddLocation = true;
+                        finish();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        finish();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
+
+
 
     }
 

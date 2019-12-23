@@ -13,6 +13,14 @@ query deliveryOrders($filter: DeliveryOrderFilterInput!
                 message
             }
 
+            pagination{
+                totalDocs
+                limit
+                page
+                dataCount
+                totalPages
+            }
+
             DeliveryOrderData :data {
                 _id
                 serial

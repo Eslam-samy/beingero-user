@@ -11,11 +11,8 @@ public class StoreDetailContract {
 
     public interface StoreDetailView extends BaseView {
 
-        void setStoresDetailHeader(SingleStoreHeaderQuery.StoreDetail detail);
-        void setProduct(List<GetStoreProductsQuery.Product> product);
-        void setProductNotPriced(List<GetNotPricedByQuery.Product> product);
-
-
+        void setProduct(GetStoreProductsQuery.GetStoreProducts product);
+        void setPlaceholder();
 
     }
 

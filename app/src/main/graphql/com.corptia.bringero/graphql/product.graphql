@@ -22,26 +22,32 @@ query getProductQuery($filter: ProductFilterInput){
 # ********** - This New - **********
 # getStoreProducts query: use to view Store Gallery
 # pass type Id to filter to get products priced and having type Id
-query getStoreProducts($storeId:ID! , $filter: storeGalleryFilter!){
-
-    PricingProductQuery{
-        getStoreProducts(storeId :$storeId  , filter :$filter){
+query getStoreProducts(
+    $storeId: ID!
+    $filter: storeGalleryFilter!
+    $pagination: paginationInput
+) {
+    PricingProductQuery {
+        getStoreProducts(
+            storeId: $storeId
+            filter: $filter
+            pagination: $pagination
+        ) {
             status
             message
-            pagination{
+            pagination {
                 totalDocs
-                hasNextPage
-                hasPrevPage
                 limit
                 page
                 dataCount
+                totalPages
             }
-            Products : data{
+            Products: data {
                 _id
                 productId
                 storeId
                 storePrice
-                Product{
+                Product {
                     _id
                     name
                     unitId
@@ -57,6 +63,7 @@ query getStoreProducts($storeId:ID! , $filter: storeGalleryFilter!){
         }
     }
 }
+
 
 
 # Get not priced By Query :

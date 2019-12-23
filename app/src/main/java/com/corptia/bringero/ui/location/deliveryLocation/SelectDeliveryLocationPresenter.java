@@ -123,13 +123,8 @@ public class SelectDeliveryLocationPresenter   {
 
                             if (isUpdateCurrentLocation || Common.isFirstTimeAddLocation) {
 
-
-
                                 String newDeliveryAddressesID = newDeliveryAddress._id();
                                 userUpdateCurrentLocation(newDeliveryAddressesID);
-                                Common.isFirstTimeAddLocation = false;
-
-                            } else if (Common.isFirstTimeAddLocation) {
 
                             } else {
                                 view.onSuccessUpdateCurrentLocation();

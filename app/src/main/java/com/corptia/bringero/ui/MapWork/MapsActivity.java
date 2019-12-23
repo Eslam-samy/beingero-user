@@ -9,6 +9,7 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -44,6 +45,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -185,6 +187,14 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Te
             }
         }
 
+        try {
+            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style));
+            if (!success)
+                Log.e("Error", "Load Style Error");
+        } catch (Resources.NotFoundException e) {
+            Log.e("ERROR_MAP", "Resource not found " + e.getMessage());
+        }
+
         mMap = googleMap;
         isMapReady = true;
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -193,6 +203,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Te
         mMap.setMyLocationEnabled(true);
         //First zoom
         mMap.moveCamera(CameraUpdateFactory.zoomTo(13f));
+
+
 
         gestureDetector = new ScaleGestureDetector(MapsActivity.this, new ScaleGestureDetector.OnScaleGestureListener() {
             @Override

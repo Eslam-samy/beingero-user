@@ -16,6 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_SIZE;
+
 public class OrderPresenter {
 
     private CurrentOrderView view;
@@ -24,15 +26,17 @@ public class OrderPresenter {
         this.view = view;
     }
 
-    public void getDeliveryOrder() {
+    public void getDeliveryOrder(int currentPage) {
 
         view.showProgressBar();
+
+        PaginationInput paginationInput = PaginationInput.builder().limit(PAGE_SIZE).page(currentPage).build();
 
         DeliveryOrderFilterInput filterInput = DeliveryOrderFilterInput.builder()
                 .customerUserId(Common.CURRENT_USER.getId())
                 .status(DeliveryOrderStatus.DELIVERED).build();
         MyApolloClient.getApollowClientAuthorization()
-                .query(DeliveryOrdersQuery.builder().filter(filterInput).build())
+                .query(DeliveryOrdersQuery.builder().filter(filterInput).pagination(paginationInput).build())
                 .enqueue(new ApolloCall.Callback<DeliveryOrdersQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<DeliveryOrdersQuery.Data> response) {
@@ -42,7 +46,7 @@ public class OrderPresenter {
                         view.hideProgressBar();
                         if (getAll.status() == 200) {
 
-                            view.DeliveryOrders(getAll.DeliveryOrderData());
+                            view.DeliveryOrders(response.data().DeliveryOrderQuery().getAll());
 
                         } else  if (getAll.status() == 404) {
                             view.onNotFoundDeliveryOrders();

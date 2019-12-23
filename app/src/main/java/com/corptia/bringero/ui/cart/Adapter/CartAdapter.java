@@ -1,7 +1,7 @@
 package com.corptia.bringero.ui.cart.Adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,12 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IClickRecyclerAdapter;
 import com.corptia.bringero.R;
+import com.corptia.bringero.ui.storesDetail.StoreDetailActivity;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
@@ -65,8 +68,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onClickAdapter(int positionItems) {
                 itemList.remove(positionItems);
 
-                Log.d("HAZEM" , "DELETE FROM List " + position + " DATA " + cartModel.Store().name());
-
                 if (itemList.size() == 0)
                 {
 
@@ -102,6 +103,25 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             });
         }
 
+
+        if (isCart) {
+            holder.layout_store_cart.setOnClickListener(view -> {
+                MyCartQuery.Store store = cartModel.Store();
+
+                Intent intentStore = new Intent(context, StoreDetailActivity.class);
+                intentStore.putExtra(Constants.EXTRA_STORE_ID, store._id());
+                intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID, store.adminUserId());
+                intentStore.putExtra(Constants.EXTRA_STORE_NAME, store.name());
+                if (store.ImageResponse().data() != null)
+                    intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, store.ImageResponse().data().name());
+                else
+                    intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, "null");
+
+
+                context.startActivity(intentStore);
+
+            });
+        }
     }
 
     @Override
@@ -117,6 +137,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         ImageView image_store;
         @BindView(R.id.txt_name_store)
         TextView txt_name_store;
+        ConstraintLayout layout_store_cart;
 //        @BindView(R.id.txt_total_price)
 //        TextView txt_total_price;
 
@@ -126,6 +147,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
             ButterKnife.bind(this, itemView);
 
+            if (isCart)
+                layout_store_cart = itemView.findViewById(R.id.layout_store_cart);
         }
     }
 

@@ -44,8 +44,7 @@ public class PricingProductFragment extends Fragment {
 
         ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
                 getChildFragmentManager() ,
-                Common.CURRENT_STORE.ProductTypesStore().data(),
-                false);
+                Common.CURRENT_STORE.ProductTypesStore().data());
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

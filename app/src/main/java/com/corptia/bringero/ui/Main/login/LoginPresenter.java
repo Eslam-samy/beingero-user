@@ -79,7 +79,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
 
                                     deliveryAddressesList.add(deliveryAddressesModel);
-
                                 }
 
                                 userModel.setDeliveryAddressesList(deliveryAddressesList);
@@ -101,23 +100,27 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                                 userModel.setStatus(userData.status().rawValue());
 
                                 CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
-                                currentDeliveryAddressModel.setId(userData.currentDeliveryAddress()._id());
-                                currentDeliveryAddressModel.setBuilding(userData.currentDeliveryAddress().building());
-                                currentDeliveryAddressModel.setFlatType(userData.currentDeliveryAddress().flatType().rawValue());
-                                currentDeliveryAddressModel.setStreet(userData.currentDeliveryAddress().street());
-                                currentDeliveryAddressModel.setName(userData.currentDeliveryAddress().name());
-                                currentDeliveryAddressModel.setRegion(userData.currentDeliveryAddress().region());
-                                currentDeliveryAddressModel.setFloor(userData.currentDeliveryAddress().floor());
-                                currentDeliveryAddressModel.setFlat(userData.currentDeliveryAddress().flat());
-                                currentDeliveryAddressModel.setLocation(new LatLng(userData.currentDeliveryAddress().locationPoint().lat() , userData.currentDeliveryAddress().locationPoint().lng()));
-
+                                if (userData.currentDeliveryAddress()!=null) {
+                                    currentDeliveryAddressModel.setId(userData.currentDeliveryAddress()._id());
+                                    currentDeliveryAddressModel.setBuilding(userData.currentDeliveryAddress().building());
+                                    currentDeliveryAddressModel.setFlatType(userData.currentDeliveryAddress().flatType().rawValue());
+                                    currentDeliveryAddressModel.setStreet(userData.currentDeliveryAddress().street());
+                                    currentDeliveryAddressModel.setName(userData.currentDeliveryAddress().name());
+                                    currentDeliveryAddressModel.setRegion(userData.currentDeliveryAddress().region());
+                                    currentDeliveryAddressModel.setFloor(userData.currentDeliveryAddress().floor());
+                                    currentDeliveryAddressModel.setFlat(userData.currentDeliveryAddress().flat());
+                                    currentDeliveryAddressModel.setLocation(new LatLng(userData.currentDeliveryAddress().locationPoint().lat(), userData.currentDeliveryAddress().locationPoint().lng()));
+                                }
                                 userModel.setCurrentDeliveryAddress(currentDeliveryAddressModel);
 
 
 
                                 Common.CURRENT_USER= userModel;
 
+                                if (userData.currentDeliveryAddress()!=null)
                                 loginView.onSuccessMessage("");
+                                else
+                                    loginView.onSuccessLoginToMap();
 
                             }
                             else

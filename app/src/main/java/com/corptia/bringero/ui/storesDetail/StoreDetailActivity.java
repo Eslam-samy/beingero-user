@@ -6,7 +6,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.SpeedCartQuery;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
-import com.corptia.bringero.ui.Main.MainActivity;
 import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.ui.search.SearchProductsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -35,15 +33,12 @@ import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.type.StoreFilterInput;
-import com.corptia.bringero.utils.sharedPref.PrefKeys;
-import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.google.android.material.tabs.TabLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -102,10 +97,12 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         }
 
         Intent intent = getIntent();
-        adminUserId = intent.getStringExtra(Constants.EXTRA_ADMIN_USER_ID);
-        storeId = intent.getStringExtra(Constants.EXTRA_STORE_ID);
-        storeName = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
-        storeImage = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
+        if (intent != null) {
+            adminUserId = intent.getStringExtra(Constants.EXTRA_ADMIN_USER_ID);
+            storeId = intent.getStringExtra(Constants.EXTRA_STORE_ID);
+            storeName = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
+            storeImage = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
+        }
 
         imageUrl = Common.BASE_URL_IMAGE + storeImage;
         if (!storeImage.equalsIgnoreCase("null"))
@@ -129,7 +126,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     private void initIntent() {
 
         StoreFilterInput storeFilterInput = StoreFilterInput.builder().adminUserId(adminUserId).build();
-        MyApolloClient.getApollowClientAuthorization(Common.CURRENT_USER_TOKEN).query(SingleStoreQuery.builder().filter(storeFilterInput).build())
+        MyApolloClient.getApollowClientAuthorization().query(SingleStoreQuery.builder().filter(storeFilterInput).build())
                 .enqueue(new ApolloCall.Callback<SingleStoreQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<SingleStoreQuery.Data> response) {
@@ -144,8 +141,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
                                 ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
                                         getSupportFragmentManager(),
-                                        Common.CURRENT_STORE.ProductTypesStore().data(),
-                                        true);
+                                        Common.CURRENT_STORE.ProductTypesStore().data());
 
                                 viewPager.setAdapter(adapter);
                                 tabLayout.setupWithViewPager(viewPager);
@@ -180,19 +176,6 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
 
     @Override
-    public void setStoresDetailHeader(SingleStoreHeaderQuery.StoreDetail detail) {
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-
-            }
-        });
-
-    }
-
-    @Override
     public void showProgressBar() {
 
     }
@@ -213,15 +196,14 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     }
 
     @Override
-    public void setProduct(List<GetStoreProductsQuery.Product> product) {
+    public void setProduct(GetStoreProductsQuery.GetStoreProducts product) {
 
     }
 
     @Override
-    public void setProductNotPriced(List<GetNotPricedByQuery.Product> product) {
+    public void setPlaceholder() {
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -349,11 +331,11 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
     }
 
-    void gotoCart(){
+    void gotoCart() {
         try {
             Intent intent = new Intent(StoreDetailActivity.this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(Constants.EXTRA_SPEED_CART , "EXTRA_SPEED_CART");
+            intent.putExtra(Constants.EXTRA_SPEED_CART, "EXTRA_SPEED_CART");
             startActivity(intent);
         } catch (Throwable throwable) {
             throwable.printStackTrace();

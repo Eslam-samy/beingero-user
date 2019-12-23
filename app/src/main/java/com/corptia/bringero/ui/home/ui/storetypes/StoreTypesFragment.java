@@ -50,15 +50,6 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
 
         layoutAnimationController = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_item_from_left);
 
-        //final TextView textView = root.findViewById(R.id.text_home);
-
-
-       /* storeTypesViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });*/
         storeTypesPresenter = new StoreTypesPresenter(this);
         storeTypesPresenter.getStoreTypes();
 
@@ -70,14 +61,25 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
 
         recycler_store.setLayoutAnimation(layoutAnimationController);
         recycler_store.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+//        recycler_store.addItemDecoration(new GridSpacingItemDecoration(
+//                2,
+//                Common.dpToPx(15, getActivity()),
+//                true,
+//                0,
+//                Common.dpToPx(10, getActivity()),
+//                Common.dpToPx(2, getActivity()),
+//                Common.dpToPx(2, getActivity())));
+
         recycler_store.addItemDecoration(new GridSpacingItemDecoration(
                 2,
-                Common.dpToPx(15, getActivity()),
+                Common.dpToPx(5, getActivity()),
                 true,
                 0,
+                Common.dpToPx(17, getActivity()),
                 Common.dpToPx(10, getActivity()),
-                Common.dpToPx(2, getActivity()),
-                Common.dpToPx(2, getActivity())));
+                Common.dpToPx(10, getActivity())));
+
+
         adapter = new StoreTypesAdapter(getActivity(), repositoryList);
         recycler_store.setAdapter(adapter);
 

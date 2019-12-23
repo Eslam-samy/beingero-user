@@ -4,6 +4,7 @@ package com.corptia.bringero.ui.cart;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
@@ -24,6 +26,7 @@ import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 import com.corptia.bringero.ui.cart.Adapter.CartAdapter;
 import com.corptia.bringero.ui.cart.checkOut.CheckOutActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,11 +45,27 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     Button btn_next;
     @BindView(R.id.total_price)
     TextView total_price;
+    @BindView(R.id.layout_checkOut)
+    ConstraintLayout layout_checkOut;
 
     Handler handler = new Handler();
     CartPresenter cartPresenter = new CartPresenter(this);
 
     double totalPrice = 0;
+
+    //For Placeholder
+    @BindView(R.id.layout_placeholder)
+    ConstraintLayout layout_placeholder;
+    @BindView(R.id.img_placeholder)
+    ImageView img_placeholder;
+    @BindView(R.id.txt_placeholder_title)
+    TextView txt_placeholder_title;
+    @BindView(R.id.txt_placeholder_dec)
+    TextView txt_placeholder_dec;
+    @BindView(R.id.btn_1)
+    Button btn_home;
+    @BindView(R.id.btn_2)
+    Button btn_2;
 
     public CartFragment() {
         // Required empty public constructor
@@ -86,6 +105,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                     if (getContext()!=null)
                     total_price.setText(new StringBuilder().append(totalPrice).append(getString(R.string.currency)));
 
+                    layout_checkOut.setVisibility(View.VISIBLE);
+
 
                     btn_next.setOnClickListener(view1 -> {
 //                        HomeActivity.navController.navigate(R.id.action_nav_cart_to_checkOutFragment);
@@ -116,6 +137,26 @@ public class CartFragment extends Fragment implements CartContract.CartView {
             public void run() {
 
                 recycler_cart.setVisibility(View.GONE);
+                btn_2.setVisibility(View.GONE);
+
+                layout_placeholder.setVisibility(View.VISIBLE);
+                img_placeholder.setImageResource(R.drawable.ic_placeholder_cart);
+
+                btn_home.setText(getString(R.string.menu_home));
+                btn_home.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((BottomNavigationView) getActivity()
+                                .findViewById(R.id.nav_bottomNavigationView))
+                                .setSelectedItemId(R.id.nav_home);
+                    }
+                });
+
+
+                txt_placeholder_title.setText(getString(R.string.placeholder_title_cart));
+                txt_placeholder_dec.setText(getString(R.string.placeholder_dec_cart));
+
+
             }
         });
     }

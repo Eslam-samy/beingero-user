@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CurrentOrderView extends BaseView {
 
-    void DeliveryOrders(List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderData);
+    void DeliveryOrders(DeliveryOrdersQuery.GetAll deliveryOrderData);
     void CurrentOrders(List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderData);
 
     void onNotFoundCurrentOrders();
