@@ -185,6 +185,11 @@
     <string name="placeholder_title_product">There are no products to display</string>
     <string name="placeholder_dec_product">There are no products to display</string>
     <string name="another_store">Another store</string>
+    <string name="placeholder_title_notification">There are no notifications to display</string>
+    <string name="placeholder_dec_notification">Notifications will be added here</string>
+    <string name="rating">Rating</string>
+    <string name="preparing_time">Preparing Time</string>
+    <string name="minimum_order">Minimum Order</string>
 
 </resources>
 

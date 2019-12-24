@@ -60,6 +60,8 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     TextView txt_status;
     @BindView(R.id.txt_name_store)
     TextView txt_name_store;
+    @BindView(R.id.btn_search)
+    ImageView btn_search;
 
     String adminUserId = "";
     String storeId = "";
@@ -121,6 +123,18 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         //TODO
 
         getSpeedCart();
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(StoreDetailActivity.this, SearchProductsActivity.class);
+                intent.putExtra(Constants.EXTRA_STORE_ID, storeId);
+                intent.putExtra(Constants.EXTRA_STORE_IMAGE, imageUrl);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private void initIntent() {
@@ -205,12 +219,12 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-        return true;
-    }
-
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_search, menu);
+//        return true;
+//    }
+//
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -218,12 +232,12 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
                 onBackPressed();
                 break;
 
-            case R.id.action_search:
-                Intent intent = new Intent(StoreDetailActivity.this, SearchProductsActivity.class);
-                intent.putExtra(Constants.EXTRA_STORE_ID, storeId);
-                intent.putExtra(Constants.EXTRA_STORE_IMAGE, imageUrl);
-                startActivity(intent);
-                break;
+//            case R.id.action_search:
+//                Intent intent = new Intent(StoreDetailActivity.this, SearchProductsActivity.class);
+//                intent.putExtra(Constants.EXTRA_STORE_ID, storeId);
+//                intent.putExtra(Constants.EXTRA_STORE_IMAGE, imageUrl);
+//                startActivity(intent);
+//                break;
 
         }
         return super.onOptionsItemSelected(item);

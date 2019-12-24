@@ -90,7 +90,18 @@
                 android:textColor="@color/colorAccent"
                 android:text="@string/follow"
                 android:background="@drawable/shadow_button_follow"
-                android:layout_marginEnd="15sp"/>
+                android:layout_marginEnd="15sp"
+                android:visibility="gone"/>
+
+            <ImageView
+                android:id="@+id/btn_search"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_search_black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginEnd="@dimen/app_low_margin"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

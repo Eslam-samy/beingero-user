@@ -7,13 +7,11 @@
     tools:context=".ui.cart.checkOut.CheckOutActivity"
     android:background="@color/white">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include
-            layout="@layout/layout_toolbar_white"/>
+        <include layout="@layout/layout_toolbar_white"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -23,7 +21,7 @@
             >
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 >
 
@@ -164,8 +162,6 @@
 
         </ScrollView>
 
-
-
         <androidx.cardview.widget.CardView
             android:id="@+id/card_total"
             android:layout_width="match_parent"
@@ -187,11 +183,11 @@
                     android:text="@string/total"
                     android:textSize="@dimen/medium_text_size"
                     android:textColor="@color/colorGray"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_apply_voucher_code"
                     app:layout_constraintStart_toStartOf="parent"
                     android:layout_marginStart="@dimen/app_margin"
                     android:layout_marginTop="@dimen/medium_margin"
                     android:fontFamily="@font/poppinsmedium"
+                    app:layout_constraintTop_toTopOf="parent"
                     />
 
                 <TextView

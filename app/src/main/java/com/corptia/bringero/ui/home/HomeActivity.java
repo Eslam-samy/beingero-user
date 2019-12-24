@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
+import com.corptia.bringero.ui.home.ui.notification.NotificationFragment;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationAdapter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
@@ -64,9 +65,6 @@ public class HomeActivity extends BaseActivity implements
 
 
     Menu menu;
-    //@BindViews({R.id.nav_home, R.id.nav_gallery, R.id.nav_wishlist, R.id.nav_location, R.id.nav_order, R.id.nav_cart, R.id.nav_notifications, R.id.nav_discounts, R.id.nav_terms_conditions, R.id.nav_contact_us, R.id.nav_settings})
-    MenuItem nav_home, nav_gallery, nav_wishlist, nav_location, nav_order, nav_cart, nav_notifications, nav_discounts,
-            nav_terms_conditions, nav_contact_us, nav_settings, nav_pricing;
 
     @BindView(R.id.txt_location)
     TextView txt_location;
@@ -176,6 +174,16 @@ public class HomeActivity extends BaseActivity implements
                 }
                 break;
 
+            case R.id.nav_notification:
+                if (!(selectedFragment instanceof NotificationFragment)) {
+                    selectedFragment = new NotificationFragment();
+                    getSupportActionBar().setTitle(R.string.notification);
+                    txt_location.setVisibility(View.GONE);
+                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
+                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
+                }
+                break;
+
             default:
                 //ooooo
 
@@ -216,23 +224,6 @@ public class HomeActivity extends BaseActivity implements
         }
     }
 
-
-    private void defineItems() {
-
-        nav_home = menu.findItem(R.id.nav_home);
-        nav_cart = menu.findItem(R.id.nav_cart);
-        nav_contact_us = menu.findItem(R.id.nav_contact_us);
-        nav_discounts = menu.findItem(R.id.nav_discounts);
-        nav_location = menu.findItem(R.id.nav_location);
-        nav_notifications = menu.findItem(R.id.nav_notifications);
-        nav_order = menu.findItem(R.id.nav_order);
-        nav_settings = menu.findItem(R.id.nav_settings);
-        nav_terms_conditions = menu.findItem(R.id.nav_terms_conditions);
-        nav_wishlist = menu.findItem(R.id.nav_wishlist);
-        nav_pricing = menu.findItem(R.id.nav_pricing);
-
-    }
-
     private void initToolbar(Toolbar toolbar) {
 
         setSupportActionBar(toolbar);
@@ -241,21 +232,6 @@ public class HomeActivity extends BaseActivity implements
 
     }
 
-
-    //    @Override
-//    public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-//
-//        if (destination.getId() == R.id.nav_settings) {
-//            toolbar.setVisibility(View.GONE);
-//            Log.d("HAZEM" , "YOU CLICK SETTING");
-//
-//        } else {
-//            toolbar.setVisibility(View.VISIBLE);
-//            Log.d("HAZEM" , "BACK");
-//        }
-//
-//        initToolbar(toolbar);
-//    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -265,58 +241,6 @@ public class HomeActivity extends BaseActivity implements
         }
         return true;
     }
-
-//    private void showDialogSelectLocation() {
-//
-//        bottomSheetDialog = new BottomSheetDialog(this ,R.style.AppBottomSheetDialogTheme);
-//        bottomSheetDialog.setTitle(getString(R.string.set_location));
-//        bottomSheetDialog.setCanceledOnTouchOutside(true);
-//        bottomSheetDialog.setCancelable(true);
-//        View sheetView = getLayoutInflater().inflate(R.layout.layout_select_delivery_location, null);
-//
-//        RecyclerView recycler_delivery_location = sheetView.findViewById(R.id.recycler_delivery_location);
-//        Button btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
-//        Button btn_apply_location = sheetView.findViewById(R.id.btn_apply_location);
-//
-//        recycler_delivery_location.setHasFixedSize(true);
-//        recycler_delivery_location.setLayoutManager(new LinearLayoutManager(this));
-//        recycler_delivery_location.setNestedScrollingEnabled(true);
-//        recycler_delivery_location.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15,this)));
-//
-//        adapter = new SelectDeliveryLocationAdapter(this, Common.CURRENT_USER.deliveryAddresses());
-//        recycler_delivery_location.setAdapter(adapter);
-//
-//        adapter.setClickListener(new IOnRecyclerViewClickListener() {
-//            @Override
-//            public void onClick(View view, int position) {
-//                //Here Update Location Yo CuttentLocation
-////                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID(position));
-//                adapter.selectCurrentLocation(position);
-//
-//            }
-//        });
-//
-//        btn_select_location_from_map.setOnClickListener(view -> {
-//            //Here Open Maps
-//            Common.isUpdateCurrentLocation = true;
-//            startActivity(new Intent(HomeActivity.this , MapsActivity.class));
-//            bottomSheetDialog.dismiss();
-//        });
-//
-//        btn_apply_location.setOnClickListener(view -> {
-//            if (adapter.isChangeLocation())
-//            presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID());
-//            else
-//                bottomSheetDialog.dismiss();
-//        });
-//
-//        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-////        bottomSheetDialog.getWindow().setBackgroundDrawableResource(R.drawable.round_up_bottom_sheet);
-//
-//        bottomSheetDialog.setContentView(sheetView);
-//        bottomSheetDialog.setCancelable(false);
-//        bottomSheetDialog.show();
-//    }
 
     @Override
     public void onSuccessUpdateCurrentLocation() {

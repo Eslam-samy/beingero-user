@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.home.ui.storetypes;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.StoreTypesQuery;
@@ -32,6 +34,9 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
     @BindView(R.id.recycler_store)
     RecyclerView recycler_store;
 
+    @BindView(R.id.loading)
+    LottieAnimationView loading;
+
     //private StoreTypesViewModel storeTypesViewModel;
 
     //Data
@@ -39,6 +44,9 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
     StoreTypesPresenter storeTypesPresenter;
 
     LayoutAnimationController layoutAnimationController;
+
+    Handler handler = new Handler();
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -99,6 +107,15 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
 
     @Override
     public void hideProgressBar() {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                loading.resumeAnimation();
+                loading.setVisibility(View.GONE);
+            }
+        });
 
     }
 

@@ -1,0 +1,58 @@
+query NotificationQuery(
+    $filter: NotificationFilterInput!
+    $page: Int
+    $limit: Int
+) {
+    NotificationQuery {
+        getAll(filter: $filter, pagination: { page: $page, limit: $limit }) {
+            status
+            message
+            pagination {
+                page
+                limit
+                hasNextPage
+                nextPage
+                totalDocs
+                totalPages
+            }
+            NotificationData: data {
+                _id
+                userId
+                message
+                model
+                status
+                createdAt
+                docStatus
+                docId
+            }
+        }
+    }
+}
+
+
+query NotificationCountUnreadQuery(
+    $filter: NotificationFilterInput!
+) {
+    NotificationCountUnreadQuery:NotificationQuery {
+        getAll(filter: $filter) {
+            status
+            message
+            errors{
+                code
+                path
+                message
+            }
+
+            pagination{
+                totalDocs
+                limit
+                page
+            }
+
+            CountUnread : data {
+                _id
+                status
+            }
+        }
+    }
+}

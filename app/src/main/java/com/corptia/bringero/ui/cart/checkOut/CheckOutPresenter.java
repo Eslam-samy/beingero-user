@@ -28,9 +28,9 @@ public class CheckOutPresenter {
 
                         if (response.data().BuyingOrderMutation().create().status() == 200) {
 
-                            view.showErrorMessage(response.data().BuyingOrderMutation().create().message());
                             view.onSuccessMessage("");
                         } else {
+                            view.showErrorMessage(response.data().BuyingOrderMutation().create().message());
 
                         }
                     }
@@ -38,6 +38,8 @@ public class CheckOutPresenter {
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
                         view.hideProgressBar();
+                        view.showErrorMessage(e.getMessage());
+
                     }
                 });
 

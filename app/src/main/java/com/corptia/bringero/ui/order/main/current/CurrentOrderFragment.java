@@ -24,11 +24,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
 
+
+    int sumCall =0;
 
     CurrentOrderAdapter adapter;
     @BindView(R.id.recycler_current_order)
@@ -86,6 +85,8 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
             @Override
             public void run() {
 
+                sumCall++;
+
 //                adapter = new CurrentOrderAdapter(getActivity() ,deliveryOrderData );
                 recycler_current_order.setAdapter(adapter);
 
@@ -114,6 +115,8 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
             @Override
             public void run() {
 
+                sumCall++;
+
                 adapter = new CurrentOrderAdapter(getActivity() ,deliveryOrderData );
                 recycler_current_order.setAdapter(adapter);
 
@@ -131,6 +134,10 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
                     }
                 });
 
+                if (sumCall == 2){
+
+                }
+
             }
         });
 
@@ -138,12 +145,12 @@ public class CurrentOrderFragment extends Fragment implements CurrentOrderView{
 
     @Override
     public void onNotFoundCurrentOrders() {
-
+        sumCall++;
     }
 
     @Override
     public void onNotFoundDeliveryOrders() {
-
+        sumCall++;
     }
 
     @Override

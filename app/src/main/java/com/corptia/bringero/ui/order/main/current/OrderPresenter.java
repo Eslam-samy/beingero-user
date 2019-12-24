@@ -44,6 +44,7 @@ public class OrderPresenter {
                         DeliveryOrdersQuery.GetAll getAll = response.data().DeliveryOrderQuery().getAll();
 
                         view.hideProgressBar();
+
                         if (getAll.status() == 200) {
 
                             view.DeliveryOrders(response.data().DeliveryOrderQuery().getAll());
@@ -67,8 +68,6 @@ public class OrderPresenter {
 
     public void getCurrentOrder() {
 
-        view.showProgressBar();
-
         List<DeliveryOrderStatus> statusList = new ArrayList<>();
         statusList.add(DeliveryOrderStatus.ASSIGNEDTOPILOT);
         statusList.add(DeliveryOrderStatus.DELIVERING);
@@ -88,9 +87,10 @@ public class OrderPresenter {
                     @Override
                     public void onResponse(@NotNull Response<DeliveryOrdersQuery.Data> response) {
 
+                        view.hideProgressBar();
+
                         DeliveryOrdersQuery.GetAll getAll = response.data().DeliveryOrderQuery().getAll();
 
-                        view.hideProgressBar();
                         if (getAll.status() == 200) {
 
                             view.CurrentOrders(getAll.DeliveryOrderData());

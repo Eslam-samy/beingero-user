@@ -4,11 +4,15 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -61,11 +65,16 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
 
     CheckOutPresenter checkOutPresenter = new CheckOutPresenter(this);
 
-    Handler handler = new Handler();
-
     AlertDialog alertDialog;
 
     double totalPrice = 0;
+
+    //For Dialog Confirm
+    ImageView img_done;
+    Button btn_ok;
+    AnimatedVectorDrawableCompat avd;
+    AnimatedVectorDrawable avd2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +82,12 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
 
 
         ButterKnife.bind(this);
+
         initActionBar();
-        if (getIntent()!=null)
-        {
-            totalPrice = getIntent().getDoubleExtra(Constants.EXTRA_TOTAL_CART , 0);
+
+
+        if (getIntent() != null) {
+            totalPrice = getIntent().getDoubleExtra(Constants.EXTRA_TOTAL_CART, 0);
         }
 
         alertDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
@@ -107,17 +118,16 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         });
 
         //Set Current Location
-        if (Common.CURRENT_USER!=null)
-        {
+        if (Common.CURRENT_USER != null) {
             image_correct.setVisibility(View.GONE);
             txt_title_name_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
             txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
 
             txt_subtotal.setText(new StringBuilder().append(totalPrice).append(" ").append(getString(R.string.currency)));
             txt_delivery_fees.setText(new StringBuilder().append(20).append(" ").append(getString(R.string.currency)));
-            txt_total.setText(new StringBuilder().append(20+ totalPrice).append(" ").append(getString(R.string.currency)));
+            txt_total.setText(new StringBuilder().append(20 + totalPrice).append(" ").append(getString(R.string.currency)));
 
-            total_price.setText(new StringBuilder().append(20+ totalPrice).append(" ").append(getString(R.string.currency)));
+            total_price.setText(new StringBuilder().append(20 + totalPrice).append(" ").append(getString(R.string.currency)));
 
         }
 
@@ -154,7 +164,6 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
             @Override
             public void run() {
                 alertDialog.dismiss();
-                finish();
             }
         });
     }
@@ -176,13 +185,56 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(CheckOutActivity.this, "" + message, Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(CheckOutActivity.this, HomeActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                showConfirmDialog();
+
+            }
+        });
+
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Intent intent = new Intent(CheckOutActivity.this, HomeActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
+
+    }
+
+
+    private void showConfirmDialog() {
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_success, null);
+        img_done = dialogView.findViewById(R.id.img_done);
+        btn_ok = dialogView.findViewById(R.id.btn_ok);
+
+        Drawable drawable = img_done.getDrawable();
+
+        if (drawable instanceof AnimatedVectorDrawableCompat) {
+            avd = (AnimatedVectorDrawableCompat) drawable;
+            avd.start();
+        } else if (drawable instanceof AnimatedVectorDrawable) {
+            avd2 = (AnimatedVectorDrawable) drawable;
+            avd2.start();
+        }
+
+        btn_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 finish();
             }
         });
 
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 }

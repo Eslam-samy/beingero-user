@@ -17,7 +17,7 @@
         android:layout_height="50dp"
         android:id="@+id/animation"
         app:lottie_loop="true"
-        app:lottie_fileName="orange_loading.json"
+        app:lottie_fileName="loading_dialog.json"
         app:lottie_autoPlay="true"/>
 
 </LinearLayout>

@@ -17,10 +17,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.Interface.IClickRecyclerAdapter;
 import com.corptia.bringero.R;
+import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.RemoveCartItemMutation;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
@@ -31,6 +39,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +76,9 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @BindView(R.id.btn_2)
     Button btn_2;
 
+    @BindView(R.id.loading)
+    LottieAnimationView loading;
+
     public CartFragment() {
         // Required empty public constructor
     }
@@ -102,8 +114,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                     Common.CURRENT_CART = myCartData.storeData();
 
-                    if (getContext()!=null)
-                    total_price.setText(new StringBuilder().append(totalPrice).append(getString(R.string.currency)));
+                    if (getContext() != null)
+                        total_price.setText(new StringBuilder().append(totalPrice).append(getString(R.string.currency)));
 
                     layout_checkOut.setVisibility(View.VISIBLE);
 
@@ -113,9 +125,43 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 //                        HomeActivity.bottomNavigationView.setVisibility(View.GONE);
 //                        HomeActivity.fab.hide();
 
-                        Intent intent = new Intent(getActivity(), CheckOutActivity.class);
-                        intent.putExtra(Constants.EXTRA_TOTAL_CART , totalPrice);
-                        startActivity(intent);
+
+                        MyApolloClient.getApollowClientAuthorization().query(MyCartQuery.builder().build())
+                                .enqueue(new ApolloCall.Callback<MyCartQuery.Data>() {
+                                    @Override
+                                    public void onResponse(@NotNull Response<MyCartQuery.Data> response) {
+                                        MyCartQuery.MyCart myCart = response.data().CartItemQuery().myCart();
+
+                                        if (myCart.status() == 200) {
+
+
+                                            handler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+
+                                                    Common.CURRENT_CART = myCart.storeData();
+
+                                                    Intent intent = new Intent(getActivity(), CheckOutActivity.class);
+                                                    intent.putExtra(Constants.EXTRA_TOTAL_CART, totalPrice);
+                                                    startActivity(intent);
+                                                }
+                                            });
+
+
+                                        }
+
+                                        else  if (myCart.status() == 404)
+                                        {
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NotNull ApolloException e) {
+                                    }
+                                });
+
+
+
 
 
                     });
@@ -126,8 +172,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
             });
 
 
-        });
 
+        });
     }
 
     @Override
@@ -136,29 +182,38 @@ public class CartFragment extends Fragment implements CartContract.CartView {
             @Override
             public void run() {
 
-                recycler_cart.setVisibility(View.GONE);
-                btn_2.setVisibility(View.GONE);
 
-                layout_placeholder.setVisibility(View.VISIBLE);
-                img_placeholder.setImageResource(R.drawable.ic_placeholder_cart);
-
-                btn_home.setText(getString(R.string.menu_home));
-                btn_home.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ((BottomNavigationView) getActivity()
-                                .findViewById(R.id.nav_bottomNavigationView))
-                                .setSelectedItemId(R.id.nav_home);
-                    }
-                });
-
-
-                txt_placeholder_title.setText(getString(R.string.placeholder_title_cart));
-                txt_placeholder_dec.setText(getString(R.string.placeholder_dec_cart));
-
+                showPlaceHolder();
 
             }
         });
+    }
+
+    private void showPlaceHolder() {
+
+
+        recycler_cart.setVisibility(View.GONE);
+        btn_2.setVisibility(View.GONE);
+
+        layout_placeholder.setVisibility(View.VISIBLE);
+        img_placeholder.setImageResource(R.drawable.ic_placeholder_cart);
+
+        btn_home.setText(getString(R.string.menu_home));
+        btn_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((BottomNavigationView) getActivity()
+                        .findViewById(R.id.nav_bottomNavigationView))
+                        .setSelectedItemId(R.id.nav_home);
+            }
+        });
+
+
+        txt_placeholder_title.setText(getString(R.string.placeholder_title_cart));
+        txt_placeholder_dec.setText(getString(R.string.placeholder_dec_cart));
+
+        layout_checkOut.setVisibility(View.GONE);
+
     }
 
     @Override
@@ -169,6 +224,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @Override
     public void hideProgressBar() {
 
+        handler.post(() -> loading.setVisibility(View.GONE));
     }
 
     @Override
@@ -186,12 +242,14 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         if (event != null) {
             if (event.getProductId() != null) {
                 calculateCartTotalPrice(event.getProductId(), event.getAmount(), event.getStorePrice());
-
             } else {
                 //double total = Double.parseDouble(total_price.getText().toString());
-
                 totalPrice -= event.getTotalProductPrice();
-                total_price.setText(""+(totalPrice) + getString(R.string.currency));
+                total_price.setText("" + (totalPrice) + getString(R.string.currency));
+
+                if (totalPrice == 0){
+                    showPlaceHolder();
+                }
 
             }
         } else {
@@ -208,6 +266,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         totalPrice += storePrice;
 
         total_price.setText(new StringBuilder().append(totalPrice).append(getString(R.string.currency)));
+
+
 
     }
 
@@ -235,3 +295,5 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         cartPresenter.getMyCart();
     }
 }
+
+

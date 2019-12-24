@@ -44,6 +44,8 @@ public class StoreDetailPresenter {
                     public void onResponse(@NotNull Response<GetStoreProductsQuery.Data> response) {
                         GetStoreProductsQuery.GetStoreProducts getStoreProducts = response.data().PricingProductQuery().getStoreProducts();
 
+                        view.hideProgressBar();
+
                         if (getStoreProducts.status() == 200) {
                             view.setProduct(getStoreProducts);
                         } else {
@@ -53,7 +55,7 @@ public class StoreDetailPresenter {
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
-
+                        view.hideProgressBar();
                     }
                 });
     }

@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
@@ -28,6 +31,8 @@ public class StoresActivity extends BaseActivity implements StoresContract.Brand
     RecyclerView recycler_brands;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.loading)
+    LottieAnimationView loading;
 
     StoresAdapter adapter ;
     List<StoreTypes> storeTypesList = new ArrayList<>();
@@ -36,6 +41,9 @@ public class StoresActivity extends BaseActivity implements StoresContract.Brand
 
     //For Store Local Category Id
     String categoryId = "" , storeTypeName;
+
+    Handler handler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,10 +112,14 @@ public class StoresActivity extends BaseActivity implements StoresContract.Brand
     @Override
     public void showProgressBar() {
 
+
+
     }
 
     @Override
     public void hideProgressBar() {
+
+        handler.post(() -> loading.setVisibility(View.GONE));
 
     }
 }

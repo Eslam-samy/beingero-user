@@ -7,28 +7,21 @@
         android:title="@string/menu_home" />
 
     <item
-        android:id="@+id/nav_search"
-        android:title="@string/search" />
-
-    <item
         android:id="@+id/nav_cart"
         android:icon="@drawable/ic_nav_cart"
         android:title="@string/cart" />
 
 
-
-
     <item
         android:id="@+id/nav_order"
-        android:icon="@drawable/ic_nav_order"
+        android:icon="@drawable/ic_nav_orders"
         android:title="@string/orders" />
 
 
-
     <item
-        android:id="@+id/nav_location"
-        android:icon="@drawable/ic_nav_location"
-        android:title="@string/menu_location" />
+        android:id="@+id/nav_notification"
+        android:icon="@drawable/ic_nav_notifications"
+        android:title="@string/menu_notifications" />
 
 
 </menu>

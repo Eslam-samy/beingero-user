@@ -25,6 +25,7 @@ public class CartPresenter {
                     @Override
                     public void onResponse(@NotNull Response<MyCartQuery.Data> response) {
                         MyCartQuery.MyCart myCart = response.data().CartItemQuery().myCart();
+                        view.hideProgressBar();
                         if (myCart.status() == 200) {
                             view.setMyCart(myCart);
                         }
@@ -37,7 +38,7 @@ public class CartPresenter {
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
-
+                        view.hideProgressBar();
                     }
                 });
 

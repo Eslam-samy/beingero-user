@@ -17,6 +17,7 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
 import com.corptia.bringero.ui.storesDetail.StoreDetailActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +46,10 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
 
         GetStoresOfASingleCategoryQuery.Store storeTypes = storeTypesList.get(position);
 
-        //Picasso.get().load(storeTypes.imageId())
-         //       .into(holder.image_brands);
-
         if (storeTypes.ImageResponse().data()!=null)
-            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_brands);
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.img_store);
 
-        holder.txt_name_brands.setText(storeTypes.name());
+        holder.txt_name_store.setText(storeTypes.name());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,10 +77,10 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.image_brands)
-        ImageView image_brands;
-        @BindView(R.id.txt_name_brands)
-        TextView txt_name_brands;
+        @BindView(R.id.img_store)
+        ImageView img_store;
+        @BindView(R.id.txt_name_store)
+        TextView txt_name_store;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

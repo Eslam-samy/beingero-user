@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -89,6 +90,9 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     Button btn_1;
     @BindView(R.id.btn_2)
     Button btn_2;
+
+    @BindView(R.id.loading)
+    LottieAnimationView loading;
 
 
 
@@ -184,6 +188,13 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     @Override
     public void hideProgressBar() {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                loading.setVisibility(View.GONE);
+            }
+        });
 
     }
 

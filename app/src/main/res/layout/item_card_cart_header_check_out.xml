@@ -70,8 +70,13 @@
 
     <com.github.florent37.expansionpanel.ExpansionLayout
         android:id="@+id/expansionLayout"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_bg_checkout_items"
+        android:layout_marginBottom="@dimen/large_margin"
+        android:layout_marginStart="@dimen/large_margin"
+        android:layout_marginEnd="@dimen/large_margin"
+
         >
 
         <!-- CONTENT -->
@@ -79,7 +84,7 @@
             android:id="@+id/recycler_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/app_margin"/>
+            android:paddingBottom="@dimen/app_low_margin"/>
 
     </com.github.florent37.expansionpanel.ExpansionLayout>
 

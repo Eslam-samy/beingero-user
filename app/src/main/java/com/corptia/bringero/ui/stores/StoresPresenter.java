@@ -29,6 +29,8 @@ public class StoresPresenter {
                     @Override
                     public void onResponse(@NotNull Response<GetStoresOfASingleCategoryQuery.Data> response) {
 
+                        brandsView.hideProgressBar();
+
                         if (response.data().StoreQuery().getAll().status() == 200){
 
                             response.data().StoreQuery().getAll().Stores();

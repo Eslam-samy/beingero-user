@@ -45,9 +45,17 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
     boolean isCart;
     IClickRecyclerAdapter iClickRecyclerAdapter;
     Handler handler ;
-
+    IDeleteCartItemsListener iDeleteCartItemsListener;
     public void setUpdateCartItemsListener(UpdateCartItemsListener updateCartItemsListener) {
         this.updateCartItemsListener = updateCartItemsListener;
+    }
+
+    public IDeleteCartItemsListener getiDeleteCartItemsListener() {
+        return iDeleteCartItemsListener;
+    }
+
+    public void setiDeleteCartItemsListener(IDeleteCartItemsListener iDeleteCartItemsListener) {
+        this.iDeleteCartItemsListener = iDeleteCartItemsListener;
     }
 
     public CartItemsAdapter(Context context, @Nullable List<MyCartQuery.Item> cartItems, boolean isCart, IClickRecyclerAdapter iClickRecyclerAdapter) {
@@ -111,9 +119,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                         }
                     } else {
 //                        if (amount < totalAmountStore) {
-                            holder.txt_quantity.setText("" + (amount + 1));
-                            EventBus.getDefault().postSticky(new CalculatePriceEvent(item._id(), amount + 1, item.PricingProduct().storePrice()));
-                            holder.txt_total_price.setText(new StringBuilder().append(((amount + 1) * item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+                        holder.txt_quantity.setText("" + (amount + 1));
+                        EventBus.getDefault().postSticky(new CalculatePriceEvent(item._id(), amount + 1, item.PricingProduct().storePrice()));
+                        holder.txt_total_price.setText(new StringBuilder().append(((amount + 1) * item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
 
 //                        }
 
@@ -137,50 +145,18 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
                 } else {
 
-                    holder.progress_circular.setVisibility(View.VISIBLE);
-                    holder.img_delete_product.setVisibility(View.INVISIBLE);
-                    MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(item._id()).build())
-                            .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
-                                @Override
-                                public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
+                    cartItems.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, cartItems.size());
 
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
+                    iDeleteCartItemsListener.onDeleteCart(position , amount);
 
 
-                                            if (response.data().CartItemMutation().remove().status() ==200)
-                                            {
+//                    holder.progress_circular.setVisibility(View.VISIBLE);
+//                    holder.img_delete_product.setVisibility(View.INVISIBLE);
 
-                                                Toast.makeText(context, "Items Deleted !", Toast.LENGTH_SHORT).show();
 
-                                                cartItems.remove(position);
-                                                notifyItemRemoved(position);
-                                                notifyItemRangeChanged(position, cartItems.size());
 
-                                                double totalProductPrice = amount * item.PricingProduct().storePrice();
-
-                                                EventBus.getDefault().postSticky(new CalculatePriceEvent(totalProductPrice));
-
-                                                iClickRecyclerAdapter.onClickAdapter(position);
-
-                                            }
-                                            else
-                                            {
-                                                holder.progress_circular.setVisibility(View.INVISIBLE);
-                                                holder.img_delete_product.setVisibility(View.VISIBLE);
-                                            }
-
-                                        }
-                                    });
-
-                                }
-
-                                @Override
-                                public void onFailure(@NotNull ApolloException e) {
-
-                                }
-                            });
 
 
 
@@ -299,6 +275,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
     }
 
     public interface IDeleteCartItemsListener {
-        void onDeleteCart(int position);
+        void onDeleteCart(int position , int amount);
     }
 }

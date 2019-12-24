@@ -35,6 +35,7 @@ public class StoreTypesPresenter {
                     public void onResponse(@NotNull Response<StoreTypesQuery.Data> response) {
 
                         StoreTypesQuery.@Nullable GetAllStoresCount allStores = response.data().StoreTypeQuery().getAllStoresCount();
+                        storeTypesView.hideProgressBar();
 
                         if (allStores.status() == 200) {
 
@@ -54,7 +55,7 @@ public class StoreTypesPresenter {
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
-
+                        storeTypesView.hideProgressBar();
                     }
                 });
 //                .enqueue(new ApolloCall.Callback<GetAllCategoriesQuery.Data>() {

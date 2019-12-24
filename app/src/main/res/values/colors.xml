@@ -48,5 +48,6 @@
 
 
     <color name="colorClick">#867C7F81</color>
+    <color name="colorGrayStore">#98979D</color>
 
 </resources>

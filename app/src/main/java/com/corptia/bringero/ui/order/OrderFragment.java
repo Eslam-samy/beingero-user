@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
@@ -61,6 +62,9 @@ public class OrderFragment extends Fragment implements CurrentOrderView {
     TextView txt_lab_last_order;
     @BindView(R.id.txt_lab_current_order)
     TextView txt_lab_current_order;
+
+    @BindView(R.id.loading)
+    LottieAnimationView loading;
 
     OrderPresenter presenter = new OrderPresenter(this);
     CurrentOrderAdapter adapterLastOrder, adapterCurrentOrder;
@@ -256,7 +260,12 @@ public class OrderFragment extends Fragment implements CurrentOrderView {
 
     @Override
     public void hideProgressBar() {
-
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                loading.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
