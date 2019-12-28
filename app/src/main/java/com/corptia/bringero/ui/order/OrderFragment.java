@@ -219,6 +219,7 @@ public class OrderFragment extends Fragment implements CurrentOrderView {
                         int serialOrder = adapterCurrentOrder.getSerialOrder(position);
                         intent.putExtra(Constants.EXTRA_ORDER_ID, orderId);
                         intent.putExtra(Constants.EXTRA_ORDER_SERIAL, serialOrder);
+                        intent.putExtra(Constants.EXTRA_ORDER_SERIAL, serialOrder);
                         startActivity(intent);
 
                     }

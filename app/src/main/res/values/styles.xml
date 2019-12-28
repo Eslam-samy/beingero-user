@@ -247,6 +247,39 @@
     </style>
 
 
+    <style name="NavigationDrawerStyle">
+
+        <item name="android:textSize">14sp</item><!-- text size in menu-->
+
+        <!-- item size in menu-->
+        <item name="android:listPreferredItemHeightSmall">40dp</item>
+        <item name="listPreferredItemHeightSmall">40dp</item>
+
+        <!-- item padding left in menu-->
+        <item name="android:listPreferredItemPaddingLeft">14dp</item>
+        <item name="listPreferredItemPaddingLeft">14dp</item>
+
+        <!-- item padding right in menu-->
+        <item name="android:listPreferredItemPaddingRight">14dp</item>
+        <item name="listPreferredItemPaddingRight">14dp</item>
+    </style>
+
+
+    <style name="ButtonLanguage">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/colorCharcoal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:gravity">left|center</item>
+        <item name="android:textSize">@dimen/medium_margin</item>
+        <!--        <item name="android:drawableRight">@drawable/ic_check_primary</item>-->
+        <item name="android:paddingLeft">@dimen/medium_margin</item>
+        <item name="android:paddingRight">@dimen/medium_margin</item>
+        <item name="android:stateListAnimator">@null</item>
+
+    </style>
+
     <!-- MaterialSearchViewStyle -->
 <!--    <style name="MaterialSearchViewStyle">-->
 <!--        &lt;!&ndash; Background for the search bar&ndash;&gt;-->

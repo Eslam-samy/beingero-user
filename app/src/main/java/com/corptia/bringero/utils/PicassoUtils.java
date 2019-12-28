@@ -38,18 +38,6 @@ public class PicassoUtils {
                     //.networkPolicy(NetworkPolicy.OFFLINE)
                     .into(target);
         }
-        else
-        {
-
-            Picasso.get()
-                    .load(R.drawable.ic_placeholder_product)
-                    //.resize(size,size)
-                    //.transform(new BitmapTransform(MAX_WIDTH, MAX_HEIGHT))
-                    //.onlyScaleDown()
-                    //.centerCrop()
-                    //.networkPolicy(NetworkPolicy.OFFLINE)
-                    .into(target);
-        }
 
 
     }

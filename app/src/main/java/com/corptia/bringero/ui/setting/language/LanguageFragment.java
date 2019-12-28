@@ -3,10 +3,12 @@ package com.corptia.bringero.ui.setting.language;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -28,7 +30,11 @@ import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.UpdateUserInfoMutation;
 import com.corptia.bringero.model.Language;
 import com.corptia.bringero.type.UserInfo;
+import com.corptia.bringero.ui.Main.MainActivity;
+import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.language.LocaleHelper;
+import com.corptia.bringero.utils.sharedPref.PrefKeys;
+import com.corptia.bringero.utils.sharedPref.PrefUtils;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -41,15 +47,16 @@ import dmax.dialog.SpotsDialog;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class LanguageFragment extends Fragment {
+public class LanguageFragment extends Fragment implements View.OnClickListener {
 
-    @BindView(R.id.spinner_language)
-    Spinner spinner_language;
+    @BindView(R.id.btn_arabic)
+    Button btn_arabic;
+    @BindView(R.id.btn_english)
+    Button btn_english;
     @BindView(R.id.btn_save)
     Button btn_save;
-    ArrayList<Language> languageList;
 
-    Language language ; // when Select Language store here
+    Language language = new Language(); // when Select Language store here
 
     AlertDialog dialog ;
     Handler handler = new Handler();
@@ -66,39 +73,24 @@ public class LanguageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_language, container, false);
 
         ButterKnife.bind(this, view);
-        fillSpinnerLanguage();
+
         dialog = new SpotsDialog.Builder().setContext(getActivity()).setCancelable(false).build();
 
         if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar"))
-            spinner_language.setSelection(0);
-        else spinner_language.setSelection(1);
+            setCheckOnArabic();
+        else setCheckOnEnglish();
 
 
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 updateLanguage(language);
-
             }
         });
 
-        spinner_language.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                language = new Language();
-                language = (Language) parent.getSelectedItem();
-                // Log.d("onItemSelected", "" + language.getName());
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        btn_arabic.setOnClickListener(this);
+        btn_english.setOnClickListener(this);
 
         return view;
     }
@@ -106,60 +98,47 @@ public class LanguageFragment extends Fragment {
     private void updateLanguage(Language mlanguage) {
 
 
-        if (mlanguage!=null)
-        {
-            dialog.show();
-            UserInfo info = UserInfo.builder().language(mlanguage.getId()).build();
-            MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(info).build())
-                    .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
-                        @Override
-                        public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
-
-                            if (response.data().UserMutation().updateInfo().status() == 200)
-                            {
+        if (mlanguage != null) {
+            if (!mlanguage.getName().equalsIgnoreCase(Common.CURRENT_USER.getLanguage())) {
+                dialog.show();
+                UserInfo info = UserInfo.builder().language(mlanguage.getId()).build();
+                MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(info).build())
+                        .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
+                            @Override
+                            public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
 
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
+                                        if (response.data().UserMutation().updateInfo().status() == 200) {
+                                            Common.CURRENT_USER.setToken(response.data().UserMutation().updateInfo().token());
+                                            Common.CURRENT_USER.setLanguage(response.data().UserMutation().updateInfo().data().language());
+//                                    updateViews(mlanguage.getId());
+                                            language = null;
+                                            dialog.dismiss();
 
-                                        updateViews(mlanguage.getId());
-                                        language = null;
-                                        dialog.dismiss();
+                                            LocaleHelper.setLocale(getActivity(),  Common.CURRENT_USER.getLanguage().toLowerCase());
 
-                                        Common.CURRENT_USER.setLanguage(response.data().UserMutation().updateInfo().data().language());
+                                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            startActivity(intent);
 
+                                        } else {
+                                            dialog.dismiss();
+                                        }
                                     }
                                 });
 
                             }
-                            else
-                            {
 
-                                handler.post(() -> dialog.dismiss());
+                            @Override
+                            public void onFailure(@NotNull ApolloException e) {
+
                             }
-                        }
+                        });
+            }
 
-                        @Override
-                        public void onFailure(@NotNull ApolloException e) {
-
-                        }
-                    });
         }
-
-    }
-
-    // For Lang
-
-    private void fillSpinnerLanguage() {
-
-        languageList = new ArrayList<>();
-        languageList.add(new Language("ar", "العربيه"));
-        languageList.add(new Language("en", "English"));
-
-        //fill data in spinner
-        ArrayAdapter<Language> adapter = new ArrayAdapter<Language>(getActivity(), android.R.layout.simple_spinner_dropdown_item, languageList);
-        spinner_language.setAdapter(adapter);
-
     }
 
 
@@ -192,4 +171,35 @@ public class LanguageFragment extends Fragment {
         setTitle(resources.getString(R.string.main_activity_toolbar_title));*/
     }
 
+    private  void setCheckOnArabic(){
+        btn_arabic.setCompoundDrawablesWithIntrinsicBounds( 0, 0, R.drawable.ic_check_primary, 0);
+        btn_english.setCompoundDrawablesWithIntrinsicBounds( 0, 0, 0, 0);
+        language.setId("ar");
+        language.setName("Arabic");
+
+    }
+
+
+    private  void setCheckOnEnglish(){
+        btn_english.setCompoundDrawablesWithIntrinsicBounds(0, 0,  R.drawable.ic_check_primary, 0);
+        btn_arabic.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        language.setId("en");
+        language.setName("English");
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId())
+        {
+            case R.id.btn_arabic:
+                setCheckOnArabic();
+                break;
+
+            case R.id.btn_english:
+                setCheckOnEnglish();
+                break;
+        }
+
+    }
 }

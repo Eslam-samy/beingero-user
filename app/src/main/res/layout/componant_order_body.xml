@@ -84,7 +84,7 @@
             android:layout_marginTop="@dimen/large_margin"
             android:layout_marginEnd="@dimen/large_margin"
             android:text="&#8226; preparing"
-            android:textColor="@color/shipped"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/normal_text_size"
             app:layout_constraintBottom_toBottomOf="@id/txt_content_count"
             app:layout_constraintEnd_toEndOf="parent" />

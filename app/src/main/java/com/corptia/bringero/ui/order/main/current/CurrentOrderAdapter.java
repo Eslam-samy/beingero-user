@@ -163,7 +163,7 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     }
 
-    DeliveryOrdersQuery.DeliveryOrderDatum getItem(int position) {
+    public DeliveryOrdersQuery.DeliveryOrderDatum getItem(int position) {
         return deliveryOrderList.get(position);
     }
 

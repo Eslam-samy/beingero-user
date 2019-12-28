@@ -191,28 +191,30 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
     private void showPlaceHolder() {
 
+        if (getActivity()!=null) {
 
-        recycler_cart.setVisibility(View.GONE);
-        btn_2.setVisibility(View.GONE);
+            recycler_cart.setVisibility(View.GONE);
+            btn_2.setVisibility(View.GONE);
 
-        layout_placeholder.setVisibility(View.VISIBLE);
-        img_placeholder.setImageResource(R.drawable.ic_placeholder_cart);
+            layout_placeholder.setVisibility(View.VISIBLE);
+            img_placeholder.setImageResource(R.drawable.ic_placeholder_cart);
 
-        btn_home.setText(getString(R.string.menu_home));
-        btn_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((BottomNavigationView) getActivity()
-                        .findViewById(R.id.nav_bottomNavigationView))
-                        .setSelectedItemId(R.id.nav_home);
-            }
-        });
+            btn_home.setText(getString(R.string.menu_home));
+            btn_home.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ((BottomNavigationView) getActivity()
+                            .findViewById(R.id.nav_bottomNavigationView))
+                            .setSelectedItemId(R.id.nav_home);
+                }
+            });
 
 
-        txt_placeholder_title.setText(getString(R.string.placeholder_title_cart));
-        txt_placeholder_dec.setText(getString(R.string.placeholder_dec_cart));
+            txt_placeholder_title.setText(getString(R.string.placeholder_title_cart));
+            txt_placeholder_dec.setText(getString(R.string.placeholder_dec_cart));
 
-        layout_checkOut.setVisibility(View.GONE);
+            layout_checkOut.setVisibility(View.GONE);
+        }
 
     }
 

@@ -26,10 +26,8 @@
 
     <color name="approved">#46C93A</color>
     <color name="rejected">#FF4757</color>
-    <color name="canceled">#8388A4</color>
-    <color name="delivered">#46C93A</color>
-    <color name="shipped">#1F74FF</color>
-    <color name="requested">#ffba00</color>
+    <color name="delivering">#1F74FF</color>
+    <color name="prepared">#ffba00</color>
 
     <color name="blueLight">#4C69FF</color>
     <color name="backgroundSplash">#23192d</color>
@@ -49,5 +47,8 @@
 
     <color name="colorClick">#867C7F81</color>
     <color name="colorGrayStore">#98979D</color>
+
+    <color name="color_line_box_language">#707070</color>
+    <color name="border_image">#E7E7E8</color>
 
 </resources>

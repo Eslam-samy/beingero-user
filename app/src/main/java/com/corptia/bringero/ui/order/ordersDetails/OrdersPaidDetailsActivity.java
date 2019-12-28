@@ -28,6 +28,7 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.model.CartModel;
+import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.ui.tracking.TrackingActivity;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.karumi.dexter.Dexter;
@@ -222,10 +223,12 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
                 recycler_order.setAdapter(adapter);
 
-                if (deliveryOrderData.AllTrip().data().Tracks() !=null)
+                if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue()) ||
+                        deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERING.rawValue())){
                 Common.CURRENT_TRACK = deliveryOrderData.AllTrip().data().Tracks();
 
                 pilotId = deliveryOrderData.pilotId();
+                }
             }
         });
 

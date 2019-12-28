@@ -1,6 +1,8 @@
 package com.corptia.bringero.ui.home.ui.notification;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -85,6 +88,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         TextView txt_messages_notification;
         @BindView(R.id.txt_date_notification)
         TextView txt_date_notification;
+        @BindView(R.id.card_image_notification)
+        CardView card_image_notification;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -100,6 +105,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             txt_date_notification.setText(notification.createdAt().toString());
             txt_messages_notification.setText(notification.message());
+
+            String uriColor = "@color/" + notification.docStatus().toLowerCase();
+            int colorResource = context.getResources().getIdentifier(uriColor, null, context.getPackageName());
+            card_image_notification.setCardBackgroundColor(context.getResources().getColor(colorResource));
+
+            String uriImage = "@drawable/ic_notification_" +  notification.docStatus().toLowerCase();
+            int imageResource = context.getResources().getIdentifier(uriImage, null, context.getPackageName());
+//            Drawable res = context.getResources().getDrawable(imageResource);
+
+            image_notification.setImageResource(imageResource);
 
         }
 

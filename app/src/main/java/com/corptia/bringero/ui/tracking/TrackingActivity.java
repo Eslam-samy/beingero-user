@@ -25,17 +25,22 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.bumptech.glide.Glide;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
-import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
-import com.corptia.bringero.ui.Main.MainActivity;
-import com.corptia.bringero.ui.MapWork.MapsActivity;
+import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.TripQuery;
+import com.corptia.bringero.type.DeliveryOrderStatus;
+import com.corptia.bringero.type.TrackingTripFilterInput;
 import com.corptia.bringero.utils.PicassoMarker;
-import com.corptia.bringero.utils.PicassoUtils;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.LocationCallback;
@@ -43,7 +48,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -59,7 +63,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.GeoApiContext;
 import com.logicbeanzs.uberpolylineanimation.MapAnimator;
-import com.squareup.picasso.Picasso;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -123,6 +129,25 @@ public class TrackingActivity extends AppCompatActivity implements
     private PicassoMarker marker;
 
 
+    @BindView(R.id.btn_satellite)
+    View btn_satellite;
+    @BindView(R.id.btn_currentLocation)
+    View btn_currentLocation;
+
+    @BindView(R.id.img_pilot)
+    CircleImageView img_pilot;
+    @BindView(R.id.txt_name)
+    TextView txt_name;
+    @BindView(R.id.txt_rating)
+    TextView txt_rating;
+    @BindView(R.id.txt_order_id)
+    TextView txt_order_id;
+    @BindView(R.id.txt_arrived_in)
+    TextView txt_arrived_in;
+    @BindView(R.id.btn_back)
+    Button btn_back;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,12 +157,21 @@ public class TrackingActivity extends AppCompatActivity implements
 
         initGoogleMap(savedInstanceState);
 
-        if (getIntent() != null) {
-            getLiveLocationPilot(getIntent().getStringExtra(Constants.EXTRA_PILOT_ID));
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
-        }
+        btn_satellite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                mMap.setMapType(mMap.MAP_TYPE_SATELLITE); // Here is where you set the map type
 
+            }
+        });
     }
 
 //
@@ -186,7 +220,7 @@ public class TrackingActivity extends AppCompatActivity implements
                             pilotMarker = mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(location.latitude, location.longitude))
                                     .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_pilot))
-                                    .title("الطيار بيه"));
+                                    .title("الطيار"));
                         }
 
                         latLng[0] = location.latitude;
@@ -244,9 +278,6 @@ public class TrackingActivity extends AppCompatActivity implements
 
     }
 
-    Location closestLocation;
-    int smallestDistance = -1;
-
     private void updateLine(Marker pilotMarker) {
         LatLng latLng = pilotMarker.getPosition();
 //        MapAnimator.getInstance().animateRoute(mMap, latLngs);
@@ -274,6 +305,9 @@ public class TrackingActivity extends AppCompatActivity implements
 
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setRotateGesturesEnabled(false);
+        mMap.getUiSettings().setRotateGesturesEnabled(false);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+
         mMap.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(false);
         mMap.setMyLocationEnabled(true);
 
@@ -284,6 +318,8 @@ public class TrackingActivity extends AppCompatActivity implements
         } catch (Resources.NotFoundException e) {
             Log.e("ERROR_MAP", "Resource not found " + e.getMessage());
         }
+
+
 
 
         gestureDetector = new ScaleGestureDetector(TrackingActivity.this, new ScaleGestureDetector.OnScaleGestureListener() {
@@ -312,28 +348,9 @@ public class TrackingActivity extends AppCompatActivity implements
             }
         });
 
-        latLngs = new ArrayList<>();
-        for (DeliveryOneOrderQuery.Track latLng : Common.CURRENT_TRACK.get(Common.CURRENT_TRACK.size() - 1)) {
-            latLngs.add(new LatLng(latLng.lat(), latLng.lng()));
-        }
 
+        getTrip(getIntent().getStringExtra(Constants.EXTRA_ORDER_ID));
 
-        //Create Line
-        MapAnimator.getInstance().animateRoute(mMap, latLngs);
-        zoomRoute(latLngs);
-
-        if (Common.CURRENT_USER != null) {
-            String avatar = Common.CURRENT_USER.getAvatarName();
-
-            mMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude))
-                    .icon(BitmapDescriptorFactory
-                            .fromBitmap(
-                                    createCustomMarker(
-                                            TrackingActivity.this
-                                            , Common.BASE_URL_IMAGE + avatar))))
-                    .setTitle(Common.CURRENT_USER.getFullName());
-        }
     }
 
 
@@ -579,5 +596,80 @@ public class TrackingActivity extends AppCompatActivity implements
         });
     }
 
+
+
+    //Get Data Trip
+    private void getTrip(String deliveryOrderId){
+
+        TrackingTripFilterInput trackingTripFilterInput = TrackingTripFilterInput.builder().deliveryOrderId(deliveryOrderId).build();
+        MyApolloClient.getApollowClientAuthorization()
+                .query(TripQuery.builder().filter(trackingTripFilterInput).build())
+                .enqueue(new ApolloCall.Callback<TripQuery.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<TripQuery.Data> response) {
+
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (response.data().TrackingTripQuery().getOne().status() == 200){
+
+                            TripQuery.@Nullable Data1 data = response.data().TrackingTripQuery().getOne().data();
+
+                            List<TripQuery.AvailableTrack> realTrack = data.availableTracks().get(data.availableTracks().size()-1);
+
+
+                            if (getIntent() != null && !response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())) {
+                                getLiveLocationPilot(getIntent().getStringExtra(Constants.EXTRA_PILOT_ID));
+                            }
+
+
+                            latLngs = new ArrayList<>();
+                            for (TripQuery.AvailableTrack latLng : realTrack) {
+                                latLngs.add(new LatLng(latLng.lat(), latLng.lng()));
+                            }
+
+
+                            //Create Line
+                            MapAnimator.getInstance().animateRoute(mMap, latLngs);
+                            zoomRoute(latLngs);
+
+                            if (Common.CURRENT_USER != null) {
+                                String avatar = Common.CURRENT_USER.getAvatarName();
+
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude))
+                                        .icon(BitmapDescriptorFactory
+                                                .fromBitmap(
+                                                        createCustomMarker(
+                                                                TrackingActivity.this
+                                                                , Common.BASE_URL_IMAGE + avatar))))
+                                        .setTitle(Common.CURRENT_USER.getFullName());
+                            }
+
+
+                        }
+                        else
+                        {
+
+
+
+                        }
+
+                    }
+                });
+
+
+
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+
+            }
+        });
+
+    }
 
 }

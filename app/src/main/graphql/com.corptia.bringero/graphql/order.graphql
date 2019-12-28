@@ -429,6 +429,14 @@ mutation createOrderMutation {
 query trip($filter: TrackingTripFilterInput) {
     TrackingTripQuery {
         getOne(filter: $filter) {
+            status
+            message
+            errors {
+                code
+                path
+                message
+            }
+
             data {
                 _id
                 serial
@@ -479,6 +487,12 @@ query trip($filter: TrackingTripFilterInput) {
                                         }
                                     }
                                 }
+                            }
+                        }
+
+                        TripResponse{
+                            data{
+                                _id
                             }
                         }
 

@@ -1,10 +1,15 @@
 package com.corptia.bringero.ui.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
@@ -15,9 +20,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseActivity;
+import com.corptia.bringero.graphql.NotificationCountUnreadQuery;
+import com.corptia.bringero.type.NotificationFilterInput;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.home.ui.notification.NotificationFragment;
+import com.corptia.bringero.ui.location.AllLocation.LocationsDeliveryActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationAdapter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
@@ -27,8 +36,11 @@ import com.corptia.bringero.ui.cart.CartFragment;
 import com.corptia.bringero.ui.home.ui.storetypes.StoreTypesFragment;
 import com.corptia.bringero.ui.order.OrderFragment;
 import com.corptia.bringero.utils.CustomLoading;
+import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
@@ -39,14 +51,21 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 
 public class HomeActivity extends BaseActivity implements
@@ -63,9 +82,6 @@ public class HomeActivity extends BaseActivity implements
 
     Fragment selectedFragment = null;
 
-
-    Menu menu;
-
     @BindView(R.id.txt_location)
     TextView txt_location;
     @BindView(R.id.appbar)
@@ -78,9 +94,17 @@ public class HomeActivity extends BaseActivity implements
 
     CustomLoading loading;
 
+    //For Count Notification
+    View  notificationBadge;//notificationBadge
+    TextView  txt_notificationsBadge; // txt_notificationsBadge
+    BottomNavigationMenuView menuView;
+    BottomNavigationItemView itemViewNotification;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (Common.CURRENT_USER!=null)
+            LocaleHelper.setLocale(this, Common.CURRENT_USER.getLanguage().toLowerCase());
         setContentView(R.layout.activity_home);
 
         ButterKnife.bind(this);
@@ -89,9 +113,15 @@ public class HomeActivity extends BaseActivity implements
         initNavigationView();
 
 
+
         loading = new CustomLoading(this, true);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        menuView = (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
+        itemViewNotification = (BottomNavigationItemView) menuView.getChildAt(3);
+
+
         if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_SPEED_CART)) {
             bottomNavigationView.setSelectedItemId(R.id.nav_cart);
         } else
@@ -100,12 +130,26 @@ public class HomeActivity extends BaseActivity implements
         //Set CurrentLocation
         setCurrentLocation();
 
+        iniBadgeNotification();
+
         txt_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 bottomSheetDialog = Common.showDialogSelectLocation(HomeActivity.this, bottomSheetDialog, presenter);
             }
         });
+
+    }
+
+
+    private void iniBadgeNotification() {
+
+        notificationBadge = LayoutInflater.from(this).inflate(R.layout.layout_notification_badge, menuView, false);
+        txt_notificationsBadge = notificationBadge.findViewById(R.id.txt_notificationsBadge);
+        itemViewNotification.addView(notificationBadge);
+        notificationBadge.setVisibility(GONE);
+
+        //countNotificationUnread();
 
     }
 
@@ -181,6 +225,7 @@ public class HomeActivity extends BaseActivity implements
                     txt_location.setVisibility(View.GONE);
                     appbar.setBackgroundColor(getResources().getColor(R.color.white));
                     appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
+                    notificationBadge.setVisibility(GONE);
                 }
                 break;
 
@@ -204,7 +249,9 @@ public class HomeActivity extends BaseActivity implements
         switch (id) {
             case R.id.nav_settings:
                 startActivity(new Intent(this, SettingActivity.class));
-                finish();
+                break;
+            case R.id.nav_addresses:
+                startActivity(new Intent(this, LocationsDeliveryActivity.class));
                 break;
 
         }
@@ -220,7 +267,8 @@ public class HomeActivity extends BaseActivity implements
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            showExitDialog();
         }
     }
 
@@ -285,6 +333,75 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public void onSuccessMessage(String message) {
+
+    }
+
+
+    private void showExitDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.are_you_sure_to_exit));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                if (dialogInterface != null) {
+                    dialogInterface.dismiss();
+                }
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        countNotificationUnread();
+    }
+
+
+    private void countNotificationUnread() {
+
+        NotificationFilterInput filter = NotificationFilterInput.builder().status("Unread").build();
+        MyApolloClient.getApollowClientAuthorization().query(NotificationCountUnreadQuery.builder().filter(filter).build())
+                .enqueue(new ApolloCall.Callback<NotificationCountUnreadQuery.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<NotificationCountUnreadQuery.Data> response) {
+
+                        NotificationCountUnreadQuery.@Nullable GetAll data = response.data().NotificationCountUnreadQuery().getAll();
+                        if (data.status() == 200) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Update Number
+
+                                    int count = data.pagination().totalDocs();
+                                    if (count == 0) {
+                                        notificationBadge.setVisibility(GONE);
+                                    } else {notificationBadge.setVisibility(VISIBLE);
+                                        txt_notificationsBadge.setText(""+ (count > 99 ? "99+" : count));
+                                    }
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
 
     }
 }

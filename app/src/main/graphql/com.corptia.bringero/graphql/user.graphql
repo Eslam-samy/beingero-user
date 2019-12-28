@@ -156,6 +156,12 @@ mutation updateUserInfo($data: userInfo) {
             data {
                 phone
                 language
+                AvatarResponse{
+                    status
+                    data{
+                        name
+                    }
+                }
                 currentDeliveryAddress {
                     _id
                     name

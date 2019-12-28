@@ -4,46 +4,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:showIn="navigation_view">
 
-    <item
-        android:id="@+id/nav_pricing"
-        android:icon="@drawable/ic_nav_discounts"
-        android:title="@string/menu_pricing" />
 
-    <item
-        android:id="@+id/nav_wishlist"
-        android:icon="@drawable/ic_nav_wishlist"
-        android:title="@string/menu_wish_list" />
+    <group android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_addresses"
+            android:icon="@drawable/ic_nav_addresses"
+            android:title="@string/menu_my_addresses" />
 
-    <item
-        android:id="@+id/nav_order"
-        android:icon="@drawable/ic_nav_order"
-        android:title="@string/menu_order" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_nav_settings"
+            android:title="@string/menu_settings" />
 
-    <item
-        android:id="@+id/nav_notifications"
-        app:actionLayout="@layout/layout_switch_navigationview"
-        android:icon="@drawable/ic_nav_notifications"
-        android:title="@string/menu_notifications" />
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/ic_nav_contact"
+            android:title="@string/menu_contact" />
 
-    <item
-        android:id="@+id/nav_discounts"
-        android:icon="@drawable/ic_nav_discounts"
-        android:title="@string/menu_discounts" />
+    </group>
 
-    <item
-        android:id="@+id/nav_terms_conditions"
-        android:icon="@drawable/ic_nav_terms_conditions"
-        android:title="@string/menu_terms_conditions" />
 
-    <item
-        android:id="@+id/nav_contact_us"
-        android:icon="@drawable/ic_nav_contactus"
-        android:title="@string/menu_contact_us" />
 
-    <item
-        android:id="@+id/nav_settings"
-        android:icon="@drawable/ic_nav_settings"
-        android:title="@string/menu_settings" />
+
+
+
+    <group android:id="@+id/group2"
+        android:checkableBehavior="single">
+
+
+
+        <item android:id="@+id/nav_terms_conditions"
+            android:title="@string/terms_conditions" />
+
+        <item android:id="@+id/nav_privacy_policy"
+            android:title="@string/privacy_policy"/>
+
+        <item
+            android:id="@+id/nav_faq_support"
+            android:title="@string/faq_support"/>
+    </group>
 
 
 </menu>

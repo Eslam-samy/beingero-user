@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
@@ -50,6 +51,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -58,8 +60,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Month;
+import java.time.Year;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,7 +83,7 @@ import retrofit2.Retrofit;
 import static android.app.Activity.RESULT_OK;
 
 
-public class EditProfileFragment extends Fragment implements ImageContract.View {
+public class EditProfileFragment extends Fragment implements ImageContract.View, DatePickerDialog.OnDateSetListener {
 
     static final int REQUEST_TAKE_PHOTO = 101;
     static final int REQUEST_GALLERY_PHOTO = 102;
@@ -97,6 +104,8 @@ public class EditProfileFragment extends Fragment implements ImageContract.View 
     TextInputLayout input_birthDate;
     @BindView(R.id.img_avatar)
     CircleImageView img_avatar;
+    @BindView(R.id.edt_date)
+    EditText edt_date;
 
     @BindView(R.id.btn_save)
     Button btn_save;
@@ -104,6 +113,11 @@ public class EditProfileFragment extends Fragment implements ImageContract.View 
     AlertDialog dialog ;
 
     Handler handler = new Handler();
+
+    DatePickerDialog datePickerDialog;
+    int Year, Month, Day;
+    Calendar calendar;
+
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -128,7 +142,9 @@ public class EditProfileFragment extends Fragment implements ImageContract.View 
         input_lastName.getEditText().setText(userData.getLastName());
 
         if (userData.getAvatarName() !=null )
-        PicassoUtils.setImage(Common.BASE_URL_IMAGE + userData.getAvatarName() , img_avatar);
+            Picasso.get().load(Common.BASE_URL_IMAGE + userData.getAvatarName())
+            .placeholder(R.drawable.ic_placeholder_profile)
+            .into(img_avatar);
 
         img_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,6 +197,23 @@ public class EditProfileFragment extends Fragment implements ImageContract.View 
             }
         });
 
+        edt_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
+
+            }
+        });
+
+
+        try {
+            initDatePickerDialog();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
 
         return view;
     }
@@ -207,14 +240,14 @@ public class EditProfileFragment extends Fragment implements ImageContract.View 
 
                                 if (response.data().UserMutation().updateInfo().status() == 200)
                                 {
+                                    Common.CURRENT_USER.setFirstName(firstName);
+                                    Common.CURRENT_USER.setLastName(lastName);
+                                    Common.CURRENT_USER.setAvatarImageId(avatarImageId);
+                                    if (response.data().UserMutation().updateInfo().data().AvatarResponse().status() == 200)
+                                    Common.CURRENT_USER.setAvatarName(response.data().UserMutation().updateInfo().data().AvatarResponse().data().name());
 
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toasty.success(getActivity() , getString(R.string.successful_update)  ).show();
-                                            dialog.hide();
-                                        }
-                                    });
+                                    Toasty.success(getActivity() , getString(R.string.successful_update)  ).show();
+                                    dialog.hide();
 
                                 }
 
@@ -548,4 +581,47 @@ public class EditProfileFragment extends Fragment implements ImageContract.View 
         });
     }
 
+
+    private void initDatePickerDialog() throws ParseException {
+
+        calendar = Calendar.getInstance();
+
+
+            Year = calendar.get(Calendar.YEAR);
+            Month = calendar.get(Calendar.MONTH);
+            Day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        datePickerDialog = DatePickerDialog.newInstance(this, Year, Month, Day);
+        datePickerDialog.setThemeDark(false);
+        datePickerDialog.showYearPickerFirst(false);
+        datePickerDialog.setTitle(getString(R.string.date_of_birth));
+        datePickerDialog.dismissOnPause(true);
+        datePickerDialog.setCancelText(getString(R.string.canceled));
+        datePickerDialog.setOkText(getString(R.string.ok));
+
+
+        // Setting Min Date to today date
+//        Calendar min_date_c = Calendar.getInstance();
+//        datePickerDialog.setMinDate(min_date_c);
+
+
+        // Setting Max Date to next 3 years
+//        Calendar max_date_c = Calendar.getInstance();
+//        max_date_c.set(Calendar.YEAR, Year );
+//        datePickerDialog.setMaxDate(max_date_c);
+
+
+
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String date = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+
+//
+//        String myFormat = "yyyy-MM-dd";
+//        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+//        txt_date.setText(sdf.format(myCalendar.getTime()));
+        input_birthDate.getEditText().setText(date);
+    }
 }
