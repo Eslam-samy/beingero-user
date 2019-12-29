@@ -42,7 +42,7 @@ public class Common {
     public static final String BASE_URL = "http://bringero.site:8000/graphql";
     public static final String BASE_URL_IMAGE = "http://bringero.site:8000/images/";
     public static final String BASE_URL_IMAGE_UPLOAD = "http://bringero.site:8000/images/";
-    public static List<List<DeliveryOneOrderQuery.Track>> CURRENT_TRACK ;
+
     public static String TOKEN_FIREBASE = "";
 
     public static List<MyCartQuery.StoreDatum> CURRENT_CART;

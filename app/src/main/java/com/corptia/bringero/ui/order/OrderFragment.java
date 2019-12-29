@@ -27,6 +27,7 @@ import com.corptia.bringero.ui.order.main.current.OrderPresenter;
 import com.corptia.bringero.ui.order.main.current.CurrentOrderView;
 import com.corptia.bringero.ui.order.ordersDetails.OrdersPaidDetailsActivity;
 import com.corptia.bringero.utils.recyclerview.PaginationListener;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
@@ -88,8 +89,13 @@ public class OrderFragment extends Fragment implements CurrentOrderView {
         recycler_current_orders.setLayoutManager(new LinearLayoutManager(getActivity()));
         recycler_last_orders.setLayoutManager(linearLayoutManager);
 
+        recycler_last_orders.addItemDecoration(new LinearSpacingItemDecoration(15));
+        recycler_current_orders.addItemDecoration(new LinearSpacingItemDecoration(15));
+
         presenter.getDeliveryOrder(currentPage);
         presenter.getCurrentOrder();
+
+
 
 
         recycler_last_orders.addOnScrollListener(new PaginationListener(linearLayoutManager) {

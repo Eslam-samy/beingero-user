@@ -63,7 +63,7 @@
             android:id="@+id/img_timeline_status_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_timeline_check_blue"
+            android:src="@drawable/tracking_status_confirmed"
             app:layout_constraintEnd_toStartOf="@+id/time_line"
             app:layout_constraintTop_toTopOf="@+id/time_line"
             app:layout_constraintBottom_toBottomOf="@+id/time_line"/>
@@ -80,7 +80,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_timeline_check_blue"
+            android:src="@drawable/tracking_status_confirmed"
             app:layout_constraintStart_toStartOf="@+id/time_line"
             app:layout_constraintEnd_toEndOf="@+id/time_line"
             app:layout_constraintTop_toTopOf="@+id/time_line"

@@ -1,6 +1,8 @@
 package com.corptia.bringero.ui.order.ordersDetails;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,10 +18,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
@@ -50,13 +54,42 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
     @BindView(R.id.recycler_order)
     RecyclerView recycler_order;
-    @BindView(R.id.btn_cancel_order)
-    Button btn_cancel_order;
+//    @BindView(R.id.btn_cancel_order)
+//    Button btn_cancel_order;
     @BindView(R.id.btn_track_package)
     Button btn_track_package;
     @BindView(R.id.txt_order_id)
     TextView txt_order_id;
     OrdersPaidDetailsAdapter adapter ;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+
+    @BindView(R.id.txt_title_name_address)
+    TextView txt_title_name_address;
+    @BindView(R.id.txt_address)
+    TextView txt_address;
+
+    @BindView(R.id.txt_subtotal)
+    TextView txt_subtotal;
+    @BindView(R.id.txt_delivery_fees)
+    TextView txt_delivery_fees;
+    @BindView(R.id.txt_total)
+    TextView txt_total;
+
+    @BindView(R.id.txt_date_order)
+    TextView txt_date_order;
+
+
+    //For Tracking Line
+    @BindView(R.id.img_requsted)
+    ImageView img_requsted;
+    @BindView(R.id.img_confirmed)
+    ImageView img_confirmed;
+    @BindView(R.id.img_delivering)
+    ImageView img_delivering;
+    @BindView(R.id.img_delivered)
+    ImageView img_delivered;
 
     OrdersPaidDetailsPresenter detailsPresenter = new OrdersPaidDetailsPresenter(this);
 
@@ -73,25 +106,30 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         recycler_order.setNestedScrollingEnabled(true);
 
         Intent intent = getIntent();
+
+        initActionBar();
+
         if (intent != null) {
             orderid = intent.getStringExtra(Constants.EXTRA_ORDER_ID);
             int serialOrder = intent.getIntExtra(Constants.EXTRA_ORDER_SERIAL , 0);
+
+//            getSupportActionBar().setTitle(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
+
             txt_order_id.setText(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
 
             detailsPresenter.getSingleOrder(orderid);
 
-
         }
 
 
-        btn_cancel_order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                showDialogCancelOrder();
-
-            }
-        });
+//        btn_cancel_order.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                showDialogCancelOrder();
+//
+//            }
+//        });
 
 
         btn_track_package.setOnClickListener(new View.OnClickListener() {
@@ -134,80 +172,89 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
     }
 
-
-    public void showDialogCancelOrder(){
-
-
-        //For Dialog
-        Dialog dialog;
-        dialog = new Dialog(this);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_cancellation_reasons, null);
-
-       Button btn_change_of_mind= dialogView.findViewById(R.id.btn_change_of_mind);
-       Button btn_change_payment_method= dialogView.findViewById(R.id.btn_change_payment_method);
-       Button wrong_delivery_address= dialogView.findViewById(R.id.wrong_delivery_address);
-       Button forgot_to_apply_voucher= dialogView.findViewById(R.id.forgot_to_apply_voucher);
-
-
-        btn_change_of_mind.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_change_of_mind.setBackgroundResource(R.color.colorDarkGray);
-                btn_change_payment_method.setBackgroundResource(R.color.white);
-                wrong_delivery_address.setBackgroundResource(R.color.white);
-                forgot_to_apply_voucher.setBackgroundResource(R.color.white);
-            }
-        });
-
-        btn_change_payment_method.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_change_of_mind.setBackgroundResource(R.color.white);
-                btn_change_payment_method.setBackgroundResource(R.color.colorDarkGray);
-                wrong_delivery_address.setBackgroundResource(R.color.white);
-                forgot_to_apply_voucher.setBackgroundResource(R.color.white);
-            }
-        });
-
-        wrong_delivery_address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_change_of_mind.setBackgroundResource(R.color.white);
-                btn_change_payment_method.setBackgroundResource(R.color.white);
-                wrong_delivery_address.setBackgroundResource(R.color.colorDarkGray);
-                forgot_to_apply_voucher.setBackgroundResource(R.color.white);
-            }
-        });
-
-        forgot_to_apply_voucher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btn_change_of_mind.setBackgroundResource(R.color.white);
-                btn_change_payment_method.setBackgroundResource(R.color.white);
-                wrong_delivery_address.setBackgroundResource(R.color.white);
-                forgot_to_apply_voucher.setBackgroundResource(R.color.colorDarkGray);
-            }
-        });
-
-
-
-        dialog.setContentView(dialogView);
-
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setGravity(Gravity.BOTTOM | Gravity.CENTER);
-        //int mHeight = getResources().getDisplayMetrics().heightPixels; //For Get Height Screen
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-
-//        Bitmap map= DialogBlur.takeScreenShot(this);
-//
-//        Bitmap fast=fastblur(map, 10);
-//        final Drawable draw=new BitmapDrawable(getResources(),fast);
-//        dialog.getWindow().setBackgroundDrawable(draw);
-
-        dialog.setCancelable(true);
-        dialog.show();
+    private void initActionBar() {
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
     }
+
+
+
+//    public void showDialogCancelOrder(){
+//
+//
+//        //For Dialog
+//        Dialog dialog;
+//        dialog = new Dialog(this);
+//        View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_cancellation_reasons, null);
+//
+//       Button btn_change_of_mind= dialogView.findViewById(R.id.btn_change_of_mind);
+//       Button btn_change_payment_method= dialogView.findViewById(R.id.btn_change_payment_method);
+//       Button wrong_delivery_address= dialogView.findViewById(R.id.wrong_delivery_address);
+//       Button forgot_to_apply_voucher= dialogView.findViewById(R.id.forgot_to_apply_voucher);
+//
+//
+//        btn_change_of_mind.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                btn_change_of_mind.setBackgroundResource(R.color.colorDarkGray);
+//                btn_change_payment_method.setBackgroundResource(R.color.white);
+//                wrong_delivery_address.setBackgroundResource(R.color.white);
+//                forgot_to_apply_voucher.setBackgroundResource(R.color.white);
+//            }
+//        });
+//
+//        btn_change_payment_method.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                btn_change_of_mind.setBackgroundResource(R.color.white);
+//                btn_change_payment_method.setBackgroundResource(R.color.colorDarkGray);
+//                wrong_delivery_address.setBackgroundResource(R.color.white);
+//                forgot_to_apply_voucher.setBackgroundResource(R.color.white);
+//            }
+//        });
+//
+//        wrong_delivery_address.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                btn_change_of_mind.setBackgroundResource(R.color.white);
+//                btn_change_payment_method.setBackgroundResource(R.color.white);
+//                wrong_delivery_address.setBackgroundResource(R.color.colorDarkGray);
+//                forgot_to_apply_voucher.setBackgroundResource(R.color.white);
+//            }
+//        });
+//
+//        forgot_to_apply_voucher.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                btn_change_of_mind.setBackgroundResource(R.color.white);
+//                btn_change_payment_method.setBackgroundResource(R.color.white);
+//                wrong_delivery_address.setBackgroundResource(R.color.white);
+//                forgot_to_apply_voucher.setBackgroundResource(R.color.colorDarkGray);
+//            }
+//        });
+//
+//
+//
+//        dialog.setContentView(dialogView);
+//
+//        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+//        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+//        dialog.getWindow().setGravity(Gravity.BOTTOM | Gravity.CENTER);
+//        //int mHeight = getResources().getDisplayMetrics().heightPixels; //For Get Height Screen
+//        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//
+////        Bitmap map= DialogBlur.takeScreenShot(this);
+////
+////        Bitmap fast=fastblur(map, 10);
+////        final Drawable draw=new BitmapDrawable(getResources(),fast);
+////        dialog.getWindow().setBackgroundDrawable(draw);
+//
+//        dialog.setCancelable(true);
+//        dialog.show();
+//    }
 
     @Override
     public void setSingleOrder(DeliveryOneOrderQuery.DeliveryOrderData deliveryOrderData) {
@@ -223,10 +270,57 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
                 if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue()) ||
                         deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERING.rawValue())){
-                Common.CURRENT_TRACK = deliveryOrderData.AllTrip().data().Tracks();
+//                Common.CURRENT_TRACK = deliveryOrderData.AllTrip().data().Tracks();
 
                 pilotId = deliveryOrderData.pilotId();
                 }
+
+
+
+
+                //Here Total And Address
+                txt_title_name_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
+                txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
+
+                txt_subtotal.setText(new StringBuilder().append(500.00).append(" ").append(getString(R.string.currency)));
+                txt_delivery_fees.setText(new StringBuilder().append(20).append(" ").append(getString(R.string.currency)));
+                txt_total.setText(new StringBuilder().append(20 + 500.00).append(" ").append(getString(R.string.currency)));
+
+//                total_price.setText(new StringBuilder().append(20 + 500.00).append(" ").append(getString(R.string.currency)));
+
+
+                //For Tracking Line
+                if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESREPLIED.rawValue())){
+                    img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
+                }
+                else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESPREPARED.rawValue())){
+                    img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
+                }
+
+                else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERING.rawValue())){
+                    img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
+                    img_delivering.setImageResource(R.drawable.tracking_status_delivering);
+
+                    btn_track_package.setVisibility(View.VISIBLE);
+                }
+                else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())){
+                    img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
+                    img_delivering.setImageResource(R.drawable.tracking_status_delivering);
+                    img_delivered.setImageResource(R.drawable.tracking_status_delivered);
+                }
+
+//                    ORDERSREQUESTED("OrdersRequested"),
+//
+//                            STORESREPLIED("StoresReplied"),
+//
+//                            STORESPREPARED("StoresPrepared"),
+//
+//                            ASSIGNEDTOPILOT("AssignedToPilot"),
+//
+//                            DELIVERING("Delivering"),
+//
+//                            DELIVERED("Delivered"),
+
             }
         });
 
@@ -254,4 +348,11 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

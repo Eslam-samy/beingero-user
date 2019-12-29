@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.ui.order.storeDetail.StoreDetailAdapter;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.model.StoreTypes;
@@ -26,7 +27,7 @@ public class ShopDetailActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    ShopDetailAdapter adapter;
+    StoreDetailAdapter adapter;
     List<StoreTypes> storeTypesList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class ShopDetailActivity extends BaseActivity {
         storeTypesList.add(new StoreTypes(1,"asd"));
         storeTypesList.add(new StoreTypes(1,"asd"));
 
-        adapter = new ShopDetailAdapter(this , storeTypesList);
+//        adapter = new StoreDetailAdapter(this , storeTypesList);
         recycler_items.setAdapter(adapter);
 
 

@@ -1,21 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <include layout="@layout/componant_brand_header"
-        android:id="@+id/header_layout"/>
+    android:layout_height="100dp"
+    android:background="@drawable/shadow_orders_paid_details">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_items"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/header_layout"
-        android:translationY="-10dp"
-        />
+    <ImageView
+        android:id="@+id/image_store"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="24dp"
+        android:src="@drawable/ic_placeholder_store"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.355" />
+
+    <TextView
+        android:id="@+id/txt_name_store"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Xiaomi"
+        app:layout_constraintTop_toTopOf="@+id/image_store"
+        app:layout_constraintBottom_toBottomOf="@+id/image_store"
+        app:layout_constraintStart_toEndOf="@+id/image_store"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/txt_total_products"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_name_store"
+        android:drawableStart="@drawable/ic_order_package"
+        android:drawablePadding="@dimen/low_padding"
+        android:fontFamily="@font/poppinsmedium"
+        android:textSize="@dimen/normal_text_size"/>
+
+    <TextView
+        android:id="@+id/txt_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        tools:text="80.00 EGP"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_name_store"
+        android:textColor="@color/colorPrimary"
+        android:fontFamily="@font/poppinssemibold"
+        android:textSize="@dimen/normal_text_size"/>
+
+<!--    <TextView-->
+<!--        android:id="@+id/txt_status"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="28dp"-->
+<!--        android:text="Preparing"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintVertical_bias="0.407" />-->
+
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recycler_items"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/header_layout"-->
+<!--        android:translationY="-10dp"-->
+<!--        />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

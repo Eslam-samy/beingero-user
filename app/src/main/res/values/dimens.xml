@@ -6,6 +6,8 @@
     <!-- Radius margin -->
     <dimen name="radius_normal">8dp</dimen>
     <dimen name="radius_large">12dp</dimen>
+    <dimen name="radius_low">4dp</dimen>
+
 
     <!-- Dimens margin -->
     <dimen name="app_margin">32dp</dimen>
@@ -36,7 +38,6 @@
     <!-- Card Elevation margin -->
     <dimen name="cardElevationMedium">4dp</dimen>
     <dimen name="cardElevationLow">2dp</dimen>
-
 
 
     <!-- Default screen margins, per the Android Design guidelines. -->

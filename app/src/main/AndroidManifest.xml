@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.tracking.TrackingActivity"></activity>
+        <activity android:name=".ui.order.storeDetail.StoreDetailsActivity"></activity>
+        <activity android:name=".ui.tracking.TrackingActivity" />
         <activity android:name=".ui.search.SearchProductsActivity" />
         <activity android:name=".ui.cart.checkOut.CheckOutActivity" />
         <activity android:name=".ui.location.AllLocation.LocationsDeliveryActivity" />
@@ -95,13 +96,13 @@
                 android:resource="@color/colorAccent" />
         </service>
     </application>
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
 </manifest>

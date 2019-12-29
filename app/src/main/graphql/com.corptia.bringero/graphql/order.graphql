@@ -111,6 +111,7 @@ query deliveryOneOrder($_id: ID) {
                 pilotId
                 createdAt
                 status
+
                 BuyingOrderResponse {
                     status
                     message
@@ -120,13 +121,8 @@ query deliveryOneOrder($_id: ID) {
                         serial
                         storeId
                         status
-                        DeliveryOrderResponse {
-                            status
-                            data {
-                                _id
-                                serial
-                            }
-                        }
+                        TotalPrice
+
                         StoreResponse {
                             data {
                                 _id
@@ -137,15 +133,9 @@ query deliveryOneOrder($_id: ID) {
                                         name
                                     }
                                 }
-                                CityReponse {
-                                    data {
-                                        _id
-                                        name
-                                    }
-                                }
                             }
                         }
-                        customerUserId
+
                         CustomerUserResponse {
                             data {
                                 firstName
@@ -154,7 +144,6 @@ query deliveryOneOrder($_id: ID) {
                                 roleName
                             }
                         }
-                        orderMaxPreparingMinutes
 
                         ItemsResponse {
                             status
@@ -193,17 +182,17 @@ query deliveryOneOrder($_id: ID) {
                     }
                 }
 
-                AllTrip:TripResponse{
-                    status
-                    message
-                    data{
-                        _id
-                        Tracks:availableTracks{
-                            lat
-                            lng
-                        }
-                    }
-                }
+                # AllTrip:TripResponse{
+                #     status
+                #     message
+                #     data{
+                #         _id
+                #         Tracks:availableTracks{
+                #             lat
+                #             lng
+                #         }
+                #     }
+                # }
             }
         }
     }
@@ -524,6 +513,59 @@ query trip($filter: TrackingTripFilterInput) {
                 realTrack {
                     lat
                     lng
+                }
+            }
+        }
+    }
+}
+
+
+query SingleOrderQuery($buyingOrderId: ID) {
+    BuyingOrderQuery {
+        get(_id: $buyingOrderId) {
+            message
+            status
+            errors {
+                path
+                message
+            }
+            SingleOrder : data {
+                _id
+                deliveryOrderId
+                serial
+                storeId
+                createdAt
+                status
+                customerUserId
+                TotalPrice
+                orderMaxPreparingMinutes
+
+                ItemsResponse {
+                    status
+                    message
+                    ItemsData :  data {
+                        _id
+                        pricingProductId
+                        amount
+                        productId
+                        storePrice
+                        productName
+
+                        PricingProductResponse {
+                            data {
+                                ProductResponse {
+                                    data {
+                                        ImageResponse {
+                                            status
+                                            data {
+                                                name
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
