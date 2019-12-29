@@ -3,23 +3,127 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:layout_height="wrap_content"
-    android:background="@drawable/shadow_order_current"
+    android:layout_height="125dp"
+    android:background="@drawable/shadow_order"
     >
 
-    <include
-        layout="@layout/componant_order_body"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:layout_marginStart="@dimen/app_low_margin" />
-
-    <ImageView
-        android:id="@+id/image_brands"
+    <TextView
+        android:id="@+id/txt_order_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:text="Order ID #860368"
+        android:textSize="@dimen/normal_text_size"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppinssemibold"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginStart="@dimen/large_margin"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/txt_date_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/txt_order_id"
+        app:layout_constraintStart_toStartOf="@+id/txt_order_id"
+        tools:text="12-May-2019"
+        android:fontFamily="@font/poppinsregular"
+        android:textSize="@dimen/low_xx_text_size"/>
+
+    <TextView
+        android:id="@+id/txt_content_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="3 Stores     10 Products"
+        app:layout_constraintTop_toBottomOf="@+id/txt_date_order"
+        app:layout_constraintStart_toStartOf="@+id/txt_order_id"
+        android:fontFamily="@font/poppinsregular"
+        android:textSize="@dimen/low_xx_text_size"/>
+
+    <TextView
+        android:id="@+id/txt_total_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_content_count"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="125.00 EGP"
+        android:layout_marginEnd="@dimen/large_margin"
+        android:fontFamily="@font/poppinssemibold"
+        android:textSize="@dimen/normal_text_size"/>
+
+<!--    <View-->
+<!--        android:id="@+id/line"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0.5dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/txt_total_price"-->
+<!--        android:layout_marginTop="@dimen/large_margin"-->
+<!--        android:background="@color/color_line_box_language"/>-->
+
+<!--    <View-->
+<!--        android:id="@+id/line2"-->
+<!--        android:layout_width="0.5dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/line"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_marginBottom="2dp"-->
+<!--        android:background="@color/color_line_box_language"/>-->
+
+
+
+<!--    <TextView-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:textAlignment="center"-->
+<!--        android:gravity="center"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/line2"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/line"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:text="@string/tracking"-->
+<!--        android:drawableStart="@drawable/ic_order_tracking"-->
+<!--        android:drawablePadding="@dimen/low_padding"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="@dimen/normal_text_size"-->
+<!--        android:fontFamily="@font/poppinsregular"-->
+<!--        android:paddingStart="50dp"-->
+<!--        android:paddingEnd="50dp"/>-->
+
+
+<!--    <TextView-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:textAlignment="center"-->
+<!--        android:gravity="center"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/line2"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/line"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        android:text="@string/view_order"-->
+<!--        android:drawableStart="@drawable/ic_order_view"-->
+<!--        android:drawablePadding="@dimen/low_padding"-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="@dimen/normal_text_size"-->
+<!--        android:fontFamily="@font/poppinsregular"-->
+<!--        android:paddingStart="50dp"-->
+<!--        android:paddingEnd="50dp"-->
+<!--        />-->
+
+    <TextView
+        android:id="@+id/txt_status"
+        android:layout_width="65dp"
+        android:layout_height="20dp"
+        tools:text="@string/cancel"
+        android:background="@drawable/background_order_ordersrequested"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_order_id"
+        android:layout_marginEnd="@dimen/large_margin"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:fontFamily="@font/poppinssemibold"
+        android:textSize="@dimen/low_xx_text_size"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

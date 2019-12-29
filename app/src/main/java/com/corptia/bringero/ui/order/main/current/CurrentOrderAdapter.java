@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.order.main.current;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,8 +41,8 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public CurrentOrderAdapter(Context context, List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderList) {
         this.context = context;
-        if (deliveryOrderList!=null)
-        this.deliveryOrderList = deliveryOrderList;
+        if (deliveryOrderList != null)
+            this.deliveryOrderList = deliveryOrderList;
     }
 
     @NonNull
@@ -72,8 +73,6 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public class ViewHolder extends BaseViewHolder {
 
-        @BindView(R.id.image_store)
-        ImageView image_store;
         @BindView(R.id.txt_date_order)
         TextView txt_date_order;
         @BindView(R.id.txt_content_count)
@@ -89,7 +88,6 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            image_store.setVisibility(View.GONE);
         }
 
         @Override
@@ -103,29 +101,44 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             DeliveryOrdersQuery.DeliveryOrderDatum orderDatum = deliveryOrderList.get(position);
 
-            if (orderDatum!=null) {
+
+            if (orderDatum != null) {
+
+                String uriString = "@string/order_status_" + orderDatum.status().rawValue().toLowerCase();
+                int stringResource = context.getResources().getIdentifier(uriString, null, context.getPackageName());
+
+                String uri = "@drawable/background_order_" + orderDatum.status().rawValue().toLowerCase();
+                int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
+                Drawable res = context.getResources().getDrawable(imageResource);
+
+                txt_status.setText(context.getResources().getString(stringResource));
+                txt_status.setBackground(res);
+
                 txt_date_order.setText(orderDatum.createdAt().toString());
-                txt_status.setText(orderDatum.status().rawValue());
                 txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
+
+
+
+
+//
+//
+
 
 //        holder.txt_total_price.setText(orderDatum.);
 
                 txt_content_count.setText(
                         new StringBuilder().append(orderDatum.StoresCount())
                                 .append(" ")
-                                .append(context.getString(R.string.packets))
+                                .append(context.getString(R.string.stores))
                                 .append(" , ")
                                 .append(orderDatum.ItemsCount())
                                 .append(" ")
-                                .append(context.getString(R.string.items)));
+                                .append(context.getString(R.string.products)));
 
 
                 if (clickListener != null)
                     itemView.setOnClickListener(view -> clickListener.onClick(view, position));
-            }
-            else
-            {
-                Log.d("HAZEM" , "I am Null for Loading ^_^");
+            } else {
             }
 
         }
@@ -156,7 +169,7 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         int position = deliveryOrderList.size() - 1;
         DeliveryOrdersQuery.DeliveryOrderDatum item = getItem(position);
         if (item == null) {
-            Log.d("HAZEM" , " Done Delete ");
+            Log.d("HAZEM", " Done Delete ");
             deliveryOrderList.remove(position);
             notifyItemRemoved(position);
         }

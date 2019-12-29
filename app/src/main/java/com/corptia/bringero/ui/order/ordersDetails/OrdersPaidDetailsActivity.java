@@ -58,8 +58,6 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     TextView txt_order_id;
     OrdersPaidDetailsAdapter adapter ;
 
-    List<CartModel> cartModelList = new ArrayList<>();
-
     OrdersPaidDetailsPresenter detailsPresenter = new OrdersPaidDetailsPresenter(this);
 
     String orderid , pilotId;

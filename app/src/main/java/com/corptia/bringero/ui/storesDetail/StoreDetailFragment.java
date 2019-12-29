@@ -106,6 +106,10 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
         View view = inflater.inflate(R.layout.fragment_brand_detail, container, false);
         ButterKnife.bind(this, view);
 
+        currentPage = 1;
+        isLoading = false;
+        isLastPage = false;
+
         if (Common.CURRENT_USER != null)
             if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")) {
                 root.setRotationY(180);

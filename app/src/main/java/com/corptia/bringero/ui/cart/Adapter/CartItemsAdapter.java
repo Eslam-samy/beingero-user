@@ -2,6 +2,7 @@ package com.corptia.bringero.ui.cart.Adapter;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,12 +145,13 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
 
                 } else {
+                    Log.d("HAZEM" , "SEE Postion << " + position);
+                    iDeleteCartItemsListener.onDeleteCart(position , amount);
 
                     cartItems.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, cartItems.size());
 
-                    iDeleteCartItemsListener.onDeleteCart(position , amount);
 
 
 //                    holder.progress_circular.setVisibility(View.VISIBLE);

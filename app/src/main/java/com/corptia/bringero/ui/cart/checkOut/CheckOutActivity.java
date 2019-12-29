@@ -223,6 +223,7 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alertDialog.dismiss();
                 finish();
             }
         });
@@ -236,5 +237,13 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        alertDialog.dismiss();
+        finish();
+
     }
 }
