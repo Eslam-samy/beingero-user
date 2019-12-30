@@ -38,8 +38,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/colorPrimary"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-                </androidx.appcompat.widget.Toolbar>
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,6 +86,8 @@
                         android:layout_marginStart="@dimen/medium_margin"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             </RelativeLayout>
 
 

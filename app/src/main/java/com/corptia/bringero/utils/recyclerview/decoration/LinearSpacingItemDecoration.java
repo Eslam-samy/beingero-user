@@ -25,7 +25,7 @@ public class LinearSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         }
 
-        outRect.bottom = -30;
+        outRect.bottom = -30; //-30
         //outRect.bottom = -50;
 
         outRect.left = verticalSpaceHeight/2;

@@ -59,7 +59,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
         if (address!=null) {
             holder.txt_address_name.setText(address.getName());
-            holder.txt_street.setText(new StringBuilder().append(address.getRegion()).append(" - ").append(address.getStreet()));
+            holder.txt_street.setText(new StringBuilder()
+                    .append(address.getRegion())
+                    .append(" - ")
+                    .append(address.getStreet().length() > 30 ? address.getStreet().substring(0,30) : address.getStreet()));
 
 
             if (selectedPosition == -1) {

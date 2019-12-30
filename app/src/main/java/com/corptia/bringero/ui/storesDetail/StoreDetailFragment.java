@@ -220,7 +220,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             if (isLoading) {
                 storeDetailAdapter.removeLoading();
                 isLoading = false;
-                Log.d("HAZEM" , "DATA : >> removeLoading " );
             }
 
 

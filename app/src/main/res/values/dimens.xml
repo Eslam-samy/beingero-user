@@ -10,7 +10,7 @@
 
 
     <!-- Dimens margin -->
-    <dimen name="app_margin">32dp</dimen>
+    <dimen name="app_margin">16dp</dimen>
     <dimen name="app_low_margin">24dp</dimen>
     <dimen name="large_margin">16dp</dimen>
     <dimen name="medium_margin">12dp</dimen>

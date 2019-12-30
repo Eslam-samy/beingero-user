@@ -154,11 +154,14 @@ query SingleProduct($_id: ID) {
 
 
 #Search
-query getPricedBy($storeId: ID! , $filter: ProductFilterInput!){
+query getPricedBy($storeId: ID! , $filter: ProductFilterInput! , $pagination: paginationInput){
     ProductQuery{
-        getStoreProducts:getPricedBy(storeId:$storeId,filter:$filter){
+        getStoreProducts:getPricedBy(storeId:$storeId,filter:$filter , pagination:$pagination){
             status
             message
+            pagination{
+                totalPages
+            }
             Products:data{
                 _id
                 name

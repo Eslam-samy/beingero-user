@@ -2,6 +2,7 @@ package com.corptia.bringero.ui.setting.main;
 
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
@@ -64,6 +66,24 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         btn_contact_us.setOnClickListener(this);
         btn_language.setOnClickListener(this);
         btn_log_out.setOnClickListener(this);
+
+        if (Common.CURRENT_USER !=null){
+
+
+            if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")){
+
+                Drawable img = getContext().getResources().getDrawable(R.drawable.ic_arrow_rtl);
+                img.setBounds( 0, 0, 11, 20);
+                btn_edit_profile.setCompoundDrawables( img, null, null, null );
+                btn_address.setCompoundDrawables( img, null, null, null );
+                btn_change_password.setCompoundDrawables( img, null, null, null );
+                btn_contact_us.setCompoundDrawables( img, null, null, null );
+                btn_language.setCompoundDrawables( img, null, null, null );
+                btn_log_out.setCompoundDrawables( img, null, null, null );
+
+            }
+
+        }
 
         return view;
 

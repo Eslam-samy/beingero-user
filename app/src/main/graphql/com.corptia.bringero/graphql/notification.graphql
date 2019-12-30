@@ -56,3 +56,22 @@ query NotificationCountUnreadQuery(
         }
     }
 }
+
+mutation updateNotif($userId : ID!){
+    NotificationMutation{
+        updateAll(filter:{
+            IN:{
+                _id:[$userId]
+            }
+        },data:{
+            status:Unread
+        }){
+            status
+            message
+            data{
+
+                status
+            }
+        }
+    }
+}

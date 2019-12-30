@@ -22,15 +22,17 @@
     <TextView
         android:id="@+id/txt_street"
         style="@style/TextCardDefaultStyle"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/low_xx_text_size"
+        android:fontFamily="@font/poppinsregular"
         android:textColor="@color/colorDavyGray"
+        android:textSize="@dimen/low_xx_text_size"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/img_selected"
         app:layout_constraintStart_toStartOf="@+id/txt_address_name"
         app:layout_constraintTop_toBottomOf="@+id/txt_address_name"
-        android:layout_marginStart="0dp"
         tools:text="Conoco, Precision Transmition, 2-A"
-        android:fontFamily="@font/poppinsregular"
-        android:textSize="@dimen/normal_text_size"
-        android:layout_marginTop="@dimen/low_xx_text_size"/>
+        android:layout_marginStart="0dp"/>
 
     <ImageView
         android:id="@+id/btn_update"

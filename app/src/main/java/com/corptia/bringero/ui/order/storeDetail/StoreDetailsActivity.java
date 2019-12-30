@@ -1,22 +1,29 @@
 package com.corptia.bringero.ui.order.storeDetail;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.SingleOrderQuery;
 import com.corptia.bringero.ui.storesDetail.StoreDetailActivity;
+import com.corptia.bringero.utils.PicassoUtils;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +49,7 @@ public class StoreDetailsActivity extends AppCompatActivity {
     ImageView img_store;
 
 
-    String BUYING_ORDER_ID = "";
+    String BUYING_ORDER_ID = "" ,EXTRA_STORE_NAME ,EXTRA_STORE_IMAGE;
 
     StoreDetailAdapter adapter ;
 
@@ -57,11 +64,19 @@ public class StoreDetailsActivity extends AppCompatActivity {
 
 
         recycler_items.setLayoutManager(new LinearLayoutManager(this));
+        recycler_items.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(0 , this)));
 
+        Intent intent = getIntent();
 
-        if (getIntent() != null) {
-            BUYING_ORDER_ID = getIntent().getStringExtra(Constants.BUYING_ORDER_ID);
+        if (intent != null) {
+            BUYING_ORDER_ID = intent.getStringExtra(Constants.BUYING_ORDER_ID);
+            EXTRA_STORE_NAME = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
+            EXTRA_STORE_IMAGE = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
         }
+
+        txt_name.setText(EXTRA_STORE_NAME);
+        if (EXTRA_STORE_IMAGE!=null || !EXTRA_STORE_IMAGE.isEmpty())
+        PicassoUtils.setImage(Common.BASE_URL_IMAGE + EXTRA_STORE_IMAGE , img_store);
 
         fetchData(BUYING_ORDER_ID);
 
@@ -111,5 +126,13 @@ public class StoreDetailsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            onBackPressed();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

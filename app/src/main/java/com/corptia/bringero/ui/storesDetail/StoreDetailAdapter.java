@@ -20,8 +20,10 @@ import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseViewHolder;
+import com.corptia.bringero.graphql.GetPricedByQuery;
 import com.corptia.bringero.graphql.UpdateCartItemMutation;
 import com.corptia.bringero.type.UpdateCartItem;
+import com.corptia.bringero.ui.search.SearchProductsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.utils.Utils;
@@ -43,8 +45,19 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     Context context;
     List<GetStoreProductsQuery.Product> productsList = new ArrayList<>();
+    List<GetPricedByQuery.Product> productsListSearch = new ArrayList<>();
 
     IOnRecyclerViewClickListener listener;
+
+    boolean isSearch;
+
+    public StoreDetailAdapter(SearchProductsActivity context, List<GetPricedByQuery.Product> products) {
+        this.context = context;
+        if (products != null)
+            this.productsListSearch = new ArrayList<>(products);
+
+        isSearch = true;
+    }
 
     public void setListener(IOnRecyclerViewClickListener listener) {
         this.listener = listener;
@@ -52,8 +65,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public StoreDetailAdapter(Context context, List<GetStoreProductsQuery.Product> productsList) {
         this.context = context;
-        if (productsList!=null)
-        this.productsList = new ArrayList<>(productsList);
+        if (productsList != null)
+            this.productsList = new ArrayList<>(productsList);
+        isSearch = false;
     }
 
     @NonNull
@@ -77,7 +91,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         holder.onBind(position);
     }
 
-    public void updateCartItems(String itemsId , int amount){
+    public void updateCartItems(String itemsId, int amount) {
 
         UpdateCartItem updateAmount = UpdateCartItem.builder().amount(amount).build();
         MyApolloClient.getApollowClientAuthorization().mutate(UpdateCartItemMutation.builder().id(itemsId).data(updateAmount).build())
@@ -85,12 +99,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     @Override
                     public void onResponse(@NotNull Response<UpdateCartItemMutation.Data> response) {
 
-                        if (response.data().CartItemMutation().update().status() == 200)
-                        {
+                        if (response.data().CartItemMutation().update().status() == 200) {
 
-                        }
-                        else
-                        {
+                        } else {
 
                         }
 
@@ -106,7 +117,12 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @Override
     public int getItemCount() {
-        return productsList!=null ? productsList.size() : 0;
+
+        if (isSearch) {
+            return productsListSearch != null ? productsListSearch.size() : 0;
+        } else
+            return productsList != null ? productsList.size() : 0;
+
     }
 
     public class ViewHolder extends BaseViewHolder {
@@ -142,71 +158,98 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             super.onBind(position);
 
+            GetPricedByQuery.Product productSearch = null;
+            GetStoreProductsQuery.Product product = null;
 
-            GetStoreProductsQuery.Product product = productsList.get(position);
-
-            if (product != null) {
-                txt_price.setText(new StringBuilder().append(product.storePrice()).append(" ").append(context.getString(R.string.currency)));
-                txt_name_product.setText(Utils.cutName(product.Product().name()));
-
-                if (product.Product().ImageResponse().data() != null)
-                    PicassoUtils.setImage(Common.BASE_URL_IMAGE + product.Product().ImageResponse().data().name(), image_product);
-                else
-                    PicassoUtils.setImage(image_product);
-
-                if (listener != null) {
-                    itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            listener.onClick(itemView, position);
-
-                            txt_amount.setVisibility(View.VISIBLE);
-                            btn_delete.setVisibility(View.VISIBLE);
-                            bg_delete.setVisibility(View.VISIBLE);
-
-                            int count;
-                            count = Integer.parseInt(txt_amount.getText().toString()) + 1;
-                            txt_amount.setText("" + count);
+            double price = 0;
+            String productName = "";
+            String productImage = "";
+            String productId = "";
 
 
-                            if (count != 1)
-                                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                                    }
-                                });
-                        }
-                    });
+            if (!isSearch) {
+                product = productsList.get(position);
+
+                price = product.storePrice();
+                productName = product.Product().name();
+                productId = product.Product()._id();
+
+                if (product.Product().ImageResponse().status() == 200)
+                    productImage = product.Product().ImageResponse().data().name();
+            } else {
+                productSearch = productsListSearch.get(position);
+
+                if (productSearch != null) {
+                    price = productSearch.Price();
+                    productName = productSearch.name();
+                    productId = productSearch._id();
+
+                    if (productSearch.ImageResponse().status() == 200)
+                        productImage = productSearch.ImageResponse().data().name();
+                }
+            }
+
+
+            txt_price.setText(new StringBuilder().append(price).append(" ").append(context.getString(R.string.currency)));
+            txt_name_product.setText(Utils.cutName(productName));
+
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + productImage, image_product);
+
+            if (listener != null) {
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        listener.onClick(itemView, position);
+
+                        txt_amount.setVisibility(View.VISIBLE);
+                        btn_delete.setVisibility(View.VISIBLE);
+                        bg_delete.setVisibility(View.VISIBLE);
+
+                        int count;
+                        count = Integer.parseInt(txt_amount.getText().toString()) + 1;
+                        txt_amount.setText("" + count);
+
+
+                        if (count != 1)
+                            txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                }
+                            });
+                    }
+                });
+            }
+
+
+            //TODO Will move this  from here
+            String finalProductId = productId;
+            btn_delete.setOnClickListener(view -> {
+
+                int amountNow = Integer.parseInt(txt_amount.getText().toString()) - 1;
+
+                if (amountNow == 0) {
+                    txt_amount.setVisibility(View.INVISIBLE);
+                    btn_delete.setVisibility(View.INVISIBLE);
+                    bg_delete.setVisibility(View.INVISIBLE);
                 }
 
+                txt_amount.setText("" + amountNow);
 
-                //TODO Will move this  from here
-                btn_delete.setOnClickListener(view -> {
-
-                    int amountNow = Integer.parseInt(txt_amount.getText().toString()) - 1;
-
-                    if (amountNow == 0) {
-                        txt_amount.setVisibility(View.INVISIBLE);
-                        btn_delete.setVisibility(View.INVISIBLE);
-                        bg_delete.setVisibility(View.INVISIBLE);
+                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
                     }
-
-                    txt_amount.setText("" + amountNow);
-
-                    txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                        }
-                    });
-
-                    updateCartItems(product._id(), amountNow);
-
                 });
 
+                updateCartItems(finalProductId, amountNow);
 
-            }
+            });
+
+
         }
     }
 
@@ -221,7 +264,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     }
 
-    //-----------
+    //------------------------------------
     public void addItems(List<GetStoreProductsQuery.Product> productsList) {
         this.productsList.addAll(productsList);
         notifyDataSetChanged();
@@ -248,6 +291,37 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return productsList.get(position);
     }
 
+    //------------------------------------ This For Search -----------------------------------
+
+
+    public void addItemsSearch(List<GetPricedByQuery.Product> productsListSearch) {
+        this.productsListSearch.addAll(productsListSearch);
+        notifyDataSetChanged();
+    }
+
+    public void addLoadingSearch() {
+        isLoaderVisible = true;
+        productsListSearch.add(null);
+        notifyItemInserted(productsListSearch.size() - 1);
+    }
+
+    public void removeLoadingSearch() {
+        isLoaderVisible = false;
+        int position = productsListSearch.size() - 1;
+        GetPricedByQuery.Product item = getItemSearch(position);
+        if (item == null) {
+            productsListSearch.remove(position);
+            notifyItemRemoved(position);
+        }
+
+    }
+
+    GetPricedByQuery.Product getItemSearch(int position) {
+        return productsListSearch.get(position);
+    }
+
+
+    //------------------------------------
 
 
     public class ProgressHolder extends BaseViewHolder {

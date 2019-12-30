@@ -30,6 +30,7 @@ import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.location.addNewLocation.AddNewLocationActivity;
 import com.corptia.bringero.ui.locations.LocationAdapter;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.google.android.material.snackbar.Snackbar;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -88,6 +89,9 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
             }
         });
 
+        recycler_location.setLayoutManager(new LinearLayoutManager(this));
+        recycler_location.setHasFixedSize(true);
+        recycler_location.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(5, this)));
     }
 
     @Override
@@ -99,8 +103,7 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
     void FetchData() {
 
         adapter = new LocationAdapter(this, Common.CURRENT_USER.getDeliveryAddressesList());
-        recycler_location.setLayoutManager(new LinearLayoutManager(this));
-        recycler_location.setHasFixedSize(true);
+
 
         recycler_location.setAdapter(adapter);
 

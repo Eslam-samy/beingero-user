@@ -60,14 +60,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/lab_deliverTo"
-            android:text="new Damietta - 33 nasr street"
+            tools:text="new Damietta - 33 nasr street"
             android:background="@drawable/my_shadow"
             android:textColor="@color/black"
             android:drawableStart="@drawable/ic_location"
             android:gravity="center"
-            android:layout_marginStart="@dimen/medium_margin"
-            android:layout_marginEnd="@dimen/medium_margin"
-            android:paddingStart="@dimen/app_margin"
+
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
             android:textStyle="bold"
             />
 

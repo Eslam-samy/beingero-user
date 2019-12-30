@@ -69,8 +69,8 @@
     <style name="TextInputLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">14dp</item>
-        <item name="android:layout_marginEnd">14dp</item>
+<!--        <item name="android:layout_marginStart">14dp</item>-->
+<!--        <item name="android:layout_marginEnd">14dp</item>-->
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:textSize">14sp</item>
         <item name="hintAnimationEnabled">true</item>
@@ -134,7 +134,7 @@
         <item name="android:background">@color/white</item>
         <item name="android:gravity">start|center</item>
         <item name="android:textSize">@dimen/medium_margin</item>
-        <item name="android:drawableEnd">@drawable/ic_arrow_right</item>
+        <item name="android:drawableEnd">@drawable/ic_arrow_ltr</item>
 <!--        <item name="android:drawableEnd">@drawable/ic_arrow_back</item>-->
         <item name="android:paddingStart">@dimen/app_low_padding</item>
         <item name="android:paddingEnd">@dimen/app_low_padding</item>

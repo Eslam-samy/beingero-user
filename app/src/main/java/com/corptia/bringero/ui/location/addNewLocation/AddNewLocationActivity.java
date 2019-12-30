@@ -349,6 +349,26 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 //        mMap.setMyLocationEnabled(true);
         //First zoom
 
+        mMap.getUiSettings().setScrollGesturesEnabled(false);
+        mMap.getUiSettings().setAllGesturesEnabled(false);
+        mMap.getUiSettings().setZoomGesturesEnabled(false);
+
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                Intent intent = new Intent(AddNewLocationActivity.this, MapsActivity.class);
+                intent.putExtra(Constants.EXTRA_LATITUDE, latitude);
+                intent.putExtra(Constants.EXTRA_LONGITUDE, longitude);
+                intent.putExtra("UPDATE", "UPDATE");
+                startActivityForResult(intent, 1000);
+
+                return true;
+
+            }
+        });
+
         mMap.moveCamera(CameraUpdateFactory.zoomTo(17f));
         LatLng latLng = new LatLng(latitude, longitude);
 

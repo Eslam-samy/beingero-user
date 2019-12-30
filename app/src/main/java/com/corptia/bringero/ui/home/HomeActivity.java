@@ -36,6 +36,7 @@ import com.corptia.bringero.ui.cart.CartFragment;
 import com.corptia.bringero.ui.home.ui.storetypes.StoreTypesFragment;
 import com.corptia.bringero.ui.order.OrderFragment;
 import com.corptia.bringero.utils.CustomLoading;
+import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.google.android.material.appbar.AppBarLayout;
@@ -63,6 +64,7 @@ import org.jetbrains.annotations.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -87,6 +89,9 @@ public class HomeActivity extends BaseActivity implements
     @BindView(R.id.appbar)
     AppBarLayout appbar;
 
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+
     //For Select Location
     BottomSheetDialog bottomSheetDialog;
     SelectDeliveryLocationAdapter adapter;
@@ -99,6 +104,9 @@ public class HomeActivity extends BaseActivity implements
     TextView  txt_notificationsBadge; // txt_notificationsBadge
     BottomNavigationMenuView menuView;
     BottomNavigationItemView itemViewNotification;
+
+    TextView txt_user_name,txt_user_phone ;
+    CircleImageView img_avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +146,16 @@ public class HomeActivity extends BaseActivity implements
                 bottomSheetDialog = Common.showDialogSelectLocation(HomeActivity.this, bottomSheetDialog, presenter);
             }
         });
+
+        View headerView = navigationView.getHeaderView(0);
+        txt_user_name = headerView.findViewById(R.id.txt_user_name);
+        txt_user_phone = headerView.findViewById(R.id.txt_user_phone);
+        img_avatar = headerView.findViewById(R.id.img_avatar);
+
+        txt_user_name.setText(Common.CURRENT_USER.getFullName());
+        txt_user_phone.setText(Common.CURRENT_USER.getPhone());
+        if (Common.CURRENT_USER.getAvatarImageId()!=null)
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + Common.CURRENT_USER.getAvatarName() , img_avatar);
 
     }
 
@@ -181,7 +199,6 @@ public class HomeActivity extends BaseActivity implements
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 

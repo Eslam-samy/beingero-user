@@ -33,6 +33,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public SearchAdapter(SearchProductsActivity context, List<GetPricedByQuery.Product> products) {
 
+        this.context = context;
+        this.productsList = products;
     }
 
     public void setListener(IOnRecyclerViewClickListener listener) {

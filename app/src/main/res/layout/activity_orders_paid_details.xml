@@ -94,7 +94,7 @@
                         android:layout_width="15dp"
                         android:layout_height="15dp"
                         android:src="@drawable/tracking_status_requsted"
-                        app:layout_constraintEnd_toStartOf="@+id/time_line"
+                        app:layout_constraintStart_toStartOf="@+id/time_line"
                         app:layout_constraintTop_toTopOf="@+id/time_line"
                         app:layout_constraintBottom_toBottomOf="@+id/time_line"/>
 
@@ -126,7 +126,7 @@
                         android:layout_height="15dp"
                         tools:src="@drawable/tracking_status_delivered"
                         android:src="@drawable/ic_timeline_empty"
-                        app:layout_constraintStart_toEndOf="@+id/time_line"
+                        app:layout_constraintEnd_toEndOf="@+id/time_line"
                         app:layout_constraintTop_toTopOf="@+id/time_line"
                         app:layout_constraintBottom_toBottomOf="@+id/time_line"/>
 
@@ -249,9 +249,7 @@
                             android:layout_marginStart="@dimen/app_margin"/>
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/medium_margin"
-                            android:layout_marginEnd="@dimen/medium_margin">
+                            android:layout_height="wrap_content">
                             <include layout="@layout/item_cart_delivery_location"/>
                         </RelativeLayout>
 

@@ -217,3 +217,21 @@ mutation validatePhone($data: loginInput){
         }
     }
 }
+
+
+mutation changePassword($data: changePasswordInput){
+    UserMutation{
+        changePassword(data: $data){
+            status
+            errors{
+                code
+                path
+                message
+            }
+            data{
+                _id
+                phone
+            }
+        }
+    }
+}

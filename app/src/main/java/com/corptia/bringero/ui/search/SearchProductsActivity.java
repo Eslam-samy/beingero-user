@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,24 +28,41 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GetPricedByQuery;
+import com.corptia.bringero.type.PaginationInput;
 import com.corptia.bringero.type.ProductFilterInput;
+import com.corptia.bringero.type.SEARCH_Input;
+import com.corptia.bringero.ui.storesDetail.StoreDetailAdapter;
 import com.corptia.bringero.utils.PicassoUtils;
+import com.corptia.bringero.utils.recyclerview.PaginationListener;
 import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.corptia.bringero.Common.Constants.VIEW_TYPE_ITEM;
+import static com.corptia.bringero.Common.Constants.VIEW_TYPE_LOADING;
+import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_SIZE;
+import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_START;
+
 public class SearchProductsActivity extends AppCompatActivity {
+
+
+    //For Pagination
+    private int currentPage = PAGE_START;
+    private boolean isLastPage = false;
+    private boolean isLoading = false;
+    int totalPages = 1;
+
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-
 
     @BindView(R.id.edt_search)
     EditText edt_search;
@@ -52,7 +70,7 @@ public class SearchProductsActivity extends AppCompatActivity {
     @BindView(R.id.recycler_product)
     RecyclerView recycler_product;
 
-    SearchAdapter adapter;
+    StoreDetailAdapter adapter;
 
     String storeId;
 
@@ -68,7 +86,11 @@ public class SearchProductsActivity extends AppCompatActivity {
     @BindView(R.id.img_speech)
     ImageView img_speech;
 
+    String searchWord = "";
+
     private static final int SPEECH_REQUEST_CODE = 0;
+
+    GridLayoutManager gridLayoutManager ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,27 +100,50 @@ public class SearchProductsActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initActionBar();
 
-        recycler_product.setLayoutManager(new GridLayoutManager(this, 2));
+
+
+        gridLayoutManager = new GridLayoutManager(this, 2);
+
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                switch (adapter.getItemViewType(position)) {
+                    case VIEW_TYPE_ITEM:
+                        return 1;
+                    case VIEW_TYPE_LOADING:
+                        return 2; //number of columns of the grid
+                    default:
+                        return -1;
+                }
+            }
+        });
+
+        recycler_product.setLayoutManager(gridLayoutManager);
         recycler_product.addItemDecoration(new GridSpacingItemDecoration(
                 2,
-                Common.dpToPx(30, this),
+                Common.dpToPx(10, this),
                 true,
                 0,
-                Common.dpToPx(10, this),
-                Common.dpToPx(10, this),
-                Common.dpToPx(10, this)));
+                Common.dpToPx(17,this),
+                Common.dpToPx(2, this),
+                Common.dpToPx(2, this)));
+
 
         if (getIntent() != null) {
             Intent intent = getIntent();
             storeId = intent.getStringExtra(Constants.EXTRA_STORE_ID);
             imageUrl = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
-
         }
 
         edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    searchWord = edt_search.getText().toString();
+                    List<GetPricedByQuery.Product> empty = new ArrayList<>();
+                    adapter = new StoreDetailAdapter(SearchProductsActivity.this, empty);
+                    recycler_product.setAdapter(adapter);
+
                     performSearch();
                     return true;
                 }
@@ -151,20 +196,71 @@ public class SearchProductsActivity extends AppCompatActivity {
             }
         });
 
+
+        recycler_product.addOnScrollListener(new PaginationListener(gridLayoutManager) {
+            @Override
+            protected void loadMoreItems() {
+
+                isLoading = true;
+                currentPage++;
+                if (currentPage <= totalPages) {
+                    adapter.addLoadingSearch();
+                    performSearch();
+                } else {
+                    isLastPage = true;
+                }
+            }
+
+            @Override
+            public boolean isLastPage() {
+                return isLastPage;
+            }
+
+            @Override
+            public boolean isLoading() {
+                return isLoading;
+            }
+        });
+
+
+
+
     }
 
     private void performSearch() {
 
 
-        ProductFilterInput productFilterInput = ProductFilterInput.builder().name(edt_search.getText().toString()).build();
-        MyApolloClient.getApollowClientAuthorization().query(GetPricedByQuery.builder().storeId(storeId).filter(productFilterInput).build())
+
+        SEARCH_Input search_input = SEARCH_Input.builder().searchWord(searchWord).build();
+        PaginationInput paginationInput = PaginationInput.builder().page(currentPage).limit(PAGE_SIZE).build();
+
+        ProductFilterInput productFilterInput = ProductFilterInput.builder().sEARCH(search_input).build();
+        MyApolloClient.getApollowClientAuthorization().query(GetPricedByQuery.builder()
+                .storeId(storeId)
+                .filter(productFilterInput)
+                .pagination(paginationInput)
+                .build())
                 .enqueue(new ApolloCall.Callback<GetPricedByQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GetPricedByQuery.Data> response) {
                         GetPricedByQuery.@Nullable GetStoreProducts data = response.data().ProductQuery().getStoreProducts();
                         if (data.status() == 200) {
-                            adapter = new SearchAdapter(SearchProductsActivity.this, data.Products());
-                            recycler_product.setAdapter(adapter);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    if (isLoading) {
+                                        adapter.removeLoadingSearch();
+                                        isLoading = false;
+                                    }
+
+                                    totalPages = response.data().ProductQuery().getStoreProducts().pagination().totalPages();
+                                    adapter.addItemsSearch(response.data().ProductQuery().getStoreProducts().Products());
+
+                                }
+                            });
+
                         } else {
 
                         }
