@@ -37,6 +37,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.ViewHolder> {
 
@@ -45,8 +46,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
     public UpdateCartItemsListener updateCartItemsListener;
     boolean isCart;
     IClickRecyclerAdapter iClickRecyclerAdapter;
-    Handler handler ;
+    Handler handler;
     IDeleteCartItemsListener iDeleteCartItemsListener;
+
     public void setUpdateCartItemsListener(UpdateCartItemsListener updateCartItemsListener) {
         this.updateCartItemsListener = updateCartItemsListener;
     }
@@ -84,7 +86,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
 
         holder.txt_price.setText("" + item.PricingProduct().storePrice() + " " + context.getString(R.string.currency));
         String productName = item.PricingProduct().Product().name();
-        holder.txt_name_product.setText(productName.length() > 30 ? productName.substring(0,20) + "..." : productName);
+        holder.txt_name_product.setText(productName.length() > 30 ? productName.substring(0, 20) + "..." : productName);
 
 
         if (item.PricingProduct().Product().ImageResponse().data() != null)
@@ -115,16 +117,23 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                             holder.txt_quantity.setText("" + (amount - 1));
                             EventBus.getDefault().postSticky(new CalculatePriceEvent(item._id(), amount - 1, -item.PricingProduct().storePrice()));
                             holder.txt_total_price.setText(new StringBuilder().append(((amount - 1) * item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
-
-
                         }
+
                     } else {
-//                        if (amount < totalAmountStore) {
-                        holder.txt_quantity.setText("" + (amount + 1));
-                        EventBus.getDefault().postSticky(new CalculatePriceEvent(item._id(), amount + 1, item.PricingProduct().storePrice()));
-                        holder.txt_total_price.setText(new StringBuilder().append(((amount + 1) * item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+
+                        if (item.PricingProduct().storePrice() + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
+                            Log.d("HAZEM", "storePrice " + item.PricingProduct().storePrice());
+                            Log.d("HAZEM", "TOTAL_CART_PRICE " + Common.TOTAL_CART_PRICE);
+
+                            Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+                        } else {
+                            //                        if (amount < totalAmountStore) {
+                            holder.txt_quantity.setText("" + (amount + 1));
+                            EventBus.getDefault().postSticky(new CalculatePriceEvent(item._id(), amount + 1, item.PricingProduct().storePrice()));
+                            holder.txt_total_price.setText(new StringBuilder().append(((amount + 1) * item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
 
 //                        }
+                        }
 
 
                     }
@@ -143,24 +152,21 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                     });
 
 
-
                 } else {
-                    Log.d("HAZEM" , "SEE Postion << " + position);
-                    iDeleteCartItemsListener.onDeleteCart(position , amount);
+
+
+                    Common.TOTAL_CART_PRICE += -item.PricingProduct().storePrice();
+                    Common.TOTAL_CART_AMOUNT += -amount;
+
+                    iDeleteCartItemsListener.onDeleteCart(position, amount);
 
                     cartItems.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, cartItems.size());
 
 
-
 //                    holder.progress_circular.setVisibility(View.VISIBLE);
 //                    holder.img_delete_product.setVisibility(View.INVISIBLE);
-
-
-
-
-
 
 
                 }
@@ -277,6 +283,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
     }
 
     public interface IDeleteCartItemsListener {
-        void onDeleteCart(int position , int amount);
+        void onDeleteCart(int position, int amount);
     }
 }

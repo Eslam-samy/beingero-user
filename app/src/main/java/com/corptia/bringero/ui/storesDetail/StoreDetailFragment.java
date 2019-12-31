@@ -236,7 +236,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 //                    startActivity(intent);
 
                     //Here Add To Cart
-                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, storeDetailAdapter.productsList.get(position).storePrice()));
+                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, storeDetailAdapter.productsList.get(position).storePrice() , 1));
                     addToCart(storeDetailAdapter.getSelectProduct(position)._id());
 
                 });
@@ -290,6 +290,8 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
                         CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
                         if (createResponse.status() == 200) {
+
+                            Common.GetCartItemsCount();
 
                         } else {
                         }

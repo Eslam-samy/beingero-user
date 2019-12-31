@@ -187,6 +187,10 @@
     <string name="another_store">Another store</string>
     <string name="placeholder_title_notification">There are no notifications to display</string>
     <string name="placeholder_dec_notification">Notifications will be added here</string>
+
+    <string name="placeholder_title_search">There are no search results</string>
+    <string name="placeholder_dec_search">Look for other products</string>
+
     <string name="rating">Rating</string>
     <string name="preparing_time">Preparing Time</string>
     <string name="minimum_order">Minimum Order</string>
@@ -216,6 +220,9 @@
     <string name="delivered">Delivered</string>
     <string name="confirmed">Confirmed</string>
     <string name="delivering">Delivering</string>
+    <string name="view_cart">View Cart</string>
+
+    <string name="limit_max_cart">You have reached the maximum order limit</string>
 
 </resources>
 

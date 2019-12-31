@@ -174,7 +174,18 @@
 
         <include layout="@layout/layout_placeholder"/>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <include layout="@layout/componant_speed_cart" />
+
+        </RelativeLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 

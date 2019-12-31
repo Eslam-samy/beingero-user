@@ -2,6 +2,7 @@ package com.corptia.bringero.ui.search;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GetPricedByQuery;
+import com.corptia.bringero.model.EventBus.CalculateCartEvent;
 import com.corptia.bringero.type.PaginationInput;
 import com.corptia.bringero.type.ProductFilterInput;
 import com.corptia.bringero.type.SEARCH_Input;
@@ -36,6 +39,7 @@ import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.recyclerview.PaginationListener;
 import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Text;
@@ -92,6 +96,21 @@ public class SearchProductsActivity extends AppCompatActivity {
 
     GridLayoutManager gridLayoutManager ;
 
+
+    //For Placeholder
+    @BindView(R.id.layout_placeholder)
+    ConstraintLayout layout_placeholder;
+    @BindView(R.id.img_placeholder)
+    ImageView img_placeholder;
+    @BindView(R.id.txt_placeholder_title)
+    TextView txt_placeholder_title;
+    @BindView(R.id.txt_placeholder_dec)
+    TextView txt_placeholder_dec;
+    @BindView(R.id.btn_1)
+    Button btn_1;
+    @BindView(R.id.btn_2)
+    Button btn_2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,10 +158,12 @@ public class SearchProductsActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+
                     searchWord = edt_search.getText().toString();
-                    List<GetPricedByQuery.Product> empty = new ArrayList<>();
-                    adapter = new StoreDetailAdapter(SearchProductsActivity.this, empty);
-                    recycler_product.setAdapter(adapter);
+
+                    currentPage = 1;
+
+                    adapter.removeSearch();
 
                     performSearch();
                     return true;
@@ -224,12 +245,41 @@ public class SearchProductsActivity extends AppCompatActivity {
 
 
 
+        adapter = new StoreDetailAdapter(SearchProductsActivity.this, null , true);
+        recycler_product.setAdapter(adapter);
+
+        adapter.setListener((view, position) -> {
+
+//                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
+//                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
+//                    intent.putExtra(Constants.EXTRA_PRODUCT_ID , mProduct._id());
+//                    if (mProduct.Product().ImageResponse().data()!=null)
+//                    intent.putExtra(Constants.EXTRA_PRODUCT_IMAGE , mProduct.Product().ImageResponse().data().name());
+//                    startActivity(intent);
+
+            //Here Add To Cart
+
+            Log.d("HAZEM" , "From Activity : " +position);
+
+        });
+
+        initPlaceHolderSearch();
+
+    }
+
+    private void initPlaceHolderSearch() {
+
+        layout_placeholder.setVisibility(View.VISIBLE);
+
+        btn_1.setVisibility(View.GONE);
+        btn_2.setVisibility(View.GONE);
+        img_placeholder.setImageResource(R.drawable.ic_placeholder_search);
+        txt_placeholder_title.setText(getString(R.string.placeholder_title_search));
+        txt_placeholder_dec.setText(getString(R.string.placeholder_dec_search));
 
     }
 
     private void performSearch() {
-
-
 
         SEARCH_Input search_input = SEARCH_Input.builder().searchWord(searchWord).build();
         PaginationInput paginationInput = PaginationInput.builder().page(currentPage).limit(PAGE_SIZE).build();
@@ -244,31 +294,44 @@ public class SearchProductsActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(@NotNull Response<GetPricedByQuery.Data> response) {
                         GetPricedByQuery.@Nullable GetStoreProducts data = response.data().ProductQuery().getStoreProducts();
-                        if (data.status() == 200) {
 
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                if (data.status() == 200) {
 
                                     if (isLoading) {
                                         adapter.removeLoadingSearch();
                                         isLoading = false;
                                     }
 
+                                    layout_placeholder.setVisibility(View.GONE);
+
                                     totalPages = response.data().ProductQuery().getStoreProducts().pagination().totalPages();
                                     adapter.addItemsSearch(response.data().ProductQuery().getStoreProducts().Products());
 
+
+
+                                } else {
+                                    layout_placeholder.setVisibility(View.VISIBLE);
                                 }
-                            });
 
-                        } else {
+                            }
+                        });
 
-                        }
+
                     }
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
 
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                layout_placeholder.setVisibility(View.VISIBLE);
+                            }
+                        });
                     }
                 });
 
@@ -327,5 +390,9 @@ public class SearchProductsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+
+    void showPlaceHolder(){
+        layout_placeholder.setVisibility(View.VISIBLE);
+    }
 
 }

@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,12 +76,10 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     double totalPriceCart;
     int countOfCart;
     boolean isHaveCart = false;
-    @BindView(R.id.txt_countOfCart)
-    TextView txt_countOfCart;
     @BindView(R.id.txt_totalPriceCart)
     TextView txt_totalPriceCart;
-    @BindView(R.id.btn_cart)
-    Button btn_cart;
+    @BindView(R.id.btn_view_cart)
+    TextView btn_view_cart;
     @BindView(R.id.layout_speed_cart)
     ConstraintLayout layout_speed_cart;
 
@@ -252,21 +251,24 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
+        Log.d("HAZEM" , "onDestroy");
+
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        EventBus.getDefault().postSticky(new CalculateCartEvent(false, 0 , 0));
         EventBus.getDefault().unregister(this);
     }
 
     private void RunAnimation() {
         Animation a = AnimationUtils.loadAnimation(this, R.anim.scale_amount_price);
         a.reset();
-        txt_countOfCart.clearAnimation();
-        txt_countOfCart.startAnimation(a);
+//        txt_countOfCart.clearAnimation();
+//        txt_countOfCart.startAnimation(a);
     }
 
 
@@ -276,28 +278,36 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
             if (event.isSuccess()) {
 
-                if (countOfCart > 0)
-                    txt_countOfCart.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            txt_countOfCart.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                        }
-                    });
+//                if (countOfCart > 0)
+//                    txt_countOfCart.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            txt_countOfCart.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+//                        }
+//                    });
 
-                countOfCart += 1;
+
+//                Common.TOTAL_CART_PRICE +=event.getProductPrice();
+//                Common.TOTAL_CART_AMOUNT +=event.getAmount();
+
+                countOfCart += event.getAmount();
                 totalPriceCart += event.getProductPrice();
 
                 isHaveCart = true;
                 layout_speed_cart.setVisibility(View.VISIBLE);
                 txt_totalPriceCart.setText(new StringBuilder().append(totalPriceCart).append(" ").append(getString(R.string.currency)));
-                txt_countOfCart.setText("" + countOfCart);
+
+                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+
+
 //                RunAnimation();
 
 
             } else {
 
-                isHaveCart = false;
-                layout_speed_cart.setVisibility(View.GONE);
+                if (Common.TOTAL_CART_AMOUNT == 0)
+                {isHaveCart = false;
+                layout_speed_cart.setVisibility(View.GONE);}
             }
 
         }
@@ -307,41 +317,60 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
     public void getSpeedCart() {
 
-        MyApolloClient.getApollowClientAuthorization().query(SpeedCartQuery.builder().build())
-                .enqueue(new ApolloCall.Callback<SpeedCartQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<SpeedCartQuery.Data> response) {
 
-                        runOnUiThread(() -> {
+        if (Common.TOTAL_CART_AMOUNT == 0){
+            isHaveCart = false;
+            layout_speed_cart.setVisibility(View.GONE);
+        }
+        else
+        {
+            isHaveCart = true;
+            layout_speed_cart.setVisibility(View.VISIBLE);
+            totalPriceCart = Common.TOTAL_CART_PRICE;
+            countOfCart = Common.TOTAL_CART_AMOUNT;
 
-                            SpeedCartQuery.MyCart dataCart = response.data().CartItemQuery().myCart();
-                            if (dataCart.status() == 200) {
-
-                                isHaveCart = true;
-                                layout_speed_cart.setVisibility(View.VISIBLE);
-                                totalPriceCart = dataCart.TotalPrice();
-                                countOfCart = dataCart.ItemsCount();
-                                txt_totalPriceCart.setText(new StringBuilder().append(totalPriceCart).append(" ").append(getString(R.string.currency)));
-                                txt_countOfCart.setText("" + countOfCart);
-                            } else {
-                                isHaveCart = false;
-                                layout_speed_cart.setVisibility(View.GONE);
-                            }
-
-                        });
+            txt_totalPriceCart.setText(new StringBuilder().append(totalPriceCart).append(" ").append(getString(R.string.currency)));
+            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+        }
 
 
-                    }
+//        MyApolloClient.getApollowClientAuthorization().query(SpeedCartQuery.builder().build())
+//                .enqueue(new ApolloCall.Callback<SpeedCartQuery.Data>() {
+//                    @Override
+//                    public void onResponse(@NotNull Response<SpeedCartQuery.Data> response) {
+//
+//                        runOnUiThread(() -> {
+//
+//                            SpeedCartQuery.MyCart dataCart = response.data().CartItemQuery().myCart();
+//                            if (dataCart.status() == 200) {
+//
+//                                isHaveCart = true;
+//                                layout_speed_cart.setVisibility(View.VISIBLE);
+//                                totalPriceCart = dataCart.TotalPrice();
+//                                countOfCart = dataCart.ItemsCount();
+//
+//                                txt_totalPriceCart.setText(new StringBuilder().append(totalPriceCart).append(" ").append(getString(R.string.currency)));
+//                                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+//
+//
+//
+//                            } else {
+//                                isHaveCart = false;
+//                                layout_speed_cart.setVisibility(View.GONE);
+//                            }
+//
+//                        });
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NotNull ApolloException e) {
+//
+//                    }
+//                });
 
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-
-                    }
-                });
-
-        btn_cart.setOnClickListener(view -> gotoCart());
         layout_speed_cart.setOnClickListener(view -> gotoCart());
-
 
     }
 
@@ -350,10 +379,13 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
             Intent intent = new Intent(StoreDetailActivity.this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Constants.EXTRA_SPEED_CART, "EXTRA_SPEED_CART");
+            EventBus.getDefault().unregister(this);
             startActivity(intent);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
     }
+
+
 
 }

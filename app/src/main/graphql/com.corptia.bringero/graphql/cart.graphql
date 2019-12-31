@@ -132,3 +132,25 @@ query SpeedCartQuery {
         }
     }
 }
+
+
+query GetCartItemsCount($filter: CartItemFilterInput!){
+    CartItemQuery{
+        getAll(filter: $filter){
+            status
+            message
+            errors{
+                code
+                path
+                message
+            }
+
+            data{
+                cartProductId:_id
+                pricingProductId
+                amount
+                totalPrice
+            }
+        }
+    }
+}

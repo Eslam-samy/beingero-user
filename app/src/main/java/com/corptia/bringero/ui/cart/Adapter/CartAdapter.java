@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.cart.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,11 +20,13 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IClickRecyclerAdapter;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.RemoveCartItemMutation;
 import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
+import com.corptia.bringero.ui.storesDetail.StoreDetailActivity;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
@@ -44,7 +48,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     List<MyCartQuery.StoreDatum> myCartList = new ArrayList<>();
     public CartItemsAdapter itemsAdapter;
     boolean isCart;
-    Handler handler ;
+    Handler handler;
 
     CallBackUpdateCartItemsListener callBackUpdateCartItemsListener;
 
@@ -56,7 +60,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     public CartAdapter(Context context, List<MyCartQuery.StoreDatum> cartModels, boolean isCart) {
         this.context = context;
-        this.myCartList  = new ArrayList<>(cartModels);
+        this.myCartList = new ArrayList<>(cartModels);
         this.isCart = isCart;
         handler = new Handler();
 
@@ -76,14 +80,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         MyCartQuery.StoreDatum cartModel = myCartList.get(position);
-        @Nullable List<MyCartQuery.Item> itemList  =new ArrayList<>(cartModel.Items()) ;
+        @Nullable List<MyCartQuery.Item> itemList = new ArrayList<>(cartModel.Items());
         itemsAdapter = new CartItemsAdapter(context, itemList, isCart, new IClickRecyclerAdapter() {
             @Override
             public void onClickAdapter(int positionItems) {
                 itemList.remove(positionItems);
 
-                if (itemList.size() == 0)
-                {
+                if (itemList.size() == 0) {
 
                     myCartList.remove(position);
                     notifyItemRemoved(position);
@@ -94,10 +97,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         itemsAdapter.setiDeleteCartItemsListener(new CartItemsAdapter.IDeleteCartItemsListener() {
             @Override
-            public void onDeleteCart(int positionItems , int amount) {
+            public void onDeleteCart(int positionItems, int amount) {
 
                 loading.showProgressBar(context, false);
-
 
 
                 MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(itemList.get(position)._id()).build())
@@ -110,8 +112,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                                     public void run() {
 
 
-                                        if (response.data().CartItemMutation().remove().status() ==200)
-                                        {
+                                        if (response.data().CartItemMutation().remove().status() == 200) {
 
                                             Toast.makeText(context, "Items Deleted !", Toast.LENGTH_SHORT).show();
 
@@ -120,22 +121,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
                                             itemList.remove(positionItems);
 
-                                            if (itemList.size() == 0)
-                                            {
+                                            if (itemList.size() == 0) {
 
                                                 myCartList.remove(position);
                                                 notifyItemRemoved(position);
                                                 notifyItemRangeChanged(position, myCartList.size());
                                             }
 
-                                        }
-                                        else
-                                        {
+                                        } else {
 
                                         }
 
                                         loading.hideProgressBar();
-
 
 
                                     }
@@ -160,7 +157,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         holder.txt_name_store.setText(cartModel.Store().name());
         //holder.txt_total_price.setText(""+cartModel.TotalPrice());
 
-        if (cartModel.Store().ImageResponse().data()!=null)
+        if (cartModel.Store().ImageResponse().data() != null)
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + cartModel.Store().ImageResponse().data().name(), holder.image_store);
 
         //Log.d("HAZEM" , "FULL : " +Common.BASE_URL_IMAGE + cartModel.Store().imageId());
@@ -177,6 +174,22 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             });
         }
 
+        if (isCart) {
+            holder.layout_store_cart.setOnClickListener(view -> {
+                MyCartQuery.Store store = cartModel.Store();
+
+                Intent intentStore = new Intent(context, StoreDetailActivity.class);
+                intentStore.putExtra(Constants.EXTRA_STORE_ID, store._id());
+                intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID, store.adminUserId());
+                intentStore.putExtra(Constants.EXTRA_STORE_NAME, store.name());
+                if (store.ImageResponse().data() != null)
+                    intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, store.ImageResponse().data().name());
+                else
+                    intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, "null");
+
+                context.startActivity(intentStore);
+            });
+        }
     }
 
     @Override
@@ -195,11 +208,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 //        @BindView(R.id.txt_total_price)
 //        TextView txt_total_price;
 
+        ConstraintLayout layout_store_cart;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
+
+            if (isCart)
+                layout_store_cart = itemView.findViewById(R.id.layout_store_cart);
 
         }
     }
