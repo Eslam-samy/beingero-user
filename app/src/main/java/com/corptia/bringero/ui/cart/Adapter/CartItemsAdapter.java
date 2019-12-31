@@ -23,6 +23,7 @@ import com.corptia.bringero.Interface.IClickRecyclerAdapter;
 import com.corptia.bringero.Interface.IOnImageViewAdapterClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.graphql.RemoveCartItemMutation;
@@ -49,6 +50,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
     Handler handler;
     IDeleteCartItemsListener iDeleteCartItemsListener;
 
+    CustomLoading loading;
+
     public void setUpdateCartItemsListener(UpdateCartItemsListener updateCartItemsListener) {
         this.updateCartItemsListener = updateCartItemsListener;
     }
@@ -67,6 +70,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
         this.isCart = isCart;
         this.iClickRecyclerAdapter = iClickRecyclerAdapter;
         handler = new Handler();
+
+        loading = new CustomLoading(context, true);
+
     }
 
     @NonNull
@@ -155,18 +161,79 @@ public class CartItemsAdapter extends RecyclerView.Adapter<CartItemsAdapter.View
                 } else {
 
 
-                    Common.TOTAL_CART_PRICE += -item.PricingProduct().storePrice();
-                    Common.TOTAL_CART_AMOUNT += -amount;
+//                    Common.TOTAL_CART_PRICE += -item.PricingProduct().storePrice();
+//                    Common.TOTAL_CART_AMOUNT += -amount;
+//
+//                    iDeleteCartItemsListener.onDeleteCart(position, amount);
+//
+//                    cartItems.remove(position);
+//                    notifyItemRemoved(position);
+//                    notifyItemRangeChanged(position, cartItems.size());
+//
+//
+////                    holder.progress_circular.setVisibility(View.VISIBLE);
+////                    holder.img_delete_product.setVisibility(View.INVISIBLE);
 
-                    iDeleteCartItemsListener.onDeleteCart(position, amount);
 
-                    cartItems.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, cartItems.size());
+                    loading.showProgressBar(context, false);
+
+                    MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(item._id()).build())
+                            .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
+                                @Override
+                                public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
+
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+//                                            holder.progress_circular.setVisibility(View.VISIBLE);
+//                                            holder.img_delete_product.setVisibility(View.INVISIBLE);
+
+                                            if (response.data().CartItemMutation().remove().status() ==200)
+                                            {
+                                                loading.hideProgressBar();
+
+//                                                holder.progress_circular.setVisibility(View.GONE);
+
+//                                                holder.progress_circular.setVisibility(View.VISIBLE);
+//                                                holder.img_delete_product.setVisibility(View.INVISIBLE);
+
+                                                Toast.makeText(context, "Items Deleted !", Toast.LENGTH_SHORT).show();
+
+                                                cartItems.remove(position);
+                                                notifyItemRemoved(position);
+                                                notifyItemRangeChanged(position, cartItems.size());
+
+                                                double totalProductPrice = amount * item.PricingProduct().storePrice();
+
+                                                EventBus.getDefault().postSticky(new CalculatePriceEvent(totalProductPrice));
+
+                                                iClickRecyclerAdapter.onClickAdapter(position);
+
+                                            }
+                                            else
+                                            {
+//                                                holder.progress_circular.setVisibility(View.GONE);
+//                                                holder.img_delete_product.setVisibility(View.VISIBLE);
+                                            }
+
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onFailure(@NotNull ApolloException e) {
+
+                                }
+                            });
 
 
-//                    holder.progress_circular.setVisibility(View.VISIBLE);
-//                    holder.img_delete_product.setVisibility(View.INVISIBLE);
+
+
+
+
+
 
 
                 }

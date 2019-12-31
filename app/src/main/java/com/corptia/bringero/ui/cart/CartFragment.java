@@ -262,6 +262,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                 if (totalPrice <= 0){
                     showPlaceHolder();
+                    loading.setVisibility(View.GONE);
                     Common.TOTAL_CART_PRICE =0;
                     Common.TOTAL_CART_AMOUNT =0;
                 }

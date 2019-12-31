@@ -52,7 +52,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     CallBackUpdateCartItemsListener callBackUpdateCartItemsListener;
 
-    CustomLoading loading;
+
 
     public void setCallBackUpdateCartItemsListener(CallBackUpdateCartItemsListener callBackUpdateCartItemsListener) {
         this.callBackUpdateCartItemsListener = callBackUpdateCartItemsListener;
@@ -64,7 +64,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         this.isCart = isCart;
         handler = new Handler();
 
-        loading = new CustomLoading(context, true);
     }
 
     @NonNull
@@ -86,7 +85,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onClickAdapter(int positionItems) {
                 itemList.remove(positionItems);
 
-                if (itemList.size() == 0) {
+                Log.d("HAZEM" , "DELETE FROM List " + position + " DATA " + cartModel.Store().name());
+
+                if (itemList.size() == 0)
+                {
 
                     myCartList.remove(position);
                     notifyItemRemoved(position);
@@ -99,7 +101,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             @Override
             public void onDeleteCart(int positionItems, int amount) {
 
-                loading.showProgressBar(context, false);
+//                loading.showProgressBar(context, false);
 
 
                 MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(itemList.get(position)._id()).build())
@@ -132,7 +134,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
                                         }
 
-                                        loading.hideProgressBar();
+//                                        loading.hideProgressBar();
 
 
                                     }
