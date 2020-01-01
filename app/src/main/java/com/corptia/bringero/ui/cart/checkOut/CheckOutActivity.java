@@ -9,6 +9,7 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -234,8 +235,11 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         //setting the view of the builder to our custom view that we already inflated
         builder.setView(dialogView);
 
+
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
         alertDialog.show();
     }
 

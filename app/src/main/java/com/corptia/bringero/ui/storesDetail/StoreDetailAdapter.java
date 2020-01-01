@@ -1,7 +1,6 @@
 package com.corptia.bringero.ui.storesDetail;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseViewHolder;
-import com.corptia.bringero.graphql.GetPricedByQuery;
+import com.corptia.bringero.graphql.StoreSearchQuery;
 import com.corptia.bringero.graphql.UpdateCartItemMutation;
 import com.corptia.bringero.model.CartItemsModel;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
@@ -49,13 +48,13 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     Context context;
     List<GetStoreProductsQuery.Product> productsList = new ArrayList<>();
-    List<GetPricedByQuery.Product> productsListSearch = new ArrayList<>();
+    List<StoreSearchQuery.ProductQuery> productsListSearch = new ArrayList<>();
 
     IOnRecyclerViewClickListener listener;
 
     boolean isSearch;
 
-    public StoreDetailAdapter(SearchProductsActivity context, List<GetPricedByQuery.Product> products, boolean isSearch) {
+    public StoreDetailAdapter(SearchProductsActivity context, List<StoreSearchQuery.ProductQuery> products, boolean isSearch) {
         this.context = context;
         if (products != null)
             this.productsListSearch = new ArrayList<>(products);
@@ -168,7 +167,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             super.onBind(position);
 
-            GetPricedByQuery.Product productSearch;
+            StoreSearchQuery.ProductQuery productSearch;
             GetStoreProductsQuery.Product product;
 
 
@@ -193,35 +192,41 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     productImage = product.Product().ImageResponse().data().name();
 
 
-                //This My Cart
-                for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
-
-                    if (item.getPricingProductId().equalsIgnoreCase(productId)) {
-
-                        txt_amount.setVisibility(View.VISIBLE);
-                        btn_delete.setVisibility(View.VISIBLE);
-                        bg_delete.setVisibility(View.VISIBLE);
-
-                        txt_amount.setText("" + item.getAmount());
-
-                        amount = item.getAmount();
-                        cartProductId = item.getCartProductId();
-
-                    }
-                }
-
-
             } else {
                 productSearch = productsListSearch.get(position);
 
                 if (productSearch != null) {
-                    price = productSearch.Price();
-                    productName = productSearch.name();
-                    productId = productSearch._id();
 
-                    if (productSearch.ImageResponse().status() == 200)
-                        productImage = productSearch.ImageResponse().data().name();
+                        price = productSearch.storePrice();
+                        productId = productSearch._id();
 
+                    productName = productSearch.Product().name();
+
+                    if (productSearch.Product().ImageResponse().status() == 200)
+                        productImage = productSearch.Product().ImageResponse().data().name();
+
+                }
+            }
+
+
+            //This My Cart
+            for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
+
+                if (item.getPricingProductId().equalsIgnoreCase(productId)) {
+
+                    txt_amount.setVisibility(View.VISIBLE);
+                    btn_delete.setVisibility(View.VISIBLE);
+                    bg_delete.setVisibility(View.VISIBLE);
+
+                    txt_amount.setText("" + item.getAmount());
+
+                    amount = item.getAmount();
+                    cartProductId = item.getCartProductId();
+
+                } else {
+                    txt_amount.setVisibility(View.GONE);
+                    btn_delete.setVisibility(View.GONE);
+                    bg_delete.setVisibility(View.GONE);
                 }
             }
 
@@ -240,11 +245,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                         //Here Condition Limit Max Price
                         if (Common.TOTAL_CART_PRICE + finalPrice1 > Common.BASE_MAX_PRICE) {
-                            Toasty.warning(context , context.getString(R.string.limit_max_cart)).show();
+                            Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
                         } else {
 
-                            Common.TOTAL_CART_AMOUNT +=1;
-                            Common.TOTAL_CART_PRICE +=finalPrice1;
+                            Common.TOTAL_CART_AMOUNT += 1;
+                            Common.TOTAL_CART_PRICE += finalPrice1;
 
                             listener.onClick(itemView, position);
 
@@ -355,7 +360,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     //------------------------------------ This For Search -----------------------------------
 
 
-    public void addItemsSearch(List<GetPricedByQuery.Product> productsListSearch) {
+    public void addItemsSearch(List<StoreSearchQuery.ProductQuery> productsListSearch) {
         this.productsListSearch.addAll(productsListSearch);
         notifyDataSetChanged();
     }
@@ -369,7 +374,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public void removeLoadingSearch() {
         isLoaderVisible = false;
         int position = productsListSearch.size() - 1;
-        GetPricedByQuery.Product item = getItemSearch(position);
+        StoreSearchQuery.ProductQuery item = getItemSearch(position);
         if (item == null) {
             productsListSearch.remove(position);
             notifyItemRemoved(position);
@@ -377,7 +382,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     }
 
-    GetPricedByQuery.Product getItemSearch(int position) {
+    StoreSearchQuery.ProductQuery getItemSearch(int position) {
         return productsListSearch.get(position);
     }
 

@@ -118,6 +118,8 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
 
 
+                double totalPrice = orderDatum.SubTotal()+ orderDatum.deliveryCost();
+                txt_total_price.setText(new StringBuilder().append(totalPrice).append(" ").append(context.getString(R.string.currency)));
 
 
 //

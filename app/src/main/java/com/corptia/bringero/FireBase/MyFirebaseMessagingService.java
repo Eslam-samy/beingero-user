@@ -35,11 +35,16 @@ import androidx.work.WorkManager;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.model.NotificationCount;
 import com.corptia.bringero.ui.splash.SplashActivity;
 
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * NOTE: There can only be one service in each app that receives FCM messages. If multiple
@@ -60,6 +65,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static final String MODEL_NOT = "model_not";
 
+    String id, notId;
+    String model;
 
     /**
      * Called when message is received.
@@ -69,8 +76,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-        String messageBody = "Hello!";
-        //Log.e(TAG, "onMessageReceived: YesssssssssssSSSSSSSSSSS" );
+
+
+        String messageBody = "";
+
+        String messageST = remoteMessage.getData().get("message");
+        notId = remoteMessage.getData().get("_id");
+
+        model = remoteMessage.getData().get("model");
+        try {
+            JSONObject message = new JSONObject(messageST);
+
+            if (!messageST.contains("\"ar\"") && !messageST.contains("\"en\"")) {
+                messageBody = remoteMessage.getData().get("message");
+            } else if (messageST.contains("\"en\"")) {
+                messageBody = message.optString("en");
+            } else if (messageST.contains("\"ar\"")) {
+                messageBody = message.optString("ar");
+            } else {
+                messageBody = remoteMessage.getData().get("message");
+            }
+
+            if (getSharedPreferences().getBoolean("notificationEnabled", true))
+                sendNotification(messageBody);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         sendNotification(messageBody);
     }
 
@@ -131,19 +164,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, newIntent,
                 PendingIntent.FLAG_ONE_SHOT);
-        String channelId = getString(R.string.default_notification_channel_id);
 
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_logo_app);
-
-//        Uri soundUri = Uri.parse("android.resource://" + getApplicationContext().getPackageName() + "/" + R.raw.beyond_doupt);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "CH_ID")
                 .setLargeIcon(icon)
-                .setSmallIcon(R.drawable.ic_notifications_none_black_24dp)
-                .setContentTitle(getString(R.string.fcm_message))
+                .setSmallIcon(R.drawable.ic_logo_bringero)
+                .setContentTitle(getString(R.string.app_name_))
                 .setContentText(messageBody)
                 .setAutoCancel(true)
-                //               .setSound(soundUri)
                 .setContentIntent(pendingIntent)
                 .setPriority(Notification.PRIORITY_HIGH);
 
@@ -172,6 +201,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         mNotificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+        EventBus.getDefault().postSticky(new NotificationCount());
     }
     // }
 

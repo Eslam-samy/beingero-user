@@ -20,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -29,22 +28,19 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
-import com.corptia.bringero.graphql.GetPricedByQuery;
-import com.corptia.bringero.model.EventBus.CalculateCartEvent;
+import com.corptia.bringero.graphql.StoreSearchQuery;
 import com.corptia.bringero.type.PaginationInput;
 import com.corptia.bringero.type.ProductFilterInput;
 import com.corptia.bringero.type.SEARCH_Input;
+import com.corptia.bringero.type.StoreGalleryFilter;
 import com.corptia.bringero.ui.storesDetail.StoreDetailAdapter;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.recyclerview.PaginationListener;
 import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
 
-import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.w3c.dom.Text;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -284,16 +280,20 @@ public class SearchProductsActivity extends AppCompatActivity {
         SEARCH_Input search_input = SEARCH_Input.builder().searchWord(searchWord).build();
         PaginationInput paginationInput = PaginationInput.builder().page(currentPage).limit(PAGE_SIZE).build();
 
-        ProductFilterInput productFilterInput = ProductFilterInput.builder().sEARCH(search_input).build();
-        MyApolloClient.getApollowClientAuthorization().query(GetPricedByQuery.builder()
+//        ProductFilterInput productFilterInput = ProductFilterInput.builder().sEARCH(search_input).build();
+        StoreGalleryFilter storeGalleryFilter = StoreGalleryFilter.builder().isAvailable(true)
+                .productName(searchWord).build();
+
+        MyApolloClient.getApollowClientAuthorization().query(StoreSearchQuery.builder()
                 .storeId(storeId)
-                .filter(productFilterInput)
+                .filter(storeGalleryFilter)
                 .pagination(paginationInput)
                 .build())
-                .enqueue(new ApolloCall.Callback<GetPricedByQuery.Data>() {
+                .enqueue(new ApolloCall.Callback<StoreSearchQuery.Data>() {
                     @Override
-                    public void onResponse(@NotNull Response<GetPricedByQuery.Data> response) {
-                        GetPricedByQuery.@Nullable GetStoreProducts data = response.data().ProductQuery().getStoreProducts();
+                    public void onResponse(@NotNull Response<StoreSearchQuery.Data> response) {
+
+                        StoreSearchQuery.GetStoreProducts data = response.data().PricingProductQuery().getStoreProducts();
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -308,8 +308,8 @@ public class SearchProductsActivity extends AppCompatActivity {
 
                                     layout_placeholder.setVisibility(View.GONE);
 
-                                    totalPages = response.data().ProductQuery().getStoreProducts().pagination().totalPages();
-                                    adapter.addItemsSearch(response.data().ProductQuery().getStoreProducts().Products());
+                                    totalPages = response.data().PricingProductQuery().getStoreProducts().pagination().totalPages();
+                                    adapter.addItemsSearch(data.ProductQuery());
 
 
 

@@ -34,6 +34,35 @@ public class MyApolloClient {
     //Without Any Token
     public static ApolloClient getApollowClient(){
 
+        // Custom DateTime Scalar Type
+        CustomTypeAdapter dateCustomTypeAdapter = new CustomTypeAdapter<Date>() {
+            @Override
+            public Date decode(CustomTypeValue value) {
+
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormatParse = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    //Log.d("decode","decode");
+
+                    //Date date = dateFormatParse.parse(value.value.toString());
+                    //Date startDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(value.value.toString()).getTime());
+                    Date startDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(value.value.toString()).getTime());
+
+
+                    // Log.d("DateDate" , "Date >> "+startDate);
+                    return startDate ;
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+
+                }
+            }
+
+            @Override
+            public CustomTypeValue encode(Date value) {
+                //Log.d("encode","encode");
+                return new CustomTypeValue.GraphQLString(value.toString());
+            }
+        };
+
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(message -> Log.e("API" , message));
 
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -45,6 +74,7 @@ public class MyApolloClient {
         apolloClient = ApolloClient.builder()
                 .serverUrl(Common.BASE_URL)
                 .okHttpClient(okHttpClient)
+                .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
                 .build();
 
         return apolloClient;

@@ -30,6 +30,8 @@ query deliveryOrders($filter: DeliveryOrderFilterInput!
                 createdAt
                 StoresCount
                 ItemsCount
+                SubTotal
+                deliveryCost
 
                 BuyingOrderResponse {
                     status
@@ -111,6 +113,8 @@ query deliveryOneOrder($_id: ID) {
                 pilotId
                 createdAt
                 status
+                deliveryCost
+                SubTotal
 
                 BuyingOrderResponse {
                     status
@@ -179,6 +183,21 @@ query deliveryOneOrder($_id: ID) {
                         }
 
 
+                    }
+                }
+
+                PilotUserResponse{
+                    status
+                    data{
+                        _id
+                        phone
+                        fullName
+                        AvatarResponse{
+                            status
+                            data{
+                                name
+                            }
+                        }
                     }
                 }
 

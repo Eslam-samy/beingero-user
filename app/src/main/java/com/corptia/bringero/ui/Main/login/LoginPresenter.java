@@ -94,6 +94,9 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                                 userModel.setLanguage(userData.language());
                                 userModel.setLastName(userData.lastName());
 
+                                userModel.setGender(userData.gender());
+                                userModel.setBirthDate(userData.birthDate());
+
                                 userModel.setAvatarImageId(userData.avatarImageId());
 
                                 userModel.setPhone(userData.phone());

@@ -1,27 +1,15 @@
 package com.corptia.bringero.ui.order.ordersDetails;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,7 +19,6 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
-import com.corptia.bringero.model.CartModel;
 import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.ui.tracking.TrackingActivity;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -42,8 +29,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,6 +76,12 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     ImageView img_delivering;
     @BindView(R.id.img_delivered)
     ImageView img_delivered;
+
+    //pilot
+    @BindView(R.id.img_pilot)
+    CircleImageView img_pilot;
+    @BindView(R.id.txt_name)
+    TextView txt_name;
 
     OrdersPaidDetailsPresenter detailsPresenter = new OrdersPaidDetailsPresenter(this);
 
@@ -273,18 +265,25 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 //                Common.CURRENT_TRACK = deliveryOrderData.AllTrip().data().Tracks();
 
                 pilotId = deliveryOrderData.pilotId();
+
                 }
 
+                if (deliveryOrderData.PilotUserResponse().status() == 200) {
 
+                    txt_name.setText(deliveryOrderData.PilotUserResponse().data().fullName());
+
+                    if (deliveryOrderData.PilotUserResponse().data().AvatarResponse().status() == 200)
+                        PicassoUtils.setImage(Common.BASE_URL_IMAGE + deliveryOrderData.PilotUserResponse().data().AvatarResponse().data().name(), img_pilot);
+                }
 
 
                 //Here Total And Address
                 txt_title_name_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
                 txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
 
-                txt_subtotal.setText(new StringBuilder().append(500.00).append(" ").append(getString(R.string.currency)));
-                txt_delivery_fees.setText(new StringBuilder().append(20).append(" ").append(getString(R.string.currency)));
-                txt_total.setText(new StringBuilder().append(20 + 500.00).append(" ").append(getString(R.string.currency)));
+                txt_subtotal.setText(new StringBuilder().append(deliveryOrderData.SubTotal()).append(" ").append(getString(R.string.currency)));
+                txt_delivery_fees.setText(new StringBuilder().append(deliveryOrderData.deliveryCost()).append(" ").append(getString(R.string.currency)));
+                txt_total.setText(new StringBuilder().append(deliveryOrderData.SubTotal() + deliveryOrderData.deliveryCost()).append(" ").append(getString(R.string.currency)));
 
 //                total_price.setText(new StringBuilder().append(20 + 500.00).append(" ").append(getString(R.string.currency)));
 
@@ -308,6 +307,8 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                     img_delivering.setImageResource(R.drawable.tracking_status_delivering);
                     img_delivered.setImageResource(R.drawable.tracking_status_delivered);
                 }
+
+
 
 //                    ORDERSREQUESTED("OrdersRequested"),
 //

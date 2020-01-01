@@ -1,0 +1,3254 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+interface IModelData {
+    _id: ID!
+    createdAt: Date
+    updatedAt: Date
+}
+
+interface IQueryMultipleResponse {
+    data: [IModelData]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+interface ISingleResponse {
+    data: IModelData
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type BuyingOrder implements IModelData {
+    AvailableStatus: [BuyingOrderStatus]
+    CustomerUserResponse: UserSingleResponse
+    DeliveryOrderResponse: DeliveryOrderSingleResponse
+    ItemsResponse: BuyingOrderItemMultipleResponse
+    StoreResponse: StoreSingleResponse
+    TotalPrice: Float
+    _id: ID!
+    createdAt: Date
+    customerUserId: ID!
+    deliveryOrderId: ID!
+    orderMaxPreparingMinutes: Int
+    serial: Int
+    status: BuyingOrderStatus
+    storeId: ID!
+    updatedAt: Date
+}
+
+type BuyingOrderItem implements IModelData {
+    Price: Float
+    PricingProductResponse: PricingProductSingleResponse
+    _id: ID!
+    amount: Int
+    createdAt: Date
+    orderId: ID
+    pricingProductId: ID
+    productId: ID
+    productName: String
+    storePrice: Float
+    updatedAt: Date
+}
+
+type BuyingOrderItemMultipleResponse implements IQueryMultipleResponse {
+    data: [BuyingOrderItem]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type BuyingOrderItemMutation {
+    "create(data: createBuyingOrderItem): BuyingOrderItemSingleResponse"
+    update(_id: ID, data: updateBuyingOrderItem): BuyingOrderItemSingleResponse
+}
+
+type BuyingOrderItemQuery {
+    get(_id: ID): BuyingOrderItemSingleResponse
+    getAll(filter: BuyingOrderItemFilterInput!, pagination: paginationInput, sorting: BuyingOrderItemSortingInput): BuyingOrderItemMultipleResponse
+    getOne(filter: BuyingOrderItemFilterInput): BuyingOrderItemSingleResponse
+}
+
+type BuyingOrderItemSingleResponse implements ISingleResponse {
+    data: BuyingOrderItem
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type BuyingOrderMultipleResponse implements IQueryMultipleResponse {
+    data: [BuyingOrder]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type BuyingOrderMutation {
+    create(data: createBuyingOrder): DeliveryOrderSingleResponse
+    update(_id: ID, data: updateBuyingOrder): BuyingOrderSingleResponse
+    updateOne(data: updateBuyingOrder, filter: BuyingOrderFilterInput): BuyingOrderSingleResponse
+}
+
+type BuyingOrderQuery {
+    get(_id: ID): BuyingOrderSingleResponse
+    getAll(filter: BuyingOrderFilterInput!, pagination: paginationInput, sorting: BuyingOrderSortingInput): BuyingOrderMultipleResponse
+    getOne(filter: BuyingOrderFilterInput): BuyingOrderSingleResponse
+    getStatusCounts(status: BuyingOrderStatus): BuyingOrderStatusCountResponse
+    getStoreByuingOrderStatusCount(storeId: ID): StoreBuyingOrderStatusCountResponse
+    getStoreClientsCounts(storeId: ID): StoreByuingOrderCustomersCountsResponse
+}
+
+type BuyingOrderSingleResponse implements ISingleResponse {
+    data: BuyingOrder
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type BuyingOrderStatusCountRecord {
+    count: Int
+    status: BuyingOrderStatus
+}
+
+type BuyingOrderStatusCountResponse {
+    data: [ByuingOrderStatusCount]
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ByuingOrderStatusCount {
+    _id: BuyingOrderStatus
+    count: Int
+    status: BuyingOrderStatus
+}
+
+type CartItem implements IModelData {
+    PricingProduct: PricingProduct
+    PricingProductResponse: PricingProductSingleResponse
+    _id: ID!
+    amount: Int!
+    createdAt: Date
+    pricingProductId: ID
+    totalPrice: Float
+    updatedAt: Date
+    userId: ID!
+}
+
+type CartItemMultipleResponse implements IQueryMultipleResponse {
+    data: [CartItem]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type CartItemMutation {
+    create(data: createCartItem): CartItemSingleResponse
+    remove(_id: ID!): CartItemSingleResponse
+    update(_id: ID, data: updateCartItem): CartItemSingleResponse
+    updateOne(data: updateCartItem, filter: CartItemFilterInput): CartItemSingleResponse
+}
+
+type CartItemQuery {
+    get(_id: ID): CartItemSingleResponse
+    getAll(filter: CartItemFilterInput!, pagination: paginationInput, sorting: CartItemSortingInput): CartItemMultipleResponse
+    getOne(filter: CartItemFilterInput): CartItemSingleResponse
+    myCart(filter: myCartFilter): UserCartResponse
+}
+
+type CartItemSingleResponse implements ISingleResponse {
+    data: CartItem
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type DeliveryAddress {
+    _id: ID
+    addedInfo: String
+    building: Int
+    cityId: ID
+    flat: Int
+    flatType: FlatType
+    floor: Int
+    locationPoint: PointCooridinates
+    name: String
+    region: String
+    street: String
+}
+
+type DeliveryOrder implements IModelData {
+    BuyingOrderResponse: BuyingOrderMultipleResponse
+    ItemsCount: Int
+    PilotUserResponse: UserSingleResponse
+    StoresCount: Int
+    SubTotal: Float
+    TripResponse: TrackingTripSingleResponse
+    _id: ID!
+    createdAt: Date
+    customerUserId: ID!
+    deliveryCost: Float
+    pilotId: ID
+    serial: Int
+    status: DeliveryOrderStatus!
+    updatedAt: Date
+}
+
+type DeliveryOrderMultipleResponse implements IQueryMultipleResponse {
+    data: [DeliveryOrder]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type DeliveryOrderMutation {
+    update(_id: ID, data: updateDeliveryOrder): DeliveryOrderSingleResponse
+}
+
+type DeliveryOrderQuery {
+    get(_id: ID): DeliveryOrderSingleResponse
+    getAll(filter: DeliveryOrderFilterInput!, pagination: paginationInput, sorting: DeliveryOrderSortingInput): DeliveryOrderMultipleResponse
+    getOne(filter: DeliveryOrderFilterInput): DeliveryOrderSingleResponse
+    getPilotDeliveryOrderStatusCounts(pilotId: ID): PilotDeliveryOrderStatusCountsResponse
+}
+
+type DeliveryOrderSingleResponse implements ISingleResponse {
+    data: DeliveryOrder
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type DeliveryOrderStatusCount {
+    count: Int
+    status: DeliveryOrderStatus
+}
+
+type GeneralOption implements IModelData {
+    _id: ID!
+    createdAt: Date
+    label: String
+    multiLangs: GeneralOptionMultiLangs
+    name: GeneralOptionNameEnum
+    updatedAt: Date
+    value: String
+    valueType: GeneralOptionValueType
+}
+
+type GeneralOptionMultiLangs {
+    label: multiLanguageField
+}
+
+type GeneralOptionMultipleResponse implements IQueryMultipleResponse {
+    data: [GeneralOption]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type GeneralOptionMutation {
+    initOptions(filter: GeneralOptionFilter, pagination: paginationInput, sorting: ProductTypeSortingInput): GeneralOptionMultipleResponse
+    setAllOptions(options: [GeneralOptionInput]): GeneralOptionMultipleResponse
+    setOption(data: GeneralOptionInput): GeneralOptionResponse
+}
+
+type GeneralOptionQuery {
+    get(_id: ID): GeneralOptionResponse
+    getAll(filter: GeneralOptionFilter, pagination: paginationInput, sorting: ProductTypeSortingInput): GeneralOptionMultipleResponse
+    getOne(filter: GeneralOptionFilter): GeneralOptionResponse
+}
+
+type GeneralOptionResponse implements ISingleResponse {
+    data: GeneralOption
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+    warnings: [PathError]
+}
+
+type Icon {
+    name: String
+    packageName: String
+}
+
+type Image implements IModelData {
+    _id: ID!
+    alt: multiLanguageField
+    collections: [imageCollectionsRef]
+    createdAt: Date
+    height: Int
+    name: String!
+    path: String
+    thumbs: [ImageThumbnail]
+    updatedAt: Date
+    width: Int
+}
+
+type ImageCollection implements IModelData {
+    Images(filter: ImageFilter, pagination: paginationInput, sorting: ImageSortingInput): ImageMultipleResponse
+    _id: ID!
+    createdAt: Date
+    icon: Icon
+    name: String
+    thumbSizes: [ThumbSize]
+    updatedAt: Date
+}
+
+"Query Response"
+type ImageCollectionMultipleResponse implements IQueryMultipleResponse {
+    data: [ImageCollection]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+"""
+End nested Array Operations
+Mutation Definetion
+"""
+type ImageCollectionMutation {
+    create(data: createImageCollection): ImageCollectionSingleResponse
+    update(_id: ID, data: updateImageCollection): ImageCollectionSingleResponse
+    updateOne(data: updateImageCollection, filter: ImageCollectionFilter): ImageCollectionSingleResponse
+}
+
+"""
+end Query Response
+Query Definition
+"""
+type ImageCollectionQuery {
+    get(_id: ID): ImageCollectionSingleResponse
+    getAll(filter: ImageCollectionFilter, pagination: paginationInput, sorting: ImageCollectionSortingInput): ImageCollectionMultipleResponse
+    getOne(filter: ImageCollectionFilter): ImageCollectionSingleResponse
+}
+
+type ImageCollectionSingleResponse implements ISingleResponse {
+    data: ImageCollection
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+"Query Response"
+type ImageMultipleResponse implements IQueryMultipleResponse {
+    data: [Image]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+"""
+end Query Response
+Query Definition
+"""
+type ImageQuery {
+    get(_id: ID): ImageSingleResponse
+    getAll(filter: ImageFilter, pagination: paginationInput, sorting: ImageSortingInput): ImageMultipleResponse
+    getOne(filter: ImageFilter): ImageSingleResponse
+}
+
+type ImageSingleResponse implements ISingleResponse {
+    data: Image
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ImageThumbnail {
+    height: Int!
+    name: String!
+    path: String
+    sizeName: String
+    width: Int!
+}
+
+type LocationCity implements IModelData {
+    StateResponse: LocationStateSingleResponse
+    _id: ID!
+    createdAt: Date
+    multiLangs(fields: [LocationCityMultiLangsFieldsEnum!]): LocationCityMultiLangs
+    name: String
+    stateId: ID
+    updatedAt: Date
+}
+
+type LocationCityMultiLangs {
+    name: multiLanguageField
+}
+
+type LocationCityMultipleResponse implements IQueryMultipleResponse {
+    data: [LocationCity]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type LocationCityMutation {
+    create(data: createLocationCity): LocationCitySingleResponse
+    update(_id: ID, data: updateLocationCity): LocationCitySingleResponse
+    updateOne(data: updateLocationCity, filter: LocationCityFilterInput): LocationCitySingleResponse
+}
+
+type LocationCityQuery {
+    get(_id: ID): LocationCitySingleResponse
+    getAll(filter: LocationCityFilterInput, pagination: paginationInput, sorting: LocationCitySortingInput): LocationCityMultipleResponse
+    getOne(filter: LocationCityFilterInput): LocationCitySingleResponse
+}
+
+type LocationCitySingleResponse implements ISingleResponse {
+    data: LocationCity
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type LocationCountry implements IModelData {
+    LocationStateMultiResponse(pagination: paginationInput): LocationStateMultipleResponse
+    _id: ID!
+    countryCode: String
+    createdAt: Date
+    multiLangs(fields: [LocationCountryMultiLangsFieldsEnum!] = [name]): LocationCountryMultiLangs
+    name: String
+    updatedAt: Date
+}
+
+type LocationCountryMultiLangs {
+    name: multiLanguageField
+}
+
+type LocationCountryMultipleResponse implements IQueryMultipleResponse {
+    data: [LocationCountry]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type LocationCountryMutation {
+    create(data: createLocationCountry): LocationCountrySingleResponse
+    update(_id: ID, data: updateLocationCountry): LocationCountrySingleResponse
+    updateOne(data: updateLocationCountry, filter: LocationCountryFilterInput): LocationCountrySingleResponse
+}
+
+type LocationCountryQuery {
+    get(_id: ID): LocationCountrySingleResponse
+    getAll(filter: LocationCountryFilterInput, pagination: paginationInput, sorting: LocationCountrySortingInput): LocationCountryMultipleResponse
+    getOne(filter: LocationCountryFilterInput): LocationCountrySingleResponse
+}
+
+type LocationCountrySingleResponse implements ISingleResponse {
+    data: LocationCountry
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type LocationState implements IModelData {
+    CityMultiResponse: LocationCityMultipleResponse
+    CountryResponse: LocationCountrySingleResponse
+    _id: ID!
+    countryId: ID
+    createdAt: Date
+    multiLangs(fields: [LocationStateMultiLangsFieldsEnum!]): LocationStateMultiLangs
+    name: String
+    updatedAt: Date
+}
+
+type LocationStateMultiLangs {
+    name: multiLanguageField
+}
+
+type LocationStateMultipleResponse implements IQueryMultipleResponse {
+    data: [LocationState]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type LocationStateMutation {
+    create(data: createLocationState): LocationStateSingleResponse
+    update(_id: ID, data: updateLocationState): LocationStateSingleResponse
+    updateOne(data: updateLocationState, filter: LocationStateFilterInput): LocationStateSingleResponse
+}
+
+type LocationStateQuery {
+    get(_id: ID): LocationStateSingleResponse
+    getAll(filter: LocationStateFilterInput, pagination: paginationInput, sorting: LocationStateSortingInput): LocationStateMultipleResponse
+    getOne(filter: LocationStateFilterInput): LocationStateSingleResponse
+}
+
+type LocationStateSingleResponse implements ISingleResponse {
+    data: LocationState
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type Mutation {
+    BuyingOrderItemMutation: BuyingOrderItemMutation
+    BuyingOrderMutation: BuyingOrderMutation
+    CartItemMutation: CartItemMutation
+    DeliveryOrderMutation: DeliveryOrderMutation
+    GeneralOptionMutation: GeneralOptionMutation
+    ImageCollectionMutation: ImageCollectionMutation
+    LocationCityMutation: LocationCityMutation
+    LocationCountryMutation: LocationCountryMutation
+    LocationStateMutation: LocationStateMutation
+    NotificationMutation: NotificationMutation
+    PilotMutation: PilotMutation
+    PilotVehicleMutation: PilotVehicleMutation
+    PricingProductMutation: PricingProductMutation
+    ProductBrandMutation: ProductBrandMutation
+    ProductCategoryMutation: ProductCategoryMutation
+    ProductFormMutation: ProductFormMutation
+    ProductManufacturerMutation: ProductManufacturerMutation
+    ProductMutation: ProductMutation
+    ProductTypeMutation: ProductTypeMutation
+    ProductUnitMutation: ProductUnitMutation
+    StoreMutation: StoreMutation
+    StoreTracksMutation: StoreTracksMutation
+    StoreTypeMutation: StoreTypeMutation
+    TestModelMutation: TestModelMutation
+    TrackingTripMutation: TrackingTripMutation
+    UnitTypeMutation: UnitTypeMutation
+    UserMutation: UserMutation
+    notifyUser(notification: createNotificationInput!, userId: ID!): NotificationSingleResponse
+    testPublish(str: String): String!
+}
+
+type Notification implements IModelData {
+    _id: ID!
+    actionType: String
+    createdAt: Date
+    display: String
+    docId: ID
+    docStatus: String
+    message: String
+    model: String
+    status: NotificatioStatus
+    updatedAt: Date
+    userId: ID
+}
+
+type NotificationMultipleResponse implements IQueryMultipleResponse {
+    data: [Notification]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type NotificationMutation {
+    update(_id: ID, data: updateNotificationInput): NotificationSingleResponse
+    updateAll(data: updateNotificationInput, filter: NotificationFilterInput): NotificationSingleResponse
+}
+
+type NotificationQuery {
+    get(_id: ID): NotificationSingleResponse
+    getAll(filter: NotificationFilterInput!, pagination: paginationInput, sorting: NotificationSortingInput): NotificationMultipleResponse
+    getOne(filter: NotificationFilterInput!): NotificationSingleResponse
+}
+
+type NotificationSingleResponse implements ISingleResponse {
+    data: Notification
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type Pagination {
+    dataCount: Int
+    hasNextPage: Boolean
+    hasPrevPage: Boolean
+    limit: Int
+    nextPage: Int
+    page: Int
+    pagingCounter: Int
+    prevPage: Int
+    totalDocs: Int
+    totalPages: Int
+}
+
+type PathError {
+    code: String
+    message: String
+    path: String
+    validValue: String
+}
+
+type Pilot implements IModelData {
+    DrivingLicenceImageResponse: ImageSingleResponse
+    UserResponse: UserSingleResponse
+    VehicleResponse: PilotVehicleSingleResponse
+    _id: ID!
+    createdAt: Date
+    currentDeliveryOrder: ID
+    drivingLicenceImageId: ID
+    drivingLicenceSerial: String
+    isDeliveryAvailable: Boolean
+    updatedAt: Date
+    userId: ID!
+    vehicleId: ID
+}
+
+type PilotDeliveryOrderStatusCounts {
+    Pilot: User
+    _id: ID
+    records: [DeliveryOrderStatusCount]
+}
+
+type PilotDeliveryOrderStatusCountsResponse {
+    data: [PilotDeliveryOrderStatusCounts]
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type PilotMultipleResponse implements IQueryMultipleResponse {
+    data: [Pilot]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type PilotMutation {
+    create(data: createPilot): PilotSingleResponse
+    update(_id: ID, data: updatePilot): PilotSingleResponse
+    updateOne(data: updatePilot, filter: PilotFilterInput): PilotSingleResponse
+}
+
+type PilotQuery {
+    get(_id: ID): PilotSingleResponse
+    getAll(filter: PilotFilterInput, pagination: paginationInput, sorting: PilotSortingInput): PilotMultipleResponse
+    getOne(filter: PilotFilterInput): PilotSingleResponse
+}
+
+type PilotSingleResponse implements ISingleResponse {
+    data: Pilot
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type PilotVehicle implements IModelData {
+    LicenceImageResponse: ImageSingleResponse
+    _id: ID!
+    createdAt: Date
+    licenceImageId: ID
+    licenceSerial: String
+    plateNo: String
+    updatedAt: Date
+    vehicleType: VehicleTypeEnum
+}
+
+type PilotVehicleMultipleResponse implements IQueryMultipleResponse {
+    data: [PilotVehicle]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type PilotVehicleMutation {
+    create(data: createPilotVehicle): PilotVehicleSingleResponse
+    update(_id: ID, data: updatePilotVehicle): PilotVehicleSingleResponse
+    updateOne(data: updatePilotVehicle, filter: PilotVehicleFilterInput): PilotVehicleSingleResponse
+}
+
+type PilotVehicleQuery {
+    get(_id: ID): PilotVehicleSingleResponse
+    getAll(filter: PilotVehicleFilterInput, pagination: paginationInput, sorting: PilotVehicleSortingInput): PilotVehicleMultipleResponse
+    getOne(filter: PilotVehicleFilterInput): PilotVehicleSingleResponse
+}
+
+type PilotVehicleSingleResponse implements ISingleResponse {
+    data: PilotVehicle
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type PointCooridinates {
+    lat: Float
+    lng: Float
+}
+
+type PricingProduct implements IModelData {
+    CartAmount: Int
+    InCart: Boolean
+    Product: Product
+    ProductResponse: ProductSingleResponse
+    StoreResponse: StoreSingleResponse
+    _id: ID!
+    amount: Int
+    createdAt: Date
+    isAvailable: Boolean
+    productId: ID!
+    storeId: ID!
+    storePrice: Float!
+    updatedAt: Date
+}
+
+type PricingProductMultipleResponse implements IQueryMultipleResponse {
+    data: [PricingProduct]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type PricingProductMutation {
+    create(data: createPricingProduct): PricingProductSingleResponse
+    update(_id: ID, data: updatePricingProduct): PricingProductSingleResponse
+    updateOne(data: updatePricingProduct, filter: PricingProductFilterInput): PricingProductSingleResponse
+}
+
+type PricingProductQuery {
+    get(_id: ID): PricingProductSingleResponse
+    getAll(filter: PricingProductFilterInput, pagination: paginationInput, sorting: PricingProductSortingInput): PricingProductMultipleResponse
+    getOne(filter: PricingProductFilterInput): PricingProductSingleResponse
+    getStorePricedProductsCount(storeId: ID): StorePricedProductsCountResponse
+    getStoreProducts(filter: storeGalleryFilter!, pagination: paginationInput, sorting: ProductSortingInput, storeId: ID!): PricingProductMultipleResponse
+}
+
+type PricingProductSingleResponse implements ISingleResponse {
+    data: PricingProduct
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type Product implements IModelData {
+    BrandResponse: ProductBrandSingleResponse
+    CategoriesResponse: ProductCategoryMultipleResponse
+    FormResponse: ProductFormSingleResponse
+    ImageResponse: ImageSingleResponse
+    ManufacturerResponse: ProductManufacturerSingleResponse
+    Price(storeId: ID!): Float
+    PricingProduct(filter: PricingProductFilterInput!): PricingProduct
+    TypeResponse: ProductTypeSingleResponse
+    UnitResponse: ProductUnitSingleResponse
+    _id: ID!
+    attributeGroupId: ID
+    barcode: String
+    brandId: ID
+    categoryIds: [ID]
+    createdAt: Date
+    customerPrice: Float
+    description: String
+    formId: ID
+    formPerUnit: Int
+    imageId: ID
+    manufacturerId: ID
+    multiLangs(fields: [ProductMultiLangsFieldsEnum!] = [name, description]): ProductMultiLangs
+    name: String
+    typeId: ID
+    unitId: ID
+    updatedAt: Date
+}
+
+type ProductBrand implements IModelData {
+    ImageResponse: ImageSingleResponse
+    ProductType: ProductTypeSingleResponse
+    _id: ID!
+    createdAt: Date
+    description: String
+    icon: Icon
+    imageId: ID
+    multiLangs(fields: [ProductBrandMultiLangsFieldsEnum!] = [name, description]): ProductBrandMultiLangs
+    name: String
+    productTypeId: ID
+    updatedAt: Date
+}
+
+type ProductBrandMultiLangs {
+    description: multiLanguageField
+    name: multiLanguageField
+}
+
+type ProductBrandMultipleResponse implements IQueryMultipleResponse {
+    data: [ProductBrand]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type ProductBrandMutation {
+    create(data: createProductBrand): ProductBrandSingleResponse
+    update(_id: ID, data: updateProductBrand): ProductBrandSingleResponse
+    updateOne(data: updateProductBrand, filter: ProductBrandFilterInput): ProductBrandSingleResponse
+}
+
+type ProductBrandQuery {
+    get(_id: ID): ProductBrandSingleResponse
+    getAll(filter: ProductBrandFilterInput, pagination: paginationInput, sorting: ProductBrandSortingInput): ProductBrandMultipleResponse
+    getOne(filter: ProductBrandFilterInput): ProductBrandSingleResponse
+}
+
+type ProductBrandSingleResponse implements ISingleResponse {
+    data: ProductBrand
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ProductCategory implements IModelData {
+    ChildrenResponse: ProductCategoryMultipleResponse
+    ImageResponse: ImageSingleResponse
+    ParentResponse: ProductCategorySingleResponse
+    _id: ID!
+    createdAt: Date
+    description: String
+    icon: Icon
+    imageId: ID
+    multiLangs(fields: [ProductCategoryMultiLangsFieldsEnum!] = [name, description]): ProductCategoryMultiLangs
+    name: String
+    parentId: ID
+    updatedAt: Date
+}
+
+type ProductCategoryMultiLangs {
+    description: multiLanguageField
+    name: multiLanguageField
+}
+
+type ProductCategoryMultipleResponse implements IQueryMultipleResponse {
+    data: [ProductCategory]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type ProductCategoryMutation {
+    create(data: createProductCategory): ProductCategorySingleResponse
+    update(_id: ID, data: updateProductCategory): ProductCategorySingleResponse
+    updateOne(data: updateProductCategory, filter: ProductCategoryFilterInput): ProductCategorySingleResponse
+}
+
+type ProductCategoryQuery {
+    get(_id: ID): ProductCategorySingleResponse
+    getAll(filter: ProductCategoryFilterInput, pagination: paginationInput, sorting: ProductCategorySortingInput): ProductCategoryMultipleResponse
+    getOne(filter: ProductCategoryFilterInput): ProductCategorySingleResponse
+}
+
+type ProductCategorySingleResponse implements ISingleResponse {
+    data: ProductCategory
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ProductForm implements IModelData {
+    ImageResponse: ImageSingleResponse
+    _id: ID!
+    createdAt: Date
+    icon: Icon
+    imageId: ID
+    multiLangs(fields: [ProductFormMultiLangsFieldsEnum!] = [name]): ProductFormMultiLangs
+    name: String
+    updatedAt: Date
+}
+
+type ProductFormMultiLangs {
+    name: multiLanguageField
+}
+
+type ProductFormMultipleResponse implements IQueryMultipleResponse {
+    data: [ProductForm]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type ProductFormMutation {
+    create(data: createProductForm): ProductFormSingleResponse
+    update(_id: ID, data: updateProductForm): ProductFormSingleResponse
+    updateOne(data: updateProductForm, filter: ProductFormFilterInput): ProductFormSingleResponse
+}
+
+type ProductFormQuery {
+    get(_id: ID): ProductFormSingleResponse
+    getAll(filter: ProductFormFilterInput, pagination: paginationInput, sorting: ProductFormSortingInput): ProductFormMultipleResponse
+    getOne(filter: ProductFormFilterInput): ProductFormSingleResponse
+}
+
+type ProductFormSingleResponse implements ISingleResponse {
+    data: ProductForm
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ProductManufacturer implements IModelData {
+    ImageResponse: ImageSingleResponse
+    _id: ID!
+    createdAt: Date
+    description: String
+    icon: Icon
+    imageId: ID
+    multiLangs(fields: [ProductManufacturerMultiLangsFieldsEnum!] = [name, description]): ProductManufacturerMultiLangs
+    name: String
+    updatedAt: Date
+}
+
+type ProductManufacturerMultiLangs {
+    description: multiLanguageField
+    name: multiLanguageField
+}
+
+type ProductManufacturerMultipleResponse implements IQueryMultipleResponse {
+    data: [ProductManufacturer]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type ProductManufacturerMutation {
+    create(data: createProductManufacturer): ProductManufacturerSingleResponse
+    update(_id: ID, data: updateProductManufacturer): ProductManufacturerSingleResponse
+    updateOne(data: updateProductManufacturer, filter: ProductManufacturerFilterInput): ProductManufacturerSingleResponse
+}
+
+type ProductManufacturerQuery {
+    get(_id: ID): ProductManufacturerSingleResponse
+    getAll(filter: ProductManufacturerFilterInput, pagination: paginationInput, sorting: ProductManufacturerSortingInput): ProductManufacturerMultipleResponse
+    getOne(filter: ProductManufacturerFilterInput): ProductManufacturerSingleResponse
+}
+
+type ProductManufacturerSingleResponse implements ISingleResponse {
+    data: ProductManufacturer
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ProductMultiLangs {
+    description: multiLanguageField
+    name: multiLanguageField
+}
+
+type ProductMultipleResponse implements IQueryMultipleResponse {
+    data: [Product]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type ProductMutation {
+    create(data: createProduct): ProductSingleResponse
+    update(_id: ID, data: updateProduct): ProductSingleResponse
+    updateOne(data: updateProduct, filter: ProductFilterInput): ProductSingleResponse
+}
+
+type ProductQuery {
+    get(_id: ID): ProductSingleResponse
+    getAll(filter: ProductFilterInput, pagination: paginationInput, sorting: ProductSortingInput): ProductMultipleResponse
+    getNotPricedBy(filter: ProductFilterInput!, pagination: paginationInput, sorting: ProductSortingInput, storeId: ID!): ProductMultipleResponse
+    getOne(filter: ProductFilterInput): ProductSingleResponse
+    getPricedBy(filter: ProductFilterInput!, pagination: paginationInput, sorting: ProductSortingInput, storeId: ID!): ProductMultipleResponse
+}
+
+type ProductSingleResponse implements ISingleResponse {
+    data: Product
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ProductType implements IModelData {
+    ImageResponse: ImageSingleResponse
+    _id: ID!
+    createdAt: Date
+    description: String
+    icon: Icon
+    imageId: ID
+    multiLangs(fields: [ProductTypeMultiLangsFieldsEnum!] = [name, description]): ProductTypeMultiLangs
+    name: String
+    updatedAt: Date
+}
+
+type ProductTypeMultiLangs {
+    description: multiLanguageField
+    name: multiLanguageField
+}
+
+type ProductTypeMultipleResponse implements IQueryMultipleResponse {
+    data: [ProductType]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type ProductTypeMutation {
+    create(data: createProductType): ProductTypeSingleResponse
+    update(_id: ID, data: updateProductType): ProductTypeSingleResponse
+    updateOne(data: updateProductType, filter: ProductTypeFilterInput): ProductTypeSingleResponse
+}
+
+type ProductTypeProductsCount {
+    ProductType: ProductType
+    _id: ID
+    productCount: Int
+}
+
+type ProductTypeProductsCountResponse {
+    data: [ProductTypeProductsCount]
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ProductTypeQuery {
+    get(_id: ID): ProductTypeSingleResponse
+    getAll(filter: ProductTypeFilterInput, pagination: paginationInput, sorting: ProductTypeSortingInput): ProductTypeMultipleResponse
+    getAllProductsCount: ProductTypeProductsCountResponse
+    getOne(filter: ProductTypeFilterInput): ProductTypeSingleResponse
+}
+
+type ProductTypeSingleResponse implements ISingleResponse {
+    data: ProductType
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ProductUnit implements IModelData {
+    ImageResponse: ImageSingleResponse
+    _id: ID!
+    createdAt: Date
+    icon: Icon
+    imageId: ID
+    multiLangs(fields: [ProductUnitMultiLangsFieldsEnum!] = [name]): ProductUnitMultiLangs
+    name: String
+    updatedAt: Date
+}
+
+type ProductUnitMultiLangs {
+    name: multiLanguageField
+}
+
+type ProductUnitMultipleResponse implements IQueryMultipleResponse {
+    data: [ProductUnit]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type ProductUnitMutation {
+    create(data: createProductUnit): ProductUnitSingleResponse
+    update(_id: ID, data: updateProductUnit): ProductUnitSingleResponse
+    updateOne(data: updateProductUnit, filter: ProductUnitFilterInput): ProductUnitSingleResponse
+}
+
+type ProductUnitQuery {
+    get(_id: ID): ProductUnitSingleResponse
+    getAll(filter: ProductUnitFilterInput, pagination: paginationInput, sorting: ProductUnitSortingInput): ProductUnitMultipleResponse
+    getOne(filter: ProductUnitFilterInput): ProductUnitSingleResponse
+}
+
+type ProductUnitSingleResponse implements ISingleResponse {
+    data: ProductUnit
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type Query {
+    BuyingOrderItemQuery: BuyingOrderItemQuery
+    BuyingOrderQuery: BuyingOrderQuery
+    CartItemQuery: CartItemQuery
+    DeliveryOrderQuery: DeliveryOrderQuery
+    GeneralOptionQuery: GeneralOptionQuery
+    ImageCollectionQuery: ImageCollectionQuery
+    ImageQuery: ImageQuery
+    LocationCityQuery: LocationCityQuery
+    LocationCountryQuery: LocationCountryQuery
+    LocationStateQuery: LocationStateQuery
+    NotificationQuery: NotificationQuery
+    PilotQuery: PilotQuery
+    PilotVehicleQuery: PilotVehicleQuery
+    PricingProductQuery: PricingProductQuery
+    ProductBrandQuery: ProductBrandQuery
+    ProductCategoryQuery: ProductCategoryQuery
+    ProductFormQuery: ProductFormQuery
+    ProductManufacturerQuery: ProductManufacturerQuery
+    ProductQuery: ProductQuery
+    ProductTypeQuery: ProductTypeQuery
+    ProductUnitQuery: ProductUnitQuery
+    StoreQuery: StoreQuery
+    StoreTracksQuery: StoreTracksQuery
+    StoreTypeQuery: StoreTypeQuery
+    TestModelQuery: TestModelQuery
+    TrackingTripQuery: TrackingTripQuery
+    UnitTypeQuery: UnitTypeQuery
+    UserQuery: UserQuery
+}
+
+type Store implements IModelData {
+    AdminUserResponse: UserSingleResponse
+    CityReponse: LocationCitySingleResponse
+    ImageResponse: ImageSingleResponse
+    PricingProducts(filter: PricingProductFilterInput, pagination: paginationInput, sorting: PricingProductSortingInput): PricingProductMultipleResponse
+    ProductTypesResponse: ProductTypeMultipleResponse
+    _id: ID!
+    adminUserId: ID
+    cityId: ID
+    createdAt: Date
+    description: String
+    imageId: ID
+    isAvailable: Boolean
+    locationPoint: PointCooridinates
+    multiLangs(fields: [StoreMultiLangsFieldsEnum!] = [name, description]): StoreMultiLangs
+    name: String
+    orderMaxPreparingMinutes: Int
+    phones: [String]
+    productTypeIds: [ID]
+    storeTypeId: ID
+    updatedAt: Date
+}
+
+type StoreBuyingOrderClientCountRecord {
+    account: User
+    ordersCount: Int
+}
+
+type StoreBuyingOrderStatusCountResponse {
+    data: [StoreByuingOrderStatusCounts]
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type StoreByuingOrderCustomersCounts {
+    _id: ID!
+    customerOrdersCounts: [StoreBuyingOrderClientCountRecord]
+    customersCount: Int
+}
+
+type StoreByuingOrderCustomersCountsResponse {
+    data: [StoreByuingOrderCustomersCounts]
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type StoreByuingOrderStatusCounts {
+    _id: ID!
+    records: [BuyingOrderStatusCountRecord]
+}
+
+type StoreCartItemGroup {
+    Items: [CartItem]
+    ItemsCount: Int
+    Store: Store
+    TotalPrice: Float
+}
+
+type StoreMultiLangs {
+    description: multiLanguageField
+    name: multiLanguageField
+}
+
+type StoreMultipleResponse implements IQueryMultipleResponse {
+    data: [Store]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type StoreMutation {
+    create(data: createStore): StoreSingleResponse
+    update(_id: ID, data: updateStore): StoreSingleResponse
+    updateOne(data: updateStore, filter: StoreFilterInput): StoreSingleResponse
+}
+
+type StorePricedProductsCount {
+    _id: ID
+    productsCount: Int
+}
+
+type StorePricedProductsCountResponse {
+    data: [StorePricedProductsCount]
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type StoreQuery {
+    get(_id: ID): StoreSingleResponse
+    getAll(filter: StoreFilterInput, pagination: paginationInput, sorting: StoreSortingInput): StoreMultipleResponse
+    getOne(filter: StoreFilterInput): StoreSingleResponse
+}
+
+type StoreSingleResponse implements ISingleResponse {
+    data: Store
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type StoreTracks implements IModelData {
+    _id: ID!
+    createdAt: Date
+    distStoreId: ID!
+    distance: Float
+    originStoreId: ID!
+    tracks: [PointCooridinates]
+    updatedAt: Date
+}
+
+type StoreTracksMultipleResponse implements IQueryMultipleResponse {
+    data: [StoreTracks]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type StoreTracksMutation {
+    create(data: createStoreTracks!): StoreTracksSingleResponse
+    update(_id: ID!, data: updateStoreTracks): StoreTracksSingleResponse
+}
+
+type StoreTracksQuery {
+    get(_id: ID): StoreTracksSingleResponse
+    getAll(filter: StoreTracksFilterInput, pagination: paginationInput, sorting: StoreTracksSortingInput): StoreTracksMultipleResponse
+    getOne(filter: StoreTracksFilterInput): StoreTracksSingleResponse
+}
+
+type StoreTracksSingleResponse implements ISingleResponse {
+    data: StoreTracks
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type StoreType implements IModelData {
+    ImageResponse: ImageSingleResponse
+    ProductTypesResponse: ProductTypeMultipleResponse
+    _id: ID!
+    createdAt: Date
+    description: String
+    imageId: ID
+    multiLangs(fields: [StoreTypeMultiLangsFieldsEnum!] = [name, description]): StoreTypeMultiLangs
+    name: String
+    productTypeIds: [ID!]!
+    updatedAt: Date
+}
+
+type StoreTypeMultiLangs {
+    description: multiLanguageField
+    name: multiLanguageField
+}
+
+type StoreTypeMultipleResponse implements IQueryMultipleResponse {
+    data: [StoreType]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type StoreTypeMutation {
+    create(data: createStoreType): StoreTypeSingleResponse
+    update(_id: ID, data: updateStoreType): StoreTypeSingleResponse
+    updateOne(data: updateStoreType, filter: StoreTypeFilterInput): StoreTypeSingleResponse
+}
+
+type StoreTypeQuery {
+    get(_id: ID): StoreTypeSingleResponse
+    getAll(filter: StoreTypeFilterInput, pagination: paginationInput, sorting: StoreTypeSortingInput): StoreTypeMultipleResponse
+    getAllStoresCount: StoreTypeStoresCountResponse
+    getOne(filter: StoreTypeFilterInput): StoreTypeSingleResponse
+}
+
+type StoreTypeSingleResponse implements ISingleResponse {
+    data: StoreType
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type StoreTypeStoresCount {
+    StoreType: StoreType
+    _id: ID
+    storeCount: Int
+}
+
+type StoreTypeStoresCountResponse {
+    data: [StoreTypeStoresCount]
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type Subscription {
+    notify(userId: ID!): Notification
+    test: String!
+}
+
+type TestModel implements IModelData {
+    _id: ID!
+    amount: Int
+    createdAt: Date
+    dateField: Date
+    description: String
+    intArray: [Int]
+    intField: Int
+    intFieldEnum: Int
+    multiLangs(fields: [TestModelMultiLangsFieldsEnum!] = [name, description]): TestModelMultiLangs
+    name: String
+    objArray: [objAttrType]
+    stringField: String
+    testModel2Ref: ID
+    updatedAt: Date
+}
+
+type TestModelMultiLangs {
+    description: multiLanguageField
+    name: multiLanguageField
+}
+
+"Query Response"
+type TestModelMultipleResponse implements IQueryMultipleResponse {
+    data: [TestModel]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+"""
+End nested Array Operations
+Mutation Definetion
+"""
+type TestModelMutation {
+    create(data: createTestModel): TestModelSingleResponse
+    update(_id: ID, data: updateTestModel): TestModelSingleResponse
+    updateOne(data: updateTestModel, filter: testModelFilterInput): TestModelSingleResponse
+}
+
+"""
+end Query Response
+Query Definition
+"""
+type TestModelQuery {
+    get(_id: ID): TestModelSingleResponse
+    getAll(filter: testModelFilterInput, pagination: paginationInput, sorting: testModelSortingInput): TestModelMultipleResponse
+    getOne(filter: testModelFilterInput): TestModelSingleResponse
+}
+
+type TestModelSingleResponse implements ISingleResponse {
+    data: TestModel
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type ThumbSize {
+    height: Int!
+    name: String!
+    width: Int!
+}
+
+type TrackingTrip implements IModelData {
+    DeliveryOrderResponse: DeliveryOrderSingleResponse
+    _id: ID!
+    availableTracks: [[PointCooridinates]]
+    createdAt: Date
+    deliveryOrderId: ID
+    realTrack: [PointCooridinates]
+    serial: Int
+    updatedAt: Date
+}
+
+type TrackingTripMultipleResponse implements IQueryMultipleResponse {
+    data: [TrackingTrip]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type TrackingTripMutation {
+    create(data: createTrackingTrip!): TrackingTripSingleResponse
+    update(_id: ID!, data: updateTrackingTrip): TrackingTripSingleResponse
+}
+
+type TrackingTripQuery {
+    get(_id: ID): TrackingTripSingleResponse
+    getAll(filter: TrackingTripFilterInput, pagination: paginationInput, sorting: TrackingTripSortingInput): TrackingTripMultipleResponse
+    getOne(filter: TrackingTripFilterInput): TrackingTripSingleResponse
+}
+
+type TrackingTripSingleResponse implements ISingleResponse {
+    data: TrackingTrip
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type UnitType implements IModelData {
+    ChildUnitMultiResponse: UnitTypeMultipleResponse
+    ParentUnitResponse: UnitTypeSingleResponse
+    _id: ID!
+    countPerUnit: Int
+    createdAt: Date
+    multiLangs(fields: [UnitTypeMultiLangsFieldsEnum!] = [unitName]): UnitTypeMultiLangs
+    parentUnitId: ID
+    physicalType: PhysicalTypeEnum
+    unitName: String
+    updatedAt: Date
+}
+
+type UnitTypeMultiLangs {
+    unitName: multiLanguageField
+}
+
+type UnitTypeMultipleResponse implements IQueryMultipleResponse {
+    data: [UnitType]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type UnitTypeMutation {
+    create(data: createUnitType): UnitTypeSingleResponse
+    update(_id: ID, data: updateUnitType): UnitTypeSingleResponse
+    updateOne(data: updateUnitType, filter: UnitTypeFilterInput): UnitTypeSingleResponse
+}
+
+type UnitTypeQuery {
+    get(_id: ID): UnitTypeSingleResponse
+    getAll(filter: UnitTypeFilterInput, pagination: paginationInput, sorting: UnitTypeSortingInput): UnitTypeMultipleResponse
+    getOne(filter: UnitTypeFilterInput): UnitTypeSingleResponse
+}
+
+type UnitTypeSingleResponse implements ISingleResponse {
+    data: UnitType
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type User implements IModelData {
+    Avatar: Image
+    AvatarResponse: ImageSingleResponse
+    _id: ID!
+    avatarImageId: ID
+    birthDate: Date
+    createdAt: Date
+    currentDeliveryAddress: DeliveryAddress
+    deliveryAddresses: [DeliveryAddress]
+    devices: [userDeviceRecord]
+    email: String
+    firstName: String
+    fullName: String
+    gender: Gender
+    language: String
+    lastName: String
+    phone: String
+    roleName: roleEnum
+    status: UserStatus
+    storeId: ID
+    updatedAt: Date
+    workStartDate: Date
+}
+
+type UserCartResponse {
+    ItemsCount: Int
+    StoresCount: Int
+    TotalPrice: Float
+    data: [StoreCartItemGroup]
+    errors: [PathError]
+    message: String
+    status: Int
+}
+
+"Query Response"
+type UserMultipleResponse implements IQueryMultipleResponse {
+    data: [User]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type UserMutation {
+    activateInvite(data: activateInviteInput): userTokenResponse
+    changePassword(data: changePasswordInput): userTokenResponse
+    createPhoneToken(phone: String!): userTokenResponse
+    invite(data: inviteInput): UserSingleResponse
+    login(data: loginInput): userTokenResponse
+    logout(device: userDeviceInput!): UserSingleResponse
+    resetPassword(data: resetPasswordInput): userTokenResponse
+    signup(data: signupInput): userTokenResponse
+    update(_id: ID!, data: updateUser): UserSingleResponse
+    updateInfo(data: userInfo): userTokenResponse
+    validateFireBaseToken(phone: String!, token: String!): userTokenResponse
+}
+
+type UserQuery {
+    get(_id: ID): UserSingleResponse
+    getAll(filter: UserFilterInput, pagination: paginationInput, sorting: UserSortingInput): UserMultipleResponse
+    getOne(filter: UserFilterInput): UserSingleResponse
+    getRolesCounts: [userRoleCount]
+    me: UserSingleResponse
+}
+
+type UserSingleResponse implements ISingleResponse {
+    data: User
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type imageCollectionsRef {
+    _id: ID
+    count: Int
+}
+
+type multiLanguageField {
+    ar: String
+    en: String
+}
+
+type objAttrType {
+    keyInt: Int
+    keyStr: String
+}
+
+type userDeviceRecord {
+    deviceType: UserDeviceType
+    imie: String
+    token: String
+}
+
+type userRoleCount {
+    _id: roleEnum
+    count: Int
+}
+
+type userTokenResponse implements ISingleResponse {
+    data: User
+    errors: [PathError]
+    message: String
+    status: Int
+    token: String
+    warnings: [PathError]
+}
+
+enum BuyingOrderItemSortByEnum {
+    _id
+    amount
+    createdAt
+}
+
+enum BuyingOrderSortByEnum {
+    _id
+    amount
+    createdAt
+    serial
+}
+
+enum BuyingOrderStatus {
+    Approved
+    Canceled
+    Delivered
+    PilotRecived
+    Prepared
+    Preparing
+    Rejected
+    Requested
+}
+
+enum CacheControlScope {
+    PRIVATE
+    PUBLIC
+}
+
+enum CartItemSortByEnum {
+    _id
+    amount
+    createdAt
+}
+
+enum ConditionOperator {
+    And
+    Or
+}
+
+enum DeliveryOrderSortByEnum {
+    _id
+    createdAt
+    serial
+}
+
+enum DeliveryOrderStatus {
+    AssignedToPilot
+    Delivered
+    Delivering
+    OrdersRequested
+    StoresPrepared
+    StoresReplied
+}
+
+enum FlatType {
+    House
+    Office
+}
+
+enum Gender {
+    Female
+    Male
+}
+
+enum GeneralOptionNameEnum {
+    DeliveryCost
+}
+
+enum GeneralOptionValueType {
+    Date
+    Number
+    String
+}
+
+enum ImageCollectionFilterByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+"Sorting"
+enum ImageCollectionSortByEnum {
+    _id
+    name
+}
+
+enum ImageFilterByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+"Sorting"
+enum ImageSortByEnum {
+    _id
+    name
+}
+
+enum LocationCityFilterByEnum {
+    _id
+    name
+    stateId
+}
+
+enum LocationCityMultiLangsFieldsEnum {
+    name
+}
+
+enum LocationCitySortByEnum {
+    _id
+    createdAt
+    name
+    stateId
+    updatedAt
+}
+
+enum LocationCountryFilterByEnum {
+    _id
+    name
+}
+
+enum LocationCountryMultiLangsFieldsEnum {
+    name
+}
+
+enum LocationCountrySortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum LocationStateFilterByEnum {
+    _id
+    countryId
+    name
+}
+
+enum LocationStateMultiLangsFieldsEnum {
+    name
+}
+
+enum LocationStateSortByEnum {
+    _id
+    countryId
+    createdAt
+    name
+    updatedAt
+}
+
+enum NotificatioStatus {
+    Archived
+    Deleted
+    Read
+    Unread
+}
+
+enum NotificationSortByEnum {
+    _id
+    actionType
+    createdAt
+    display
+    docId
+    docStatus
+    model
+    status
+}
+
+enum POP_VALUES {
+    FIRST
+    LAST
+}
+
+enum PhysicalTypeEnum {
+    count
+    size
+    weight
+}
+
+enum PilotSortByEnum {
+    _id
+    createdAt
+    updatedAt
+    userId
+}
+
+enum PilotVehicleSortByEnum {
+    _id
+    licenceImageId
+    licenceSerial
+    plateNo
+    vehicleType
+}
+
+enum PricingProductSortByEnum {
+    _id
+    amount
+    createdAt
+    productId
+    storeId
+    storePrice
+    updatedAt
+}
+
+enum ProductBrandFilterByEnum {
+    _id
+    name
+}
+
+enum ProductBrandMultiLangsFieldsEnum {
+    description
+    name
+}
+
+enum ProductBrandSortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum ProductCategoryFilterByEnum {
+    _id
+    name
+}
+
+enum ProductCategoryMultiLangsFieldsEnum {
+    description
+    name
+}
+
+enum ProductCategorySortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum ProductFormFilterByEnum {
+    _id
+    name
+}
+
+enum ProductFormMultiLangsFieldsEnum {
+    name
+}
+
+enum ProductFormSortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum ProductManufacturerFilterByEnum {
+    _id
+    name
+}
+
+enum ProductManufacturerMultiLangsFieldsEnum {
+    description
+    name
+}
+
+enum ProductManufacturerSortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum ProductMultiLangsFieldsEnum {
+    description
+    name
+}
+
+enum ProductSortByEnum {
+    _id
+    brandId
+    createdAt
+    name
+    typeId
+    updatedAt
+}
+
+enum ProductTypeFilterByEnum {
+    _id
+    name
+}
+
+enum ProductTypeMultiLangsFieldsEnum {
+    description
+    name
+}
+
+enum ProductTypeSortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum ProductUnitFilterByEnum {
+    _id
+    name
+}
+
+enum ProductUnitMultiLangsFieldsEnum {
+    name
+}
+
+enum ProductUnitSortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum SortDirectionEnum {
+    ASC
+    DESC
+}
+
+enum StoreFilterByEnum {
+    _id
+    name
+}
+
+enum StoreMultiLangsFieldsEnum {
+    description
+    name
+}
+
+enum StoreSortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum StoreTracksSortByEnum {
+    _id
+    createdAt
+    distStoreId
+    distance
+    originStoreId
+}
+
+enum StoreTypeFilterByEnum {
+    _id
+    name
+}
+
+enum StoreTypeMultiLangsFieldsEnum {
+    description
+    name
+}
+
+enum StoreTypeSortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum TestModelMultiLangsFieldsEnum {
+    description
+    name
+}
+
+enum TrackingTripSortByEnum {
+    _id
+    createdAt
+    serial
+}
+
+enum UnitTypeFilterByEnum {
+    _id
+    unitName
+}
+
+enum UnitTypeMultiLangsFieldsEnum {
+    unitName
+}
+
+enum UnitTypeSortByEnum {
+    _id
+    unitName
+}
+
+enum UserDeviceType {
+    Android
+    IOS
+    Web
+}
+
+"Sorting"
+enum UserSortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum UserStatus {
+    Active
+    Pending
+    Suspended
+}
+
+enum VehicleTypeEnum {
+    Bicycle
+    Car
+    Motorcycle
+}
+
+enum filterOperatorsEnum {
+    GREATER
+    GREATER_EQUAL
+    IN
+    LESS
+    LESS_EQUAL
+    NOT_IN
+    RANGE
+}
+
+enum roleEnum {
+    Customer
+    Pilot
+    StoreAdmin
+    SystemAdmin
+}
+
+enum testModelFilterByEnum {
+    _id
+    createdAt
+    description
+    intField
+    intFieldEnum
+    name
+    stringField
+    testModel2Ref
+    updatedAt
+}
+
+"Sorting"
+enum testModelSortByEnum {
+    _id
+    createdAt
+    description
+    intField
+    intFieldEnum
+    name
+    stringField
+    updatedAt
+}
+
+input BuyingOrderFilterArray {
+    status: [BuyingOrderStatus]
+}
+
+input BuyingOrderFilterInput {
+    IN: BuyingOrderFilterArray
+    RANGE: BuyingOrderFilterRange
+    _id: ID
+    createdAt: Date
+    customerUserId: ID
+    serial: Int
+    status: BuyingOrderStatus
+    storeId: ID
+    updatedAt: Date
+}
+
+input BuyingOrderFilterRange {
+    createdAt: DateRange
+}
+
+input BuyingOrderItemFilterInput {
+    _id: ID
+    amount: Int
+    createdAt: Date
+    orderId: ID
+    pricingProductId: ID
+    updatedAt: Date
+}
+
+input BuyingOrderItemSortingInput {
+    sortBy: BuyingOrderItemSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input BuyingOrderSortingInput {
+    sortBy: BuyingOrderSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input CartItemFilterInput {
+    _id: ID
+    amount: Int
+    createdAt: Date
+    pricingProductId: ID
+    updatedAt: Date
+}
+
+input CartItemSortingInput {
+    sortBy: CartItemSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input DateArray {
+    date_arr: [Date]
+}
+
+input DateRange {
+    max: Date!
+    maxEquality: Boolean!
+    min: Date!
+    minEquality: Boolean!
+}
+
+input DeliveryAddressInput {
+    _id: ID
+    addedInfo: String
+    building: Int
+    cityId: ID
+    flat: Int
+    flatType: FlatType
+    floor: Int
+    locationPoint: PointCooridinatesInput
+    name: String
+    region: String
+    street: String
+}
+
+input DeliveryAddressPopOpertion {
+    deliveryAddresses: POP_VALUES
+}
+
+input DeliveryAddressPushArrayOperation {
+    operators: PUSH_ARRAY_OPERATORS
+    value: [DeliveryAddressInput!]!
+}
+
+input DeliveryAddressSingles {
+    deliveryAddresses: DeliveryAddressInput
+}
+
+input DeliveryOrderFilterArray {
+    status: [DeliveryOrderStatus]
+}
+
+input DeliveryOrderFilterInput {
+    IN: DeliveryOrderFilterArray
+    _id: ID
+    createdAt: Date
+    customerUserId: ID
+    pilotId: ID
+    serial: Int
+    status: DeliveryOrderStatus
+    updatedAt: Date
+}
+
+input DeliveryOrderSortingInput {
+    sortBy: DeliveryOrderSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input FloatRange {
+    max: Float
+    min: Float
+}
+
+input GeneralOptionFilter {
+    name: GeneralOptionNameEnum
+}
+
+input GeneralOptionInput {
+    label: multilanguageInput
+    name: GeneralOptionNameEnum
+    value: String
+    valueType: GeneralOptionValueType
+}
+
+input IconInput {
+    name: String!
+    packageName: String!
+}
+
+input ImageCollectionArraySingles {
+    thumbSizes: ThumbSizeInput
+}
+
+input ImageCollectionArrays {
+    thumbSizes: [ThumbSizeInput]
+}
+
+input ImageCollectionFilter {
+    _id: ID
+    name: String
+}
+
+"nested Array Operations"
+input ImageCollectionPopOpertion {
+    thumbSizes: POP_VALUES
+}
+
+input ImageCollectionPushArrays {
+    thumbSizes: thumbSizesPushArrayOperation
+}
+
+input ImageCollectionSortingInput {
+    sortBy: ImageCollectionSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input ImageFilter {
+    _id: ID
+    collectionId: ID
+    name: String
+}
+
+input ImageSortingInput {
+    sortBy: ImageSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input ImageThumbnailInput {
+    height: Int
+    name: String
+    path: String
+    sizeName: String
+    width: Int
+}
+
+input IntRange {
+    max: Int
+    min: Int
+}
+
+input LineCooridinatesInput {
+    Points: [PointCooridinatesInput]
+}
+
+input LocationCityFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    createdAt: Date
+    name: String
+    stateId: ID
+    updatedAt: Date
+}
+
+input LocationCitySortingInput {
+    sortBy: LocationCitySortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input LocationCountryFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    countryCode: String
+    createdAt: Date
+    name: String
+    updatedAt: Date
+}
+
+input LocationCountrySortingInput {
+    sortBy: LocationCountrySortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input LocationStateFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    countryId: ID
+    createdAt: Date
+    name: String
+    updatedAt: Date
+}
+
+input LocationStateSortingInput {
+    sortBy: LocationStateSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input NotificationFilterArray {
+    _id: [ID!]
+}
+
+input NotificationFilterInput {
+    IN: NotificationFilterArray
+    _id: ID
+    actionType: String
+    createdAt: Date
+    display: String
+    docId: ID
+    docStatus: String
+    message: String
+    model: String
+    status: String
+    updatedAt: Date
+}
+
+input NotificationSortingInput {
+    sortBy: NotificationSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input PUSH_ARRAY_OPERATORS {
+    POSITION: Int
+    SLICE: Int
+    SORT_Obj: sortingInput
+    SORT_SCALER: SortDirectionEnum
+}
+
+input PilotFilterInput {
+    _id: ID
+    currentDeliveryOrder: ID
+    drivingLicenceImageId: ID
+    drivingLicenceSerial: String
+    isDeliveryAvailable: Boolean
+    userId: ID
+    vehicleId: ID
+}
+
+input PilotSortingInput {
+    sortBy: PilotSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input PilotVehicleFilterInput {
+    _id: ID
+    licenceImageId: ID
+    licenceSerial: String
+    plateNo: String
+    vehicleType: VehicleTypeEnum
+}
+
+input PilotVehicleSortingInput {
+    sortBy: PilotVehicleSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input PointCooridinatesInput {
+    lat: Float
+    lng: Float
+}
+
+input PointInput {
+    coordinates: PointCooridinatesInput
+}
+
+input PolyLineCooridinatesInput {
+    Lines: [LineCooridinatesInput]
+}
+
+input PricingProductFilterInput {
+    _id: ID
+    amount: Int
+    createdAt: Date
+    isAvailable: Boolean
+    productId: ID
+    storeId: ID
+    storePrice: Float
+    updatedAt: Date
+}
+
+input PricingProductSortingInput {
+    sortBy: PricingProductSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input ProductBrandFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    createdAt: Date
+    name: String
+    productTypeId: ID
+    updatedAt: Date
+}
+
+input ProductBrandSortingInput {
+    sortBy: ProductBrandSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input ProductCategoryArrayScalerFilter {
+    _id: ID
+    createdAt: Date
+}
+
+input ProductCategoryArrayfilters {
+    scalers: ProductCategoryArrayScalerFilter
+}
+
+input ProductCategoryFilterInput {
+    IN: ProductCategoryInFilters
+    SEARCH: SEARCH_Input
+    _id: ID
+    arrayFilters: ProductCategoryArrayfilters
+    createdAt: Date
+    name: String
+    updatedAt: Date
+}
+
+input ProductCategoryInFilters {
+    _id: [ID]
+    createdAt: [Date]
+}
+
+input ProductCategorySortingInput {
+    sortBy: ProductCategorySortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input ProductFilterArray {
+    typeId: [ID]
+}
+
+input ProductFilterInput {
+    IN: ProductFilterArray
+    SEARCH: SEARCH_Input
+    _id: ID
+    attributeGroupId: ID
+    barcode: String
+    brandId: ID
+    categoryIds: [ID]
+    customerPrice: Float
+    formId: ID
+    manufacturerId: ID
+    name: String
+    typeId: ID
+    unitId: ID
+}
+
+input ProductFormFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    createdAt: Date
+    name: String
+    updatedAt: Date
+}
+
+input ProductFormSortingInput {
+    sortBy: ProductFormSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input ProductManufacturerFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    createdAt: Date
+    name: String
+    productTypeId: ID
+    updatedAt: Date
+}
+
+input ProductManufacturerSortingInput {
+    sortBy: ProductManufacturerSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input ProductSortingInput {
+    sortBy: ProductSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input ProductTypeArrayScalerFilter {
+    _id: ID
+    createdAt: Date
+}
+
+input ProductTypeArrayfilters {
+    scalers: ProductTypeArrayScalerFilter
+}
+
+input ProductTypeFilterInput {
+    IN: ProductTypeInFilters
+    SEARCH: SEARCH_Input
+    _id: ID
+    arrayFilters: ProductTypeArrayfilters
+    createdAt: Date
+    name: String
+    updatedAt: Date
+}
+
+input ProductTypeInFilters {
+    _id: [ID]
+    createdAt: [Date]
+}
+
+input ProductTypeSortingInput {
+    sortBy: ProductTypeSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input ProductUnitFilterInput {
+    _id: ID
+    createdAt: Date
+    name: String
+    updatedAt: Date
+}
+
+input ProductUnitSortingInput {
+    sortBy: ProductUnitSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input SEARCH_Input {
+    fields: [searchWordField]
+    searchWord: String!
+}
+
+input StoreFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    adminUserId: ID
+    cityId: ID
+    description: String
+    isAvailable: Boolean
+    name: String
+    productTypeIds: [ID]
+    storeTypeId: ID
+}
+
+input StoreSortingInput {
+    sortBy: StoreSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input StoreTracksFilterInput {
+    _id: ID
+    distStoreId: ID
+    originStoreId: ID
+}
+
+input StoreTracksSortingInput {
+    sortBy: StoreTracksSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input StoreTypeFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    createdAt: Date
+    name: String
+    updatedAt: Date
+}
+
+input StoreTypeSortingInput {
+    sortBy: StoreTypeSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input StringArray {
+    string_arr: [String]
+}
+
+input ThumbSizeInput {
+    height: Int!
+    name: String!
+    width: Int!
+}
+
+input TrackingTripFilterInput {
+    _id: ID
+    deliveryOrderId: ID
+    serial: Int
+}
+
+input TrackingTripSortingInput {
+    sortBy: TrackingTripSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input USER_SEARCH_Input {
+    fields: [searchWordField] = [{fieldName : "firstName", multilang : false}, {fieldName : "lastName", multilang : false}]
+    searchWord: String!
+}
+
+input UnitTypeFilterInput {
+    _id: ID
+    createdAt: Date
+    unitName: String
+    unitType: ID
+    updatedAt: Date
+}
+
+input UnitTypeSortingInput {
+    sortBy: UnitTypeSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input UserFilterInput {
+    SEARCH: USER_SEARCH_Input
+    _id: ID
+    createdAt: Date
+    email: String
+    firstName: String
+    language: String
+    lastName: String
+    phone: String
+    roleName: roleEnum
+    status: UserStatus
+    updatedAt: Date
+    workStartDate: Date
+}
+
+input UserSortingInput {
+    sortBy: UserSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input User_UPDATE_NESTED {
+    deliveryAddresses: deliveryAddressesNested
+}
+
+input activateInviteInput {
+    password: String!
+    phone: String!
+}
+
+input changePasswordInput {
+    confirmPassword: String
+    newPassword: String
+    oldPassword: String
+}
+
+input createBuyingOrder {
+    """
+    from user cart : create order
+    get userId from token
+    """
+    storeId: ID
+}
+
+input createBuyingOrderItem {
+    amount: Int!
+    orderId: ID!
+    pricingProductId: ID!
+}
+
+input createCartItem {
+    amount: Int!
+    pricingProductId: ID!
+}
+
+input createDeliveryOrder {
+    """
+    from user cart : create order
+    get userId from token
+    """
+    storeId: ID
+}
+
+"""
+Mutation Inputs:
+Create Mutation Input
+"""
+input createImageCollection {
+    icon: IconInput
+    name: String
+    thumbSizes: [ThumbSizeInput]
+}
+
+input createLocationCity {
+    name: multilanguageInput
+    stateId: ID
+}
+
+input createLocationCountry {
+    countryCode: String
+    name: multilanguageInput
+}
+
+input createLocationState {
+    countryId: ID
+    name: multilanguageInput
+}
+
+input createNotificationInput {
+    actionType: String
+    display: String
+    docId: ID
+    docStatus: String
+    message: multilanguageInput
+    model: String
+    status: NotificatioStatus
+}
+
+input createPilot {
+    currentDeliveryOrder: ID
+    drivingLicenceImageId: ID
+    drivingLicenceSerial: String
+    isDeliveryAvailable: Boolean
+    userId: ID!
+    vehicleId: ID
+}
+
+input createPilotVehicle {
+    licenceImageId: ID
+    licenceSerial: String
+    plateNo: String
+    vehicleType: VehicleTypeEnum
+}
+
+input createPricingProduct {
+    amount: Int
+    isAvailable: Boolean = true
+    productId: ID!
+    storeId: ID!
+    storePrice: Float!
+}
+
+input createProduct {
+    attributeGroupId: ID
+    barcode: String
+    brandId: ID
+    categoryId: ID
+    customerPrice: Float
+    description: multilanguageInput
+    formId: ID
+    formPerUnit: Int
+    imageId: ID
+    manufacturerId: ID
+    name: multilanguageInput
+    unitId: ID
+}
+
+input createProductBrand {
+    description: multilanguageInput
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+    productTypeId: ID
+}
+
+input createProductCategory {
+    description: multilanguageInput
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+    parentId: ID
+}
+
+input createProductForm {
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+}
+
+input createProductManufacturer {
+    description: multilanguageInput
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+}
+
+input createProductType {
+    description: multilanguageInput
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+}
+
+input createProductUnit {
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+}
+
+input createStore {
+    adminUserId: ID!
+    cityId: ID!
+    description: multilanguageInput
+    imageId: ID
+    isAvailable: Boolean = true
+    locationPoint: PointCooridinatesInput
+    name: multilanguageInput
+    orderMaxPreparingMinutes: Int
+    phones: [String]
+    storeTypeId: ID
+}
+
+input createStoreTracks {
+    distStoreId: ID!
+    distance: Float
+    originStoreId: ID!
+    tracks: [PointCooridinatesInput]
+}
+
+input createStoreType {
+    description: multilanguageInput
+    imageId: ID
+    name: multilanguageInput!
+    productTypeIds: [ID!]!
+}
+
+"""
+Mutation Inputs:
+Create Mutation Input
+"""
+input createTestModel {
+    amount: Int
+    dateField: Date
+    description: multilanguageInput
+    intArray: [Int]
+    intField: Int
+    intFieldEnum: Int
+    name: multilanguageInput
+    objArray: [objAttrInput]
+    stringField: String
+    testModel2Ref: ID
+}
+
+input createTrackingTrip {
+    availableTracks: [[PointCooridinatesInput]]
+    deliveryOrderId: ID
+    realTrack: [PointCooridinatesInput]
+}
+
+input createUnitType {
+    countPerUnit: Int
+    parentUnitId: ID
+    physicalType: PhysicalTypeEnum
+    unitName: multilanguageInput
+}
+
+input deliveryAddressesNested {
+    data: DeliveryAddressInput
+    filter: DeliveryAddressInput
+}
+
+input filterOperation {
+    filterBy: String
+    opartor: filterOperatorsEnum
+}
+
+input intArrayPushArrayOperation {
+    operators: PUSH_ARRAY_OPERATORS
+    value: [Int]
+}
+
+input inviteInput {
+    firstName: String!
+    lastName: String!
+    phone: String!
+    roleName: roleEnum!
+}
+
+input loginInput {
+    device: userDeviceInput
+    password: String!
+    phone: String!
+}
+
+input mixedInputs {
+    DateArray: [Date]
+    DateRange: DateRange
+    FloatRange: FloatRange
+    IDArray: [ID]
+    IntRange: IntRange
+    StringArray: [String]
+}
+
+input multilanguageInput {
+    ar: String
+    en: String
+}
+
+input myCartFilter {
+    storeId: ID
+}
+
+input objArrayPushArrayOperation {
+    operators: PUSH_ARRAY_OPERATORS
+    value: [objAttrInput!]!
+}
+
+input objAttrInput {
+    keyInt: Int
+    keyStr: String
+}
+
+input optionsInput {
+    options: GeneralOptionInput
+}
+
+input paginationInput {
+    limit: Int
+    page: Int
+}
+
+input resetPasswordInput {
+    confirmPassword: String
+    newPassword: String
+    phone: String
+}
+
+input searchWordField {
+    fieldName: String
+    multilang: Boolean
+}
+
+input signupInput {
+    firstName: String!
+    lastName: String!
+    password: String!
+    phone: String!
+    roleName: roleEnum!
+}
+
+input sortingInput {
+    sortBy: String
+    sortDirection: SortDirectionEnum
+}
+
+input storeGalleryFilter {
+    isAvailable: Boolean
+    productName: String
+    typeId: ID
+}
+
+input storeTrackArray {
+    tracks: [PointCooridinatesInput]
+}
+
+input storeTrackSingle {
+    tracks: PointCooridinatesInput
+}
+
+input testModelArrayObjectFilter {
+    objArray: objAttrInput
+}
+
+input testModelArrayScalerFilter {
+    intArray: Int
+}
+
+input testModelArraySingles {
+    intArray: Int
+    objArray: objAttrInput
+}
+
+input testModelArrays {
+    intArray: [Int]
+    objArray: [objAttrInput]
+}
+
+input testModelFilterGroup {
+    condition: ConditionOperator = And
+    group: [testModelFilterOperationsInput]
+}
+
+input testModelFilterInput {
+    _id: ID
+    arrayFilters: testModelsArrayfilters
+    filterOperations: [testModelFilterGroup]
+    intArray: [Int]
+    intField: Int
+    intFieldEnum: Int
+    stringField: String
+    testModel2Ref: ID
+}
+
+input testModelFilterOperationInput {
+    filterBy: testModelFilterByEnum
+    operator: filterOperatorsEnum
+}
+
+input testModelFilterOperationsInput {
+    operation: testModelFilterOperationInput
+    value: mixedInputs
+}
+
+"nested Array Operations"
+input testModelPopOpertion {
+    intArray: POP_VALUES
+    objArray: POP_VALUES
+}
+
+input testModelPushArrays {
+    intArray: intArrayPushArrayOperation
+    objArray: objArrayPushArrayOperation
+}
+
+input testModelSortingInput {
+    sortBy: testModelSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input testModelsArrayfilters {
+    objects: testModelArrayObjectFilter
+    scalers: testModelArrayScalerFilter
+}
+
+input thumbSizesPushArrayOperation {
+    operators: PUSH_ARRAY_OPERATORS
+    value: [ThumbSizeInput!]!
+}
+
+input trackSingle {
+    availableTracks: [PointCooridinatesInput!]
+    realTrack: [PointCooridinatesInput!]!
+}
+
+input updateBuyingOrder {
+    orderMaxPreparingMinutes: Int
+    status: BuyingOrderStatus
+}
+
+input updateBuyingOrderItem {
+    amount: Int!
+}
+
+input updateCartItem {
+    amount: Int!
+}
+
+input updateDeliveryOrder {
+    deliveryCost: Float
+    pilotId: ID
+    status: DeliveryOrderStatus
+}
+
+"Update Mutation Input"
+input updateImageCollection {
+    ADD_TO_SET_Array: ImageCollectionArrays
+    ADD_TO_SET_SINGLE: ImageCollectionArraySingles
+    POP: ImageCollectionPopOpertion
+    PUSH_ARRAY: ImageCollectionPushArrays
+    PUSH_SINGLE: ImageCollectionArraySingles
+    icon: IconInput
+    name: String
+    thumbSizes: [ThumbSizeInput]
+}
+
+input updateLocationCity {
+    name: multilanguageInput
+    stateId: ID
+}
+
+input updateLocationCountry {
+    countryCode: String
+    name: multilanguageInput
+}
+
+input updateLocationState {
+    countryId: ID
+    name: multilanguageInput
+}
+
+input updateNotificationInput {
+    status: NotificatioStatus
+}
+
+input updatePilot {
+    currentDeliveryOrder: ID
+    drivingLicenceImageId: ID
+    drivingLicenceSerial: String
+    isDeliveryAvailable: Boolean
+    userId: ID
+    vehicleId: ID
+}
+
+input updatePilotVehicle {
+    licenceImageId: ID
+    licenceSerial: String
+    plateNo: String
+    vehicleType: VehicleTypeEnum
+}
+
+input updatePricingProduct {
+    amount: Int
+    isAvailable: Boolean
+    productId: ID
+    storeId: ID
+    storePrice: Float
+}
+
+input updateProduct {
+    attributeGroupId: ID
+    barcode: String
+    brandId: ID
+    categoryIds: [ID]
+    customerPrice: Float
+    description: multilanguageInput
+    formId: ID
+    formPerUnit: Int
+    imageId: ID
+    manufacturerId: ID
+    name: multilanguageInput
+    unitId: ID
+}
+
+input updateProductBrand {
+    description: multilanguageInput
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+    productTypeId: ID
+}
+
+input updateProductCategory {
+    description: multilanguageInput
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+    parentId: ID
+}
+
+input updateProductForm {
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+}
+
+input updateProductManufacturer {
+    description: multilanguageInput
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+    productTypeId: ID
+}
+
+input updateProductType {
+    description: multilanguageInput
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+}
+
+input updateProductUnit {
+    icon: IconInput
+    imageId: ID
+    name: multilanguageInput
+}
+
+input updateStore {
+    adminUserId: ID
+    cityId: ID
+    description: multilanguageInput
+    imageId: ID
+    isAvailable: Boolean
+    locationPoint: PointCooridinatesInput
+    name: multilanguageInput
+    orderMaxPreparingMinutes: Int
+    phones: [String]
+    storeTypeId: ID
+}
+
+input updateStoreTracks {
+    ADD_TO_SET_Array: storeTrackArray
+    ADD_TO_SET_SINGLE: storeTrackSingle
+    PUSH_ARRAY: storeTrackArray
+    PUSH_SINGLE: storeTrackSingle
+    distStoreId: ID
+    distance: Float
+    originStoreId: ID
+    tracks: [PointCooridinatesInput]
+}
+
+input updateStoreType {
+    description: multilanguageInput
+    imageId: ID
+    name: multilanguageInput
+    productTypeIds: [ID!]
+}
+
+"Update Mutation Input"
+input updateTestModel {
+    ADD_TO_SET_Array: testModelArrays
+    ADD_TO_SET_SINGLE: testModelArraySingles
+    POP: testModelPopOpertion
+    PULL: testModelArraySingles
+    PUSH_ARRAY: testModelPushArrays
+    PUSH_SINGLE: testModelArraySingles
+    amount: Int
+    dateField: Date
+    description: multilanguageInput
+    intArray: [Int]
+    intField: Int
+    intFieldEnum: Int
+    name: multilanguageInput
+    objArray: [objAttrInput]
+    stringField: String
+    testModel2Ref: ID
+}
+
+input updateTrackingTrip {
+    PUSH_SINGLE: trackSingle
+    deliveryOrderId: ID
+}
+
+input updateUnitType {
+    countPerUnit: Int
+    parentUnitId: ID
+    physicalType: PhysicalTypeEnum
+    unitName: multilanguageInput
+}
+
+input updateUser {
+    _id: ID!
+    email: String
+    firstName: String
+    lastName: String
+    phone: String
+    status: UserStatus
+}
+
+input userDeviceInput {
+    deviceType: UserDeviceType
+    imie: String
+    token: String
+}
+
+input userInfo {
+    ADD_TO_SET_SINGLE: DeliveryAddressSingles
+    POP: DeliveryAddressPopOpertion
+    PULL: DeliveryAddressSingles
+    PUSH_SINGLE: DeliveryAddressSingles
+    UPDATE_NESTED: User_UPDATE_NESTED
+    avatarImageId: ID
+    birthDate: Date
+    currentDeliveryAddressID: ID
+    deliveryAddresses: [DeliveryAddressInput]
+    firstName: String
+    gender: Gender
+    language: String
+    lastName: String
+    phone: String
+    status: UserStatus
+    storeId: ID
+    workStartDate: Date
+}
+
+
+"A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
+scalar Date
+
+"A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
+scalar Time
+
+"A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
+scalar DateTime
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload

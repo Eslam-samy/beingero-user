@@ -1,55 +1,197 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/round_up_bottom_sheet">
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    android:orientation="vertical"-->
+<!--    android:background="@drawable/round_up_bottom_sheet">-->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@color/approved">
+
+<!--    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--        android:id="@+id/img_bg"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:scaleType="centerCrop"-->
+<!--        app:civ_border_color="@color/white"-->
+<!--        app:civ_border_width="4dp"-->
+<!--        app:civ_circle_background_color="@color/colorPrimary"-->
+<!--        android:src="@color/colorPrimary"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="@dimen/low_margin"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:translationY="-40dp"/>-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/img_done"-->
+<!--                android:layout_width="50dp"-->
+<!--                android:layout_height="50dp"-->
+<!--                android:layout_centerInParent="true"-->
+<!--                android:src="@drawable/avd_done"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/img_bg"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/img_bg"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/img_bg"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/img_bg"/>-->
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="16dp"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/img_bg">-->
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Success"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAppearance="@style/TextAppearance.AppCompat.Headline" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:text="your order has been sent."-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btn_ok"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:background="@drawable/background_button_empty"-->
+<!--                android:text="Ok"-->
+<!--                android:textColor="@color/colorPrimary" />-->
+
+<!--        </LinearLayout>-->
+
+
+
+<!--&lt;!&ndash;    <RelativeLayout&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_height="80dp"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:background="@color/approved">&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/img_done"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="50dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="50dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_centerInParent="true"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:src="@drawable/avd_done"/>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </RelativeLayout>&ndash;&gt;-->
+
+<!--&lt;!&ndash;    <LinearLayout&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:orientation="vertical"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:padding="16dp">&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:text="Success"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:textAlignment="center"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginTop="10dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:text="your order has been sent."&ndash;&gt;-->
+<!--&lt;!&ndash;            android:textAlignment="center"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <Button&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/btn_ok"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="200dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_gravity="center"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginTop="15dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:background="@drawable/background_button_empty"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:text="Ok"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:textColor="@color/colorPrimary" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;    </LinearLayout>&ndash;&gt;-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    >
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="12dp"
+            android:layout_marginTop="32dp"
+            android:id="@+id/congratulation_card"
+            app:cardBackgroundColor="#FAFAFA"
+            app:cardElevation="0dp"
+            android:layout_gravity="bottom">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:id="@+id/title"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/primary_text_light"
+                    android:layout_marginTop="55dp"
+                    android:text="Purchase Successful"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginLeft="32dp"
+                    android:textSize="16sp"
+                    android:layout_marginRight="32dp"
+                    android:id="@+id/message"
+                    android:gravity="center"
+                    android:text="The seller has been notified to ship your item and we will only release the payment after you have received it."
+                    />
+                <Button
+                    android:id="@+id/btn_ok"
+                    android:text="@string/ok"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginBottom="16dp"
+                    style="@style/ButtonNormalStyle"
+                    />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <ImageView
             android:id="@+id/img_done"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/avd_done"/>
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:padding="25dp"
+            android:src="@drawable/avd_done"
+            android:background="@drawable/circular_tick"
+            android:layout_gravity="center_horizontal|top"
 
-    </RelativeLayout>
+            />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Success"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="your order has been sent."
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
-        <Button
-            android:id="@+id/btn_ok"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/background_button_empty"
-            android:text="Ok"
-            android:textColor="@color/colorPrimary" />
-
-    </LinearLayout>
-
+    </FrameLayout>
 </LinearLayout>

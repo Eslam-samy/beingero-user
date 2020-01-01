@@ -14,8 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
-import com.corptia.bringero.graphql.GetPricedByQuery;
-import com.corptia.bringero.graphql.GetStoreProductsQuery;
+import com.corptia.bringero.graphql.StoreSearchQuery;
 import com.corptia.bringero.utils.PicassoUtils;
 
 import java.util.ArrayList;
@@ -27,11 +26,11 @@ import butterknife.ButterKnife;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
     Context context;
-    List<GetPricedByQuery.Product> productsList = new ArrayList<>();
+    List<StoreSearchQuery.Product> productsList = new ArrayList<>();
 
     IOnRecyclerViewClickListener listener;
 
-    public SearchAdapter(SearchProductsActivity context, List<GetPricedByQuery.Product> products) {
+    public SearchAdapter(SearchProductsActivity context, List<StoreSearchQuery.Product> products) {
 
         this.context = context;
         this.productsList = products;
@@ -51,8 +50,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        GetPricedByQuery.Product product = productsList.get(position);
-        holder.txt_price.setText(""+product.Price());
+        StoreSearchQuery.Product product = productsList.get(position);
+//        holder.txt_price.setText(""+product.PricingProduct().storePrice());
         holder.txt_name_product.setText(product.name());
 
         if (product.ImageResponse().data()!=null)
@@ -91,7 +90,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     }
 
-    public GetPricedByQuery.Product getSelectProduct(int position)
+    public StoreSearchQuery.Product getSelectProduct(int position)
     {
         return productsList.get(position);
     }

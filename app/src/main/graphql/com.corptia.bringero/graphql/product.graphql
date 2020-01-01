@@ -154,22 +154,66 @@ query SingleProduct($_id: ID) {
 
 
 #Search
-query getPricedBy($storeId: ID! , $filter: ProductFilterInput! , $pagination: paginationInput){
-    ProductQuery{
-        getStoreProducts:getPricedBy(storeId:$storeId,filter:$filter , pagination:$pagination){
+#query StoreSearch($storeId: ID! , $filter: ProductFilterInput! , $pagination: paginationInput){
+#    ProductQuery{
+#        getStoreProducts:getPricedBy(storeId:$storeId,filter:$filter , pagination:$pagination){
+#            status
+#            message
+#            pagination{
+#                totalPages
+#            }
+#            Products:data{
+#                _id
+#                name
+#
+#                PricingProduct(filter:{
+#                    storeId:$storeId,
+#                    isAvailable:true
+#                }){
+#                    _id # compare this id
+#                    storeId
+#                    storePrice # use this price
+#                }
+#                ImageResponse {
+#                    status
+#                    data {
+#                        name
+#
+#                    }
+#                }
+#            }
+#        }
+#    }
+#}
+
+query StoreSearch(
+    $storeId: ID!
+    $filter: storeGalleryFilter!
+    $pagination: paginationInput
+) {
+    PricingProductQuery {
+        getStoreProducts(
+            storeId: $storeId
+            filter: $filter
+            pagination: $pagination
+        ) {
             status
-            message
             pagination{
                 totalPages
             }
-            Products:data{
+            ProductQuery:data {
                 _id
-                name
-                Price(storeId:$storeId)
-                ImageResponse {
-                    status
-                    data {
-                        name
+                storePrice
+                isAvailable
+                Product {
+                    _id
+                    name
+
+                    ImageResponse {
+                        status
+                        data {
+                            name
+                        }
                     }
                 }
             }

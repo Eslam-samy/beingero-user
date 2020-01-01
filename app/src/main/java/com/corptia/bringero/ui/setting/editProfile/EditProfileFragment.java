@@ -19,11 +19,14 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
@@ -39,6 +42,7 @@ import com.corptia.bringero.Remote.Retrofit.NetworkClient;
 import com.corptia.bringero.Remote.Retrofit.WebServicesAPI;
 import com.corptia.bringero.graphql.UpdateUserInfoMutation;
 import com.corptia.bringero.model.UserModel;
+import com.corptia.bringero.type.Gender;
 import com.corptia.bringero.type.UserInfo;
 import com.corptia.bringero.utils.ImageUpload.ImageContract;
 import com.corptia.bringero.utils.ImageUpload.ImagePresenter;
@@ -65,6 +69,7 @@ import java.text.SimpleDateFormat;
 import java.time.Month;
 import java.time.Year;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -106,6 +111,12 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
     CircleImageView img_avatar;
     @BindView(R.id.edt_date)
     EditText edt_date;
+    @BindView(R.id.radioGroupGender)
+    RadioGroup radioGroupGender;
+    @BindView(R.id.radioMail)
+    RadioButton radioMail;
+    @BindView(R.id.radioFemail)
+    RadioButton radioFemail;
 
     @BindView(R.id.btn_save)
     Button btn_save;
@@ -117,7 +128,7 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
     DatePickerDialog datePickerDialog;
     int Year, Month, Day;
     Calendar calendar;
-
+    Date birthDate = null;
     public EditProfileFragment() {
         // Required empty public constructor
     }
@@ -129,22 +140,17 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
+        calendar = Calendar.getInstance();
+
+
+        Year = calendar.get(Calendar.YEAR);
+        Month = calendar.get(Calendar.MONTH);
+        Day = calendar.get(Calendar.DAY_OF_MONTH);
+
         ButterKnife.bind(this , view);
+
         dialog = new SpotsDialog.Builder().setContext(getActivity()).setCancelable(false).build();
 
-
-        //Here Fetch Local Data (Ok)
-        UserModel userData = Common.CURRENT_USER;
-        if (userData.getEmail()!=null)
-            input_email.getEditText().setText(userData.getEmail());
-
-        input_firstName.getEditText().setText(userData.getFirstName());
-        input_lastName.getEditText().setText(userData.getLastName());
-
-        if (userData.getAvatarName() !=null )
-            Picasso.get().load(Common.BASE_URL_IMAGE + userData.getAvatarName())
-            .placeholder(R.drawable.ic_placeholder_profile)
-            .into(img_avatar);
 
         img_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,7 +194,7 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
                 }
                 else
                 {
-                    updateInfo(firstName ,lastName,email,userData.getAvatarImageId());
+                    updateInfo(firstName ,lastName,email,Common.CURRENT_USER.getAvatarImageId());
 
                 }
 
@@ -207,6 +213,9 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
         });
 
 
+        //Here Fetch Local Data (Ok)
+        fetchLocalData();
+
         try {
             initDatePickerDialog();
         } catch (ParseException e) {
@@ -215,16 +224,76 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
 
 
 
+
         return view;
     }
 
-    private void updateInfo(String firstName, String lastName, String email, String avatarImageId) {
+    private void fetchLocalData() {
+
+        UserModel userData = Common.CURRENT_USER;
+        if (userData.getEmail()!=null)
+            input_email.getEditText().setText(userData.getEmail());
+
+        input_firstName.getEditText().setText(userData.getFirstName());
+        input_lastName.getEditText().setText(userData.getLastName());
+
+        if (userData.getAvatarName() !=null )
+            Picasso.get().load(Common.BASE_URL_IMAGE + userData.getAvatarName())
+                    .placeholder(R.drawable.ic_placeholder_profile)
+                    .into(img_avatar);
+
+        if (userData.getGender()!=null){
+            Gender gender =userData.getGender();
+            if (gender.rawValue().equalsIgnoreCase(Gender.MALE.rawValue()))
+                radioMail.setChecked(true);
+            else
+                radioFemail.setChecked(true);
+
+        }
+
+        if (userData.getBirthDate()!=null )
+        {
+            edt_date.setText(userData.getBirthDate().toString());
+
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+            Calendar oldDate = Calendar.getInstance();
+            try {
+                oldDate.setTime(sdf.parse(userData.getBirthDate().toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            Year = oldDate.get(Calendar.YEAR);
+            Log.d("HAZEM" , "HHH : " + Year);
+            Month = oldDate.get(Calendar.MONTH);
+            Log.d("HAZEM" , "HHH : " + Month);
+
+            Day = oldDate.get(Calendar.DAY_OF_MONTH);
+            Log.d("HAZEM" , "HHH : " + Day);
+
+        }
+
+    }
+
+    private void updateInfo(String firstName, String lastName, String email, String avatarImageId)  {
+
+        Gender gender ;
+
+        if (radioMail.isChecked())
+            gender = Gender.MALE;
+        else
+            gender = Gender.FEMALE;
+
 
 
         UserInfo userInfo = UserInfo.builder()
                 .firstName(firstName)
                 .lastName(lastName)
                 .avatarImageId(avatarImageId)
+                .birthDate(birthDate)
+                .gender(gender)
                 .build();
 
         MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
@@ -245,6 +314,9 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
                                     Common.CURRENT_USER.setAvatarImageId(avatarImageId);
                                     if (response.data().UserMutation().updateInfo().data().AvatarResponse().status() == 200)
                                     Common.CURRENT_USER.setAvatarName(response.data().UserMutation().updateInfo().data().AvatarResponse().data().name());
+
+                                    Common.CURRENT_USER.setGender(gender);
+                                    Common.CURRENT_USER.setBirthDate(edt_date.getText().toString());
 
                                     Toasty.success(getActivity() , getString(R.string.successful_update)  ).show();
                                     dialog.hide();
@@ -584,13 +656,6 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
 
     private void initDatePickerDialog() throws ParseException {
 
-        calendar = Calendar.getInstance();
-
-
-            Year = calendar.get(Calendar.YEAR);
-            Month = calendar.get(Calendar.MONTH);
-            Day = calendar.get(Calendar.DAY_OF_MONTH);
-
         datePickerDialog = DatePickerDialog.newInstance(this, Year, Month, Day);
         datePickerDialog.setThemeDark(false);
         datePickerDialog.showYearPickerFirst(false);
@@ -623,5 +688,12 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
 //        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 //        txt_date.setText(sdf.format(myCalendar.getTime()));
         input_birthDate.getEditText().setText(date);
+
+        try {
+            birthDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 }

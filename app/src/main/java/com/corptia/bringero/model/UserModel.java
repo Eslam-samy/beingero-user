@@ -1,5 +1,7 @@
 package com.corptia.bringero.model;
 
+import com.corptia.bringero.type.Gender;
+
 import java.util.List;
 
 public class UserModel  {
@@ -15,6 +17,8 @@ public class UserModel  {
     private String avatarName;
     private String avatarImageId;
     private String phone;
+    private Gender gender;
+    private Object birthDate;
 
     private CurrentDeliveryAddress currentDeliveryAddress;
     private List<DeliveryAddresses> deliveryAddressesList;
@@ -23,6 +27,21 @@ public class UserModel  {
 
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Object getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Object birthDate) {
+        this.birthDate = birthDate;
+    }
 
     public String getAvatarImageId() {
         return avatarImageId;

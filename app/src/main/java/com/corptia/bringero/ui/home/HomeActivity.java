@@ -23,6 +23,8 @@ import androidx.fragment.app.Fragment;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.NotificationCountUnreadQuery;
+import com.corptia.bringero.graphql.UpdateNotificationMutation;
+import com.corptia.bringero.model.NotificationCount;
 import com.corptia.bringero.type.NotificationFilterInput;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.home.ui.notification.NotificationFragment;
@@ -59,6 +61,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -220,8 +225,7 @@ public class HomeActivity extends BaseActivity implements
                     selectedFragment = new OrderFragment();
                     getSupportActionBar().setTitle(R.string.orders);
                     txt_location.setVisibility(View.GONE);
-                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
-                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
+
                 }
                 break;
 
@@ -230,19 +234,21 @@ public class HomeActivity extends BaseActivity implements
                     selectedFragment = new CartFragment();
                     getSupportActionBar().setTitle(R.string.cart);
                     txt_location.setVisibility(View.GONE);
-                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
-                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
+//                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
+//                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
                 }
                 break;
 
             case R.id.nav_notification:
                 if (!(selectedFragment instanceof NotificationFragment)) {
                     selectedFragment = new NotificationFragment();
+
                     getSupportActionBar().setTitle(R.string.notification);
+
                     txt_location.setVisibility(View.GONE);
-                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
-                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
                     notificationBadge.setVisibility(GONE);
+
+                    updateNotification();
                 }
                 break;
 
@@ -258,6 +264,23 @@ public class HomeActivity extends BaseActivity implements
 
         return true;
     };
+
+    private void updateNotification() {
+
+        MyApolloClient.getApollowClientAuthorization().mutate(UpdateNotificationMutation.builder().build())
+                .enqueue(new ApolloCall.Callback<UpdateNotificationMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateNotificationMutation.Data> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
+
+    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -419,6 +442,27 @@ public class HomeActivity extends BaseActivity implements
 
                     }
                 });
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void countNotification(NotificationCount notificationCount) {
+
+        if (notificationCount != null) {
+            countNotificationUnread();
+        }
 
     }
 }

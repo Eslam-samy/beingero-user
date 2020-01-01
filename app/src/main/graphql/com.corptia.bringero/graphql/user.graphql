@@ -17,6 +17,8 @@ mutation logIn($loginData: loginInput) {
                 lastName
                 phone
                 avatarImageId
+                gender
+                birthDate
 
                 AvatarResponse {
                     status
@@ -154,8 +156,14 @@ mutation updateUserInfo($data: userInfo) {
                 code
             }
             data {
+                firstName
+                lastName
                 phone
                 language
+                gender
+                birthDate
+                email
+
                 AvatarResponse{
                     status
                     data{
