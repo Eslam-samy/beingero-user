@@ -63,7 +63,9 @@ public class MyApolloClient {
             }
         };
 
-        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(message -> Log.e("API" , message));
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(message ->{
+//            Log.e("API" , message);
+        });
 
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -133,7 +135,7 @@ public class MyApolloClient {
             @Override
             public void log(String message) {
 
-               Log.e("API",message);
+//               Log.e("API",message);
 
             }
         });
@@ -213,7 +215,7 @@ public class MyApolloClient {
             @Override
             public void log(String message) {
 
-               Log.e("API", message);
+//               Log.e("API", message);
 
             }
         });
