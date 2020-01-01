@@ -64,8 +64,6 @@ public class StoresActivity extends BaseActivity implements StoresContract.Brand
         recycler_brands.setLayoutManager(new LinearLayoutManager(this));
         recycler_brands.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(0,this)));
 
-        brandsPresenter.getStores(categoryId);
-
         initActionBar();
     }
 
@@ -97,8 +95,11 @@ public class StoresActivity extends BaseActivity implements StoresContract.Brand
             public void run() {
                 adapter = new StoresAdapter(StoresActivity.this , repositoryList);
                 recycler_brands.setAdapter(adapter);
+
             }
         });
+
+
 
     }
 
@@ -121,5 +122,11 @@ public class StoresActivity extends BaseActivity implements StoresContract.Brand
 
         handler.post(() -> loading.setVisibility(View.GONE));
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        brandsPresenter.getStores(categoryId);
     }
 }

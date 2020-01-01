@@ -7,33 +7,26 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.apollographql.apollo.ApolloCall;
-import com.apollographql.apollo.api.Response;
-import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IClickRecyclerAdapter;
 import com.corptia.bringero.R;
-import com.corptia.bringero.Remote.MyApolloClient;
-import com.corptia.bringero.graphql.RemoveCartItemMutation;
-import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 import com.corptia.bringero.ui.storesDetail.StoreDetailActivity;
-import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.PicassoUtils;
+import com.corptia.bringero.utils.Utils;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
 
-import org.greenrobot.eventbus.EventBus;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -49,7 +42,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public CartItemsAdapter itemsAdapter;
     boolean isCart;
     Handler handler;
-
     CallBackUpdateCartItemsListener callBackUpdateCartItemsListener;
 
 
@@ -79,7 +71,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         MyCartQuery.StoreDatum cartModel = myCartList.get(position);
+
         @Nullable List<MyCartQuery.Item> itemList = new ArrayList<>(cartModel.Items());
+
         itemsAdapter = new CartItemsAdapter(context, itemList, isCart, new IClickRecyclerAdapter() {
             @Override
             public void onClickAdapter(int positionItems) {
@@ -97,59 +91,59 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             }
         });
 
-        itemsAdapter.setiDeleteCartItemsListener(new CartItemsAdapter.IDeleteCartItemsListener() {
-            @Override
-            public void onDeleteCart(int positionItems, int amount) {
-
-//                loading.showProgressBar(context, false);
-
-
-                MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(itemList.get(position)._id()).build())
-                        .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
-                            @Override
-                            public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
-
-                                handler.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-
-                                        if (response.data().CartItemMutation().remove().status() == 200) {
-
-                                            Toast.makeText(context, "Items Deleted !", Toast.LENGTH_SHORT).show();
-
-                                            double totalProductPrice = amount * itemList.get(position).PricingProduct().storePrice();
-                                            EventBus.getDefault().postSticky(new CalculatePriceEvent(totalProductPrice));
-
-                                            itemList.remove(positionItems);
-
-                                            if (itemList.size() == 0) {
-
-                                                myCartList.remove(position);
-                                                notifyItemRemoved(position);
-                                                notifyItemRangeChanged(position, myCartList.size());
-                                            }
-
-                                        } else {
-
-                                        }
-
-//                                        loading.hideProgressBar();
-
-
-                                    }
-                                });
-
-                            }
-
-                            @Override
-                            public void onFailure(@NotNull ApolloException e) {
-
-                            }
-                        });
-
-            }
-        });
+//        itemsAdapter.setiDeleteCartItemsListener(new CartItemsAdapter.IDeleteCartItemsListener() {
+//            @Override
+//            public void onDeleteCart(int positionItems, int amount) {
+//
+////                loading.showProgressBar(context, false);
+//
+//
+//                MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(itemList.get(position)._id()).build())
+//                        .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
+//                            @Override
+//                            public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
+//
+//                                handler.post(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//
+//
+//                                        if (response.data().CartItemMutation().remove().status() == 200) {
+//
+//                                            Toast.makeText(context, "Items Deleted !", Toast.LENGTH_SHORT).show();
+//
+//                                            double totalProductPrice = amount * itemList.get(position).PricingProduct().storePrice();
+//                                            EventBus.getDefault().postSticky(new CalculatePriceEvent(totalProductPrice));
+//
+//                                            itemList.remove(positionItems);
+//
+//                                            if (itemList.size() == 0) {
+//
+//                                                myCartList.remove(position);
+//                                                notifyItemRemoved(position);
+//                                                notifyItemRangeChanged(position, myCartList.size());
+//                                            }
+//
+//                                        } else {
+//
+//                                        }
+//
+////                                        loading.hideProgressBar();
+//
+//
+//                                    }
+//                                });
+//
+//                            }
+//
+//                            @Override
+//                            public void onFailure(@NotNull ApolloException e) {
+//
+//                            }
+//                        });
+//
+//            }
+//        });
 
         holder.recycler_items.setNestedScrollingEnabled(false);
         holder.recycler_items.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
@@ -177,19 +171,77 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         }
 
         if (isCart) {
+
+            if (cartModel.Store().isAvailable()){
+                holder.img_lock.setVisibility(View.GONE);
+            }
+            else holder.img_lock.setVisibility(View.VISIBLE);
+
+
             holder.layout_store_cart.setOnClickListener(view -> {
+
                 MyCartQuery.Store store = cartModel.Store();
+                Common.IS_AVAILABLE_STORE = store.isAvailable();
 
-                Intent intentStore = new Intent(context, StoreDetailActivity.class);
-                intentStore.putExtra(Constants.EXTRA_STORE_ID, store._id());
-                intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID, store.adminUserId());
-                intentStore.putExtra(Constants.EXTRA_STORE_NAME, store.name());
-                if (store.ImageResponse().data() != null)
-                    intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, store.ImageResponse().data().name());
+
+                if (store.isAvailable())
+                {
+                    Intent intentStore = new Intent(context, StoreDetailActivity.class);
+                    intentStore.putExtra(Constants.EXTRA_STORE_ID, store._id());
+                    intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID, store.adminUserId());
+                    intentStore.putExtra(Constants.EXTRA_STORE_NAME, store.name());
+                    if (store.ImageResponse().data() != null)
+                        intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, store.ImageResponse().data().name());
+                    else
+                        intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, "null");
+
+
+                    context.startActivity(intentStore);
+                }
                 else
-                    intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, "null");
+                {
 
-                context.startActivity(intentStore);
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                    View layout_alert = LayoutInflater.from(context).inflate(R.layout.layout_dialog_alert , null);
+
+                    Button btn_ok = layout_alert.findViewById(R.id.btn_ok);
+                    Button btn_continue = layout_alert.findViewById(R.id.btn_continue);
+
+
+
+                    alertDialog.setView(layout_alert);
+                    AlertDialog dialog = alertDialog.create();
+
+                    btn_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    btn_continue.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Intent intentStore = new Intent(context, StoreDetailActivity.class);
+                            intentStore.putExtra(Constants.EXTRA_STORE_ID, store._id());
+                            intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID, store.adminUserId());
+                            intentStore.putExtra(Constants.EXTRA_STORE_NAME, store.name());
+                            if (store.ImageResponse().data() != null)
+                                intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, store.ImageResponse().data().name());
+                            else
+                                intentStore.putExtra(Constants.EXTRA_STORE_IMAGE, "null");
+
+                            dialog.dismiss();
+
+                            context.startActivity(intentStore);
+
+                        }
+                    });
+
+                    dialog.show();
+                }
+
             });
         }
     }
@@ -205,6 +257,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         RecyclerView recycler_items;
         @BindView(R.id.image_store)
         ImageView image_store;
+        ImageView img_lock;
         @BindView(R.id.txt_name_store)
         TextView txt_name_store;
 //        @BindView(R.id.txt_total_price)
@@ -219,7 +272,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             ButterKnife.bind(this, itemView);
 
             if (isCart)
-                layout_store_cart = itemView.findViewById(R.id.layout_store_cart);
+            {layout_store_cart = itemView.findViewById(R.id.layout_store_cart);
+                img_lock = itemView.findViewById(R.id.img_lock);}
 
         }
     }
@@ -228,5 +282,21 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         void callBack(String itemId, int amount);
     }
 
+
+    //------------------- OnClickListener ---------------
+
+//    View.OnClickListener onClickListenerOk = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//
+//        }
+//    };
+//
+//    View.OnClickListener onClickListenerContinue = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//
+//        }
+//    };
 
 }

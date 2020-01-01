@@ -223,6 +223,7 @@
     <string name="view_cart">View Cart</string>
 
     <string name="limit_max_cart">You have reached the maximum order limit</string>
+    <string name="_continue">Continue</string>
 
 </resources>
 

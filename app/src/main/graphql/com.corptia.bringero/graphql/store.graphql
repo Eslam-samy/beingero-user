@@ -18,6 +18,7 @@ query getStoresOfASingleCategory($typeId: ID,$paginate:paginationInput) {
                 }
                 storeTypeId
                 adminUserId
+                isAvailable
             }
         }
     }

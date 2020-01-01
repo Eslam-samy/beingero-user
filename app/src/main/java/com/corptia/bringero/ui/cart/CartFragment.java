@@ -25,6 +25,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
@@ -36,6 +37,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,6 +79,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @BindView(R.id.loading)
     LottieAnimationView loading;
 
+    CustomLoading loadingDialog;
+
     public CartFragment() {
         // Required empty public constructor
     }
@@ -91,6 +97,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, getActivity())));
 
         initPlaceHolder();
+
+        loadingDialog = new CustomLoading(getActivity(), true);
 
         return view;
     }
@@ -146,10 +154,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
 
                     btn_next.setOnClickListener(view1 -> {
-//                        HomeActivity.navController.navigate(R.id.action_nav_cart_to_checkOutFragment);
-//                        HomeActivity.bottomNavigationView.setVisibility(View.GONE);
-//                        HomeActivity.fab.hide();
 
+                        loadingDialog.showProgressBar(getActivity(), false);
 
                         MyApolloClient.getApollowClientAuthorization().query(MyCartQuery.builder().build())
                                 .enqueue(new ApolloCall.Callback<MyCartQuery.Data>() {
@@ -157,36 +163,61 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                                     public void onResponse(@NotNull Response<MyCartQuery.Data> response) {
                                         MyCartQuery.MyCart myCart = response.data().CartItemQuery().myCart();
 
-                                        if (myCart.status() == 200) {
+                                        handler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                loadingDialog.hideProgressBar();
+
+                                                if (myCart.status() == 200) {
 
 
-                                            handler.post(new Runnable() {
-                                                @Override
-                                                public void run() {
+                                                    List<Boolean> isAvailableStores = new ArrayList<>();
 
-                                                    Common.CURRENT_CART = myCart.storeData();
+                                                    for (MyCartQuery.StoreDatum stores : myCart.storeData()) {
+                                                        isAvailableStores.add(stores.Store().isAvailable());
+                                                    }
 
-                                                    Intent intent = new Intent(getActivity(), CheckOutActivity.class);
-                                                    intent.putExtra(Constants.EXTRA_TOTAL_CART, totalPrice);
-                                                    startActivity(intent);
+                                                    if (isAvailableStores.contains(false)) {
+
+                                                        btn_next.setBackgroundResource(R.drawable.round_button_gray);
+                                                        btn_next.setEnabled(false);
+                                                        cartPresenter.getMyCart();
+
+
+                                                    } else {
+
+                                                        btn_next.setBackgroundResource(R.drawable.round_main_button);
+                                                        btn_next.setEnabled(true);
+
+                                                        Common.CURRENT_CART = myCart.storeData();
+
+                                                        Intent intent = new Intent(getActivity(), CheckOutActivity.class);
+                                                        intent.putExtra(Constants.EXTRA_TOTAL_CART, totalPrice);
+                                                        startActivity(intent);
+                                                    }
+
                                                 }
-                                            });
+//                                                 else if (myCart.status() == 404) {
+//                                                } else {
+//                                                }
 
+                                            }
+                                        });
 
-                                        }
-
-                                        else  if (myCart.status() == 404)
-                                        {
-                                        }
                                     }
 
                                     @Override
                                     public void onFailure(@NotNull ApolloException e) {
+
+                                        handler.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                loadingDialog.hideProgressBar();
+                                            }
+                                        });
                                     }
                                 });
-
-
-
 
 
                     });
@@ -196,6 +227,21 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                 cartPresenter.updateCartItems(itemId, amount);
             });
 
+
+            List<Boolean> isAvailableStores = new ArrayList<>();
+
+            for (MyCartQuery.StoreDatum stores : myCartData.storeData()) {
+                isAvailableStores.add(stores.Store().isAvailable());
+            }
+
+            if (isAvailableStores.contains(false)) {
+
+                btn_next.setBackgroundResource(R.drawable.round_button_gray);
+                btn_next.setEnabled(false);
+            } else {
+                btn_next.setBackgroundResource(R.drawable.round_main_button);
+                btn_next.setEnabled(true);
+            }
 
 
         });
@@ -210,8 +256,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                 showPlaceHolder();
 
-                Common.TOTAL_CART_PRICE =0;
-                Common.TOTAL_CART_AMOUNT =0;
+                Common.TOTAL_CART_PRICE = 0;
+                Common.TOTAL_CART_AMOUNT = 0;
 
             }
         });
@@ -219,7 +265,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
     private void showPlaceHolder() {
 
-        if (getActivity()!=null) {
+        if (getActivity() != null) {
 
             layout_placeholder.setVisibility(View.VISIBLE);
             recycler_cart.setVisibility(View.GONE);
@@ -260,11 +306,11 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                 Common.TOTAL_CART_PRICE = totalPrice;
                 total_price.setText(new StringBuilder().append(totalPrice).append(" ").append(getString(R.string.currency)));
 
-                if (totalPrice <= 0){
+                if (totalPrice <= 0) {
                     showPlaceHolder();
                     loading.setVisibility(View.GONE);
-                    Common.TOTAL_CART_PRICE =0;
-                    Common.TOTAL_CART_AMOUNT =0;
+                    Common.TOTAL_CART_PRICE = 0;
+                    Common.TOTAL_CART_AMOUNT = 0;
                 }
 
             }

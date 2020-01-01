@@ -231,7 +231,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + productImage, image_product);
 
-            if (listener != null) {
+            if (listener != null && Common.IS_AVAILABLE_STORE) {
 
                 double finalPrice1 = price;
                 itemView.setOnClickListener(new View.OnClickListener() {

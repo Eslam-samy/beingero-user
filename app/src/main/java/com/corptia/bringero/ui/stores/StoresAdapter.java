@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.Common.Common;
@@ -47,26 +49,88 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
         GetStoresOfASingleCategoryQuery.Store storeTypes = storeTypesList.get(position);
 
         if (storeTypes.ImageResponse().data()!=null)
-            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.img_store);
+            Picasso.get().load(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name())
+            .placeholder(R.drawable.ic_placeholder_store)
+            .into(holder.img_store);
+//            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.img_store);
 
         holder.txt_name_store.setText(storeTypes.name());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentStore = new Intent(context , StoreDetailActivity.class);
-                intentStore.putExtra(Constants.EXTRA_STORE_ID , storeTypes._id());
-                intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID , storeTypes.adminUserId());
-                intentStore.putExtra(Constants.EXTRA_STORE_NAME , storeTypes.name());
-                if (storeTypes.ImageResponse().data()!=null)
-                intentStore.putExtra(Constants.EXTRA_STORE_IMAGE , storeTypes.ImageResponse().data().name());
+
+
+                if (storeTypes.isAvailable()){
+
+                    Intent intentStore = new Intent(context , StoreDetailActivity.class);
+                    intentStore.putExtra(Constants.EXTRA_STORE_ID , storeTypes._id());
+                    intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID , storeTypes.adminUserId());
+                    intentStore.putExtra(Constants.EXTRA_STORE_NAME , storeTypes.name());
+                    if (storeTypes.ImageResponse().data()!=null)
+                        intentStore.putExtra(Constants.EXTRA_STORE_IMAGE , storeTypes.ImageResponse().data().name());
+                    else
+                        intentStore.putExtra(Constants.EXTRA_STORE_IMAGE , "null");
+
+                    Common.IS_AVAILABLE_STORE = storeTypes.isAvailable();
+
+
+                    context.startActivity(intentStore);
+                }
                 else
-                    intentStore.putExtra(Constants.EXTRA_STORE_IMAGE , "null");
+                {
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+                    View layout_alert = LayoutInflater.from(context).inflate(R.layout.layout_dialog_alert , null);
+
+                    Button btn_ok = layout_alert.findViewById(R.id.btn_ok);
+                    Button btn_continue = layout_alert.findViewById(R.id.btn_continue);
 
 
-                context.startActivity(intentStore);
+
+                    alertDialog.setView(layout_alert);
+                    AlertDialog dialog = alertDialog.create();
+
+                    btn_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    btn_continue.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            Intent intentStore = new Intent(context , StoreDetailActivity.class);
+                            intentStore.putExtra(Constants.EXTRA_STORE_ID , storeTypes._id());
+                            intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID , storeTypes.adminUserId());
+                            intentStore.putExtra(Constants.EXTRA_STORE_NAME , storeTypes.name());
+                            if (storeTypes.ImageResponse().data()!=null)
+                                intentStore.putExtra(Constants.EXTRA_STORE_IMAGE , storeTypes.ImageResponse().data().name());
+                            else
+                                intentStore.putExtra(Constants.EXTRA_STORE_IMAGE , "null");
+
+                            Common.IS_AVAILABLE_STORE = storeTypes.isAvailable();
+
+                            dialog.dismiss();
+
+                            context.startActivity(intentStore);
+                        }
+                    });
+
+                    dialog.show();
+
+
+                }
+
+
             }
         });
+
+        if (storeTypes.isAvailable()){
+            holder.img_lock.setVisibility(View.GONE);
+        }else
+            holder.img_lock.setVisibility(View.VISIBLE);
 
     }
 
@@ -79,6 +143,8 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
 
         @BindView(R.id.img_store)
         ImageView img_store;
+        @BindView(R.id.img_lock)
+        ImageView img_lock;
         @BindView(R.id.txt_name_store)
         TextView txt_name_store;
 

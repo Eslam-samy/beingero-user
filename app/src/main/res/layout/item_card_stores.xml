@@ -27,8 +27,8 @@
     
     <androidx.cardview.widget.CardView
         android:id="@+id/card_image_store"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout_cover_store"
@@ -37,11 +37,22 @@
 
         <ImageView
             android:id="@+id/img_store"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:scaleType="fitXY"
             android:src="@drawable/ic_placeholder_store"
             android:padding="4dp"/>
+
+        <ImageView
+            android:id="@+id/img_lock"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_lock"
+            android:layout_gravity="center"
+            android:background="#97000000"
+            android:scaleType="center"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
     </androidx.cardview.widget.CardView>
 

@@ -13,6 +13,7 @@ query MyCartQuery {
                 Store {
                     _id
                     name
+                    isAvailable
                     ImageResponse {
                         status
                         data {
