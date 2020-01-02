@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,20 +31,10 @@ import com.corptia.bringero.type.CreateCartItem;
 import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.recyclerview.PaginationListener;
 import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
-import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
-import com.corptia.bringero.graphql.PricingProductMutation;
-import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
-import com.corptia.bringero.type.CreatePricingProduct;
-import com.corptia.bringero.ui.pricing.PricingAdapter;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.textfield.TextInputEditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -236,7 +225,15 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 //                    startActivity(intent);
 
                     //Here Add To Cart
-                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, storeDetailAdapter.productsList.get(position).storePrice() , 1));
+                    //Get Data Store
+                    GetStoreProductsQuery.Product items = storeDetailAdapter.productsList.get(position);
+                    double priceProduct ;
+                    if (items.discountActive()!=null &&items.discountActive())
+                        priceProduct =(1- items.discountRatio()) * items.storePrice();
+                    else
+                        priceProduct = items.storePrice();
+
+                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, priceProduct , 1));
                     addToCart(storeDetailAdapter.getSelectProduct(position)._id());
 
                 });

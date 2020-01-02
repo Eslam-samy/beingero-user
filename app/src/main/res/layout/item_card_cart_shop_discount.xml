@@ -36,7 +36,7 @@
         android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="@+id/txt_price"
+        app:layout_constraintStart_toStartOf="@+id/txt_discount"
         app:layout_constraintTop_toBottomOf="@+id/txt_price">
 
         <ImageView
@@ -106,37 +106,36 @@
 
     <!-- Arrange -->
 
-<!--    <TextView-->
-<!--        android:id="@+id/txt_discount"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="@dimen/low_margin"-->
-<!--        android:background="@drawable/round_discount"-->
-<!--        android:fontFamily="@font/poppinsregular"-->
-<!--        android:gravity="center|center_horizontal|center_vertical"-->
-<!--        android:text="10%"-->
-<!--        android:textAlignment="center"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="@dimen/low_xx_text_size"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/txt_name_product"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/txt_name_product"-->
-<!--        android:padding="@dimen/low_padding"-->
-<!--        android:visibility="gone"-->
-<!--        />-->
+    <TextView
+        android:id="@+id/txt_discount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/low_margin"
+        android:background="@drawable/round_discount"
+        android:fontFamily="@font/poppinsregular"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="10%"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/low_xx_text_size"
+        app:layout_constraintStart_toStartOf="@+id/txt_name_product"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name_product"
+        android:padding="@dimen/low_padding"
+        />
 
 
-<!--    <TextView-->
-<!--        android:id="@+id/txt_old_price"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="@dimen/low_margin"-->
-<!--        android:fontFamily="@font/poppinsregular"-->
-<!--        android:text="200 EGP"-->
-<!--        android:textColor="@color/colorOldPrice"-->
-<!--        android:textSize="@dimen/low_x_text_size"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/txt_discount"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/txt_discount"-->
-<!--        android:includeFontPadding="false"/>-->
+    <TextView
+        android:id="@+id/txt_old_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/low_margin"
+        android:fontFamily="@font/poppinsregular"
+        android:text="200 EGP"
+        android:textColor="@color/colorOldPrice"
+        android:textSize="@dimen/low_x_text_size"
+        app:layout_constraintStart_toEndOf="@+id/txt_discount"
+        app:layout_constraintTop_toTopOf="@+id/txt_discount"
+        android:includeFontPadding="false"/>
 
     <TextView
         android:id="@+id/txt_price"
@@ -144,13 +143,23 @@
         android:fontFamily="@font/poppinsregular"
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/low_xx_text_size"
-        app:layout_constraintStart_toStartOf="@+id/txt_name_product"
-        app:layout_constraintTop_toBottomOf="@+id/txt_name_product"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_discount"
+        app:layout_constraintStart_toEndOf="@+id/txt_discount"
+        app:layout_constraintTop_toBottomOf="@+id/txt_old_price"
         tools:text="180.00 EGP"
         android:includeFontPadding="false"
         android:textStyle="bold"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="@dimen/low_margin"/>
+        android:layout_marginStart="@dimen/low_margin"/>
+
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0.5dp"
+        android:background="@color/colorOldPrice"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_old_price"
+        app:layout_constraintEnd_toEndOf="@+id/txt_old_price"
+        app:layout_constraintStart_toStartOf="@+id/txt_old_price"
+        app:layout_constraintTop_toTopOf="@+id/txt_old_price" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,7 +52,10 @@ type BuyingOrderItem implements IModelData {
     _id: ID!
     amount: Int
     createdAt: Date
+    discountActive: Boolean
+    discountRatio: Float
     orderId: ID
+    originalPrice: Float
     pricingProductId: ID
     productId: ID
     productName: String
@@ -202,6 +205,8 @@ type DeliveryOrder implements IModelData {
     TripResponse: TrackingTripSingleResponse
     _id: ID!
     createdAt: Date
+    createdAtDateTime: DateTime
+    createdAtTime: Time
     customerUserId: ID!
     deliveryCost: Float
     pilotId: ID
@@ -716,6 +721,8 @@ type PricingProduct implements IModelData {
     _id: ID!
     amount: Int
     createdAt: Date
+    discountActive: Boolean
+    discountRatio: Float
     isAvailable: Boolean
     productId: ID!
     storeId: ID!
@@ -2364,6 +2371,7 @@ input PricingProductFilterInput {
     _id: ID
     amount: Int
     createdAt: Date
+    discountActive: Boolean
     isAvailable: Boolean
     productId: ID
     storeId: ID
@@ -2712,6 +2720,8 @@ input createPilotVehicle {
 
 input createPricingProduct {
     amount: Int
+    discountActive: Boolean
+    discountRatio: Float
     isAvailable: Boolean = true
     productId: ID!
     storeId: ID!
@@ -2922,6 +2932,7 @@ input sortingInput {
 }
 
 input storeGalleryFilter {
+    discountActive: Boolean
     isAvailable: Boolean
     productName: String
     typeId: ID
@@ -3078,6 +3089,8 @@ input updatePilotVehicle {
 
 input updatePricingProduct {
     amount: Int
+    discountActive: Boolean
+    discountRatio: Float
     isAvailable: Boolean
     productId: ID
     storeId: ID
@@ -3244,11 +3257,11 @@ input userInfo {
 "A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
 scalar Date
 
-"A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
-scalar Time
-
 "A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
 scalar DateTime
+
+"A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
+scalar Time
 
 "The `Upload` scalar type represents a file upload."
 scalar Upload

@@ -8,11 +8,18 @@ android {
         applicationId "com.corptia.bringero"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 23
-        versionName "0.23"
+        versionCode 25
+        versionName "0.25"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
+//    lintOptions {
+//        checkReleaseBuilds false
+//        // Or, if you prefer, you can continue to check for errors in release builds,
+//        // but continue the build even when errors are found:
+//        abortOnError false
+//    }
 
     //--------------- من صفوت ------------
 //    signingConfigs {

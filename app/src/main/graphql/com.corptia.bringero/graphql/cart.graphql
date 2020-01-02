@@ -40,8 +40,11 @@ query MyCartQuery {
                         createdAt
                         updatedAt
                         storePrice
-                        storePrice
                         amount
+
+                        isAvailable
+                        discountActive
+                        discountRatio
                     }
 
                     amount
@@ -56,6 +59,7 @@ query MyCartQuery {
         }
     }
 }
+
 
 
 mutation createCartItem($data: createCartItem) {

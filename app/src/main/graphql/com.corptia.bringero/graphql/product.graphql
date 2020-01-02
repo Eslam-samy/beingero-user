@@ -42,11 +42,15 @@ query getStoreProducts(
                 dataCount
                 totalPages
             }
+
             Products: data {
                 _id
                 productId
                 storeId
                 storePrice
+                discountActive
+                discountRatio
+
                 Product {
                     _id
                     name
@@ -205,6 +209,8 @@ query StoreSearch(
                 _id
                 storePrice
                 isAvailable
+                discountRatio
+                discountActive
                 Product {
                     _id
                     name

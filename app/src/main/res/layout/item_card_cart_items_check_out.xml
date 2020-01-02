@@ -52,6 +52,26 @@
         app:layout_constraintTop_toTopOf="@+id/txt_price"
         android:visibility="gone"
         />
+    <TextView
+        android:id="@+id/txt_discount"
+        style="@style/TextCardDefaultStyle"
+        android:textColor="@color/colorAccent"
+        android:text="USD 180.00"
+        android:fontFamily="@font/poppinsregular"
+        app:layout_constraintStart_toEndOf="@+id/txt_price"
+        app:layout_constraintTop_toTopOf="@+id/txt_price"
+        android:visibility="gone"
+        />
+    <TextView
+        android:id="@+id/txt_old_price"
+        style="@style/TextCardDefaultStyle"
+        android:textColor="@color/colorAccent"
+        android:text="USD 180.00"
+        android:fontFamily="@font/poppinsregular"
+        app:layout_constraintStart_toEndOf="@+id/txt_price"
+        app:layout_constraintTop_toTopOf="@+id/txt_price"
+        android:visibility="gone"
+        />
 
 
 

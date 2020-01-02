@@ -113,7 +113,6 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         txt_name_store.setText(storeName);
 
         initActionBar();
-        initIntent();
 
         presenter = new StoreDetailPresenter(this);
         //presenter.getStoreDetailHeader(storeId);
@@ -121,11 +120,13 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         //Here Fetch Data From Cart I have Display layout cart
         //TODO
 
-        getSpeedCart();
+
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                EventBus.getDefault().postSticky(new CalculateCartEvent(false, 0, 0));
 
                 Intent intent = new Intent(StoreDetailActivity.this, SearchProductsActivity.class);
                 intent.putExtra(Constants.EXTRA_STORE_ID, storeId);
@@ -136,7 +137,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         });
     }
 
-    private void initIntent() {
+    private void getSingleStore() {
 
         StoreFilterInput storeFilterInput = StoreFilterInput.builder().adminUserId(adminUserId).build();
         MyApolloClient.getApollowClientAuthorization().query(SingleStoreQuery.builder().filter(storeFilterInput).build())
@@ -218,7 +219,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
     }
 
-//    @Override
+    //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        getMenuInflater().inflate(R.menu.menu_search, menu);
 //        return true;
@@ -243,6 +244,13 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getSpeedCart();
+        getSingleStore();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
@@ -252,15 +260,13 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     protected void onDestroy() {
         super.onDestroy();
 //        EventBus.getDefault().unregister(this);
-        Log.d("HAZEM" , "onDestroy");
-
 
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        EventBus.getDefault().postSticky(new CalculateCartEvent(false, 0 , 0));
+        EventBus.getDefault().postSticky(new CalculateCartEvent(false, 0, 0));
         EventBus.getDefault().unregister(this);
     }
 
@@ -295,7 +301,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
                 isHaveCart = true;
                 layout_speed_cart.setVisibility(View.VISIBLE);
-                txt_totalPriceCart.setText(new StringBuilder().append(totalPriceCart).append(" ").append(getString(R.string.currency)));
+                txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
 
                 btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
 
@@ -305,9 +311,10 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
             } else {
 
-                if (Common.TOTAL_CART_AMOUNT == 0)
-                {isHaveCart = false;
-                layout_speed_cart.setVisibility(View.GONE);}
+                if (Common.TOTAL_CART_AMOUNT == 0) {
+                    isHaveCart = false;
+                    layout_speed_cart.setVisibility(View.GONE);
+                }
             }
 
         }
@@ -318,18 +325,16 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     public void getSpeedCart() {
 
 
-        if (Common.TOTAL_CART_AMOUNT == 0){
+        if (Common.TOTAL_CART_AMOUNT == 0) {
             isHaveCart = false;
             layout_speed_cart.setVisibility(View.GONE);
-        }
-        else
-        {
+        } else {
             isHaveCart = true;
             layout_speed_cart.setVisibility(View.VISIBLE);
             totalPriceCart = Common.TOTAL_CART_PRICE;
             countOfCart = Common.TOTAL_CART_AMOUNT;
 
-            txt_totalPriceCart.setText(new StringBuilder().append(totalPriceCart).append(" ").append(getString(R.string.currency)));
+            txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
             btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
         }
 
@@ -385,7 +390,6 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
             throwable.printStackTrace();
         }
     }
-
 
 
 }

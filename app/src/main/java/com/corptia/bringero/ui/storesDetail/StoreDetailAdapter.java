@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,10 +19,13 @@ import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseViewHolder;
+import com.corptia.bringero.graphql.RemoveCartItemMutation;
 import com.corptia.bringero.graphql.StoreSearchQuery;
 import com.corptia.bringero.graphql.UpdateCartItemMutation;
+import com.corptia.bringero.model.CartItems;
 import com.corptia.bringero.model.CartItemsModel;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
+import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 import com.corptia.bringero.type.UpdateCartItem;
 import com.corptia.bringero.ui.search.SearchProductsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -94,34 +98,6 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         holder.onBind(position);
     }
 
-    public void updateCartItems(String itemsId, int amount, double price) {
-
-        UpdateCartItem updateAmount = UpdateCartItem.builder().amount(amount).build();
-        MyApolloClient.getApollowClientAuthorization().mutate(UpdateCartItemMutation.builder().id(itemsId).data(updateAmount).build())
-                .enqueue(new ApolloCall.Callback<UpdateCartItemMutation.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<UpdateCartItemMutation.Data> response) {
-
-                        if (response.data().CartItemMutation().update().status() == 200) {
-
-                        } else {
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-
-                    }
-                });
-
-        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -price, -1));
-
-        Common.GetCartItemsCount();
-
-    }
-
     @Override
     public int getItemCount() {
 
@@ -145,10 +121,13 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         TextView txt_amount;
         @BindView(R.id.btn_delete)
         ImageView btn_delete;
-        @BindView(R.id.txt_discount)
-        TextView txt_discount;
         @BindView(R.id.bg_delete)
         TextView bg_delete;
+
+        @BindView(R.id.txt_discount)
+        TextView txt_discount;
+        @BindView(R.id.txt_old_price)
+        TextView txt_old_price;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -172,6 +151,10 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
 
             double price = 0;
+            double oldPrice = 0;
+            double discountRatio = 0;
+            boolean discountActive;
+
             String productName = "";
             String productImage = "";
             String productId = "";
@@ -180,11 +163,30 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             int amount = 0;
             String cartProductId = "";
 
-
             if (!isSearch) {
+
                 product = productsList.get(position);
 
                 price = product.storePrice();
+                oldPrice = product.storePrice();
+
+                //Product Have Discount
+                if (product.discountActive() != null && product.discountActive()) {
+
+                    txt_discount.setVisibility(View.VISIBLE);
+                    txt_old_price.setVisibility(View.VISIBLE);
+
+                    discountActive = product.discountActive();
+                    discountRatio = product.discountRatio();
+
+                    price = (1 - discountRatio) * oldPrice;
+
+                } else {
+
+                    txt_discount.setVisibility(View.GONE);
+                    txt_old_price.setVisibility(View.GONE);
+                }
+
                 productName = product.Product().name();
                 productId = product._id();
 
@@ -197,8 +199,29 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 if (productSearch != null) {
 
+                    oldPrice = productSearch.storePrice();
+
+                    //Product Have Discount Search
+                    if (productSearch.discountActive() != null && productSearch.discountActive()) {
+
+                        txt_discount.setVisibility(View.VISIBLE);
+                        txt_old_price.setVisibility(View.VISIBLE);
+
+                        discountActive = productSearch.discountActive();
+                        discountRatio = productSearch.discountRatio();
+
+                        price = (1 - discountRatio) * oldPrice;
+
+                    } else {
+
+                        txt_discount.setVisibility(View.GONE);
+                        txt_old_price.setVisibility(View.GONE);
+
                         price = productSearch.storePrice();
-                        productId = productSearch._id();
+
+                    }
+
+                    productId = productSearch._id();
 
                     productName = productSearch.Product().name();
 
@@ -223,6 +246,8 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     amount = item.getAmount();
                     cartProductId = item.getCartProductId();
 
+                    break;
+
                 } else {
                     txt_amount.setVisibility(View.GONE);
                     btn_delete.setVisibility(View.GONE);
@@ -231,7 +256,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
 
 
-            txt_price.setText(new StringBuilder().append(price).append(" ").append(context.getString(R.string.currency)));
+            //Here Set Data On Cart
+            txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(price)).append(" ").append(context.getString(R.string.currency)));
+            txt_old_price.setText(new StringBuilder().append(Common.getDecimalNumber(oldPrice)).append(" ").append(context.getString(R.string.currency)));
+            txt_discount.setText(new StringBuilder().append((int)(discountRatio * 100)).append(" %"));
+
             txt_name_product.setText(Utils.cutName(productName));
 
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + productImage, image_product);
@@ -295,22 +324,28 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 int amountNow = Integer.parseInt(txt_amount.getText().toString()) - 1;
 
-                if (amountNow == 0) {
+                if (amountNow > 0) {
+
+                    txt_amount.setText("" + amountNow);
+
+                    txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                        }
+                    });
+
+
+                    updateCartItems(finalCartProductId, amountNow, finalPrice);
+
+                } else if (amountNow <= 0) {
                     txt_amount.setVisibility(View.INVISIBLE);
                     btn_delete.setVisibility(View.INVISIBLE);
                     bg_delete.setVisibility(View.INVISIBLE);
+
+                    deleteCartItems(finalCartProductId, finalPrice);
+
                 }
-
-                txt_amount.setText("" + amountNow);
-
-                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                    }
-                });
-
-                updateCartItems(finalCartProductId, amountNow, finalPrice);
 
 
             });
@@ -318,6 +353,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         }
     }
+
 
     public GetStoreProductsQuery.Product getSelectProduct(int position) {
         return productsList.get(position);
@@ -382,7 +418,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     }
 
-    StoreSearchQuery.ProductQuery getItemSearch(int position) {
+    public StoreSearchQuery.ProductQuery getItemSearch(int position) {
         return productsListSearch.get(position);
     }
 
@@ -418,5 +454,60 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
+
+    public void updateCartItems(String itemsId, int amount, double price) {
+
+        UpdateCartItem updateAmount = UpdateCartItem.builder().amount(amount).build();
+        MyApolloClient.getApollowClientAuthorization().mutate(UpdateCartItemMutation.builder().id(itemsId).data(updateAmount).build())
+                .enqueue(new ApolloCall.Callback<UpdateCartItemMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<UpdateCartItemMutation.Data> response) {
+
+                        if (response.data().CartItemMutation().update().status() == 200) {
+
+                        } else {
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
+
+        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -price, -1));
+
+
+        Common.GetCartItemsCount();
+
+    }
+
+
+    private void deleteCartItems(String ProductId, double price) {
+
+        MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(ProductId).build())
+                .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
+
+
+                        if (response.data().CartItemMutation().remove().status() == 200) {
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
+
+
+        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -price, -1));
+
+    }
 
 }

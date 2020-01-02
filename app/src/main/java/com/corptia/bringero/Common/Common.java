@@ -31,8 +31,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Common {
 
@@ -60,6 +64,10 @@ public class Common {
     public static double TOTAL_CART_PRICE = 0;
     public static int TOTAL_CART_AMOUNT = 0;
 
+    //For Change Langage For number
+    //public static DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
+    public static DecimalFormat decimalFormatDiscount = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.US));
+    public static NumberFormat formatter = decimalFormatDiscount;
 
     public static int dpToPx(int dp, Context context) {
         if (context != null) {
@@ -203,6 +211,10 @@ public class Common {
 
                     }
                 });
+    }
+
+    public static String getDecimalNumber(double price){
+        return formatter.format(price);
     }
 
 }

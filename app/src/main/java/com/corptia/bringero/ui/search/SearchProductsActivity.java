@@ -26,20 +26,26 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.CreateCartItemMutation;
 import com.corptia.bringero.graphql.StoreSearchQuery;
+import com.corptia.bringero.model.EventBus.CalculateCartEvent;
+import com.corptia.bringero.type.CreateCartItem;
 import com.corptia.bringero.type.PaginationInput;
-import com.corptia.bringero.type.ProductFilterInput;
 import com.corptia.bringero.type.SEARCH_Input;
 import com.corptia.bringero.type.StoreGalleryFilter;
+import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.ui.storesDetail.StoreDetailAdapter;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.recyclerview.PaginationListener;
 import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -107,6 +113,17 @@ public class SearchProductsActivity extends AppCompatActivity {
     @BindView(R.id.btn_2)
     Button btn_2;
 
+    //Speed Cart
+    double totalPriceCart;
+    int countOfCart;
+    boolean isHaveCart = false;
+    @BindView(R.id.txt_totalPriceCart)
+    TextView txt_totalPriceCart;
+    @BindView(R.id.btn_view_cart)
+    TextView btn_view_cart;
+    @BindView(R.id.layout_speed_cart)
+    ConstraintLayout layout_speed_cart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,7 +178,10 @@ public class SearchProductsActivity extends AppCompatActivity {
 
                     adapter.removeSearch();
 
+                    isLoading = false;
+
                     performSearch();
+
                     return true;
                 }
                 return false;
@@ -261,6 +281,8 @@ public class SearchProductsActivity extends AppCompatActivity {
 
         initPlaceHolderSearch();
 
+        getSpeedCart();
+
     }
 
     private void initPlaceHolderSearch() {
@@ -311,6 +333,23 @@ public class SearchProductsActivity extends AppCompatActivity {
                                     totalPages = response.data().PricingProductQuery().getStoreProducts().pagination().totalPages();
                                     adapter.addItemsSearch(data.ProductQuery());
 
+                                    adapter.setListener(new IOnRecyclerViewClickListener() {
+                                        @Override
+                                        public void onClick(View view, int position) {
+
+                                            //Get Data Store
+                                            StoreSearchQuery.ProductQuery items = adapter.getItemSearch(position);
+                                            double priceProduct ;
+                                            if (items.discountActive()!=null &&items.discountActive())
+                                                priceProduct =(1- items.discountRatio()) * items.storePrice();
+                                            else
+                                                priceProduct = items.storePrice();
+
+                                            //Here Add To Cart
+                                            EventBus.getDefault().postSticky(new CalculateCartEvent(true, priceProduct , 1));
+                                            addToCart(adapter.getItemSearch(position)._id());
+                                        }
+                                    });
 
 
                                 } else {
@@ -395,4 +434,135 @@ public class SearchProductsActivity extends AppCompatActivity {
         layout_placeholder.setVisibility(View.VISIBLE);
     }
 
+
+    void gotoCart() {
+        try {
+            Intent intent = new Intent(SearchProductsActivity.this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(Constants.EXTRA_SPEED_CART, "EXTRA_SPEED_CART");
+            EventBus.getDefault().unregister(this);
+            startActivity(intent);
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+    }
+
+    public void getSpeedCart() {
+
+
+        if (Common.TOTAL_CART_AMOUNT == 0){
+            isHaveCart = false;
+            layout_speed_cart.setVisibility(View.GONE);
+        }
+        else
+        {
+            isHaveCart = true;
+            layout_speed_cart.setVisibility(View.VISIBLE);
+            totalPriceCart = Common.TOTAL_CART_PRICE;
+            countOfCart = Common.TOTAL_CART_AMOUNT;
+
+            txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
+            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+        }
+
+        layout_speed_cart.setOnClickListener(view -> gotoCart());
+
+    }
+
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void request(CalculateCartEvent event) {
+        if (event != null) {
+
+            if (event.isSuccess()) {
+
+//                if (countOfCart > 0)
+//                    txt_countOfCart.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            txt_countOfCart.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+//                        }
+//                    });
+
+
+//                Common.TOTAL_CART_PRICE +=event.getProductPrice();
+//                Common.TOTAL_CART_AMOUNT +=event.getAmount();
+
+                countOfCart += event.getAmount();
+                totalPriceCart += event.getProductPrice();
+
+                isHaveCart = true;
+                layout_speed_cart.setVisibility(View.VISIBLE);
+                txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
+
+                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+
+
+//                RunAnimation();
+
+
+            } else {
+
+                if (Common.TOTAL_CART_AMOUNT == 0) {
+                    isHaveCart = false;
+                    layout_speed_cart.setVisibility(View.GONE);
+                }
+            }
+
+        }
+
+
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        EventBus.getDefault().unregister(this);
+        Log.d("HAZEM", "onDestroy");
+
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().postSticky(new CalculateCartEvent(false, 0, 0));
+        EventBus.getDefault().unregister(this);
+    }
+
+
+
+
+
+    public void addToCart(String pricingProductId) {
+
+        CreateCartItem item = CreateCartItem.builder().amount(1).pricingProductId(pricingProductId).build();
+        MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
+                .enqueue(new ApolloCall.Callback<CreateCartItemMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {
+
+                        CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
+                        if (createResponse.status() == 200) {
+
+                            Common.GetCartItemsCount();
+
+                        } else {
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
+    }
 }

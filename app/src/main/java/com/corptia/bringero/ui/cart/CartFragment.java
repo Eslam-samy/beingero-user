@@ -148,7 +148,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                     Common.CURRENT_CART = myCartData.storeData();
 
                     if (getContext() != null)
-                        total_price.setText(new StringBuilder().append(totalPrice).append(getString(R.string.currency)));
+                        total_price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
 
                     layout_checkOut.setVisibility(View.VISIBLE);
 
@@ -327,7 +327,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
         totalPrice += storePrice;
 
-        total_price.setText(new StringBuilder().append(totalPrice).append(" ").append(getString(R.string.currency)));
+        total_price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
 
         Common.TOTAL_CART_PRICE = totalPrice;
 
