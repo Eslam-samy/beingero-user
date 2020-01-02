@@ -250,7 +250,7 @@ public class MyApolloClient {
 
     private static void ShowLogs(String message) {
 
-        Log.e("API" , message);
+//        Log.e("API" , message);
     }
 
 
