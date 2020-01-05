@@ -7,7 +7,6 @@ mutation logIn($loginData: loginInput) {
             token
             data {
                 _id
-                storeId
                 roleName
                 language
                 email

@@ -19,6 +19,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.apollographql.apollo.ApolloCall;
@@ -124,6 +125,10 @@ public class SearchProductsActivity extends AppCompatActivity {
     @BindView(R.id.layout_speed_cart)
     ConstraintLayout layout_speed_cart;
 
+    //ProgressBar
+    @BindView(R.id.progress_search)
+    ProgressBar progress_search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -197,6 +202,8 @@ public class SearchProductsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 edt_search.setText("");
+                layout_placeholder.setVisibility(View.VISIBLE);
+                recycler_product.setVisibility(View.GONE);
             }
         });
 
@@ -299,6 +306,8 @@ public class SearchProductsActivity extends AppCompatActivity {
 
     private void performSearch() {
 
+        progress_search.setVisibility(View.VISIBLE);
+
         SEARCH_Input search_input = SEARCH_Input.builder().searchWord(searchWord).build();
         PaginationInput paginationInput = PaginationInput.builder().page(currentPage).limit(PAGE_SIZE).build();
 
@@ -321,7 +330,13 @@ public class SearchProductsActivity extends AppCompatActivity {
                             @Override
                             public void run() {
 
+                                progress_search.setVisibility(View.GONE);
+
+
                                 if (data.status() == 200) {
+
+                                    recycler_product.setVisibility(View.VISIBLE);
+
 
                                     if (isLoading) {
                                         adapter.removeLoadingSearch();
@@ -368,6 +383,7 @@ public class SearchProductsActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                progress_search.setVisibility(View.GONE);
                                 layout_placeholder.setVisibility(View.VISIBLE);
                             }
                         });
@@ -424,6 +440,8 @@ public class SearchProductsActivity extends AppCompatActivity {
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
             edt_search.setText(spokenText);
+            searchWord = spokenText;
+            performSearch();
             // Do something with spokenText
         }
         super.onActivityResult(requestCode, resultCode, data);
