@@ -116,6 +116,7 @@ public class HomeActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (Common.CURRENT_USER!=null)
             LocaleHelper.setLocale(this, Common.CURRENT_USER.getLanguage().toLowerCase());
         setContentView(R.layout.activity_home);
@@ -152,6 +153,12 @@ public class HomeActivity extends BaseActivity implements
             }
         });
 
+        getDataUser();
+
+    }
+
+    private void getDataUser() {
+
         View headerView = navigationView.getHeaderView(0);
         txt_user_name = headerView.findViewById(R.id.txt_user_name);
         txt_user_phone = headerView.findViewById(R.id.txt_user_phone);
@@ -159,6 +166,7 @@ public class HomeActivity extends BaseActivity implements
 
         txt_user_name.setText(Common.CURRENT_USER.getFullName());
         txt_user_phone.setText(Common.CURRENT_USER.getPhone());
+
         if (Common.CURRENT_USER.getAvatarImageId()!=null)
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + Common.CURRENT_USER.getAvatarName() , img_avatar);
 

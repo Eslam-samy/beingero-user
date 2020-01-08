@@ -111,7 +111,7 @@ public class CurrentOrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
                 Drawable res = context.getResources().getDrawable(imageResource);
 
-                txt_status.setText(context.getResources().getString(stringResource));
+                txt_status.setText(""+context.getResources().getString(stringResource));
                 txt_status.setBackground(res);
 
                 txt_date_order.setText(orderDatum.createdAt().toString());

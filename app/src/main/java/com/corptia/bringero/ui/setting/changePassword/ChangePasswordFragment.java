@@ -20,6 +20,7 @@ import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.ChangePasswordMutation;
 import com.corptia.bringero.type.ChangePasswordInput;
 import com.corptia.bringero.ui.home.HomeActivity;
+import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.google.android.material.textfield.TextInputLayout;
@@ -45,6 +46,8 @@ public class ChangePasswordFragment extends Fragment {
     Button btn_save;
 
     Handler handler ;
+    CustomLoading customLoading;
+
     public ChangePasswordFragment() {
 
         // Required empty public constructor
@@ -62,6 +65,7 @@ public class ChangePasswordFragment extends Fragment {
         ButterKnife.bind(this , view);
 
 
+        customLoading = new CustomLoading(getActivity() , true);
 
 
         btn_save.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +94,9 @@ public class ChangePasswordFragment extends Fragment {
         else if (oldPassword.length()<8 || newPassword.length() < 8 || newcnofirmPassword.length()<8){
             Toasty.info(getActivity() , "Less than 8 characters").show();
         }
+        else if (!oldPassword.equalsIgnoreCase((String)PrefUtils.getFromPrefs(getActivity(), PrefKeys.USER_PASSWORD, ""))) {
+            Toasty.info(getActivity() , "Current password not match").show();
+        }
 
        else if (!newPassword.equals(newcnofirmPassword)){
             Toasty.info(getActivity() , "Password does not match").show();
@@ -109,6 +116,8 @@ public class ChangePasswordFragment extends Fragment {
                         @Override
                         public void run() {
 
+                            customLoading.hideProgressBar();
+
                             if (response.data().UserMutation().changePassword().status() == 200)
                             {
 
@@ -127,7 +136,7 @@ public class ChangePasswordFragment extends Fragment {
                             {
 
                                 if (response.data().UserMutation().changePassword().errors()!=null)
-                                Toasty.error(getActivity() , response.data().UserMutation().changePassword().errors().get(0).message()).show();
+                                    Toasty.error(getActivity() , response.data().UserMutation().changePassword().errors().get(0).message()).show();
 
                             }
 
@@ -144,8 +153,8 @@ public class ChangePasswordFragment extends Fragment {
                         @Override
                         public void run() {
 
-                            Toasty.error(getActivity() , e.getMessage()).show();
-                        }
+                            customLoading.hideProgressBar();
+                            Toasty.error(getActivity() , ""+e.getMessage());                        }
                     });
                 }
             });

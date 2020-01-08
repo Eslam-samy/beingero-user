@@ -73,7 +73,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
             if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")){
 
                 Drawable img = getContext().getResources().getDrawable(R.drawable.ic_arrow_rtl);
-                img.setBounds( 0, 0, 11, 20);
+                img.setBounds( 0, 0, Common.dpToPx(8,getActivity()), Common.dpToPx(13,getActivity()));
                 btn_edit_profile.setCompoundDrawables( img, null, null, null );
                 btn_address.setCompoundDrawables( img, null, null, null );
                 btn_change_password.setCompoundDrawables( img, null, null, null );

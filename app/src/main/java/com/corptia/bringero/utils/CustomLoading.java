@@ -93,4 +93,13 @@ public class CustomLoading extends Dialog {
         mProgressbar.show();
     }
 
+    public void showProgress(Context context, boolean cancelable ) {
+
+        if (mProgressbar != null && mProgressbar.isShowing()) {
+            mProgressbar.cancel();
+        }
+        mProgressbar.setCancelable(cancelable);
+        mProgressbar.show();
+    }
+
 }

@@ -188,7 +188,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     .build();
 
             // Creating Channel
-            notificationChannel = new NotificationChannel("channel_0", "channel_0", NotificationManager.IMPORTANCE_HIGH);
+            notificationChannel = new NotificationChannel("channel_0", "channel_0", NotificationManager.IMPORTANCE_LOW);
             notificationBuilder.setChannelId("channel_0");
 
             notificationChannel.shouldShowLights();

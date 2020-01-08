@@ -68,13 +68,13 @@
 
                 <EditText
                     style="@style/EditTextStyle"
-                    android:background="@drawable/shadow_input"
                     android:hint="@string/phone_number"
                     android:inputType="phone"
                     android:maxLength="11"
                     android:text="01000100041"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textAlignment="viewStart"/>
 
                 <!--android:drawableEnd="@drawable/ic_cheak"-->
 
@@ -99,6 +99,7 @@
                     android:text="110220330"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:textAlignment="viewStart"
                     />
 
 

@@ -110,7 +110,9 @@ public class LanguageFragment extends Fragment implements View.OnClickListener {
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
+
                                         if (response.data().UserMutation().updateInfo().status() == 200) {
+
                                             Common.CURRENT_USER.setToken(response.data().UserMutation().updateInfo().token());
                                             Common.CURRENT_USER.setLanguage(response.data().UserMutation().updateInfo().data().language());
 //                                    updateViews(mlanguage.getId());

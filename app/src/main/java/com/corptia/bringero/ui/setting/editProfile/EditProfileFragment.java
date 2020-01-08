@@ -44,6 +44,7 @@ import com.corptia.bringero.graphql.UpdateUserInfoMutation;
 import com.corptia.bringero.model.UserModel;
 import com.corptia.bringero.type.Gender;
 import com.corptia.bringero.type.UserInfo;
+import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.ImageUpload.ImageContract;
 import com.corptia.bringero.utils.ImageUpload.ImagePresenter;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -125,6 +126,7 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
 
     Handler handler = new Handler();
 
+    //For BirthDate
     DatePickerDialog datePickerDialog;
     int Year, Month, Day;
     Calendar calendar;
@@ -319,6 +321,12 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
                                     Common.CURRENT_USER.setBirthDate(edt_date.getText().toString());
 
                                     Toasty.success(getActivity() , getString(R.string.successful_update)  ).show();
+
+                                    //Start Again
+                                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+
                                     dialog.hide();
 
                                 }
@@ -675,8 +683,6 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
 //        max_date_c.set(Calendar.YEAR, Year );
 //        datePickerDialog.setMaxDate(max_date_c);
 
-
-
     }
 
     @Override
@@ -687,10 +693,12 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
 //        String myFormat = "yyyy-MM-dd";
 //        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 //        txt_date.setText(sdf.format(myCalendar.getTime()));
-        input_birthDate.getEditText().setText(date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("en"));
 
         try {
             birthDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(date).getTime());
+            input_birthDate.getEditText().setText(dateFormat.format(birthDate));
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
