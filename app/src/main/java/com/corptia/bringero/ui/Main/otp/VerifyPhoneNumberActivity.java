@@ -31,6 +31,7 @@ import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.type.SignupInput;
 import com.corptia.bringero.ui.Main.MainActivity;
 import com.corptia.bringero.ui.Main.signup.SignupFragment;
+import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.google.android.gms.maps.model.LatLng;
@@ -298,7 +299,7 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
 
                                                                 Common.GetCartItemsCount();
 
-                                                                Intent intent = new Intent(VerifyPhoneNumberActivity.this , MainActivity.class);
+                                                                Intent intent = new Intent(VerifyPhoneNumberActivity.this , HomeActivity.class);
                                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                                 PrefUtils.saveToPrefs(VerifyPhoneNumberActivity.this, PrefKeys.USER_LOGIN, true);
                                                                 PrefUtils.saveToPrefs(VerifyPhoneNumberActivity.this, PrefKeys.USER_PHONE, phone);
