@@ -39,4 +39,6 @@ public class Constants {
     public static final int VIEW_TYPE_ITEM = 0;
     public static final int VIEW_TYPE_LOADING = 1;
     public static final String BUYING_ORDER_ID = "BUYING_ORDER_ID";
+    public static final String EXTRA_PHONE_NUMBER = "EXTRA_PHONE_NUMBER";
+    public static final String EXTRA_PASSWORD = "EXTRA_PASSWORD";
 }

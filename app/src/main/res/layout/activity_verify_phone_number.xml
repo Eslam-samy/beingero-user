@@ -61,9 +61,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/ButtonNormalStyle"
+        android:layout_marginBottom="@dimen/app_margin"
+        android:text="@string/verify"
+        app:layout_constraintBottom_toTopOf="@+id/btn_resend"/>
+
+    <Button
+        android:id="@+id/btn_resend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ButtonNormalStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/app_margin"
-        android:text="@string/verify"/>
+        android:text="@string/resend"
+        android:visibility="invisible"/>
+
+
+    <com.uzairiqbal.circulartimerview.CircularTimerView
+        android:id="@+id/countDown"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:progressColor="@color/colorAccent"
+        app:backgroundColor="@color/colorPrimary"
+        app:progressBackgroundColor="#eee"
+        app:backgroundWidth="1"
+        app:isClockwise="true"
+        app:textSize="12sp"
+        app:prefix=""
+        app:suffix=" sec"
+        app:progressText="5"
+        app:maxValue="100"
+        app:startingPoint="bottom"
+        app:progressTextColor="#eee"
+        app:layout_constraintStart_toStartOf="@+id/btn_resend"
+        app:layout_constraintEnd_toEndOf="@+id/btn_resend"
+        app:layout_constraintTop_toTopOf="@+id/btn_resend"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_resend" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

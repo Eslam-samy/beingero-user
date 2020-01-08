@@ -8,8 +8,8 @@ android {
         applicationId "com.corptia.bringero"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 26
-        versionName "0.26"
+        versionCode 27
+        versionName "0.27"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -151,6 +151,7 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
+    implementation 'com.github.uzairiqbal91:CircularTimerView:1.0'
 
 }
 

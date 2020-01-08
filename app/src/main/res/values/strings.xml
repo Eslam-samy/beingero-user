@@ -225,6 +225,9 @@
 
     <string name="limit_max_cart">You have reached the maximum order limit</string>
     <string name="_continue">Continue</string>
+    <string name="reset_password">Rest Password</string>
+    <string name="next">Next</string>
+    <string name="resend">Resend</string>
 
 </resources>
 

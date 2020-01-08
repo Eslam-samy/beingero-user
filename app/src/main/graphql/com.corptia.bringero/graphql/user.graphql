@@ -242,3 +242,68 @@ mutation changePassword($data: changePasswordInput){
         }
     }
 }
+
+
+mutation ResetPassword($data: resetPasswordInput){
+    UserMutation{
+        resetPassword(data:$data){
+            status
+            message
+            errors{
+                code
+                path
+                message
+            }
+            data{
+                _id
+                phone
+                email
+                firstName
+                lastName
+                birthDate
+                fullName
+                avatarImageId
+                gender
+                language
+                AvatarResponse{
+                    status
+                    data{
+                        name
+                    }
+                }
+
+                currentDeliveryAddress {
+                    _id
+                    locationPoint {
+                        lat
+                        lng
+                    }
+                    name
+                    region
+                    street
+                    building
+                    floor
+                    flatType
+                    flat
+                }
+
+                deliveryAddresses {
+                    _id
+                    locationPoint {
+                        lat
+                        lng
+                    }
+                    name
+                    region
+                    street
+                    building
+                    floor
+                    flatType
+                    flat
+                }
+
+            }
+            token
+        }
+    }
+}

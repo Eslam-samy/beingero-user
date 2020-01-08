@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.corptia.bringero.Common.Common;
@@ -50,6 +51,8 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
     TextInputLayout input_phone_number;
     @BindView(R.id.input_password)
     TextInputLayout input_password;
+    @BindView(R.id.txt_forgot_password)
+    TextView txt_forgot_password;
 
     LoginPresenter loginPresenter;
 
@@ -80,6 +83,13 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
             loginPresenter.onLogin(input_phone_number.getEditText().getText().toString(), input_password.getEditText().getText().toString());
             //HomeActivity .navController .navigate(R.id.action_loginFragment_to_nav_home2);
+        });
+
+        txt_forgot_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
         });
 
         return view;

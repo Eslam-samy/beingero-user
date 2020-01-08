@@ -1,7 +1,6 @@
 package com.corptia.bringero.ui.Main.otp;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -16,15 +15,25 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.chaos.view.PinView;
+import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseActivity;
+import com.corptia.bringero.graphql.ResetPasswordMutation;
 import com.corptia.bringero.graphql.SignUpSecondStepMutation;
 import com.corptia.bringero.graphql.ValidatePhoneWithFireBaseMutation;
+import com.corptia.bringero.model.CurrentDeliveryAddress;
+import com.corptia.bringero.model.DeliveryAddresses;
+import com.corptia.bringero.model.UserModel;
+import com.corptia.bringero.type.ResetPasswordInput;
 import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.type.SignupInput;
 import com.corptia.bringero.ui.Main.MainActivity;
 import com.corptia.bringero.ui.Main.signup.SignupFragment;
+import com.corptia.bringero.utils.sharedPref.PrefKeys;
+import com.corptia.bringero.utils.sharedPref.PrefUtils;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,9 +46,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.uzairiqbal.circulartimerview.CircularTimerListener;
+import com.uzairiqbal.circulartimerview.CircularTimerView;
+import com.uzairiqbal.circulartimerview.TimeFormatEnum;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -63,15 +77,30 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
     String verification_code;
 
 
+    String phone, password;
+
+    @BindView(R.id.countDown)
+    CircularTimerView countDown;
+    @BindView(R.id.btn_resend)
+    Button btn_resend;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_phone_number);
 
         ButterKnife.bind(this);
-        txt_lab_message.setText(txt_lab_message.getText() + "\n+2" + SignupFragment.phone);
         dialog = new SpotsDialog.Builder().setContext(this).setCancelable(true).build();
 
+
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(Constants.EXTRA_PASSWORD)) {
+            phone = intent.getStringExtra(Constants.EXTRA_PHONE_NUMBER);
+            password = intent.getStringExtra(Constants.EXTRA_PASSWORD);
+        } else {
+            phone = SignupFragment.phone;
+        }
+        txt_lab_message.setText(txt_lab_message.getText() + "\n+2" + phone);
 
         auth = FirebaseAuth.getInstance();
         auth.setLanguageCode("ar");
@@ -85,6 +114,46 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
                 verified();
             }
         });
+
+
+        // To Initialize Timer
+        countDown.setCircularTimerListener(new CircularTimerListener() {
+            @Override
+            public String updateDataOnTick(long remainingTimeInMs) {
+                return String.valueOf((int) Math.ceil((remainingTimeInMs / 1000.f)));
+            }
+
+            @Override
+            public void onTimerFinished() {
+                countDown.setPrefix("");
+                countDown.setSuffix("");
+//                countDown.setText("FINISHED THANKS!");
+                countDown.setVisibility(View.INVISIBLE);
+                btn_resend.setVisibility(View.VISIBLE);
+
+            }
+        }, 60, TimeFormatEnum.SECONDS, 10);
+
+
+// To start timer
+
+        countDown.setProgress(0);
+        countDown.startTimer();
+
+
+        btn_resend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                countDown.setProgress(0);
+                countDown.startTimer();
+                countDown.setVisibility(View.VISIBLE);
+                btn_resend.setVisibility(View.INVISIBLE);
+
+                sent();
+            }
+        });
+
     }
 
 
@@ -111,13 +180,12 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
 
 
     public void sent() {
-        String number = SignupFragment.phone;
        /* PhoneAuthProvider.getInstance().verifyPhoneNumber(
                 number,60, TimeUnit.SECONDS,this,mCallback
         );*/
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                "+2" + number,        // Phone number to verify
+                "+2" + phone,        // Phone number to verify
                 60,                 // Timeout duration
                 TimeUnit.SECONDS,   // Unit of timeout
                 this,               // Activity (for callback binding)
@@ -151,73 +219,173 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
                                     MyApolloClient.getApollowClient().mutate(ValidatePhoneWithFireBaseMutation
                                             .builder()
                                             .fireBaseToken(getTokenResult.getToken())
-                                            .phone(SignupFragment.phone)
+                                            .phone(phone)
                                             .build()).enqueue(new ApolloCall.Callback<ValidatePhoneWithFireBaseMutation.Data>() {
                                         @Override
                                         public void onResponse(@NotNull Response<ValidatePhoneWithFireBaseMutation.Data> response1) {
 
                                             if (response1.data().UserMutation().validateFireBaseToken().status() == 200) {
-                                                SignupInput signupInput = SignupInput.builder()
-                                                        .firstName(SignupFragment.firstName)
-                                                        .lastName(SignupFragment.lastName)
-                                                        .password(SignupFragment.password)
-                                                        .phone(SignupFragment.phone).roleName(RoleEnum.CUSTOMER).build();
-                                                MyApolloClient.getApollowClientAuthorization(
-                                                        response1.data().UserMutation().validateFireBaseToken().token()
-                                                ).mutate(SignUpSecondStepMutation.builder().data(signupInput).build())
-                                                        .enqueue(new ApolloCall.Callback<SignUpSecondStepMutation.Data>() {
-                                                            @Override
-                                                            public void onResponse(@NotNull Response<SignUpSecondStepMutation.Data> response) {
 
-                                                                if (response.data().UserMutation().signup().status() == 200) {
-                                                                    runOnUiThread(new Runnable() {
-                                                                        @Override
-                                                                        public void run() {
-                                                                            Toast.makeText(VerifyPhoneNumberActivity.this, "Welcome " + SignupFragment.firstName
-                                                                                            + " "
-                                                                                            + SignupFragment.lastName
-                                                                                    , Toast.LENGTH_SHORT).show();
-                                                                            dialog.dismiss();
+                                                String newToken = response1.data()
+                                                        .UserMutation().validateFireBaseToken().token();
+                                                //For Rest
+                                                if (password != null && !password.isEmpty()) {
 
-                                                                        }
-                                                                    });
-                                                                    startActivity(new Intent(VerifyPhoneNumberActivity.this, MainActivity.class));
-                                                                    finish();
-                                                                    SignupFragment.firstName = null;
-                                                                    SignupFragment.lastName = null;
-                                                                    SignupFragment.password = null;
-                                                                } else {
-                                                                    runOnUiThread(new Runnable() {
-                                                                        @Override
-                                                                        public void run() {
-                                                                            dialog.dismiss();
-                                                                            Toasty.error(VerifyPhoneNumberActivity.this, response1.data()
-                                                                                    .UserMutation()
-                                                                                    .validateFireBaseToken()
-                                                                                    .message())
-                                                                                    .show();
 
-                                                                        }
-                                                                    });
-                                                                    startActivity(new Intent(VerifyPhoneNumberActivity.this, MainActivity.class));
-                                                                    finish();
-                                                                    SignupFragment.firstName = null;
-                                                                    SignupFragment.lastName = null;
-                                                                    SignupFragment.password = null;
+                                                    ResetPasswordInput resetPasswordInput = ResetPasswordInput.builder().phone(phone)
+                                                            .confirmPassword(password)
+                                                            .newPassword(password).build();
+
+                                                    MyApolloClient.getApollowClientAuthorization(newToken)
+                                                            .mutate(ResetPasswordMutation.builder().data(resetPasswordInput).build()).enqueue(new ApolloCall.Callback<ResetPasswordMutation.Data>() {
+                                                        @Override
+                                                        public void onResponse(@NotNull Response<ResetPasswordMutation.Data> response) {
+
+                                                            if (response.data().UserMutation().resetPassword().status() == 200) {
+
+                                                                ResetPasswordMutation.Data1 userResponse = response.data().UserMutation().resetPassword().data();
+                                                                UserModel userModel = new UserModel();
+
+
+                                                                List<DeliveryAddresses> deliveryAddressesList = new ArrayList<>();
+                                                                for (ResetPasswordMutation.DeliveryAddress deliveryAddress : userResponse.deliveryAddresses()) {
+                                                                    DeliveryAddresses deliveryAddressesModel = new DeliveryAddresses();
+                                                                    deliveryAddressesModel.setId(deliveryAddress._id());
+                                                                    deliveryAddressesModel.setName(deliveryAddress.name());
+                                                                    deliveryAddressesModel.setRegion(deliveryAddress.region());
+                                                                    deliveryAddressesModel.setStreet(deliveryAddress.street());
+                                                                    deliveryAddressesModel.setBuilding(deliveryAddress.building());
+                                                                    deliveryAddressesModel.setFlatType(deliveryAddress.flatType().rawValue());
+                                                                    deliveryAddressesModel.setFloor(deliveryAddress.floor());
+                                                                    deliveryAddressesModel.setFlat(deliveryAddress.flat());
+                                                                    deliveryAddressesModel.setLocation(new LatLng(deliveryAddress.locationPoint().lat(), deliveryAddress.locationPoint().lng()));
+
+
+                                                                    deliveryAddressesList.add(deliveryAddressesModel);
                                                                 }
+
+                                                                userModel.setDeliveryAddressesList(deliveryAddressesList);
+
+
+                                                                userModel.setToken(newToken);
+                                                                userModel.setBirthDate(userResponse.birthDate());
+                                                                userModel.setGender(userResponse.gender());
+                                                                userModel.setAvatarName(userResponse.AvatarResponse().status() == 200 ?
+                                                                        userResponse.AvatarResponse().data().name() : null);
+                                                                userModel.setAvatarImageId(userResponse.avatarImageId());
+                                                                userModel.setLastName(userResponse.lastName());
+                                                                userModel.setFirstName(userResponse.firstName());
+                                                                userModel.setFullName(userResponse.fullName());
+                                                                userModel.setPhone(userResponse.phone());
+                                                                userModel.setLanguage(userResponse.language());
+
+
+                                                                CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
+                                                                if (userResponse.currentDeliveryAddress()!=null) {
+                                                                    currentDeliveryAddressModel.setId(userResponse.currentDeliveryAddress()._id());
+                                                                    currentDeliveryAddressModel.setBuilding(userResponse.currentDeliveryAddress().building());
+                                                                    currentDeliveryAddressModel.setFlatType(userResponse.currentDeliveryAddress().flatType().rawValue());
+                                                                    currentDeliveryAddressModel.setStreet(userResponse.currentDeliveryAddress().street());
+                                                                    currentDeliveryAddressModel.setName(userResponse.currentDeliveryAddress().name());
+                                                                    currentDeliveryAddressModel.setRegion(userResponse.currentDeliveryAddress().region());
+                                                                    currentDeliveryAddressModel.setFloor(userResponse.currentDeliveryAddress().floor());
+                                                                    currentDeliveryAddressModel.setFlat(userResponse.currentDeliveryAddress().flat());
+                                                                    currentDeliveryAddressModel.setLocation(new LatLng(userResponse.currentDeliveryAddress().locationPoint().lat(), userResponse.currentDeliveryAddress().locationPoint().lng()));
+                                                                }
+                                                                userModel.setCurrentDeliveryAddress(currentDeliveryAddressModel);
+
+                                                                Common.CURRENT_USER= userModel;
+
+                                                                Common.GetCartItemsCount();
+
+                                                                Intent intent = new Intent(VerifyPhoneNumberActivity.this , MainActivity.class);
+                                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                                PrefUtils.saveToPrefs(VerifyPhoneNumberActivity.this, PrefKeys.USER_LOGIN, true);
+                                                                PrefUtils.saveToPrefs(VerifyPhoneNumberActivity.this, PrefKeys.USER_PHONE, phone);
+                                                                PrefUtils.saveToPrefs(VerifyPhoneNumberActivity.this, PrefKeys.USER_PASSWORD, password);
+                                                                //getActivity().finishAffinity();
+                                                                startActivity(intent);
+
+                                                            } else {
+
                                                             }
 
-                                                            @Override
-                                                            public void onFailure(@NotNull ApolloException e) {
-                                                                runOnUiThread(new Runnable() {
-                                                                    @Override
-                                                                    public void run() {
-                                                                        dialog.dismiss();
-                                                                        Toasty.error(VerifyPhoneNumberActivity.this, "Failed to sign up!").show();
+
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(@NotNull ApolloException e) {
+
+
+                                                        }
+                                                    });
+
+
+                                                } else {
+                                                    SignupInput signupInput = SignupInput.builder()
+                                                            .firstName(SignupFragment.firstName)
+                                                            .lastName(SignupFragment.lastName)
+                                                            .password(SignupFragment.password)
+                                                            .phone(SignupFragment.phone).roleName(RoleEnum.CUSTOMER).build();
+                                                    MyApolloClient.getApollowClientAuthorization(
+                                                            response1.data().UserMutation().validateFireBaseToken().token()
+                                                    ).mutate(SignUpSecondStepMutation.builder().data(signupInput).build())
+                                                            .enqueue(new ApolloCall.Callback<SignUpSecondStepMutation.Data>() {
+                                                                @Override
+                                                                public void onResponse(@NotNull Response<SignUpSecondStepMutation.Data> response) {
+
+                                                                    if (response.data().UserMutation().signup().status() == 200) {
+                                                                        runOnUiThread(new Runnable() {
+                                                                            @Override
+                                                                            public void run() {
+                                                                                Toast.makeText(VerifyPhoneNumberActivity.this, "Welcome " + SignupFragment.firstName
+                                                                                                + " "
+                                                                                                + SignupFragment.lastName
+                                                                                        , Toast.LENGTH_SHORT).show();
+                                                                                dialog.dismiss();
+
+                                                                            }
+                                                                        });
+                                                                        startActivity(new Intent(VerifyPhoneNumberActivity.this, MainActivity.class));
+                                                                        finish();
+                                                                        SignupFragment.firstName = null;
+                                                                        SignupFragment.lastName = null;
+                                                                        SignupFragment.password = null;
+                                                                    } else {
+                                                                        runOnUiThread(new Runnable() {
+                                                                            @Override
+                                                                            public void run() {
+                                                                                dialog.dismiss();
+                                                                                Toasty.error(VerifyPhoneNumberActivity.this, response1.data()
+                                                                                        .UserMutation()
+                                                                                        .validateFireBaseToken()
+                                                                                        .message())
+                                                                                        .show();
+
+                                                                            }
+                                                                        });
+                                                                        startActivity(new Intent(VerifyPhoneNumberActivity.this, MainActivity.class));
+                                                                        finish();
+                                                                        SignupFragment.firstName = null;
+                                                                        SignupFragment.lastName = null;
+                                                                        SignupFragment.password = null;
                                                                     }
-                                                                });
-                                                            }
-                                                        });
+                                                                }
+
+                                                                @Override
+                                                                public void onFailure(@NotNull ApolloException e) {
+                                                                    runOnUiThread(new Runnable() {
+                                                                        @Override
+                                                                        public void run() {
+                                                                            dialog.dismiss();
+                                                                            Toasty.error(VerifyPhoneNumberActivity.this, "Failed to sign up!").show();
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+                                                }
+
+
                                             } else {
                                                 runOnUiThread(new Runnable() {
                                                     @Override
