@@ -37,6 +37,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.TripQuery;
 import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.type.TrackingTripFilterInput;
