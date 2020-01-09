@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">برينجيرو</string>
+    <string name="app_name_">برينجيرو</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="phone_number">رقم الموبايل</string>
+    <string name="password">الرقم السري</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="forgot_password">نسيت كلمة السر</string>
+    <string name="username">اسم المستخدم</string>
+    <string name="bodytext">01200355945</string>
+    <string name="signup">تسجيل لاول مره</string>
+    <string name="verify_your_phone_number">تأكيد رقم الموبايل</string>
+    <string name="enter_the_4_digit_pin_that_we_sent_to">ادخل كود التأكيد المرسل الي هاتفك:</string>
+    <string name="verify">تأكيد</string>
+    <string name="title_activity_store_types">StoreTypesActivity</string>
+    <string name="navigation_drawer_open">فتح خط التوجيه</string>
+    <string name="navigation_drawer_close">غلق خط التوجيه</string>
+    <string name="nav_header_title">Bringero</string>
+    <string name="nav_header_subtitle">bringero@bringero.com</string>
+    <string name="nav_header_desc">عنوان التوجيه</string>
+    <string name="action_settings">الاعدادات</string>
+    <string name="menu_home">الرئيسية</string>
+    <string name="menu_gallery">المعرض</string>
+    <string name="menu_slideshow">القائمه</string>
+    <string name="menu_tools">الادوات</string>
+    <string name="menu_share">مشاركه</string>
+    <string name="menu_send">ارسال</string>
+    <string name="follow">متابعه</string>
+    <string name="edit_profile">تعديل الملف الشخصي</string>
+    <string name="adresses">العنوان</string>
+    <string name="change_password">تغيير الرقم السري</string>
+    <string name="security">التامين والحمايه</string>
+    <string name="contact_us">تواصل معنا</string>
+    <string name="language">اللغه</string>
+    <string name="log_out">تسجيل الخروج</string>
+    <string name="info">عنا</string>
+    <string name="setting">الاعدادات</string>
+    <string name="menu_wish_list">قائمة الامنيات</string>
+    <string name="menu_location">الموقع</string>
+    <string name="menu_order">طلب</string>
+    <string name="menu_cart">السله</string>
+    <string name="menu_notifications">الاشعارات</string>
+    <string name="menu_discounts">خصومات</string>
+    <string name="menu_terms_conditions">الشروط والبنود</string>
+    <string name="menu_contact_us">تواصل معنا</string>
+    <string name="menu_settings">اعداداتي</string>
+    <string name="email">البريد الالكتروني</string>
+    <string name="firstName">الاسم الاول</string>
+    <string name="lastName">الاسم الاخير</string>
+    <string name="date_of_birth_optional">تاريخ الميلاد (اختياري)</string>
+    <string name="femail">انثي</string>
+    <string name="mail">ذكر</string>
+    <string name="select_date">اختر تاريخ</string>
+    <string name="gender_optional">النوع (اختياري)</string>
+    <string name="receive_updates_of_offers_npromotions_and_discount">استقبال العروض والخصومات</string>
+    <string name="sms_notification">اشعارات الرسائل القصيره</string>
+    <string name="newsletter_subscription">اشتراك الاخبار</string>
+    <string name="save">حفظ</string>
+    <string name="old_password">الرقم السري القديم</string>
+    <string name="new_password">الرقم السري الجديد</string>
+    <string name="cnofirm_password">تأكيد الرقم السري</string>
+    <string name="contat_us">تواصل معنا</string>
+    <string name="name">الاسم</string>
+    <string name="message">الرسائل</string>
+    <string name="choose_language">اخيتر لغه</string>
+    <string name="notification">الاشعارات</string>
+    <string name="my_cart">سلة الشراء</string>
+    <string name="apply_voucher_code">تطبيق كود الخصم</string>
+    <string name="total">الاجمالي</string>
+    <string name="check_out">استكمال عملية الشراء</string>
+
+    <string name="request_location_permission">السماح باستخدام خدمات الموقع</string>
+    <string name="pause_tracking">ايقاف التعقب</string>
+    <string name="service_running">خدمات الموقع تعمل</string>
+    <string name="service_not_running">خدمات الموقع لا تعمل</string>
+    <string name="request_permission">السماح باستخدام خدمات الموقع</string>
+    <string name="resume_tracking">تعقب</string>
+    <string name="your_publishable_key">FLfD1OcSxlMeLaQI3VdkQB9fQmm9lDK_WPyyCG6lqcsE1ql8hVleTk3NLDw-52KUs8r2Z5MTDLV8qYaB7ZjQ3g</string>
+    <string name="title_activity_maps">الخرائط</string>
+    <string name="save_location">حفظ الموقع</string>
+    <string name="search_hint_location">عنوان التوصيل ___ </string>
+    <string name="click_longer_to_set_the_place">اضغط مطولا لاختيار هذا الموقع</string>
+    <string name="permission_denied">تم رفض طلب السماح</string>
+    <string name="direction_not_found">لا توجد اتجاهات</string>
+
+
+    <string name="orders">الطلبات</string>
+    <string name="repeattheorder">اعادة الطلب</string>
+    <string name="order_details">تفاصيل الطلب</string>
+    <string name="delivery_status">حالة طلب التوصيل</string>
+    <string name="order_in_the_way">الطلب في طريقه اليك</string>
+    <string name="track_package">تعقب الطلب</string>
+    <string name="order_information">تفاصيل الطلب</string>
+    <string name="order_id">معرف الطلب</string>
+    <string name="order_time">مدة الطلب</string>
+    <string name="payment">الدفع</string>
+    <string name="cancel_order">الغاء الطلب</string>
+    <string name="cancellation_reasons">سبب الالغاء</string>
+    <string name="change_of_mind">تغير رأيي</string>
+    <string name="wrong_delivery_address">عنوان توصيل خاطىء</string>
+    <string name="forgot_to_apply_voucher">نسيت استخدام كود خصم</string>
+    <string name="change_payment_method">تغيير طريقة الدفع</string>
+    <string name="menu_pricing">التسعير</string>
+    <string name="price">السعر</string>
+    <string name="amount">المبلغ</string>
+    <string name="add">اضافه</string>
+    <string name="confirm_password">تأكيد الرقم السري</string>
+    <string name="currency">جنيه</string>
+    <string name="payment_information">معلومات الدفع</string>
+    <string name="shipping_address">عنوان التوصيل</string>
+    <string name="confirm">تأكيد</string>
+    <string name="current">الطلبات الحاليه</string>
+    <string name="last_order">الطلبات السابقه</string>
+    <string name="cart">سلة الشراء</string>
+    <string name="product_pricing">تسعير المنتجات</string>
+    <string name="gallery">المعرض</string>
+    <string name="default_notification_channel_id">fire_base_notification</string>
+    <string name="fcm_message">fcm_mesage</string>
+    <string name="search">بحث</string>
+    <string name="deliver_to">توصيل الي</string>
+    <string name="set_location">تحديد موقع</string>
+    <string name="region">منطقه</string>
+    <string name="address_name">اسم العنوان</string>
+    <string name="flatType">نوع المكان</string>
+    <string name="street">شارع</string>
+    <string name="building">مبني</string>
+    <string name="floor">طابق</string>
+    <string name="flat">شفه</string>
+    <string name="save_address">حفظ العنوان</string>
+    <string name="no_address_found">لا توجد عناوين</string>
+    <string name="no_location_data_provided">لا توجد مواقع محفوظه</string>
+    <string name="service_not_available">الخدمه غير متاحه</string>
+    <string name="invalid_lat_long_used">Invalid lat long used</string>
+
+    <string name="title_location_permission">يجب السماح بالوصول الي الموقع</string>
+    <string name="text_location_permission">Allow GoFair to acccess your Location</string>
+    <string name="ok">حفظ</string>
+    <string name="add_new_location">اضافة موقع جديد</string>
+    <string name="update_location">تحديث الموقع</string>
+    <string name="location">الموقع</string>
+    <string name="select_location">اختيار الموقع</string>
+
+
+    <string name="successful_update">تم التحديث !!</string>
+
+
+    <string name="message_need_permission">يجب السماح للوصول الي الرسائل</string>
+
+    <string name="message_grant_permission">يجب السماح لاستخدام هذه الميزه. يمكنك السماح من اعدادات التطبيق.</string>
+
+
+    <string name="label_setting">الاعدادات</string>
+    <string name="cancel">الغاء</string>
+    <string name="error_message_no_more_space">
+        مساحة التخزين غير متوفره.</string>
+    <string name="error_message_insufficient_space">
+        لديك مساحه قليله متوفره, تأكد ان لديك علي الاقل 5 ميجا بايت لالتقاط الصوره!</string>
+    <string name="error_message">حدث خطأ!</string>
+    <string name="take_photo">التقاط صوره</string>
+
+    <string name="choose_gallery">اختيار من المعرض</string>
+    <string name="first_name_field_is_required">الاسم الاول مطلوب !!</string>
+    <string name="last_name_field_is_required">الاسم الاخير مطلوب</string>
+    <string name="save_failed">فشل الحفظ</string>
+    <string name="recent_address">العناوين النستخدمه مؤخرا</string>
+    <string name="apply_location">حفظ الموقع</string>
+    <string name="google_maps_api_key" translatable="false">AIzaSyCFLGLtMef9wqfYyy489n3S21jei9h2Vq0</string>
+    <string name="stores">المتاجر</string>
+    <string name="delivery_address">عنوان التوصيل</string>
+    <string name="subtotal">الاجمالي</string>
+    <string name="delivery_fees">مصاريف التوصيل</string>
+    <string name="cash_on_delivery">الدفع عند الاستلام</string>
+    <string name="current_orders">الطلبات الحاليه</string>
+    <string name="last_orders">الطلبات السابقه</string>
+    <string name="packets">الحزم</string>
+    <string name="items">العناصر</string>
+    <string name="start_shopping_now">ابدأ التسوق الان</string>
+    <string name="there_are_no_orders_under_delivery">لا توجد طلبات تحت التوصيل</string>
+    <string name="total_speed_cart">الاجمالي:</string>
+    <string name="address">العنوان</string>
+    <string name="add_new">اضافة جديد</string>
+    <string name="placeholder_title_cart">لا توجد منتجات في السله</string>
+    <string name="placeholder_dec_cart">ابدأ التسوق من الصفحه الرئيسيه</string>
+    <string name="placeholder_title_product">لا توجد منتجات للعرض</string>
+    <string name="placeholder_dec_product">لا توجد منتجات للعرض</string>
+    <string name="another_store">متجر اخر</string>
+    <string name="placeholder_title_notification">لا توجد اشعارات للعرض</string>
+    <string name="placeholder_dec_notification">ستتم اضافة الاشعارات هنا</string>
+
+    <string name="placeholder_title_search">لا توجد نتائج للبحث</string>
+    <string name="placeholder_dec_search">البحث عن منتجات اخري</string>
+
+    <string name="rating">التقييم</string>
+    <string name="preparing_time">وقت التحضير</string>
+    <string name="minimum_order">الحد الادني</string>
+    <string name="menu_my_addresses">العناوين</string>
+    <string name="menu_contact">تواصل معنا</string>
+    <string name="terms_conditions"><![CDATA[البنود & الشروط]]></string>
+    <string name="privacy_policy">سياسة الخصوصية</string>
+    <string name="faq_support"><![CDATA[التعليمات & الدعم]]></string>
+    <string name="are_you_sure_to_exit">هل تود الخروج?</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="date_of_birth">تاريخ الميلاد</string>
+    <string name="canceled">تم الالغاء</string>
+    <string name="arrived_in">وصل في</string>
+    <string name="tracking">التعقب</string>
+    <string name="view_order">عرض الطلب</string>
+    <string name="products">المنتجات</string>
+
+    <string name="order_status_ordersrequested">الطلبات</string>
+    <string name="order_status_storesreplied">تم الرد</string>
+    <string name="order_status_storesprepared">تم التحضير</string>
+    <string name="order_status_assignedtopilot">جاري التجميع</string>
+    <string name="order_status_delivering">جاري التوصيل</string>
+    <string name="order_status_delivered">تم التوصيل</string>
+    <string name="pilot">الطيار</string>
+    <string name="requsted">تم الطلب</string>
+    <string name="delivered">تم التوصيل</string>
+    <string name="confirmed">تم التأكيد</string>
+    <string name="delivering">جاري التوصيل</string>
+    <string name="view_cart">عرض السله</string>
+
+    <string name="limit_max_cart">لقد وصلت الي الحد الاقصي للسله</string>
+    <string name="_continue">استمرار</string>
+    <string name="reset_password">استرجاع كلمة السر</string>
+    <string name="next">التالي</string>
+    <string name="resend">استرجاع</string>
+
+</resources>
+

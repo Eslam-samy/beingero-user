@@ -11,6 +11,7 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.LogInMutation;
 import com.corptia.bringero.type.LoginInput;
 import com.corptia.bringero.ui.Main.otp.VerifyPhoneNumberActivity;
@@ -20,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 
-public class ResetPasswordActivity extends AppCompatActivity {
+public class ResetPasswordActivity extends BaseActivity {
 
     @BindView(R.id.input_phone_number)
     TextInputLayout input_phone_number;

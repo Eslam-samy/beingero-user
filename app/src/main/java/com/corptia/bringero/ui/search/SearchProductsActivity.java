@@ -30,6 +30,7 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.CreateCartItemMutation;
 import com.corptia.bringero.graphql.StoreSearchQuery;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
@@ -58,7 +59,7 @@ import static com.corptia.bringero.Common.Constants.VIEW_TYPE_LOADING;
 import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_SIZE;
 import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_START;
 
-public class SearchProductsActivity extends AppCompatActivity {
+public class SearchProductsActivity extends BaseActivity {
 
 
     //For Pagination

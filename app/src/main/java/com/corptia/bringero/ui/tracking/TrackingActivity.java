@@ -77,7 +77,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.corptia.bringero.Common.Constants.MAPVIEW_BUNDLE_KEY;
 
-public class TrackingActivity extends AppCompatActivity implements
+public class TrackingActivity extends BaseActivity implements
         OnMapReadyCallback,
         GoogleMap.OnInfoWindowClickListener,
         NavigationView.OnNavigationItemSelectedListener {

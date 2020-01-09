@@ -20,6 +20,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.SingleOrderQuery;
 import com.corptia.bringero.ui.storesDetail.StoreDetailActivity;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -32,7 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StoreDetailsActivity extends AppCompatActivity {
+public class StoreDetailsActivity extends BaseActivity {
 
     @BindView(R.id.recycler_items)
     RecyclerView recycler_items;
