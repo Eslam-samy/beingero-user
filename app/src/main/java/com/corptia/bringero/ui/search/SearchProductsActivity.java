@@ -442,6 +442,11 @@ public class SearchProductsActivity extends BaseActivity {
             String spokenText = results.get(0);
             edt_search.setText(spokenText);
             searchWord = spokenText;
+
+            currentPage = 1;
+            adapter.removeSearch();
+            isLoading = false;
+
             performSearch();
             // Do something with spokenText
         }

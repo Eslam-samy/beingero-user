@@ -13,6 +13,8 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.type.CustomType;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -33,6 +35,18 @@ public class MyApolloClient {
 
     //Without Any Token
     public static ApolloClient getApollowClient(){
+
+        CustomTypeAdapter emailTypeAdapter = new CustomTypeAdapter() {
+            @Override
+            public Object decode(@NotNull CustomTypeValue value) {
+                return value;
+            }
+
+            @Override
+            public @NotNull CustomTypeValue encode(@NotNull Object value) {
+                return new CustomTypeValue.GraphQLString(value.toString());
+            }
+        };
 
         // Custom DateTime Scalar Type
         CustomTypeAdapter dateCustomTypeAdapter = new CustomTypeAdapter<Date>() {
@@ -77,6 +91,7 @@ public class MyApolloClient {
                 .serverUrl(Common.BASE_URL)
                 .okHttpClient(okHttpClient)
                 .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
+                .addCustomTypeAdapter(CustomType.EMAIL, emailTypeAdapter)
                 .build();
 
         return apolloClient;
@@ -86,6 +101,19 @@ public class MyApolloClient {
     //----------------------------------------------- Code With Authorization -------------------------------------------------
 
     public static ApolloClient getApollowClientAuthorization(){
+
+
+        CustomTypeAdapter emailTypeAdapter = new CustomTypeAdapter() {
+            @Override
+            public Object decode(@NotNull CustomTypeValue value) {
+                return value;
+            }
+
+            @Override
+            public @NotNull CustomTypeValue encode(@NotNull Object value) {
+                return new CustomTypeValue.GraphQLString(value.toString());
+            }
+        };
 
 
 //
@@ -167,6 +195,7 @@ public class MyApolloClient {
                 .serverUrl(Common.BASE_URL)
                 .okHttpClient(okHttpClient)
                 .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
+                .addCustomTypeAdapter(CustomType.EMAIL, emailTypeAdapter)
                 .build();
 
         return apolloClient;
@@ -177,6 +206,19 @@ public class MyApolloClient {
     //-----------------------------------------------------------------------------------------------------------------
 
     public static ApolloClient getApollowClientAuthorization(final String token){
+
+        CustomTypeAdapter emailTypeAdapter = new CustomTypeAdapter() {
+            @Override
+            public Object decode(@NotNull CustomTypeValue value) {
+                return value;
+            }
+
+            @Override
+            public @NotNull CustomTypeValue encode(@NotNull Object value) {
+                return new CustomTypeValue.GraphQLString(value.toString());
+            }
+        };
+
 
         // Custom DateTime Scalar Type
         CustomTypeAdapter dateCustomTypeAdapter = new CustomTypeAdapter<Date>() {
@@ -240,6 +282,7 @@ public class MyApolloClient {
                 .serverUrl(Common.BASE_URL)
                 .okHttpClient(okHttpClient)
                 .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
+                .addCustomTypeAdapter(CustomType.EMAIL, emailTypeAdapter)
                 .build();
 
         return apolloClient;
@@ -250,7 +293,7 @@ public class MyApolloClient {
 
     private static void ShowLogs(String message) {
 
-//        Log.e("API" , message);
+        Log.e("API" , message);
     }
 
 

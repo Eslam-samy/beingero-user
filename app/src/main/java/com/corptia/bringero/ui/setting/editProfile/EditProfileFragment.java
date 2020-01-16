@@ -73,6 +73,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -281,6 +283,8 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
 
     private void updateInfo(String firstName, String lastName, String email, String avatarImageId)  {
 
+
+
         Gender gender ;
 
         if (radioMail.isChecked())
@@ -289,14 +293,38 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
             gender = Gender.FEMALE;
 
 
+        if (!email.isEmpty()){
 
-        UserInfo userInfo = UserInfo.builder()
-                .firstName(firstName)
-                .lastName(lastName)
-                .avatarImageId(avatarImageId)
-                .birthDate(birthDate)
-                .gender(gender)
-                .build();
+            if (!emailValidator(email)){
+                dialog.dismiss();
+                Toasty.info(getActivity(), getString(R.string.invalid_email_address)).show();
+                return;
+            }
+        }
+
+
+        UserInfo userInfo;
+
+        if (!email.isEmpty()){
+            userInfo = UserInfo.builder()
+                    .firstName(firstName)
+                    .lastName(lastName)
+                    .avatarImageId(avatarImageId)
+                    .birthDate(birthDate)
+                    .gender(gender)
+                    .email(email)
+                    .build();
+        }
+        else
+        {
+            userInfo = UserInfo.builder()
+                    .firstName(firstName)
+                    .lastName(lastName)
+                    .avatarImageId(avatarImageId)
+                    .birthDate(birthDate)
+                    .gender(gender)
+                    .build();
+        }
 
         MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
                 .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
@@ -313,6 +341,7 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
                                 {
                                     Common.CURRENT_USER.setFirstName(firstName);
                                     Common.CURRENT_USER.setLastName(lastName);
+                                    Common.CURRENT_USER.setEmail(email);
                                     Common.CURRENT_USER.setAvatarImageId(avatarImageId);
                                     if (response.data().UserMutation().updateInfo().data().AvatarResponse().status() == 200)
                                     Common.CURRENT_USER.setAvatarName(response.data().UserMutation().updateInfo().data().AvatarResponse().data().name());
@@ -704,4 +733,17 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
         }
 
     }
+
+
+    public boolean emailValidator(String email)
+    {
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+
 }

@@ -299,13 +299,12 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
 
                                                                 Common.GetCartItemsCount();
 
-                                                                Intent intent = new Intent(VerifyPhoneNumberActivity.this , HomeActivity.class);
+                                                                Toasty.success(VerifyPhoneNumberActivity.this  , "تم تغير كلمة السر بنجاح").show();
+                                                                Intent intent = new Intent(VerifyPhoneNumberActivity.this , MainActivity.class);
                                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                PrefUtils.saveToPrefs(VerifyPhoneNumberActivity.this, PrefKeys.USER_LOGIN, true);
-                                                                PrefUtils.saveToPrefs(VerifyPhoneNumberActivity.this, PrefKeys.USER_PHONE, phone);
-                                                                PrefUtils.saveToPrefs(VerifyPhoneNumberActivity.this, PrefKeys.USER_PASSWORD, password);
                                                                 //getActivity().finishAffinity();
                                                                 startActivity(intent);
+                                                                finish();
 
                                                             } else {
 

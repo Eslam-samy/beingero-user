@@ -228,6 +228,7 @@
     <string name="reset_password">Rest Password</string>
     <string name="next">Next</string>
     <string name="resend">Resend</string>
+    <string name="invalid_email_address">InValid Email Address</string>
 
 </resources>
 

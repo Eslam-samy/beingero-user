@@ -76,6 +76,8 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
     AnimatedVectorDrawableCompat avd;
     AnimatedVectorDrawable avd2;
 
+    AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -237,17 +239,21 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
 
 
         //finally creating the alert dialog and displaying it
-        AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
-        alertDialog.show();
+        dialog.show();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        alertDialog.dismiss();
-        finish();
 
+        if (dialog != null) {
+            dialog.dismiss();
+            finish();
+        }
     }
+
+
 }

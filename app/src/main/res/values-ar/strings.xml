@@ -227,6 +227,7 @@
     <string name="reset_password">استرجاع كلمة السر</string>
     <string name="next">التالي</string>
     <string name="resend">استرجاع</string>
+    <string name="invalid_email_address">InValid Email Address</string>
 
 </resources>
 

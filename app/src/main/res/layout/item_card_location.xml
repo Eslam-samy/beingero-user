@@ -32,7 +32,8 @@
         app:layout_constraintStart_toStartOf="@+id/txt_address_name"
         app:layout_constraintTop_toBottomOf="@+id/txt_address_name"
         tools:text="Conoco, Precision Transmition, 2-A"
-        android:layout_marginStart="0dp"/>
+        android:layout_marginStart="0dp"
+        android:gravity="start"/>
 
     <ImageView
         android:id="@+id/btn_update"

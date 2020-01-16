@@ -29,10 +29,18 @@ interface ISingleResponse {
 }
 
 type BuyingOrder implements IModelData {
+    ApprovedAt: DateTime
     AvailableStatus: [BuyingOrderStatus]
+    CanceledAt: DateTime
     CustomerUserResponse: UserSingleResponse
+    DeliveredAt: DateTime
     DeliveryOrderResponse: DeliveryOrderSingleResponse
     ItemsResponse: BuyingOrderItemMultipleResponse
+    PilotRecivedAt: DateTime
+    PreparedAt: DateTime
+    PreparingAt: DateTime
+    RejectedAt: DateTime
+    RequestedAt: DateTime
     StoreResponse: StoreSingleResponse
     TotalPrice: Float
     _id: ID!
@@ -163,6 +171,7 @@ type CartItemMultipleResponse implements IQueryMultipleResponse {
 type CartItemMutation {
     create(data: createCartItem): CartItemSingleResponse
     remove(_id: ID!): CartItemSingleResponse
+    removeAll(filter: myCartFilter): DeleteManyResponse
     update(_id: ID, data: updateCartItem): CartItemSingleResponse
     updateOne(data: updateCartItem, filter: CartItemFilterInput): CartItemSingleResponse
 }
@@ -182,6 +191,24 @@ type CartItemSingleResponse implements ISingleResponse {
     warnings: [PathError]
 }
 
+"database response on deleteMany(filter)"
+type DeleteManyDBResult {
+    "deleted docs count"
+    deletedCount: Int
+    "count of matched docs"
+    n: Int
+    "is query ok? 0 false, 1 true"
+    ok: Boolean
+}
+
+type DeleteManyResponse {
+    "database response on deleteMany(filter)"
+    data: DeleteManyDBResult
+    errors: [PathError]
+    message: String
+    status: Int
+}
+
 type DeliveryAddress {
     _id: ID
     addedInfo: String
@@ -198,6 +225,7 @@ type DeliveryAddress {
 
 type DeliveryOrder implements IModelData {
     BuyingOrderResponse: BuyingOrderMultipleResponse
+    CustomerUserReponse: UserSingleResponse
     ItemsCount: Int
     PilotUserResponse: UserSingleResponse
     StoresCount: Int
@@ -207,6 +235,7 @@ type DeliveryOrder implements IModelData {
     createdAt: Date
     createdAtDateTime: DateTime
     createdAtTime: Time
+    customerDeliveryAddress: DeliveryAddress
     customerUserId: ID!
     deliveryCost: Float
     pilotId: ID
@@ -1503,6 +1532,8 @@ type UnitTypeSingleResponse implements ISingleResponse {
 type User implements IModelData {
     Avatar: Image
     AvatarResponse: ImageSingleResponse
+    PilotResponse: PilotSingleResponse
+    StoreResponse: StoreSingleResponse
     _id: ID!
     avatarImageId: ID
     birthDate: Date
@@ -1624,6 +1655,7 @@ enum BuyingOrderSortByEnum {
 enum BuyingOrderStatus {
     Approved
     Canceled
+    CustomerRejected
     Delivered
     PilotRecived
     Prepared
@@ -1656,6 +1688,7 @@ enum DeliveryOrderSortByEnum {
 
 enum DeliveryOrderStatus {
     AssignedToPilot
+    CustomerRejected
     Delivered
     Delivering
     OrdersRequested
@@ -3220,7 +3253,7 @@ input updateUnitType {
 
 input updateUser {
     _id: ID!
-    email: String
+    email: Email
     firstName: String
     lastName: String
     phone: String
@@ -3243,6 +3276,7 @@ input userInfo {
     birthDate: Date
     currentDeliveryAddressID: ID
     deliveryAddresses: [DeliveryAddressInput]
+    email: Email
     firstName: String
     gender: Gender
     language: String
@@ -3262,6 +3296,9 @@ scalar DateTime
 
 "A time string at UTC, such as 10:15:30Z, compliant with the `full-time` format outlined in section 5.6 of the RFC 3339profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar."
 scalar Time
+
+"The Email scalar type represents E-Mail addresses compliant to RFC 822."
+scalar Email
 
 "The `Upload` scalar type represents a file upload."
 scalar Upload
