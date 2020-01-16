@@ -277,6 +277,8 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     }
 
 
+    //TODO Here Make Refresh
+    //notifyItemChanged(position); (have two adapter product and search)
     public void addToCart(String pricingProductId) {
 
         CreateCartItem item = CreateCartItem.builder().amount(1).pricingProductId(pricingProductId).build();
