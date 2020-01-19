@@ -1,9 +1,12 @@
 package com.corptia.bringero.Common;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
@@ -28,6 +32,7 @@ import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationA
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.karumi.dexter.Dexter;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,8 +64,8 @@ public class Common {
     public static boolean isFirstTimeAddLocation = false;
 
     //Store Data Cart
-    public static List<CartItemsModel> CART_ITEMS_MODELS;
-    public static List<String> CART_ITEMS_ID;
+    public static List<CartItemsModel> CART_ITEMS_MODELS = new ArrayList<>();
+    public static List<String> CART_ITEMS_ID = new ArrayList<>();
     public static double TOTAL_CART_PRICE = 0;
     public static int TOTAL_CART_AMOUNT = 0;
 
@@ -147,6 +152,7 @@ public class Common {
             Common.isUpdateCurrentLocation = true;
             context.startActivity(new Intent(context, MapsActivity.class));
             finalBottomSheetDialog.dismiss();
+
         });
 
         BottomSheetDialog finalBottomSheetDialog1 = bottomSheetDialog;
@@ -169,11 +175,7 @@ public class Common {
 
     public static boolean isFirstTimeGetCartCount = true;
 
-    public static void GetCartItemsCount() {
-
-        CART_ITEMS_MODELS = new ArrayList<>();
-        CART_ITEMS_ID = new ArrayList<>();
-
+    public static void GetCartItemsCount(CallbackListener listener) {
 
         MyApolloClient.getApollowClientAuthorization().query(GetCartItemsCountQuery.builder().filter(CartItemFilterInput.builder().build()).build())
                 .enqueue(new ApolloCall.Callback<GetCartItemsCountQuery.Data>() {
@@ -181,6 +183,9 @@ public class Common {
                     public void onResponse(@NotNull Response<GetCartItemsCountQuery.Data> response) {
 
                         if (response.data().CartItemQuery().getAll().status() == 200) {
+
+                            CART_ITEMS_MODELS = new ArrayList<>();
+                            CART_ITEMS_ID = new ArrayList<>();
 
                             List<GetCartItemsCountQuery.Data1> Items = response.data().CartItemQuery().getAll().data();
 
@@ -192,7 +197,7 @@ public class Common {
                             for (GetCartItemsCountQuery.Data1 product : Items) {
 
                                 CART_ITEMS_MODELS.add(new CartItemsModel(product.cartProductId(), product.pricingProductId(), product.totalPrice(), product.amount()));
-                                CART_ITEMS_ID.add(product.pricingProductId());
+                                CART_ITEMS_ID.add(product.cartProductId());
 
                                 if (isFirstTimeGetCartCount) {
                                     TOTAL_CART_PRICE += product.totalPrice();
@@ -201,7 +206,17 @@ public class Common {
 
                             }
 
+                            if (listener != null)
+                                listener.OnSuccessCallback();
+
                             isFirstTimeGetCartCount = false;
+
+                        } else if (response.data().CartItemQuery().getAll().status() ==404){
+
+                            TOTAL_CART_PRICE = 0;
+                            TOTAL_CART_AMOUNT = 0;
+                            CART_ITEMS_MODELS = new ArrayList<>();
+                            CART_ITEMS_ID = new ArrayList<>();
 
                         }
                     }
@@ -209,12 +224,24 @@ public class Common {
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
 
+                        if (listener != null)
+                            listener.OnFailedCallback();
+
                     }
                 });
     }
 
-    public static String getDecimalNumber(double price){
+    public static String getDecimalNumber(double price) {
         return formatter.format(price);
     }
+
+
+    private boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
 
 }

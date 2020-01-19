@@ -27,6 +27,7 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
@@ -363,7 +364,7 @@ public class SearchProductsActivity extends BaseActivity {
 
                                             //Here Add To Cart
                                             EventBus.getDefault().postSticky(new CalculateCartEvent(true, priceProduct , 1));
-                                            addToCart(adapter.getItemSearch(position)._id());
+                                            addToCart(adapter.getItemSearch(position)._id(),position);
                                         }
                                     });
 
@@ -521,6 +522,11 @@ public class SearchProductsActivity extends BaseActivity {
 
                 btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
 
+                if (totalPriceCart <= 0.0f){
+                    isHaveCart = false;
+                    layout_speed_cart.setVisibility(View.GONE);
+                }
+
 
 //                RunAnimation();
 
@@ -565,7 +571,7 @@ public class SearchProductsActivity extends BaseActivity {
 
 
 
-    public void addToCart(String pricingProductId) {
+    public void addToCart(String pricingProductId , int position) {
 
         CreateCartItem item = CreateCartItem.builder().amount(1).pricingProductId(pricingProductId).build();
         MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
@@ -576,7 +582,22 @@ public class SearchProductsActivity extends BaseActivity {
                         CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
                         if (createResponse.status() == 200) {
 
-                            Common.GetCartItemsCount();
+                            Common.GetCartItemsCount(new CallbackListener() {
+                                @Override
+                                public void OnSuccessCallback() {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+//                                            adapter.notifyItemChanged(position);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void OnFailedCallback() {
+
+                                }
+                            });
 
                         } else {
                         }

@@ -297,7 +297,7 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
 
                                                                 Common.CURRENT_USER= userModel;
 
-                                                                Common.GetCartItemsCount();
+                                                                Common.GetCartItemsCount(null);
 
                                                                 Toasty.success(VerifyPhoneNumberActivity.this  , "تم تغير كلمة السر بنجاح").show();
                                                                 Intent intent = new Intent(VerifyPhoneNumberActivity.this , MainActivity.class);

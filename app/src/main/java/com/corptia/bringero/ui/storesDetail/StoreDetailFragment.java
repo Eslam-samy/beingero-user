@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.CreateCartItemMutation;
@@ -234,7 +236,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                         priceProduct = items.storePrice();
 
                     EventBus.getDefault().postSticky(new CalculateCartEvent(true, priceProduct , 1));
-                    addToCart(storeDetailAdapter.getSelectProduct(position)._id());
+                    addToCart(storeDetailAdapter.getSelectProduct(position)._id() , position);
 
                 });
 
@@ -279,7 +281,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     //TODO Here Make Refresh
     //notifyItemChanged(position); (have two adapter product and search)
-    public void addToCart(String pricingProductId) {
+    public void addToCart(String pricingProductId , int position) {
 
         CreateCartItem item = CreateCartItem.builder().amount(1).pricingProductId(pricingProductId).build();
         MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
@@ -290,16 +292,33 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                         CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
                         if (createResponse.status() == 200) {
 
-                            Common.GetCartItemsCount();
+                            Common.GetCartItemsCount(new CallbackListener() {
+                                @Override
+                                public void OnSuccessCallback() {
+//                                    Log.d("HAZEM" , "Welcome OnSuccessCallback " +position);
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+//                                            storeDetailAdapter.notifyItemChanged(position);
+                                        }
+                                    });
+                                }
+
+                                @Override
+                                public void OnFailedCallback() {
+
+                                }
+                            });
+
 
                         } else {
+
                         }
 
                     }
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
-
                     }
                 });
     }

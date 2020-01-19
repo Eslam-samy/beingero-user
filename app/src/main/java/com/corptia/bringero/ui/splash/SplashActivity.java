@@ -17,6 +17,7 @@ import androidx.core.view.ViewPropertyAnimatorCompat;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
+import com.corptia.bringero.ui.allowLocation.AllowLocationActivity;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
@@ -135,28 +136,16 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
     @Override
     public void onSuccessLoginToMap() {
 
-        Dexter.withActivity(this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
-                        startActivity(new Intent(SplashActivity.this, MapsActivity.class));
-                        isFirstTimeAddLocation = true;
-                        finish();
-                    }
+                startActivity(new Intent(SplashActivity.this, AllowLocationActivity.class));
+                isFirstTimeAddLocation = true;
+                finish();
 
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                        finish();
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                }).check();
-
-
+            }
+        });
 
     }
 

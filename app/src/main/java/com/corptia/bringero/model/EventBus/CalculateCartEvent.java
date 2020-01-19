@@ -13,6 +13,9 @@ public class CalculateCartEvent {
         this.amount = amount;
     }
 
+    public CalculateCartEvent() {
+    }
+
     public boolean isSuccess() {
         return isSuccess;
     }

@@ -282,6 +282,8 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     public void request(CalculateCartEvent event) {
         if (event != null) {
 
+            Log.d("HAZEM" , "Here Bus");
+
             if (event.isSuccess()) {
 
 //                if (countOfCart > 0)
@@ -302,9 +304,13 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
                 isHaveCart = true;
                 layout_speed_cart.setVisibility(View.VISIBLE);
                 txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
-
                 btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
 
+
+                if (totalPriceCart <= 0.0f){
+                    isHaveCart = false;
+                    layout_speed_cart.setVisibility(View.GONE);
+                }
 
 //                RunAnimation();
 

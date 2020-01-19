@@ -2,19 +2,30 @@ package com.corptia.bringero.model.EventBus;
 
 public class CalculatePriceEvent {
 
+    boolean isSuccess;
     String productId;
     int amount;
     double storePrice;
     double totalProductPrice;
+
 //    int totalPriceItem ;
 //    int totalPriceStore ;
 //    int totalPriceCart ;
 
-    public CalculatePriceEvent(String productId, int amount, double storePrice) {
+    public CalculatePriceEvent(boolean isSuccess,String productId, int amount, double storePrice) {
         this.productId = productId;
         this.amount = amount;
         this.storePrice = storePrice;
+        this.isSuccess = isSuccess;
 
+    }
+
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setSuccess(boolean success) {
+        isSuccess = success;
     }
 
     public CalculatePriceEvent(double totalProductPrice) {

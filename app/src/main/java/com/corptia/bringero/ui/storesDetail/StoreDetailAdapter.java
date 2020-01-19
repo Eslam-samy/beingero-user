@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.storesDetail;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     IOnRecyclerViewClickListener listener;
 
+
     boolean isSearch;
+
+    //Var
+    String cartProductId = "";
 
     public StoreDetailAdapter(SearchProductsActivity context, List<StoreSearchQuery.ProductQuery> products, boolean isSearch) {
         this.context = context;
@@ -161,7 +166,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             //for cart
             int amount = 0;
-            String cartProductId = "";
+            cartProductId = "";
 
             if (!isSearch) {
 
@@ -259,7 +264,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             //Here Set Data On Cart
             txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(price)).append(" ").append(context.getString(R.string.currency)));
             txt_old_price.setText(new StringBuilder().append(Common.getDecimalNumber(oldPrice)).append(" ").append(context.getString(R.string.currency)));
-            txt_discount.setText(new StringBuilder().append((int)(discountRatio * 100)).append(" %"));
+            txt_discount.setText(new StringBuilder().append((int) (discountRatio * 100)).append(" %"));
 
             txt_name_product.setText(Utils.cutName(productName));
 
@@ -272,13 +277,20 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     @Override
                     public void onClick(View view) {
 
+                        Log.d("HAZEM", "Look TOTAL_CART_PRICE : " + Common.TOTAL_CART_PRICE );
+
                         //Here Condition Limit Max Price
                         if (Common.TOTAL_CART_PRICE + finalPrice1 > Common.BASE_MAX_PRICE) {
                             Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+                            return;
                         } else {
+
+
 
                             Common.TOTAL_CART_AMOUNT += 1;
                             Common.TOTAL_CART_PRICE += finalPrice1;
+
+                            Log.d("HAZEM", "Look : " + Common.TOTAL_CART_PRICE + " - " + finalPrice1 + " - " + Common.BASE_MAX_PRICE);
 
                             listener.onClick(itemView, position);
 
@@ -316,34 +328,104 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 });
             }
 
-
             //TODO Will move this  from here
-            String finalCartProductId = cartProductId;
             double finalPrice = price;
+            String finalProductId = productId;
             btn_delete.setOnClickListener(view -> {
 
-                int amountNow = Integer.parseInt(txt_amount.getText().toString()) - 1;
+                Log.d("HAZEM" , "cartProductId 1 : " + cartProductId);
 
-                if (amountNow > 0) {
+                if (!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)) {
 
-                    txt_amount.setText("" + amountNow);
+                    Log.d("HAZEM" , "!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)");
 
-                    txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                        @Override
-                        public void run() {
-                            txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                    int amountNow = Integer.parseInt(txt_amount.getText().toString()) - 1;
+
+                    if (amountNow > 0) {
+
+                        txt_amount.setText("" + amountNow);
+
+                        txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                            }
+                        });
+
+
+                        updateCartItems(cartProductId, amountNow, finalPrice);
+
+                    } else if (amountNow <= 0) {
+                        txt_amount.setVisibility(View.INVISIBLE);
+                        btn_delete.setVisibility(View.INVISIBLE);
+                        bg_delete.setVisibility(View.INVISIBLE);
+
+                        txt_amount.setText("0");
+
+                        deleteCartItems(cartProductId, finalPrice);
+
+                    }
+                }
+
+                else
+                {
+
+
+                    Log.d("HAZEM" , "ELSE :: !cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)");
+
+
+                    //This My Cart
+                    for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
+
+                        if (item.getPricingProductId().equalsIgnoreCase(finalProductId)) {
+
+
+//                            txt_amount.setText("" + item.getAmount());
+//                            amount = item.getAmount();
+                            cartProductId = item.getCartProductId();
+                            Log.d("HAZEM" , "cartProductId 2 : " + cartProductId + " -- " + item.getCartProductId());
+
+                            for(String x :Common.CART_ITEMS_ID){
+                                Log.d("HAZEM" , "IDs 3 : " + x + " SIZE : " + Common.CART_ITEMS_ID.size());
+
+                            }
+
+
+
+                            int amountNow = Integer.parseInt(txt_amount.getText().toString()) - 1;
+
+                            if (amountNow > 0) {
+
+                                txt_amount.setText("" + amountNow);
+
+                                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                    }
+                                });
+
+
+                                updateCartItems(item.getCartProductId(), amountNow, finalPrice);
+
+                            } else if (amountNow <= 0) {
+                                txt_amount.setVisibility(View.INVISIBLE);
+                                btn_delete.setVisibility(View.INVISIBLE);
+                                bg_delete.setVisibility(View.INVISIBLE);
+
+                                txt_amount.setText("0");
+
+                                deleteCartItems(item.getCartProductId(), finalPrice);
+
+                            }
+
+
+
+
+                            break;
+
                         }
-                    });
-
-
-                    updateCartItems(finalCartProductId, amountNow, finalPrice);
-
-                } else if (amountNow <= 0) {
-                    txt_amount.setVisibility(View.INVISIBLE);
-                    btn_delete.setVisibility(View.INVISIBLE);
-                    bg_delete.setVisibility(View.INVISIBLE);
-
-                    deleteCartItems(finalCartProductId, finalPrice);
+                    }
 
                 }
 
@@ -457,6 +539,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     public void updateCartItems(String itemsId, int amount, double price) {
 
+        Common.TOTAL_CART_AMOUNT -= 1;
+        Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+
+        Log.d("HAZEM", "Here See " + Common.TOTAL_CART_PRICE);
+
         UpdateCartItem updateAmount = UpdateCartItem.builder().amount(amount).build();
         MyApolloClient.getApollowClientAuthorization().mutate(UpdateCartItemMutation.builder().id(itemsId).data(updateAmount).build())
                 .enqueue(new ApolloCall.Callback<UpdateCartItemMutation.Data>() {
@@ -480,12 +567,15 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         EventBus.getDefault().postSticky(new CalculateCartEvent(true, -price, -1));
 
 
-        Common.GetCartItemsCount();
+        Common.GetCartItemsCount(null);
 
     }
 
 
     private void deleteCartItems(String ProductId, double price) {
+
+        Common.TOTAL_CART_AMOUNT -= 1;
+        Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
 
         MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(ProductId).build())
                 .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
@@ -507,6 +597,8 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
 
         EventBus.getDefault().postSticky(new CalculateCartEvent(true, -price, -1));
+
+        Common.GetCartItemsCount(null);
 
     }
 

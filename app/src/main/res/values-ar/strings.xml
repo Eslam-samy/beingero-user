@@ -228,6 +228,7 @@
     <string name="next">التالي</string>
     <string name="resend">استرجاع</string>
     <string name="invalid_email_address">InValid Email Address</string>
+    <string name="don_t_allow">Don\'t allow</string>
 
 </resources>
 

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.model.EventBus.CalculateCartEvent;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
@@ -148,7 +150,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                     Common.CURRENT_CART = myCartData.storeData();
 
                     if (getContext() != null)
-                        total_price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
+                        total_price.setText(new StringBuilder().append(Common.getDecimalNumber(Common.TOTAL_CART_PRICE)).append(" ").append(getString(R.string.currency)));
 
                     layout_checkOut.setVisibility(View.VISIBLE);
 
@@ -297,39 +299,55 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void calculatePrice(CalculatePriceEvent event) {
-        if (event != null) {
-            if (event.getProductId() != null) {
-                calculateCartTotalPrice(event.getProductId(), event.getAmount(), event.getStorePrice());
-            } else {
-                //double total = Double.parseDouble(total_price.getText().toString());
-                totalPrice -= event.getTotalProductPrice();
-                Common.TOTAL_CART_PRICE = totalPrice;
-                total_price.setText(new StringBuilder().append(totalPrice).append(" ").append(getString(R.string.currency)));
+//        if (event != null) {
 
-                if (totalPrice <= 0) {
-                    showPlaceHolder();
-                    loading.setVisibility(View.GONE);
-                    Common.TOTAL_CART_PRICE = 0;
-                    Common.TOTAL_CART_AMOUNT = 0;
-                }
+        Log.d("HAZEM", "nullll");
 
-            }
+        if (event.isSuccess()) {
+            Log.d("HAZEM", "Tue");
+
+            calculateCartTotalPrice(event.getProductId(), event.getAmount(), event.getStorePrice());
+
         } else {
-
+            Log.d("HAZEM", "False");
         }
+//            if (event.getProductId() != null) {
+//            } else {
+//                //double total = Double.parseDouble(total_price.getText().toString());
+//                totalPrice -= event.getTotalProductPrice();
+//                Common.TOTAL_CART_PRICE -= event.getTotalProductPrice();
+//                total_price.setText(new StringBuilder().append(Common.TOTAL_CART_PRICE).append(" ").append(getString(R.string.currency)));
+//
+//                if (totalPrice <= 0) {
+//                    showPlaceHolder();
+//                    loading.setVisibility(View.GONE);
+//                    Common.TOTAL_CART_PRICE = 0;
+//                    Common.TOTAL_CART_AMOUNT = 0;
+//                }
+//
+//            }
+//        } else {
+//
+//        }
 
 
     }
 
     private void calculateCartTotalPrice(String productId, int amount, double storePrice) {
 
+
         cartPresenter.updateCartItems(productId, amount);
 
         totalPrice += storePrice;
 
-        total_price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
+        Common.TOTAL_CART_PRICE += storePrice;
+        Common.TOTAL_CART_AMOUNT += amount;
 
-        Common.TOTAL_CART_PRICE = totalPrice;
+        Log.d("HAZEM", "Hello storePrice: " + storePrice + " -  - " + Common.TOTAL_CART_PRICE);
+        Log.d("HAZEM", "Hello amount: " + amount);
+
+        total_price.setText(new StringBuilder().append(Common.getDecimalNumber(Common.TOTAL_CART_PRICE)).append(" ").append(getString(R.string.currency)));
+
 
     }
 
@@ -350,9 +368,10 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @Override
     public void onStop() {
         super.onStop();
+        EventBus.getDefault().removeAllStickyEvents();
         EventBus.getDefault().unregister(this);
         Common.isFirstTimeGetCartCount = true;
-        Common.GetCartItemsCount();
+        Common.GetCartItemsCount(null);
     }
 
     @Override

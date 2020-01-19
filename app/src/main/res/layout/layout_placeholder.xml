@@ -8,12 +8,13 @@
     android:background="@color/white"
     android:id="@+id/layout_placeholder"
     android:visibility="gone"
+    tools:visibility="visible"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <ImageView
         android:id="@+id/img_placeholder"
-        android:layout_width="143dp"
-        android:layout_height="125dp"
+        android:layout_width="123dp"
+        android:layout_height="105dp"
         android:src="@drawable/ic_placeholder_gallery"
         app:layout_constraintBottom_toTopOf="@+id/shadow"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_placeholder"
-        android:layout_marginTop="@dimen/app_low_margin"/>
+        android:layout_marginTop="@dimen/low_margin"/>
 
 
     <LinearLayout
@@ -41,7 +42,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/app_low_margin"
+        android:layout_marginTop="@dimen/large_margin"
         app:layout_constraintTop_toBottomOf="@+id/shadow"
         android:layout_marginBottom="@dimen/app_margin">
 
@@ -50,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="لا توجد منتجات للعرض"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             android:fontFamily="@font/poppinsregular"
             android:gravity="center"
@@ -61,7 +62,7 @@
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="اضف من منتجات النظام او فعل من منتجاتك"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textColor="@color/black"
             android:gravity="center"
             android:fontFamily="@font/poppinsregular"
@@ -75,7 +76,7 @@
             android:text="منتجات النظام"
             android:textSize="@dimen/large_text_size"
             android:fontFamily="@font/poppinsregular"
-            android:layout_marginTop="@dimen/app_low_margin"/>
+            android:layout_marginTop="@dimen/large_margin"/>
 
         <Button
             android:id="@+id/btn_2"

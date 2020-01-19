@@ -78,7 +78,6 @@ import static android.view.View.VISIBLE;
 public class HomeActivity extends BaseActivity implements
         NavigationView.OnNavigationItemSelectedListener, SelectDeliveryLocationView {
 
-
     @BindView(R.id.toolbar)
     public Toolbar toolbar;
     @BindView(R.id.nav_bottomNavigationView)
@@ -126,8 +125,6 @@ public class HomeActivity extends BaseActivity implements
         initToolbar(toolbar);
         initNavigationView();
 
-
-
         loading = new CustomLoading(this, true);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -153,7 +150,6 @@ public class HomeActivity extends BaseActivity implements
             }
         });
 
-        getDataUser();
 
     }
 
@@ -414,6 +410,7 @@ public class HomeActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        getDataUser();
         countNotificationUnread();
     }
 

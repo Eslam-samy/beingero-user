@@ -120,7 +120,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                                 Common.CURRENT_USER= userModel;
 
-                                Common.GetCartItemsCount();
+                                Common.GetCartItemsCount(null);
 
                                 if (userData.currentDeliveryAddress()!=null)
                                 loginView.onSuccessMessage("");
