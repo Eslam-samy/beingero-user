@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseViewHolder;
@@ -118,7 +119,7 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
 
                 double totalPrice = orderDatum.SubTotal()+ orderDatum.deliveryCost();
-                txt_total_price.setText(new StringBuilder().append(totalPrice).append(" ").append(context.getString(R.string.currency)));
+                txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(context.getString(R.string.currency)));
 
 
 //

@@ -11,9 +11,11 @@
 
 
         <LinearLayout
+            android:id="@+id/layout_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <include layout="@layout/layout_toolbar_white"/>
 
@@ -390,6 +392,33 @@
 <!--        </androidx.cardview.widget.CardView>-->
 
 
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="visible"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_shimmer_loading_profile"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+
+        </LinearLayout>
+
+
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
 

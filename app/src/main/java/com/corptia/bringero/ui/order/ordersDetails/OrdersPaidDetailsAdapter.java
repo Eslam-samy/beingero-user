@@ -53,7 +53,7 @@ public class OrdersPaidDetailsAdapter extends RecyclerView.Adapter<OrdersPaidDet
 
         holder.txt_name_store.setText(order.StoreResponse().data().name());
         holder.txt_total_products.setText("" + order.ItemsResponse().data().size());
-        holder.txt_total_price.setText(new StringBuilder().append(order.TotalPrice()).append(" ").append(context.getString(R.string.currency)));
+        holder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(order.TotalPrice())).append(" ").append(context.getString(R.string.currency)));
 
         if (order.StoreResponse().data().ImageResponse().data() != null)
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + order.StoreResponse().data().ImageResponse().data().name(), holder.image_store);

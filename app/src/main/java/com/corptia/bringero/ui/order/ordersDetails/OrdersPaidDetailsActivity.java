@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.corptia.bringero.Common.Common;
@@ -22,6 +23,7 @@ import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.ui.tracking.TrackingActivity;
 import com.corptia.bringero.utils.PicassoUtils;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -82,6 +84,11 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     CircleImageView img_pilot;
     @BindView(R.id.txt_name)
     TextView txt_name;
+
+    @BindView(R.id.layout_data)
+    LinearLayout layout_data;
+    @BindView(R.id.shimmerLayout_loading)
+    ShimmerFrameLayout shimmerLayout_loading;
 
     OrdersPaidDetailsPresenter detailsPresenter = new OrdersPaidDetailsPresenter(this);
 
@@ -255,6 +262,8 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
             @Override
             public void run() {
 
+                layout_data.setVisibility(View.VISIBLE);
+
                 adapter = new OrdersPaidDetailsAdapter(OrdersPaidDetailsActivity.this ,
                         deliveryOrderData.BuyingOrderResponse().BuyingOrderResponseData());
 
@@ -281,9 +290,10 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                 txt_title_name_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
                 txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
 
-                txt_subtotal.setText(new StringBuilder().append(deliveryOrderData.SubTotal()).append(" ").append(getString(R.string.currency)));
+
+                txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(deliveryOrderData.SubTotal())).append(" ").append(getString(R.string.currency)));
                 txt_delivery_fees.setText(new StringBuilder().append(deliveryOrderData.deliveryCost()).append(" ").append(getString(R.string.currency)));
-                txt_total.setText(new StringBuilder().append(deliveryOrderData.SubTotal() + deliveryOrderData.deliveryCost()).append(" ").append(getString(R.string.currency)));
+                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(deliveryOrderData.SubTotal() + deliveryOrderData.deliveryCost())).append(" ").append(getString(R.string.currency)));
 
 //                total_price.setText(new StringBuilder().append(20 + 500.00).append(" ").append(getString(R.string.currency)));
 
@@ -331,11 +341,20 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     @Override
     public void showProgressBar() {
 
+                shimmerLayout_loading.setVisibility(View.VISIBLE);
+                layout_data.setVisibility(View.GONE);
     }
 
     @Override
     public void hideProgressBar() {
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                shimmerLayout_loading.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override

@@ -94,7 +94,7 @@ public class OrderStoreDetailsActivity extends BaseActivity {
                                 @Override
                                 public void run() {
 
-                                    txt_total_price.setText(new StringBuilder().append(orderResponse.SingleOrder().TotalPrice()).append(getString(R.string.currency)));
+                                    txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(orderResponse.SingleOrder().TotalPrice())).append(getString(R.string.currency)));
                                     txt_order_id.setText(new StringBuilder().append("# ").append(orderResponse.SingleOrder().serial()));
 
                                     List<SingleOrderQuery.ItemsDatum> items = orderResponse.SingleOrder().ItemsResponse().ItemsData();

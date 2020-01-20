@@ -193,7 +193,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                                                         Common.CURRENT_CART = myCart.storeData();
 
                                                         Intent intent = new Intent(getActivity(), CheckOutActivity.class);
-                                                        intent.putExtra(Constants.EXTRA_TOTAL_CART, totalPrice);
+                                                        intent.putExtra(Constants.EXTRA_TOTAL_CART, myCart.TotalPrice());
                                                         startActivity(intent);
                                                     }
 

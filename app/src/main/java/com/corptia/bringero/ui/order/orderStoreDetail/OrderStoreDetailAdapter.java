@@ -49,11 +49,11 @@ public class OrderStoreDetailAdapter extends RecyclerView.Adapter<OrderStoreDeta
 
         holder.txt_name_product.setText(item.productName().length() > 40 ? item.productName().substring(0,40) +"..." : item.productName());
 
-        holder.txt_price.setText(new StringBuilder().append(item.storePrice()).append(" ").append(context.getString(R.string.currency)));
+        holder.txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(item.storePrice())).append(" ").append(context.getString(R.string.currency)));
 
         holder.txt_amount.setText("x"+item.amount());
 
-        holder.txt_total_price.setText(new StringBuilder().append((item.amount()*item.storePrice())).append(" ").append(context.getString(R.string.currency)));
+        holder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(item.amount()*item.storePrice())).append(" ").append(context.getString(R.string.currency)));
 
     }
 
