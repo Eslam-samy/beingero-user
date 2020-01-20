@@ -301,15 +301,12 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     public void calculatePrice(CalculatePriceEvent event) {
 //        if (event != null) {
 
-        Log.d("HAZEM", "nullll");
 
         if (event.isSuccess()) {
-            Log.d("HAZEM", "Tue");
 
             calculateCartTotalPrice(event.getProductId(), event.getAmount(), event.getStorePrice());
 
         } else {
-            Log.d("HAZEM", "False");
         }
 //            if (event.getProductId() != null) {
 //            } else {
@@ -343,10 +340,15 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         Common.TOTAL_CART_PRICE += storePrice;
         Common.TOTAL_CART_AMOUNT += amount;
 
-        Log.d("HAZEM", "Hello storePrice: " + storePrice + " -  - " + Common.TOTAL_CART_PRICE);
-        Log.d("HAZEM", "Hello amount: " + amount);
-
         total_price.setText(new StringBuilder().append(Common.getDecimalNumber(Common.TOTAL_CART_PRICE)).append(" ").append(getString(R.string.currency)));
+
+
+        if (Common.TOTAL_CART_PRICE <= 0) {
+            showPlaceHolder();
+            loading.setVisibility(View.GONE);
+            Common.TOTAL_CART_PRICE = 0;
+            Common.TOTAL_CART_AMOUNT = 0;
+        }
 
 
     }

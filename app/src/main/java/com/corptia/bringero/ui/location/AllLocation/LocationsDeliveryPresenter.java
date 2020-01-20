@@ -71,16 +71,19 @@ public class LocationsDeliveryPresenter extends SelectDeliveryLocationPresenter 
     public void userUpdateCurrentLocation(String currentDeliveryAddressID) {
 
         view.showProgressBar();
+
         UserInfo userInfo = UserInfo.builder().currentDeliveryAddressID(currentDeliveryAddressID).build();
         MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
                 .enqueue(new ApolloCall.Callback<UpdateUserInfoMutation.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<UpdateUserInfoMutation.Data> response) {
 
+                        view.hideProgressBar();
+
                         UpdateUserInfoMutation.@Nullable UpdateInfo updateInfo = response.data().UserMutation().updateInfo();
 
                         if (updateInfo.status() ==402) {
-                            Log.d("HAZEM" , "ERROR : " + response);
+
                         }
                             else{
                             UpdateUserInfoMutation.CurrentDeliveryAddress currentDeliveryAddress = updateInfo.data().currentDeliveryAddress();

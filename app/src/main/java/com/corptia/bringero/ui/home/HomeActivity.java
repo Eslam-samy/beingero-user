@@ -54,6 +54,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -98,7 +99,6 @@ public class HomeActivity extends BaseActivity implements
 
     //For Select Location
     BottomSheetDialog bottomSheetDialog;
-    SelectDeliveryLocationAdapter adapter;
     SelectDeliveryLocationPresenter presenter = new SelectDeliveryLocationPresenter(this);
 
     CustomLoading loading;
@@ -138,9 +138,6 @@ public class HomeActivity extends BaseActivity implements
         } else
             bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
-        //Set CurrentLocation
-        setCurrentLocation();
-
         iniBadgeNotification();
 
         txt_location.setOnClickListener(new View.OnClickListener() {
@@ -166,6 +163,8 @@ public class HomeActivity extends BaseActivity implements
         if (Common.CURRENT_USER.getAvatarImageId()!=null)
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + Common.CURRENT_USER.getAvatarName() , img_avatar);
 
+        //Set CurrentLocation
+        setCurrentLocation();
     }
 
 
@@ -181,6 +180,8 @@ public class HomeActivity extends BaseActivity implements
     }
 
     private void setCurrentLocation() {
+
+        Log.d("HAZEM" , "Hello Again " + Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
 
         if (Common.CURRENT_USER != null) {
             if (Common.CURRENT_USER.getCurrentDeliveryAddress() != null) {
@@ -356,7 +357,12 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public void showProgressBar() {
 
-        loading.showProgressBar(this, false);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loading.showProgressBar(HomeActivity.this, false);
+            }
+        });
     }
 
     @Override

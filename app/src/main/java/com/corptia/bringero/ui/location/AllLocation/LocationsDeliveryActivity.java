@@ -25,6 +25,8 @@ import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.model.DeliveryAddresses;
 import com.corptia.bringero.type.FlatType;
+import com.corptia.bringero.ui.home.HomeActivity;
+import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.recyclerview.SwipeToDeleteCallback;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
@@ -68,6 +70,8 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
     AlertDialog dialog;
     DeliveryAddresses item = null;
 
+    CustomLoading loading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +96,9 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
         recycler_location.setLayoutManager(new LinearLayoutManager(this));
         recycler_location.setHasFixedSize(true);
         recycler_location.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(5, this)));
+
+        loading = new CustomLoading(this, true);
+
     }
 
     @Override
@@ -174,10 +181,25 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
     @Override
     public void showProgressBar() {
 
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loading.showProgressBar(LocationsDeliveryActivity.this, false);
+            }
+        });
+
     }
 
     @Override
     public void hideProgressBar() {
+
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loading.hideProgressBar();
+            }
+        });
 
     }
 

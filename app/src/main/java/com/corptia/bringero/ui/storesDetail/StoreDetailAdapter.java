@@ -277,30 +277,30 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     @Override
                     public void onClick(View view) {
 
-                        Log.d("HAZEM", "Look TOTAL_CART_PRICE : " + Common.TOTAL_CART_PRICE );
-
                         //Here Condition Limit Max Price
                         if (Common.TOTAL_CART_PRICE + finalPrice1 > Common.BASE_MAX_PRICE) {
                             Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
                             return;
                         } else {
 
-
-
-                            Common.TOTAL_CART_AMOUNT += 1;
-                            Common.TOTAL_CART_PRICE += finalPrice1;
-
-                            Log.d("HAZEM", "Look : " + Common.TOTAL_CART_PRICE + " - " + finalPrice1 + " - " + Common.BASE_MAX_PRICE);
-
-                            listener.onClick(itemView, position);
-
-                            txt_amount.setVisibility(View.VISIBLE);
-                            btn_delete.setVisibility(View.VISIBLE);
-                            bg_delete.setVisibility(View.VISIBLE);
-
                             int count;
                             count = Integer.parseInt(txt_amount.getText().toString()) + 1;
-                            txt_amount.setText("" + count);
+
+                            if (count <100){
+
+                                Common.TOTAL_CART_AMOUNT += 1;
+                                Common.TOTAL_CART_PRICE += finalPrice1;
+
+                                listener.onClick(itemView, position);
+
+                                txt_amount.setVisibility(View.VISIBLE);
+                                btn_delete.setVisibility(View.VISIBLE);
+                                bg_delete.setVisibility(View.VISIBLE);
+
+                                txt_amount.setText("" + count);
+                            }
+
+
 
 
                             if (count != 1)
