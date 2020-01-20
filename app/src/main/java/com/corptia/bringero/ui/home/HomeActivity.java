@@ -3,8 +3,6 @@ package com.corptia.bringero.ui.home;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.apollographql.apollo.ApolloCall;
@@ -12,7 +10,6 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
-import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 
 import androidx.annotation.NonNull;
@@ -26,21 +23,17 @@ import com.corptia.bringero.graphql.NotificationCountUnreadQuery;
 import com.corptia.bringero.graphql.UpdateNotificationMutation;
 import com.corptia.bringero.model.NotificationCount;
 import com.corptia.bringero.type.NotificationFilterInput;
-import com.corptia.bringero.ui.MapWork.MapsActivity;
-import com.corptia.bringero.ui.home.ui.notification.NotificationFragment;
+import com.corptia.bringero.ui.home.notification.NotificationFragment;
 import com.corptia.bringero.ui.location.AllLocation.LocationsDeliveryActivity;
-import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
-import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationAdapter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationView;
 import com.corptia.bringero.ui.setting.main.SettingActivity;
-import com.corptia.bringero.ui.cart.CartFragment;
-import com.corptia.bringero.ui.home.ui.storetypes.StoreTypesFragment;
-import com.corptia.bringero.ui.order.OrderFragment;
+import com.corptia.bringero.ui.home.cart.CartFragment;
+import com.corptia.bringero.ui.home.storetypes.StoreTypesFragment;
+import com.corptia.bringero.ui.home.order.OrderFragment;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.language.LocaleHelper;
-import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
@@ -51,15 +44,11 @@ import com.google.android.material.navigation.NavigationView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;

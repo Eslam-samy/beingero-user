@@ -20,22 +20,21 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.allowLocation.AllowLocationActivity"></activity>
-        <activity android:name=".ui.order.storeDetail.StoreDetailsActivity" />
+        <activity android:name=".ui.order.orderStoreDetail.OrderStoreDetailsActivity" />
         <activity android:name=".ui.tracking.TrackingActivity" />
         <activity
             android:name=".ui.search.SearchProductsActivity"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity android:name=".ui.cart.checkOut.CheckOutActivity" />
+        <activity android:name=".ui.home.cart.checkOut.CheckOutActivity" />
         <activity android:name=".ui.location.AllLocation.LocationsDeliveryActivity" />
         <activity android:name=".ui.location.addNewLocation.AddNewLocationActivity" />
         <activity android:name=".ui.location.deliveryLocation.SelectDeliveryLocationActivity" />
         <activity android:name=".ui.pricingProduct.PricingProductActivity" />
         <activity android:name=".ui.order.shopDetail.ShopDetailActivity" />
         <activity android:name=".ui.order.ordersDetails.OrdersPaidDetailsActivity" />
-        <activity android:name=".ui.order.OrderActivity" />
         <activity android:name=".ui.locations.LocationsActivity" />
         <activity
-            android:name=".ui.cart.CartActivity"
+            android:name=".ui.home.cart.CartActivity"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.notification.NotificationActivity" />
         <activity android:name=".ui.setting.language.LanguageActivity" />

@@ -2,7 +2,6 @@ package com.corptia.bringero.ui.order.ordersDetails;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,16 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
-import com.corptia.bringero.ui.order.storeDetail.StoreDetailsActivity;
-import com.corptia.bringero.ui.storesDetail.StoreDetailActivity;
+import com.corptia.bringero.ui.order.orderStoreDetail.OrderStoreDetailsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
-import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 
 import org.jetbrains.annotations.Nullable;
@@ -76,7 +72,7 @@ public class OrdersPaidDetailsAdapter extends RecyclerView.Adapter<OrdersPaidDet
 
         holder.itemView.setOnClickListener(view -> {
 
-            Intent intent = new Intent(context, StoreDetailsActivity.class);
+            Intent intent = new Intent(context, OrderStoreDetailsActivity.class);
             intent.putExtra(Constants.BUYING_ORDER_ID, order._id());
             intent.putExtra(Constants.EXTRA_STORE_NAME, order.StoreResponse().data().name());
             if (order.StoreResponse().data().ImageResponse().status()==200)

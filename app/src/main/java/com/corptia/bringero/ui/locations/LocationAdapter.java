@@ -14,7 +14,6 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.model.DeliveryAddresses;
-import com.corptia.bringero.ui.cart.Adapter.CartAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,7 +8,7 @@
     <!-- home.ui.storetypes.StoreTypesFragment -->
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.corptia.bringero.ui.home.ui.storetypes.StoreTypesFragment"
+        android:name="com.corptia.bringero.ui.home.storetypes.StoreTypesFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_store_types"
         app:popUpToInclusive="false"
@@ -75,7 +75,7 @@
         tools:layout="@layout/fragment_pricing_product" />
     <fragment
         android:id="@+id/nav_cart"
-        android:name="com.corptia.bringero.ui.cart.CartFragment"
+        android:name="com.corptia.bringero.ui.home.cart.CartFragment"
         android:label="@string/cart"
         tools:layout="@layout/fragment_cart" >
         <action
@@ -88,14 +88,14 @@
     </fragment>
     <fragment
         android:id="@+id/checkOutFragment"
-        android:name="com.corptia.bringero.ui.cart.checkOut.CheckOutFragment"
+        android:name="com.corptia.bringero.ui.home.cart.checkOut.CheckOutFragment"
         android:label="@string/check_out"
         tools:layout="@layout/fragment_check_out" >
     </fragment>
 
     <fragment
         android:id="@+id/nav_order"
-        android:name="com.corptia.bringero.ui.order.OrderFragment"
+        android:name="com.corptia.bringero.ui.home.order.OrderFragment"
         android:label="@string/orders"
         tools:layout="@layout/fragment_order" >
 

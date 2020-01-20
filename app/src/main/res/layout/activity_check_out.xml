@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.cart.checkOut.CheckOutActivity"
+    tools:context=".ui.home.cart.checkOut.CheckOutActivity"
     android:background="@color/white">
 
     <RelativeLayout
