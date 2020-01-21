@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.textfield.TextInputLayout;
@@ -106,25 +108,55 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
             String floor = input_floor.getEditText().getText().toString();
             String flat = input_flat.getEditText().getText().toString();
 
+            int buildingNumber,floorNumber , flatNumber;
+
             if (region.trim().equals("") || region.isEmpty()) {
                 showMessage("region is required");
                 return;
             } else if (address_name.trim().equals("") || address_name.isEmpty()) {
                 showMessage("name is required");
                 return;
-            } else if (building.trim().equals("") || building.isEmpty()) {
-                showMessage("building is required");
-                return;
             } else if (street.trim().equals("") || street.isEmpty()) {
                 showMessage("street is required");
                 return;
-            } else if (floor.trim().equals("") || floor.isEmpty()) {
+            }
+
+            if (building.trim().equals("") || building.isEmpty()) {
+//                showMessage("building is required");
+//                return;
+                buildingNumber = 0;
+                floorNumber = 0;
+                flatNumber=0;
+            }
+            else{
+
+                buildingNumber = Integer.parseInt(building);
+
+                if (floor.trim().equals("") || floor.isEmpty()) {
+
                 showMessage("floor is required");
                 return;
-            } else if (flat.trim().equals("") || flat.isEmpty()) {
+                } else{
+                    floorNumber = Integer.parseInt(floor);
+
+                }
+
+                if (flat.trim().equals("") || flat.isEmpty()) {
+
                 showMessage("flat is required");
                 return;
+                }
+                else{
+
+                    flatNumber = Integer.parseInt(floor);
+
+                }
+
             }
+
+
+
+
 
 
             if (getIntent().hasExtra(Constants.EXTRA_UPDATE)) {
@@ -133,9 +165,9 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                         region,
                         street,
                         mflatType,
-                        Integer.parseInt(floor),
-                        Integer.parseInt(flat),
-                        Integer.parseInt(building),
+                        floorNumber,
+                        flatNumber,
+                        buildingNumber,
                         latitude,
                         longitude);
             } else {
@@ -143,9 +175,9 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                         region,
                         street,
                         mflatType,
-                        Integer.parseInt(floor),
-                        Integer.parseInt(flat),
-                        Integer.parseInt(building),
+                        floorNumber,
+                        flatNumber,
+                        buildingNumber,
                         latitude,
                         longitude,
                         Common.isUpdateCurrentLocation);
@@ -340,7 +372,17 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 //            }
 //        }
 
+        try {
+            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style));
+            if (!success)
+                Log.e("Error", "Load Style Error");
+        } catch (Resources.NotFoundException e) {
+            Log.e("ERROR_MAP", "Resource not found " + e.getMessage());
+        }
+
         mMap = googleMap;
+
+
 
 //        mMap.getUiSettings().setZoomControlsEnabled(true);
 //        mMap.getUiSettings().setAllGesturesEnabled(true);

@@ -57,15 +57,58 @@
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <Spinner
-                android:id="@+id/spinner_flatType"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/txt_hint_spinner_flatType"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:spinnerMode="dialog"
-                android:textSize="15sp"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginEnd="@dimen/app_margin"
-                />
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/flatType"
+                android:textSize="12sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Spinner
+                    android:id="@+id/spinner_flatType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dialog"
+                    android:textSize="15sp"
+                    android:background="@drawable/shadow_edittext"
+                    android:paddingStart="26dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_down"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginEnd="40dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+<!--            <Spinner-->
+<!--                android:id="@+id/spinner_language"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/high_margin"-->
+<!--                android:layout_marginEnd="@dimen/high_margin"-->
+<!--                android:background="@drawable/bg_edit_text"-->
+<!--                android:paddingStart="10dp"-->
+<!--                android:spinnerMode="dialog"-->
+<!--                android:textSize="15sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/txt_hint_spinner_language"-->
+<!--                tools:padding="@dimen/high_padding" />-->
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -94,7 +137,8 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_floor"
-                style="@style/TextInputLayoutStyle">
+                style="@style/TextInputLayoutStyle"
+                android:visibility="gone">
 
                 <EditText
                     style="@style/EditTextStyle"
@@ -108,7 +152,8 @@
                 android:id="@+id/input__flat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextInputLayoutStyle">
+                style="@style/TextInputLayoutStyle"
+                android:visibility="gone">
 
                 <EditText
                     style="@style/EditTextStyle"

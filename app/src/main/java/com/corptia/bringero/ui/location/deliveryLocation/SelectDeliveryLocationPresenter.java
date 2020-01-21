@@ -21,7 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SelectDeliveryLocationPresenter   {
+public class SelectDeliveryLocationPresenter {
 
     SelectDeliveryLocationView view;
 
@@ -42,6 +42,7 @@ public class SelectDeliveryLocationPresenter   {
                         UpdateUserInfoMutation.CurrentDeliveryAddress currentDeliveryAddress = updateInfo.data().currentDeliveryAddress();
 
                         view.hideProgressBar();
+
                         if (updateInfo.status() == 200) {
 
                             Common.CURRENT_USER.setToken(updateInfo.token());
@@ -82,15 +83,34 @@ public class SelectDeliveryLocationPresenter   {
 
         PointCooridinatesInput inputLocationPoint = PointCooridinatesInput.builder().lat(lat).lng(lng).build();
 
-        DeliveryAddressInput deliveryAddressInput = DeliveryAddressInput.builder()
-                .name(name)
-                .region(region)
-                .street(street)
-                .flatType(flatType)
-                .floor(floor)
-                .flat(flat)
-                .building(building)
-                .locationPoint(inputLocationPoint).build();
+
+        DeliveryAddressInput deliveryAddressInput ;
+
+        if (floor!=0 && building!=0 && flat!=0)
+        {
+            deliveryAddressInput = DeliveryAddressInput.builder()
+                    .name(name)
+                    .region(region)
+                    .street(street)
+                    .flatType(flatType)
+                    .floor(floor)
+                    .flat(flat)
+                    .building(building)
+                    .locationPoint(inputLocationPoint).build();
+        }
+        else
+        {
+
+            deliveryAddressInput = DeliveryAddressInput.builder()
+                    .name(name)
+                    .region(region)
+                    .street(street)
+                    .flatType(flatType)
+                    .locationPoint(inputLocationPoint).build();
+
+        }
+
+
 
         DeliveryAddressSingles singles = DeliveryAddressSingles.builder().deliveryAddresses(deliveryAddressInput).build();
 
@@ -106,7 +126,7 @@ public class SelectDeliveryLocationPresenter   {
 
                         if (responseUpdateInfo.status() == 200) {
 
-                            UpdateUserInfoMutation.DeliveryAddress newDeliveryAddress  = responseUpdateInfo.data().deliveryAddresses().get(responseUpdateInfo.data().deliveryAddresses().size() - 1);
+                            UpdateUserInfoMutation.DeliveryAddress newDeliveryAddress = responseUpdateInfo.data().deliveryAddresses().get(responseUpdateInfo.data().deliveryAddresses().size() - 1);
 
                             DeliveryAddresses deliveryAddressesModel = new DeliveryAddresses();
                             deliveryAddressesModel.setId(newDeliveryAddress._id());
@@ -117,7 +137,7 @@ public class SelectDeliveryLocationPresenter   {
                             deliveryAddressesModel.setFlatType(newDeliveryAddress.flatType().rawValue());
                             deliveryAddressesModel.setFloor(newDeliveryAddress.floor());
                             deliveryAddressesModel.setFlat(newDeliveryAddress.flat());
-                            deliveryAddressesModel.setLocation(new LatLng(newDeliveryAddress.locationPoint().lat() , newDeliveryAddress.locationPoint().lng()));
+                            deliveryAddressesModel.setLocation(new LatLng(newDeliveryAddress.locationPoint().lat(), newDeliveryAddress.locationPoint().lng()));
 
                             Common.CURRENT_USER.getDeliveryAddressesList().add(deliveryAddressesModel);
 
@@ -156,15 +176,31 @@ public class SelectDeliveryLocationPresenter   {
 
         PointCooridinatesInput inputLocationPoint = PointCooridinatesInput.builder().lat(lat).lng(lng).build();
 
-        DeliveryAddressInput deliveryAddressInput = DeliveryAddressInput.builder()
-                .name(name)
-                .region(region)
-                .street(street)
-                .flatType(flatType)
-                .floor(floor)
-                .flat(flat)
-                .building(building)
-                .locationPoint(inputLocationPoint).build();
+        DeliveryAddressInput deliveryAddressInput ;
+
+        if (floor!=0 && building!=0 && flat!=0)
+        {
+            deliveryAddressInput = DeliveryAddressInput.builder()
+                    .name(name)
+                    .region(region)
+                    .street(street)
+                    .flatType(flatType)
+                    .floor(floor)
+                    .flat(flat)
+                    .building(building)
+                    .locationPoint(inputLocationPoint).build();
+        }
+        else
+        {
+
+            deliveryAddressInput = DeliveryAddressInput.builder()
+                    .name(name)
+                    .region(region)
+                    .street(street)
+                    .flatType(flatType)
+                    .locationPoint(inputLocationPoint).build();
+
+        }
 
         User_UPDATE_NESTED user_update_nested = User_UPDATE_NESTED.builder()
                 .deliveryAddresses(DeliveryAddressesNested.builder()
@@ -205,7 +241,7 @@ public class SelectDeliveryLocationPresenter   {
                 });
     }
 
-    public void removeItems(String currentDeliveryAddressID){
+    public void removeItems(String currentDeliveryAddressID) {
 
         view.showProgressBar();
         UserInfo userInfo = UserInfo.builder().pULL(DeliveryAddressSingles.builder()
@@ -239,7 +275,6 @@ public class SelectDeliveryLocationPresenter   {
                 });
 
     }
-
 
 
 }
