@@ -42,13 +42,13 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
     @BindView(R.id.recycler_order)
     RecyclerView recycler_order;
-//    @BindView(R.id.btn_cancel_order)
+    //    @BindView(R.id.btn_cancel_order)
 //    Button btn_cancel_order;
     @BindView(R.id.btn_track_package)
     Button btn_track_package;
     @BindView(R.id.txt_order_id)
     TextView txt_order_id;
-    OrdersPaidDetailsAdapter adapter ;
+    OrdersPaidDetailsAdapter adapter;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -92,7 +92,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
     OrdersPaidDetailsPresenter detailsPresenter = new OrdersPaidDetailsPresenter(this);
 
-    String orderid , pilotId;
+    String orderid, pilotId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +110,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
         if (intent != null) {
             orderid = intent.getStringExtra(Constants.EXTRA_ORDER_ID);
-            int serialOrder = intent.getIntExtra(Constants.EXTRA_ORDER_SERIAL , 0);
+            int serialOrder = intent.getIntExtra(Constants.EXTRA_ORDER_SERIAL, 0);
 
 //            getSupportActionBar().setTitle(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
 
@@ -141,11 +141,10 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                             @Override
                             public void onPermissionGranted(PermissionGrantedResponse response) {
 
-                                if (pilotId!=null)
-                                {
-                                    Intent intentTrack = new Intent(OrdersPaidDetailsActivity.this , TrackingActivity.class);
-                                    intentTrack.putExtra(Constants.EXTRA_ORDER_ID , orderid);
-                                    intentTrack.putExtra(Constants.EXTRA_PILOT_ID , pilotId);
+                                if (pilotId != null) {
+                                    Intent intentTrack = new Intent(OrdersPaidDetailsActivity.this, TrackingActivity.class);
+                                    intentTrack.putExtra(Constants.EXTRA_ORDER_ID, orderid);
+                                    intentTrack.putExtra(Constants.EXTRA_PILOT_ID, pilotId);
                                     startActivity(intentTrack);
                                 }
 
@@ -154,7 +153,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                             @Override
                             public void onPermissionDenied(PermissionDeniedResponse response) {
 
-                                Toasty.info(OrdersPaidDetailsActivity.this , "onPermissionDenied").show();
+                                Toasty.info(OrdersPaidDetailsActivity.this, "onPermissionDenied").show();
 
                             }
 
@@ -163,7 +162,6 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                                 token.continuePermissionRequest();
                             }
                         }).check();
-
 
 
             }
@@ -178,7 +176,6 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
             getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
-
 
 
 //    public void showDialogCancelOrder(){
@@ -262,18 +259,19 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
             @Override
             public void run() {
 
+
                 layout_data.setVisibility(View.VISIBLE);
 
-                adapter = new OrdersPaidDetailsAdapter(OrdersPaidDetailsActivity.this ,
+                adapter = new OrdersPaidDetailsAdapter(OrdersPaidDetailsActivity.this,
                         deliveryOrderData.BuyingOrderResponse().BuyingOrderResponseData());
 
                 recycler_order.setAdapter(adapter);
 
                 if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue()) ||
-                        deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERING.rawValue())){
+                        deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERING.rawValue())) {
 //                Common.CURRENT_TRACK = deliveryOrderData.AllTrip().data().Tracks();
 
-                pilotId = deliveryOrderData.pilotId();
+                    pilotId = deliveryOrderData.pilotId();
 
                 }
 
@@ -287,8 +285,13 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
 
                 //Here Total And Address
-                txt_title_name_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
-                txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
+                if (deliveryOrderData.customerDeliveryAddress()!=null) {
+                    txt_title_name_address.setText(deliveryOrderData.customerDeliveryAddress().name());
+                    txt_address.setText(deliveryOrderData.customerDeliveryAddress().region() + " - " + deliveryOrderData.customerDeliveryAddress().street());
+                } else {
+                    txt_title_name_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
+                    txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
+                }
 
 
                 txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(deliveryOrderData.SubTotal())).append(" ").append(getString(R.string.currency)));
@@ -299,25 +302,20 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
 
                 //For Tracking Line
-                if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESREPLIED.rawValue())){
+                if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESREPLIED.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
-                }
-                else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESPREPARED.rawValue())){
+                } else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESPREPARED.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
-                }
-
-                else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERING.rawValue())){
+                } else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERING.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
                     img_delivering.setImageResource(R.drawable.tracking_status_delivering);
 
                     btn_track_package.setVisibility(View.VISIBLE);
-                }
-                else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())){
+                } else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
                     img_delivering.setImageResource(R.drawable.tracking_status_delivering);
                     img_delivered.setImageResource(R.drawable.tracking_status_delivered);
                 }
-
 
 
 //                    ORDERSREQUESTED("OrdersRequested"),
@@ -341,8 +339,8 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     @Override
     public void showProgressBar() {
 
-                shimmerLayout_loading.setVisibility(View.VISIBLE);
-                layout_data.setVisibility(View.GONE);
+        shimmerLayout_loading.setVisibility(View.VISIBLE);
+        layout_data.setVisibility(View.GONE);
     }
 
     @Override
@@ -370,7 +368,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);

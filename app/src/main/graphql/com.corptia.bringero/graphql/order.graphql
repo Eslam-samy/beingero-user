@@ -201,6 +201,13 @@ query deliveryOneOrder($_id: ID) {
                     }
                 }
 
+
+                customerDeliveryAddress{
+                    name
+                    street
+                    region
+                }
+
                 # AllTrip:TripResponse{
                 #     status
                 #     message
