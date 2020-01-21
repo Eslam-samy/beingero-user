@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.corptia.bringero.R;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
@@ -28,7 +29,7 @@ public class AllowLocationActivity extends AppCompatActivity {
     @BindView(R.id.btn_allow)
     Button btn_allow;
     @BindView(R.id.btn_donot_allow)
-    Button btn_donot_allow;
+    TextView btn_donot_allow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

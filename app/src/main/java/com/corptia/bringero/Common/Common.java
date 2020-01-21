@@ -1,8 +1,10 @@
 package com.corptia.bringero.Common;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +31,7 @@ import com.corptia.bringero.model.CartItemsModel;
 import com.corptia.bringero.model.UserModel;
 import com.corptia.bringero.type.CartItemFilterInput;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
+import com.corptia.bringero.ui.allowLocation.AllowLocationActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationAdapter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
@@ -116,6 +120,8 @@ public class Common {
 
     public static BottomSheetDialog showDialogSelectLocation(Context context, BottomSheetDialog bottomSheetDialog, SelectDeliveryLocationPresenter presenter) {
 
+
+
         SelectDeliveryLocationAdapter adapter;
         bottomSheetDialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setCanceledOnTouchOutside(true);
@@ -148,10 +154,27 @@ public class Common {
 
         BottomSheetDialog finalBottomSheetDialog = bottomSheetDialog;
         btn_select_location_from_map.setOnClickListener(view -> {
-            //Here Open Maps
-            Common.isUpdateCurrentLocation = true;
-            context.startActivity(new Intent(context, MapsActivity.class));
-            finalBottomSheetDialog.dismiss();
+
+            if (ActivityCompat.checkSelfPermission(context,
+                    Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                //Here Open Maps
+                Common.isUpdateCurrentLocation = true;
+                context.startActivity(new Intent(context, AllowLocationActivity.class));
+                finalBottomSheetDialog.dismiss();
+            }
+
+            else
+            {
+
+                //Here Open Maps
+                Common.isUpdateCurrentLocation = true;
+                context.startActivity(new Intent(context, MapsActivity.class));
+                finalBottomSheetDialog.dismiss();
+
+            }
+
 
         });
 

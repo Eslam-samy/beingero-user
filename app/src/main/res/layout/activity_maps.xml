@@ -6,15 +6,7 @@
 
 
 
-    <Button
-        android:id="@+id/saveLocationBtn"
-        android:layout_marginBottom="20dp"
-        android:onClick="saveLocation"
-        map:layout_constraintBottom_toBottomOf="parent"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toStartOf="parent"
-        android:text="@string/save_location"
-        style="@style/ButtonNormalStyle"/>
+
 
     <fragment
         android:id="@+id/map"
@@ -25,31 +17,92 @@
         map:layout_constraintTop_toTopOf="parent"
         tools:context="net.corptia.talabyat.MapsActivity" />
 
-    <AutoCompleteTextView
-        android:id="@+id/searchAutoComplete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/round_search"
-        android:drawableStart="@drawable/ic_search_black"
-        android:drawablePadding="10dp"
-        android:hint="@string/search_hint_location"
-        android:imeOptions="actionSearch"
-        android:inputType="textAutoComplete|textAutoCorrect"
-        android:padding="8dp"
-        android:layout_margin="40dp"
-        map:layout_constraintEnd_toEndOf="parent"
-        map:layout_constraintStart_toStartOf="parent"
-        map:layout_constraintTop_toTopOf="@+id/map" />
+<!--    <AutoCompleteTextView-->
+<!--        android:id="@+id/searchAutoComplete"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@drawable/round_search"-->
+<!--        android:drawableStart="@drawable/ic_search_black"-->
+<!--        android:drawablePadding="10dp"-->
+<!--        android:hint="@string/search_hint_location"-->
+<!--        android:imeOptions="actionSearch"-->
+<!--        android:inputType="textAutoComplete|textAutoCorrect"-->
+<!--        android:padding="8dp"-->
+<!--        android:layout_margin="40dp"-->
+<!--        map:layout_constraintEnd_toEndOf="parent"-->
+<!--        map:layout_constraintStart_toStartOf="parent"-->
+<!--        map:layout_constraintTop_toTopOf="@+id/map" />-->
 
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:src="@drawable/opin"
+        android:translationY="-5dp"
+        android:src="@drawable/ic_select_location"
         map:layout_constraintTop_toTopOf="@+id/map"
         map:layout_constraintBottom_toBottomOf="@id/map"
         map:layout_constraintStart_toStartOf="@id/map"
         map:layout_constraintEnd_toEndOf="@+id/map"
         android:layout_marginBottom="15dp"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/round_search"
+        map:layout_constraintStart_toStartOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintTop_toTopOf="parent"
+        tools:padding="@dimen/low_padding"
+        android:layout_margin="@dimen/app_margin">
+
+        <fragment
+            android:id="@+id/places_autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginEnd="@dimen/large_margin"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintBottom_toTopOf="@+id/saveLocationBtn"
+        >
+
+
+        <View
+            android:id="@+id/btn_satellite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/layout_btn_satellite"
+            android:layout_marginTop="@dimen/large_margin"/>
+
+
+        <View
+            android:id="@+id/btn_currentLocation"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/layout_btn_current"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginBottom="@dimen/app_margin"/>
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/saveLocationBtn"
+        android:layout_marginBottom="20dp"
+        map:layout_constraintBottom_toBottomOf="parent"
+        map:layout_constraintEnd_toEndOf="parent"
+        map:layout_constraintStart_toStartOf="parent"
+        android:text="@string/save_location"
+        style="@style/ButtonNormalStyle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

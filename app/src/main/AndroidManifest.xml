@@ -30,7 +30,6 @@
         <activity android:name=".ui.location.addNewLocation.AddNewLocationActivity" />
         <activity android:name=".ui.location.deliveryLocation.SelectDeliveryLocationActivity" />
         <activity android:name=".ui.pricingProduct.PricingProductActivity" />
-        <activity android:name=".ui.order.shopDetail.ShopDetailActivity" />
         <activity android:name=".ui.order.ordersDetails.OrdersPaidDetailsActivity" />
         <activity android:name=".ui.locations.LocationsActivity" />
         <activity
@@ -68,7 +67,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.MapWork.MapsActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/FullWindow" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

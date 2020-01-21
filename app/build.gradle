@@ -112,6 +112,10 @@ dependencies {
     // Google Maps Services (needed for directions)
     implementation 'com.google.maps:google-maps-services:0.2.9'
     implementation 'org.slf4j:slf4j-nop:1.7.25'
+    implementation 'com.google.android.libraries.places:places:2.1.0'
+//    implementation 'com.google.firebase:firebase-inappmessaging-display:17.2.0'
+//    implementation 'com.google.guava:guava:27.0.1-android'
+
 
     implementation group: 'androidx.work', name: 'work-runtime-ktx', version: '2.3.0-alpha01'
 
@@ -152,6 +156,7 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
     implementation 'com.github.uzairiqbal91:CircularTimerView:1.0'
+
 
 }
 

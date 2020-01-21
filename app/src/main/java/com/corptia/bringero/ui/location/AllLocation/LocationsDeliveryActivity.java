@@ -322,7 +322,7 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
 
-                        Toasty.error(LocationsDeliveryActivity.this , "onPermissionDenied").show();
+                        Toasty.error(LocationsDeliveryActivity.this , "Permission Denied").show();
 
                     }
 
