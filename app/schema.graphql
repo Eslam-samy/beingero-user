@@ -171,7 +171,7 @@ type CartItemMultipleResponse implements IQueryMultipleResponse {
 type CartItemMutation {
     create(data: createCartItem): CartItemSingleResponse
     remove(_id: ID!): CartItemSingleResponse
-    removeAll(filter: myCartFilter): DeleteManyResponse
+    removeAll(filter: CartItemFilterInput): DeleteManyResponse
     update(_id: ID, data: updateCartItem): CartItemSingleResponse
     updateOne(data: updateCartItem, filter: CartItemFilterInput): CartItemSingleResponse
 }
@@ -1321,6 +1321,7 @@ type StoreType implements IModelData {
     _id: ID!
     createdAt: Date
     description: String
+    displayPriority: Int
     imageId: ID
     multiLangs(fields: [StoreTypeMultiLangsFieldsEnum!] = [name, description]): StoreTypeMultiLangs
     name: String
@@ -1699,6 +1700,7 @@ enum DeliveryOrderStatus {
 enum FlatType {
     House
     Office
+    Other
 }
 
 enum Gender {
@@ -2005,6 +2007,7 @@ enum StoreTypeMultiLangsFieldsEnum {
 enum StoreTypeSortByEnum {
     _id
     createdAt
+    displayPriority
     name
     updatedAt
 }
@@ -2140,7 +2143,13 @@ input BuyingOrderSortingInput {
     sortDirection: SortDirectionEnum
 }
 
+input CartItemFilterArray {
+    _id: [ID]
+    pricingProductId: [ID]
+}
+
 input CartItemFilterInput {
+    IN: CartItemFilterArray
     _id: ID
     amount: Int
     createdAt: Date

@@ -18,6 +18,8 @@ public class DeliveryAddresses {
     public DeliveryAddresses() {
     }
 
+
+
     public int getFlat() {
         return flat;
     }

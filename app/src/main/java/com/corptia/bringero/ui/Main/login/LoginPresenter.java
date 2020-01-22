@@ -71,11 +71,14 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                                     deliveryAddressesModel.setName(deliveryAddress.name());
                                     deliveryAddressesModel.setRegion(deliveryAddress.region());
                                     deliveryAddressesModel.setStreet(deliveryAddress.street());
-                                    deliveryAddressesModel.setBuilding(deliveryAddress.building());
                                     deliveryAddressesModel.setFlatType(deliveryAddress.flatType().rawValue());
-                                    deliveryAddressesModel.setFloor(deliveryAddress.floor());
-                                    deliveryAddressesModel.setFlat(deliveryAddress.flat());
                                     deliveryAddressesModel.setLocation(new LatLng(deliveryAddress.locationPoint().lat() , deliveryAddress.locationPoint().lng()));
+
+                                    if (deliveryAddress.building()!=null){
+                                        deliveryAddressesModel.setBuilding(deliveryAddress.building());
+                                        deliveryAddressesModel.setFloor(deliveryAddress.floor());
+                                        deliveryAddressesModel.setFlat(deliveryAddress.flat());
+                                    }
 
 
                                     deliveryAddressesList.add(deliveryAddressesModel);
@@ -102,18 +105,40 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                                 userModel.setPhone(userData.phone());
                                 userModel.setStatus(userData.status().rawValue());
 
-                                CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
+
+                                CurrentDeliveryAddress currentDeliveryAddressModel = null ;
+
                                 if (userData.currentDeliveryAddress()!=null) {
-                                    currentDeliveryAddressModel.setId(userData.currentDeliveryAddress()._id());
-                                    currentDeliveryAddressModel.setBuilding(userData.currentDeliveryAddress().building());
-                                    currentDeliveryAddressModel.setFlatType(userData.currentDeliveryAddress().flatType().rawValue());
-                                    currentDeliveryAddressModel.setStreet(userData.currentDeliveryAddress().street());
-                                    currentDeliveryAddressModel.setName(userData.currentDeliveryAddress().name());
-                                    currentDeliveryAddressModel.setRegion(userData.currentDeliveryAddress().region());
-                                    currentDeliveryAddressModel.setFloor(userData.currentDeliveryAddress().floor());
-                                    currentDeliveryAddressModel.setFlat(userData.currentDeliveryAddress().flat());
-                                    currentDeliveryAddressModel.setLocation(new LatLng(userData.currentDeliveryAddress().locationPoint().lat(), userData.currentDeliveryAddress().locationPoint().lng()));
+
+
+                                    int buildingNumber =0, floorNumber=0 , flatNumber=0 ;
+
+                                    if (userData.currentDeliveryAddress().building()!=null){
+                                        buildingNumber = userData.currentDeliveryAddress().building();
+                                    }
+
+                                    if (userData.currentDeliveryAddress().floor()!=null){
+                                        floorNumber = userData.currentDeliveryAddress().floor();
+                                    }
+
+                                    if (userData.currentDeliveryAddress().flat()!=null){
+                                        flatNumber = userData.currentDeliveryAddress().floor();
+                                    }
+
+                                    currentDeliveryAddressModel = Common.getCurrentDeliveryAddress(userData.currentDeliveryAddress()._id(),
+                                            userData.currentDeliveryAddress().region(),
+                                            userData.currentDeliveryAddress().name(),
+                                            userData.currentDeliveryAddress().street(),
+                                            userData.currentDeliveryAddress().flatType().rawValue(),
+                                            new LatLng(userData.currentDeliveryAddress().locationPoint().lat(), userData.currentDeliveryAddress().locationPoint().lng()),
+                                            buildingNumber,
+                                            floorNumber,
+                                            flatNumber
+                                    );
+
+
                                 }
+
                                 userModel.setCurrentDeliveryAddress(currentDeliveryAddressModel);
 
 

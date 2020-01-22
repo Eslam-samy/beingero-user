@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
+import com.corptia.bringero.model.CurrentDeliveryAddress;
 import com.corptia.bringero.model.DeliveryAddresses;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         DeliveryAddresses address = deliveryAddressesList.get(position);
 
         if (address!=null) {
+
             holder.txt_address_name.setText(address.getName());
             holder.txt_street.setText(new StringBuilder()
                     .append(address.getRegion())
@@ -69,6 +72,22 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
                     holder.img_selected.setVisibility(View.VISIBLE);
                     selectedPosition = position;
                     tempCurrentPosition = position;
+
+                    //TODO IF UPDATE LOCATION ( CURRENT LOCATION )
+                    CurrentDeliveryAddress currentDeliveryAddress = new CurrentDeliveryAddress();
+                    currentDeliveryAddress.setId(address.getId());
+                    currentDeliveryAddress.setBuilding(address.getBuilding());
+                    currentDeliveryAddress.setRegion(address.getRegion());
+                    currentDeliveryAddress.setName(address.getName());
+                    currentDeliveryAddress.setStreet(address.getStreet());
+                    currentDeliveryAddress.setFlatType(address.getFlatType());
+                    currentDeliveryAddress.setFloor(address.getFloor());
+                    currentDeliveryAddress.setFlat(address.getFlat());
+                    currentDeliveryAddress.setLocation(address.getLocation());
+
+                    Common.CURRENT_USER.setCurrentDeliveryAddress(currentDeliveryAddress);
+
+
                 } else
                     holder.img_selected.setVisibility(View.INVISIBLE);
             } else {

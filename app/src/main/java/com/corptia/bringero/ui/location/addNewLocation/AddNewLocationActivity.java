@@ -2,13 +2,14 @@ package com.corptia.bringero.ui.location.addNewLocation;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,6 +77,9 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 
     double latitude, longitude;
 
+    //For Spinner
+    List<String> dataSpinnerFlatTypeList;
+
     List<FlatTypeModel> flatTypeList;
     FlatTypeModel flatTypeModel;
 
@@ -88,7 +92,7 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
     //For Check if user no have any location and add new one must after add update current location
     boolean isUpdateCurrentLocation;
     String name, _id_Address, flatType, region, street;
-    int flat, floor, building;
+    int flat, floor, building , addressPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,10 +161,20 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 
 
 
+            String spinnerSelected = spinner_flatType.getSelectedItem().toString();
 
+            if (spinnerSelected.equalsIgnoreCase(getString(R.string.office))){
+                mflatType = FlatType.OFFICE;
+            }else if (spinnerSelected.equalsIgnoreCase(getString(R.string.house))){
+                mflatType = FlatType.HOUSE;
+            }
+            else if (spinnerSelected.equalsIgnoreCase(getString(R.string.other))){
+                mflatType = FlatType.OTHER;
+            }
 
             if (getIntent().hasExtra(Constants.EXTRA_UPDATE)) {
-                presenter.updateLocation(_id_Address,
+                presenter.updateLocation(addressPosition,
+                        _id_Address,
                         address_name,
                         region,
                         street,
@@ -186,27 +200,57 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 
         });
 
-        spinner_flatType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//        spinner_flatType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                flatTypeModel = (FlatTypeModel) parent.getSelectedItem();
+//                mflatType = flatTypeModel.getFlatType();
+//                // Log.d("onItemSelected", "" + language.getName());
+//
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
 
-                flatTypeModel = (FlatTypeModel) parent.getSelectedItem();
-                mflatType = flatTypeModel.getFlatType();
-                // Log.d("onItemSelected", "" + language.getName());
+
+        input_building.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                if (editable.toString().isEmpty()){
+
+                    input_flat.setVisibility(View.GONE);
+                    input_flat.getEditText().setText("");
+                    input_floor.setVisibility(View.GONE);
+                    input_floor.getEditText().setText("");
+
+
+                }else{
+                    input_flat.setVisibility(View.VISIBLE);
+                    input_floor.setVisibility(View.VISIBLE);
+                }
 
             }
         });
-
     }
 
     private void init() {
 
-        fillSpinnerLanguage();
+        fillSpinnerFlatType();
 
         //Toolbar
         setSupportActionBar(toolbar);
@@ -222,6 +266,7 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                 getSupportActionBar().setTitle(R.string.update_location);
 
                 _id_Address = intent.getStringExtra(Constants.EXTRA_ADDRESS_ID);
+                addressPosition = intent.getIntExtra(Constants.EXTRA_ADDRESS_POSITION , 0);
                 name = intent.getStringExtra(Constants.EXTRA_ADDRESS_NAME);
                 flatType = intent.getStringExtra(Constants.EXTRA_ADDRESS_FLAT_TYPE);
                 region = intent.getStringExtra(Constants.EXTRA_ADDRESS_REGION);
@@ -229,6 +274,19 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                 flat = intent.getIntExtra(Constants.EXTRA_ADDRESS_FLAT, 0);
                 floor = intent.getIntExtra(Constants.EXTRA_ADDRESS_FLOOR, 0);
                 building = intent.getIntExtra(Constants.EXTRA_ADDRESS_BUILDING, 0);
+                latitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
+                longitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
+
+                if (flatType.equalsIgnoreCase(FlatType.HOUSE.rawValue())){
+
+                    spinner_flatType.setSelection(0);
+                } else  if (flatType.equalsIgnoreCase(FlatType.OFFICE.rawValue())){
+                    spinner_flatType.setSelection(1);
+
+                }else  if (flatType.equalsIgnoreCase(FlatType.OTHER.rawValue())){
+                    spinner_flatType.setSelection(2);
+
+                }
 
                 //Set Defult Value
                 input_address_name.getEditText().setText(name);
@@ -238,8 +296,20 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                 input_floor.getEditText().setText("" + floor);
                 input_building.getEditText().setText("" + building);
 
-                latitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
-                longitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
+                if (building!=0){
+                    input_flat.setVisibility(View.VISIBLE);
+                    input_floor.setVisibility(View.VISIBLE);
+                }else
+                {
+                    input_building.getEditText().setText("");
+                    input_flat.getEditText().setText("");
+                    input_floor.getEditText().setText("");
+
+                    input_flat.setVisibility(View.GONE);
+                    input_floor.setVisibility(View.GONE);
+                }
+
+
                 isUpdateCurrentLocation = intent.getBooleanExtra(Constants.EXTRA_IS_UPDATE_CURRENT_LOCATION, true);
 
 
@@ -247,10 +317,10 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 
                 getSupportActionBar().setTitle(R.string.add_new_location);
 
-
                 latitude = intent.getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
                 longitude = intent.getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
                 isUpdateCurrentLocation = intent.getBooleanExtra(Constants.EXTRA_IS_UPDATE_CURRENT_LOCATION, false);
+
             }
 
         }
@@ -270,14 +340,27 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 
     }
 
-    private void fillSpinnerLanguage() {
+    private void fillSpinnerFlatType() {
 
-        flatTypeList = new ArrayList<>();
-        flatTypeList.add(new FlatTypeModel(FlatType.HOUSE));
-        flatTypeList.add(new FlatTypeModel(FlatType.OFFICE));
+//        flatTypeList = new ArrayList<>();
+//        flatTypeList.add(new FlatTypeModel(FlatType.HOUSE));
+//        flatTypeList.add(new FlatTypeModel(FlatType.OFFICE));
+//
+//        //fill data in spinner
+//        ArrayAdapter<FlatTypeModel> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, flatTypeList);
+//        spinner_flatType.setAdapter(adapter);
 
-        //fill data in spinner
-        ArrayAdapter<FlatTypeModel> adapter = new ArrayAdapter<FlatTypeModel>(this, android.R.layout.simple_spinner_dropdown_item, flatTypeList);
+        //Set All Data In Spinner
+        dataSpinnerFlatTypeList = new ArrayList<>();
+        dataSpinnerFlatTypeList.add(getString(R.string.house));
+        dataSpinnerFlatTypeList.add(getString(R.string.office));
+        dataSpinnerFlatTypeList.add(getString(R.string.other));
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                dataSpinnerFlatTypeList
+        );
         spinner_flatType.setAdapter(adapter);
 
     }
@@ -327,12 +410,8 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
     @Override
     public void showProgressBar() {
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                alertDialog.show();
-            }
-        });
+        alertDialog.show();
+
     }
 
     @Override
@@ -340,7 +419,7 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                alertDialog.hide();
+                alertDialog.dismiss();
             }
         });
 
@@ -475,7 +554,7 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (intent.hasExtra(Constants.EXTRA_ADDRESS_POSITION))
+        if (intent.hasExtra(Constants.EXTRA_ADDRESS_POSITION) && !_id_Address.equalsIgnoreCase(Common.CURRENT_USER.getCurrentDeliveryAddress().getId()) )
         getMenuInflater().inflate(R.menu.menu_location, menu);
         return super.onCreateOptionsMenu(menu);
     }

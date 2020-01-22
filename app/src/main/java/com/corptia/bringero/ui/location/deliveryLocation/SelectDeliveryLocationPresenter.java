@@ -1,5 +1,7 @@
 package com.corptia.bringero.ui.location.deliveryLocation;
 
+import android.util.Log;
+
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -47,16 +49,43 @@ public class SelectDeliveryLocationPresenter {
 
                             Common.CURRENT_USER.setToken(updateInfo.token());
 
-                            CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
-                            currentDeliveryAddressModel.setId(updateInfo.data().currentDeliveryAddress()._id());
-                            currentDeliveryAddressModel.setBuilding(currentDeliveryAddress.building());
-                            currentDeliveryAddressModel.setFlatType(currentDeliveryAddress.flatType().rawValue());
-                            currentDeliveryAddressModel.setFloor(currentDeliveryAddress.floor());
-                            currentDeliveryAddressModel.setName(currentDeliveryAddress.name());
-                            currentDeliveryAddressModel.setStreet(currentDeliveryAddress.street());
-                            currentDeliveryAddressModel.setRegion(currentDeliveryAddress.region());
-                            currentDeliveryAddressModel.setFlat(currentDeliveryAddress.flat());
-                            currentDeliveryAddressModel.setLocation(new LatLng(currentDeliveryAddress.locationPoint().lat(), currentDeliveryAddress.locationPoint().lng()));
+                            int buildingNumber =0, floorNumber=0 , flatNumber=0 ;
+
+                            if (currentDeliveryAddress.building()!=null){
+                                buildingNumber = currentDeliveryAddress.building();
+                            }
+
+                            if (currentDeliveryAddress.floor()!=null){
+                                floorNumber = currentDeliveryAddress.floor();
+                            }
+
+                            if (currentDeliveryAddress.flat()!=null){
+                                flatNumber = currentDeliveryAddress.floor();
+                            }
+
+                           CurrentDeliveryAddress currentDeliveryAddressModel = Common.getCurrentDeliveryAddress(updateInfo.data().currentDeliveryAddress()._id(),
+                                    currentDeliveryAddress.region(),
+                                    currentDeliveryAddress.name(),
+                                    currentDeliveryAddress.street(),
+                                    currentDeliveryAddress.flatType().rawValue(),
+                                    new LatLng(currentDeliveryAddress.locationPoint().lat(), currentDeliveryAddress.locationPoint().lng()),
+                                    buildingNumber,
+                                    floorNumber,
+                                    flatNumber
+                                    );
+
+//                            CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
+//                            currentDeliveryAddressModel.setId(updateInfo.data().currentDeliveryAddress()._id());
+//                            currentDeliveryAddressModel.setBuilding(currentDeliveryAddress.building());
+//                            currentDeliveryAddressModel.setFlatType(currentDeliveryAddress.flatType().rawValue());
+//                            currentDeliveryAddressModel.setFloor(currentDeliveryAddress.floor());
+//                            currentDeliveryAddressModel.setName(currentDeliveryAddress.name());
+//                            currentDeliveryAddressModel.setStreet(currentDeliveryAddress.street());
+//                            currentDeliveryAddressModel.setRegion(currentDeliveryAddress.region());
+//                            currentDeliveryAddressModel.setFlat(currentDeliveryAddress.flat());
+//                            currentDeliveryAddressModel.setLocation(new LatLng(currentDeliveryAddress.locationPoint().lat(), currentDeliveryAddress.locationPoint().lng()));
+
+
                             Common.CURRENT_USER.setCurrentDeliveryAddress(currentDeliveryAddressModel);
 
                             view.onSuccessUpdateCurrentLocation();
@@ -84,10 +113,9 @@ public class SelectDeliveryLocationPresenter {
         PointCooridinatesInput inputLocationPoint = PointCooridinatesInput.builder().lat(lat).lng(lng).build();
 
 
-        DeliveryAddressInput deliveryAddressInput ;
+        DeliveryAddressInput deliveryAddressInput;
 
-        if (floor!=0 && building!=0 && flat!=0)
-        {
+//        if (floor != 0 && building != 0 && flat != 0) {
             deliveryAddressInput = DeliveryAddressInput.builder()
                     .name(name)
                     .region(region)
@@ -97,19 +125,16 @@ public class SelectDeliveryLocationPresenter {
                     .flat(flat)
                     .building(building)
                     .locationPoint(inputLocationPoint).build();
-        }
-        else
-        {
-
-            deliveryAddressInput = DeliveryAddressInput.builder()
-                    .name(name)
-                    .region(region)
-                    .street(street)
-                    .flatType(flatType)
-                    .locationPoint(inputLocationPoint).build();
-
-        }
-
+//        } else {
+//
+//            deliveryAddressInput = DeliveryAddressInput.builder()
+//                    .name(name)
+//                    .region(region)
+//                    .street(street)
+//                    .flatType(flatType)
+//                    .locationPoint(inputLocationPoint).build();
+//
+//        }
 
 
         DeliveryAddressSingles singles = DeliveryAddressSingles.builder().deliveryAddresses(deliveryAddressInput).build();
@@ -130,13 +155,18 @@ public class SelectDeliveryLocationPresenter {
 
                             DeliveryAddresses deliveryAddressesModel = new DeliveryAddresses();
                             deliveryAddressesModel.setId(newDeliveryAddress._id());
-                            deliveryAddressesModel.setBuilding(newDeliveryAddress.building());
                             deliveryAddressesModel.setRegion(newDeliveryAddress.region());
                             deliveryAddressesModel.setName(newDeliveryAddress.name());
                             deliveryAddressesModel.setStreet(newDeliveryAddress.street());
                             deliveryAddressesModel.setFlatType(newDeliveryAddress.flatType().rawValue());
-                            deliveryAddressesModel.setFloor(newDeliveryAddress.floor());
-                            deliveryAddressesModel.setFlat(newDeliveryAddress.flat());
+
+                            if (newDeliveryAddress.building()!=null){
+                                deliveryAddressesModel.setFloor(newDeliveryAddress.floor());
+                                deliveryAddressesModel.setFlat(newDeliveryAddress.flat());
+                                deliveryAddressesModel.setBuilding(newDeliveryAddress.building());
+                            }
+
+
                             deliveryAddressesModel.setLocation(new LatLng(newDeliveryAddress.locationPoint().lat(), newDeliveryAddress.locationPoint().lng()));
 
                             Common.CURRENT_USER.getDeliveryAddressesList().add(deliveryAddressesModel);
@@ -170,16 +200,15 @@ public class SelectDeliveryLocationPresenter {
     }
 
 
-    public void updateLocation(String LocationID, String name, String region, String street, FlatType flatType, int floor, int flat, int building, double lat, double lng) {
+    public void updateLocation(int position, String LocationID, String name, String region, String street, FlatType flatType, int floor, int flat, int building, double lat, double lng) {
 
         view.showProgressBar();
 
         PointCooridinatesInput inputLocationPoint = PointCooridinatesInput.builder().lat(lat).lng(lng).build();
 
-        DeliveryAddressInput deliveryAddressInput ;
+        DeliveryAddressInput deliveryAddressInput;
 
-        if (floor!=0 && building!=0 && flat!=0)
-        {
+//        if (floor != 0 && building != 0 && flat != 0) {
             deliveryAddressInput = DeliveryAddressInput.builder()
                     .name(name)
                     .region(region)
@@ -189,18 +218,16 @@ public class SelectDeliveryLocationPresenter {
                     .flat(flat)
                     .building(building)
                     .locationPoint(inputLocationPoint).build();
-        }
-        else
-        {
-
-            deliveryAddressInput = DeliveryAddressInput.builder()
-                    .name(name)
-                    .region(region)
-                    .street(street)
-                    .flatType(flatType)
-                    .locationPoint(inputLocationPoint).build();
-
-        }
+//        } else {
+//
+//            deliveryAddressInput = DeliveryAddressInput.builder()
+//                    .name(name)
+//                    .region(region)
+//                    .street(street)
+//                    .flatType(flatType)
+//                    .locationPoint(inputLocationPoint).build();
+//
+//        }
 
         User_UPDATE_NESTED user_update_nested = User_UPDATE_NESTED.builder()
                 .deliveryAddresses(DeliveryAddressesNested.builder()
@@ -221,8 +248,19 @@ public class SelectDeliveryLocationPresenter {
 
                         if (responseUpdateInfo.status() == 200) {
 
-                            //TODO Miss Here to do reload for all locations
+                            DeliveryAddresses deliveryAddresses = new DeliveryAddresses();
+                            deliveryAddresses.setId(LocationID);
+                            deliveryAddresses.setName(name);
+                            deliveryAddresses.setStreet(street);
+                            deliveryAddresses.setRegion(region);
+                            deliveryAddresses.setFlat(flat);
+                            deliveryAddresses.setFlatType(flatType.rawValue());
+                            deliveryAddresses.setBuilding(building);
+                            deliveryAddresses.setFloor(floor);
+                            deliveryAddresses.setLocation(new LatLng(lat , lng));
 
+                            //TODO Miss Here to do reload for all locations
+                            Common.CURRENT_USER.getDeliveryAddressesList().set(position ,deliveryAddresses);
                             view.onSuccessUpdateNestedLocation();
 
                         } else {

@@ -40,6 +40,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
+import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -150,7 +151,9 @@ public class HomeActivity extends BaseActivity implements
         txt_user_phone.setText(Common.CURRENT_USER.getPhone());
 
         if (Common.CURRENT_USER.getAvatarImageId()!=null)
-            PicassoUtils.setImage(Common.BASE_URL_IMAGE + Common.CURRENT_USER.getAvatarName() , img_avatar);
+        Picasso.get().load(Common.BASE_URL_IMAGE + Common.CURRENT_USER.getAvatarName())
+                .placeholder(R.drawable.ic_placeholder_profile)
+                .into(img_avatar);
 
         //Set CurrentLocation
         setCurrentLocation();

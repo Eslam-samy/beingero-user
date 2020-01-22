@@ -230,6 +230,9 @@
     <string name="resend">Resend</string>
     <string name="invalid_email_address">InValid Email Address</string>
     <string name="don_t_allow">Don\'t allow</string>
+    <string name="house">House</string>
+    <string name="office">Office</string>
+    <string name="other">Other</string>
 
 </resources>
 

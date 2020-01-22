@@ -11,7 +11,7 @@
         android:id="@+id/img_placeholder"
         android:layout_width="169.21dp"
         android:layout_height="144.5dp"
-        android:src="@drawable/ic_placeholder_map"
+        android:src="@drawable/ic_placeholder_location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

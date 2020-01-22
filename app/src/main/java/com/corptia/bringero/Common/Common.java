@@ -28,6 +28,7 @@ import com.corptia.bringero.graphql.GetCartItemsCountQuery;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.model.CartItemsModel;
+import com.corptia.bringero.model.CurrentDeliveryAddress;
 import com.corptia.bringero.model.UserModel;
 import com.corptia.bringero.type.CartItemFilterInput;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
@@ -35,6 +36,7 @@ import com.corptia.bringero.ui.allowLocation.AllowLocationActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationAdapter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.karumi.dexter.Dexter;
 
@@ -121,7 +123,6 @@ public class Common {
     public static BottomSheetDialog showDialogSelectLocation(Context context, BottomSheetDialog bottomSheetDialog, SelectDeliveryLocationPresenter presenter) {
 
 
-
         SelectDeliveryLocationAdapter adapter;
         bottomSheetDialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
         bottomSheetDialog.setCanceledOnTouchOutside(true);
@@ -163,10 +164,7 @@ public class Common {
                 Common.isUpdateCurrentLocation = true;
                 context.startActivity(new Intent(context, AllowLocationActivity.class));
                 finalBottomSheetDialog.dismiss();
-            }
-
-            else
-            {
+            } else {
 
                 //Here Open Maps
                 Common.isUpdateCurrentLocation = true;
@@ -234,7 +232,7 @@ public class Common {
 
                             isFirstTimeGetCartCount = false;
 
-                        } else if (response.data().CartItemQuery().getAll().status() ==404){
+                        } else if (response.data().CartItemQuery().getAll().status() == 404) {
 
                             TOTAL_CART_PRICE = 0;
                             TOTAL_CART_AMOUNT = 0;
@@ -264,6 +262,39 @@ public class Common {
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
+    public static CurrentDeliveryAddress getCurrentDeliveryAddress(String _id, String region, String name, String street,
+                                                                   String flatType, LatLng locationPoint,
+                                                                   int building, int floor, int flat) {
+
+
+
+        CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
+
+        currentDeliveryAddressModel.setId(_id);
+        currentDeliveryAddressModel.setFlatType(flatType);
+        currentDeliveryAddressModel.setName(name);
+        currentDeliveryAddressModel.setStreet(street);
+        currentDeliveryAddressModel.setLocation(locationPoint);
+        currentDeliveryAddressModel.setRegion(region);
+
+        currentDeliveryAddressModel.setBuilding(building);
+        currentDeliveryAddressModel.setFlat(flat);
+        currentDeliveryAddressModel.setFloor(floor);
+
+//        if (building!=null && building.isEmpty() && building.equalsIgnoreCase("0")){
+//
+//
+//        }else {
+//            currentDeliveryAddressModel.setBuilding(0);
+//            currentDeliveryAddressModel.setFlat(0);
+//            currentDeliveryAddressModel.setFloor(0);
+//        }
+
+
+        return currentDeliveryAddressModel;
     }
 
 
