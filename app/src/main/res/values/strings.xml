@@ -216,6 +216,7 @@
     <string name="order_status_assignedtopilot">Pilot</string>
     <string name="order_status_delivering">Delivering</string>
     <string name="order_status_delivered">Delivered</string>
+
     <string name="pilot">Pilot</string>
     <string name="requsted">Requsted</string>
     <string name="delivered">Delivered</string>

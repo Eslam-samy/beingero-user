@@ -322,14 +322,20 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
 
 
                                                 } else {
+
                                                     SignupInput signupInput = SignupInput.builder()
                                                             .firstName(SignupFragment.firstName)
                                                             .lastName(SignupFragment.lastName)
                                                             .password(SignupFragment.password)
-                                                            .phone(SignupFragment.phone).roleName(RoleEnum.CUSTOMER).build();
+                                                            .phone(SignupFragment.phone)
+                                                            .roleName(RoleEnum.CUSTOMER).build();
+
                                                     MyApolloClient.getApollowClientAuthorization(
-                                                            response1.data().UserMutation().validateFireBaseToken().token()
-                                                    ).mutate(SignUpSecondStepMutation.builder().data(signupInput).build())
+                                                            response1.data()
+                                                                    .UserMutation()
+                                                                    .validateFireBaseToken()
+                                                                    .token())
+                                                            .mutate(SignUpSecondStepMutation.builder().data(signupInput).build())
                                                             .enqueue(new ApolloCall.Callback<SignUpSecondStepMutation.Data>() {
                                                                 @Override
                                                                 public void onResponse(@NotNull Response<SignUpSecondStepMutation.Data> response) {
@@ -338,19 +344,21 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
                                                                         runOnUiThread(new Runnable() {
                                                                             @Override
                                                                             public void run() {
-                                                                                Toast.makeText(VerifyPhoneNumberActivity.this, "Welcome " + SignupFragment.firstName
-                                                                                                + " "
-                                                                                                + SignupFragment.lastName
-                                                                                        , Toast.LENGTH_SHORT).show();
+//                                                                                Toast.makeText(VerifyPhoneNumberActivity.this, "Welcome " + SignupFragment.firstName
+//                                                                                                + " "
+//                                                                                                + SignupFragment.lastName
+//                                                                                        , Toast.LENGTH_SHORT).show();
                                                                                 dialog.dismiss();
+
+                                                                                startActivity(new Intent(VerifyPhoneNumberActivity.this, MainActivity.class));
+                                                                                finish();
+                                                                                SignupFragment.firstName = null;
+                                                                                SignupFragment.lastName = null;
+                                                                                SignupFragment.password = null;
 
                                                                             }
                                                                         });
-                                                                        startActivity(new Intent(VerifyPhoneNumberActivity.this, MainActivity.class));
-                                                                        finish();
-                                                                        SignupFragment.firstName = null;
-                                                                        SignupFragment.lastName = null;
-                                                                        SignupFragment.password = null;
+
                                                                     } else {
                                                                         runOnUiThread(new Runnable() {
                                                                             @Override

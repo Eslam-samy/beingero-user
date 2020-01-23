@@ -52,12 +52,14 @@ public class SignupFragment extends Fragment {
                 confirm_password = input_confirm_password.getEditText().getText().toString();
                 firstName = input_firstName.getEditText().getText().toString().trim();
                 lastName = input_lastName.getEditText().getText().toString().trim();
-                if (validateNonEmptyValues()) {
+//                if (validateNonEmptyValues()) {
+
                     if (validateData()) {
                         startActivity(new Intent(getContext(), VerifyPhoneNumberActivity.class));
                         getActivity().finish();
                     }
-                }
+
+//                }
             }
         });
         return view;

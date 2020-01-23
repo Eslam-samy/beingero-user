@@ -87,7 +87,7 @@ public class OrdersPaidDetailsAdapter extends RecyclerView.Adapter<OrdersPaidDet
 
     @Override
     public int getItemCount() {
-        return orderResponseData.size();
+        return orderResponseData!=null? orderResponseData.size():0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

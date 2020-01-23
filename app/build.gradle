@@ -157,6 +157,8 @@ dependencies {
 
     implementation 'com.github.uzairiqbal91:CircularTimerView:1.0'
 
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+
 
 }
 

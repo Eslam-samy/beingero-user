@@ -63,6 +63,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.maps.GeoApiContext;
+import com.google.maps.android.PolyUtil;
 import com.logicbeanzs.uberpolylineanimation.MapAnimator;
 
 import org.jetbrains.annotations.NotNull;
@@ -282,6 +283,35 @@ public class TrackingActivity extends BaseActivity implements
     private void updateLine(Marker pilotMarker) {
         LatLng latLng = pilotMarker.getPosition();
 //        MapAnimator.getInstance().animateRoute(mMap, latLngs);
+
+
+        int ixLastPoint = 0;
+        for (int i = 0; i < latLngs.size(); i++) {
+            LatLng point1 = latLngs.get(i);
+            LatLng point2 = latLngs.get(i);
+            List<LatLng> currentSegment = new ArrayList<>();
+            currentSegment.add(point1);
+            currentSegment.add(point2);
+            if (PolyUtil.isLocationOnPath(latLng, currentSegment, true, 50)) {
+                // save index of last point and exit loop
+                ixLastPoint = i;
+                Log.d("HAZEM" , "ixLastPoint " + ixLastPoint + " ---- " + latLngs.get(i).latitude + " --- " +  latLngs.get(i).longitude);
+
+                Log.d("HAZEM" , "SIZE Befor : " + latLngs.size());
+                latLngs.subList(0,i).clear();
+                Log.d("HAZEM" , "SIZE After : " + latLngs.size());
+//                mMap.clear();
+                MapAnimator.getInstance().animateRoute(mMap, latLngs);
+
+
+
+                break;
+            }
+            else {
+                Log.d("HAZEM" , "facke");
+            }
+        }
+
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
