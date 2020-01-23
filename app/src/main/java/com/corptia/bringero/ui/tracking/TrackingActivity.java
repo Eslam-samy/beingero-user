@@ -225,39 +225,48 @@ public class TrackingActivity extends BaseActivity implements
                                     .title("الطيار"));
                         }
 
-                        latLng[0] = location.latitude;
-                        latLng[1] = location.longitude;
-
-                        if (marker == null) {
-//                            marker = new PicassoMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(latLng[0], latLng[1]))));
-//                            Picasso.get().load(R.drawable.ic_pilot).resize( 50,  50)
-//                                    .into(marker);
-
-//                            pilotMarker = mMap.addMarker(new MarkerOptions()
-//                                    .position(new LatLng(latLng[0], latLng[1]))
-//                                    .icon(bitmapDescriptorFromVector(
-//                                            TrackingActivity.this,
-//                                            R.drawable.ic_pilot))
-//                                    .title("الطيار بيه"));
-
-//                            googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng[0], latLng[1]), 12.0f));
+                        if (pilotMarker != null) {
+//                            moveVechile(pilotMarker, location);
+//                            rotateMarker(pilotMarker, 1f, start_rotation);
+                            //UpdateLine
+                            //moveVechile(pilotMarker, location);
+                            pilotMarker.setPosition(new LatLng(location.latitude , location.longitude));
+                            updateLine(pilotMarker);
                         }
 
-                        if ((latLng[0] != -1 && latLng[0] != 0) && (latLng[1] != -1 && latLng[1] != 0)) {
-                            //googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLatLng, 12.0f));
-                            //float bearing = (float) bearingBetweenLocations(driverLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
-                            if (pilotMarker != null) {
-                                moveVechile(pilotMarker, location);
-                                rotateMarker(pilotMarker, 1f, start_rotation);
+//                        latLng[0] = location.latitude;
+//                        latLng[1] = location.longitude;
 
-                                //UpdateLine
-                                updateLine(pilotMarker);
+//                        if (marker == null) {
+////                            marker = new PicassoMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(latLng[0], latLng[1]))));
+////                            Picasso.get().load(R.drawable.ic_pilot).resize( 50,  50)
+////                                    .into(marker);
+//
+////                            pilotMarker = mMap.addMarker(new MarkerOptions()
+////                                    .position(new LatLng(latLng[0], latLng[1]))
+////                                    .icon(bitmapDescriptorFromVector(
+////                                            TrackingActivity.this,
+////                                            R.drawable.ic_pilot))
+////                                    .title("الطيار بيه"));
+//
+////                            googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng[0], latLng[1]), 12.0f));
+//                        }
 
-                            }
-                            driverLatLng = new LatLng(latLng[0], latLng[1]);
-                        } else {
-
-                        }
+//                        if ((latLng[0] != -1 && latLng[0] != 0) && (latLng[1] != -1 && latLng[1] != 0)) {
+//                            //googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLatLng, 12.0f));
+//                            //float bearing = (float) bearingBetweenLocations(driverLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
+//                            if (pilotMarker != null) {
+//                                moveVechile(pilotMarker, location);
+//                                rotateMarker(pilotMarker, 1f, start_rotation);
+//
+//                                //UpdateLine
+//                                updateLine(pilotMarker);
+//
+//                            }
+//                            driverLatLng = new LatLng(latLng[0], latLng[1]);
+//                        } else {
+//
+//                        }
 
 
 //                        rotateMarker(pilotMarker,bearingBetweenLocations(,1f));
@@ -281,6 +290,8 @@ public class TrackingActivity extends BaseActivity implements
     }
 
     private void updateLine(Marker pilotMarker) {
+
+
         LatLng latLng = pilotMarker.getPosition();
 //        MapAnimator.getInstance().animateRoute(mMap, latLngs);
 
@@ -302,8 +313,6 @@ public class TrackingActivity extends BaseActivity implements
                 Log.d("HAZEM" , "SIZE After : " + latLngs.size());
 //                mMap.clear();
                 MapAnimator.getInstance().animateRoute(mMap, latLngs);
-
-
 
                 break;
             }

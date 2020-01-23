@@ -652,7 +652,7 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
         // Create a request body with file and image media type
         RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
         // Create MultipartBody.Part using file request-body,file name and part name
-        MultipartBody.Part part = MultipartBody.Part.createFormData("files", file.getName(), fileReqBody);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("files", "File1", fileReqBody);
         //Create request body with text description and text media type
         RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
         //
