@@ -225,48 +225,39 @@ public class TrackingActivity extends BaseActivity implements
                                     .title("الطيار"));
                         }
 
-                        if (pilotMarker != null) {
-//                            moveVechile(pilotMarker, location);
-//                            rotateMarker(pilotMarker, 1f, start_rotation);
-                            //UpdateLine
-                            //moveVechile(pilotMarker, location);
-                            pilotMarker.setPosition(new LatLng(location.latitude , location.longitude));
-                            updateLine(pilotMarker);
+                        latLng[0] = location.latitude;
+                        latLng[1] = location.longitude;
+
+                        if (marker == null) {
+//                            marker = new PicassoMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(latLng[0], latLng[1]))));
+//                            Picasso.get().load(R.drawable.ic_pilot).resize( 50,  50)
+//                                    .into(marker);
+
+//                            pilotMarker = mMap.addMarker(new MarkerOptions()
+//                                    .position(new LatLng(latLng[0], latLng[1]))
+//                                    .icon(bitmapDescriptorFromVector(
+//                                            TrackingActivity.this,
+//                                            R.drawable.ic_pilot))
+//                                    .title("الطيار بيه"));
+
+//                            googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng[0], latLng[1]), 12.0f));
                         }
 
-//                        latLng[0] = location.latitude;
-//                        latLng[1] = location.longitude;
+                        if ((latLng[0] != -1 && latLng[0] != 0) && (latLng[1] != -1 && latLng[1] != 0)) {
+                            //googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLatLng, 12.0f));
+                            //float bearing = (float) bearingBetweenLocations(driverLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
+                            if (pilotMarker != null) {
+                                moveVechile(pilotMarker, location);
+                                rotateMarker(pilotMarker, 1f, start_rotation);
 
-//                        if (marker == null) {
-////                            marker = new PicassoMarker(mMap.addMarker(new MarkerOptions().position(new LatLng(latLng[0], latLng[1]))));
-////                            Picasso.get().load(R.drawable.ic_pilot).resize( 50,  50)
-////                                    .into(marker);
-//
-////                            pilotMarker = mMap.addMarker(new MarkerOptions()
-////                                    .position(new LatLng(latLng[0], latLng[1]))
-////                                    .icon(bitmapDescriptorFromVector(
-////                                            TrackingActivity.this,
-////                                            R.drawable.ic_pilot))
-////                                    .title("الطيار بيه"));
-//
-////                            googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng[0], latLng[1]), 12.0f));
-//                        }
+                                //UpdateLine
+                                updateLine(pilotMarker);
 
-//                        if ((latLng[0] != -1 && latLng[0] != 0) && (latLng[1] != -1 && latLng[1] != 0)) {
-//                            //googleMapHomeFrag.moveCamera(CameraUpdateFactory.newLatLngZoom(driverLatLng, 12.0f));
-//                            //float bearing = (float) bearingBetweenLocations(driverLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
-//                            if (pilotMarker != null) {
-//                                moveVechile(pilotMarker, location);
-//                                rotateMarker(pilotMarker, 1f, start_rotation);
-//
-//                                //UpdateLine
-//                                updateLine(pilotMarker);
-//
-//                            }
-//                            driverLatLng = new LatLng(latLng[0], latLng[1]);
-//                        } else {
-//
-//                        }
+                            }
+                            driverLatLng = new LatLng(latLng[0], latLng[1]);
+                        } else {
+
+                        }
 
 
 //                        rotateMarker(pilotMarker,bearingBetweenLocations(,1f));
@@ -290,8 +281,6 @@ public class TrackingActivity extends BaseActivity implements
     }
 
     private void updateLine(Marker pilotMarker) {
-
-
         LatLng latLng = pilotMarker.getPosition();
 //        MapAnimator.getInstance().animateRoute(mMap, latLngs);
 
@@ -313,6 +302,8 @@ public class TrackingActivity extends BaseActivity implements
                 Log.d("HAZEM" , "SIZE After : " + latLngs.size());
 //                mMap.clear();
                 MapAnimator.getInstance().animateRoute(mMap, latLngs);
+
+
 
                 break;
             }
@@ -645,70 +636,70 @@ public class TrackingActivity extends BaseActivity implements
         MyApolloClient.getApollowClientAuthorization()
                 .query(TripQuery.builder().filter(trackingTripFilterInput).build())
                 .enqueue(new ApolloCall.Callback<TripQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<TripQuery.Data> response) {
-
-
-                runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
-
-                        if (response.data().TrackingTripQuery().getOne().status() == 200){
-
-                            TripQuery.@Nullable Data1 data = response.data().TrackingTripQuery().getOne().data();
-
-                            List<TripQuery.AvailableTrack> realTrack = data.availableTracks().get(data.availableTracks().size()-1);
+                    public void onResponse(@NotNull Response<TripQuery.Data> response) {
 
 
-                            if (getIntent() != null && !response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())) {
-                                getLiveLocationPilot(getIntent().getStringExtra(Constants.EXTRA_PILOT_ID));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                if (response.data().TrackingTripQuery().getOne().status() == 200){
+
+                                    TripQuery.@Nullable Data1 data = response.data().TrackingTripQuery().getOne().data();
+
+                                    List<TripQuery.AvailableTrack> realTrack = data.availableTracks().get(data.availableTracks().size()-1);
+
+
+                                    if (getIntent() != null && !response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())) {
+                                        getLiveLocationPilot(getIntent().getStringExtra(Constants.EXTRA_PILOT_ID));
+                                    }
+
+
+                                    latLngs = new ArrayList<>();
+                                    for (TripQuery.AvailableTrack latLng : realTrack) {
+                                        latLngs.add(new LatLng(latLng.lat(), latLng.lng()));
+                                    }
+
+
+                                    //Create Line
+                                    MapAnimator.getInstance().animateRoute(mMap, latLngs);
+                                    zoomRoute(latLngs);
+
+                                    if (Common.CURRENT_USER != null) {
+                                        String avatar = Common.CURRENT_USER.getAvatarName();
+
+                                        mMap.addMarker(new MarkerOptions()
+                                                .position(new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude))
+                                                .icon(BitmapDescriptorFactory
+                                                        .fromBitmap(
+                                                                createCustomMarker(
+                                                                        TrackingActivity.this
+                                                                        , Common.BASE_URL_IMAGE + avatar))))
+                                                .setTitle(Common.CURRENT_USER.getFullName());
+                                    }
+
+
+                                }
+                                else
+                                {
+
+
+
+                                }
+
                             }
-
-
-                            latLngs = new ArrayList<>();
-                            for (TripQuery.AvailableTrack latLng : realTrack) {
-                                latLngs.add(new LatLng(latLng.lat(), latLng.lng()));
-                            }
-
-
-                            //Create Line
-                            MapAnimator.getInstance().animateRoute(mMap, latLngs);
-                            zoomRoute(latLngs);
-
-                            if (Common.CURRENT_USER != null) {
-                                String avatar = Common.CURRENT_USER.getAvatarName();
-
-                                mMap.addMarker(new MarkerOptions()
-                                        .position(new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude))
-                                        .icon(BitmapDescriptorFactory
-                                                .fromBitmap(
-                                                        createCustomMarker(
-                                                                TrackingActivity.this
-                                                                , Common.BASE_URL_IMAGE + avatar))))
-                                        .setTitle(Common.CURRENT_USER.getFullName());
-                            }
-
-
-                        }
-                        else
-                        {
+                        });
 
 
 
-                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
 
                     }
                 });
-
-
-
-            }
-
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-
-            }
-        });
 
     }
 
