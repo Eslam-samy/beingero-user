@@ -7,15 +7,14 @@
     tools:context=".ui.order.ordersDetails.OrdersPaidDetailsActivity"
     android:background="@color/white">
 
-
-
-
         <LinearLayout
             android:id="@+id/layout_data"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible"
+            >
 
             <include layout="@layout/layout_toolbar_white"/>
 
@@ -200,44 +199,56 @@
                         tools:visibility="visible"/>
 
 
-                    <TextView
-                        android:id="@+id/txt_lab_pilot"
-                        android:layout_width="wrap_content"
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/layout_pilot"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/pilot"
                         app:layout_constraintStart_toStartOf="@+id/btn_track_package"
-                        app:layout_constraintTop_toBottomOf="@+id/btn_track_package"
-                        android:layout_marginTop="@dimen/large_margin"
-                        android:textColor="@color/black"
-                        android:fontFamily="@font/poppinsmedium"
-                        android:textSize="@dimen/medium_text_size"/>
+                        app:layout_constraintTop_toBottomOf="@+id/btn_track_package">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/img_pilot"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        app:layout_constraintStart_toStartOf="@+id/txt_lab_pilot"
-                        app:layout_constraintTop_toBottomOf="@+id/txt_lab_pilot"
-                        android:src="@drawable/ic_placeholder_profile"/>
+                        <TextView
+                            android:id="@+id/txt_lab_pilot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pilot"
+                            android:layout_marginTop="@dimen/large_margin"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/poppinsmedium"
+                            android:textSize="@dimen/medium_text_size"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginStart="@dimen/app_margin"/>
 
-                    <TextView
-                        android:id="@+id/txt_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mohamed"
-                        app:layout_constraintTop_toTopOf="@+id/img_pilot"
-                        app:layout_constraintStart_toEndOf="@+id/img_pilot"
-                        app:layout_constraintBottom_toBottomOf="@+id/img_pilot"
-                        android:layout_marginStart="@dimen/low_margin"
-                        android:textSize="@dimen/normal_text_size"
-                        android:textColor="@color/black"/>
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/img_pilot"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            app:layout_constraintStart_toStartOf="@+id/txt_lab_pilot"
+                            app:layout_constraintTop_toBottomOf="@+id/txt_lab_pilot"
+                            android:src="@drawable/ic_placeholder_profile"/>
+
+                        <TextView
+                            android:id="@+id/txt_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mohamed"
+                            app:layout_constraintTop_toTopOf="@+id/img_pilot"
+                            app:layout_constraintStart_toEndOf="@+id/img_pilot"
+                            app:layout_constraintBottom_toBottomOf="@+id/img_pilot"
+                            android:layout_marginStart="@dimen/low_margin"
+                            android:textSize="@dimen/normal_text_size"
+                            android:textColor="@color/black"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        app:layout_constraintTop_toBottomOf="@+id/img_pilot"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_pilot"
                         >
 
                         <TextView
@@ -397,7 +408,7 @@
         android:id="@+id/shimmerLayout_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:visibility="visible"
+        tools:visibility="gone"
         >
 
         <LinearLayout

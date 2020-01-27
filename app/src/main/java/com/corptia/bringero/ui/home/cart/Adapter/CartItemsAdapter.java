@@ -218,11 +218,12 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                                 @Override
                                                 public void run() {
 
+                                                    loading.hideProgressBar();
+
 //                                            holder.progress_circular.setVisibility(View.VISIBLE);
 //                                            holder.img_delete_product.setVisibility(View.INVISIBLE);
 
                                                     if (response.data().CartItemMutation().remove().status() == 200) {
-                                                        loading.hideProgressBar();
 
 //                                                holder.progress_circular.setVisibility(View.GONE);
 
@@ -256,6 +257,17 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                                         @Override
                                         public void onFailure(@NotNull ApolloException e) {
+
+                                            handler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+
+                                                    Toasty.error(context , "Error in connecting to the Internet").show();
+
+                                                    loading.hideProgressBar();
+
+                                                }
+                                            });
 
                                         }
                                     });

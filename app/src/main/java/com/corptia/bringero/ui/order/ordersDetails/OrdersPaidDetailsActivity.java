@@ -2,6 +2,7 @@ package com.corptia.bringero.ui.order.ordersDetails;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,6 +81,8 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     ImageView img_delivered;
 
     //pilot
+    @BindView(R.id.layout_pilot)
+    ConstraintLayout layout_pilot;
     @BindView(R.id.img_pilot)
     CircleImageView img_pilot;
     @BindView(R.id.txt_name)
@@ -304,17 +307,20 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                 //For Tracking Line
                 if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESREPLIED.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
+                    layout_pilot.setVisibility(View.GONE);
                 } else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESPREPARED.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
+                    layout_pilot.setVisibility(View.GONE);
                 } else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERING.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
                     img_delivering.setImageResource(R.drawable.tracking_status_delivering);
-
+                    layout_pilot.setVisibility(View.VISIBLE);
                     btn_track_package.setVisibility(View.VISIBLE);
                 } else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
                     img_delivering.setImageResource(R.drawable.tracking_status_delivering);
                     img_delivered.setImageResource(R.drawable.tracking_status_delivered);
+                    layout_pilot.setVisibility(View.VISIBLE);
                 }
 
 

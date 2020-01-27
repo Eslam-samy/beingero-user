@@ -72,6 +72,7 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
@@ -145,7 +146,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         setupPlaceAutoComplete();
 
         firstTime = true;
-        saveLocationBtn = findViewById(R.id.saveLocationBtn);
         //saveLocationBtn.setVisibility(View.GONE);
 
 //        dataPlacesAutoComplete = new ArrayList<>();
@@ -245,6 +245,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 if(results[0] > radiusInMeters ){
 
                     Log.d("HAZEM" , " Outside, distance from center " + getCompleteAddressString(newLatitude ,newLongitude ));
+                    Toasty.info(MapsActivity.this , "Out of bounds Damietta El-Gadeeda City").show();
 
 //                    Toast.makeText(getBaseContext(),
 //                            "Outside, distance from center: " + results[0] + " radius: " + radiusInMeters,
