@@ -149,6 +149,11 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
     }
 
+    @Override
+    public void onErrorRole(String role) {
+
+    }
+
     //For Open Splash Fast
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

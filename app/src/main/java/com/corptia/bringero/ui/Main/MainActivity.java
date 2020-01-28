@@ -38,8 +38,8 @@ public class MainActivity extends BaseActivity {
 
         //************ For Fragment ************
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.addFragments(new LoginFragment(), "Login");
-        viewPagerAdapter.addFragments(new SignupFragment(), "Signup");
+        viewPagerAdapter.addFragments(new LoginFragment(), getString(R.string.login));
+        viewPagerAdapter.addFragments(new SignupFragment(), getString(R.string.signup));
 
         viewPager.setOffscreenPageLimit(0);
         viewPager.setPagingEnabled(false);

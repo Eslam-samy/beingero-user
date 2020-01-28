@@ -4,6 +4,8 @@ package com.corptia.bringero.ui.Main.login;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,7 +20,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.splash.SplashActivity;
 import com.corptia.bringero.utils.language.LocaleHelper;
@@ -169,6 +173,73 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
                         token.continuePermissionRequest();
                     }
                 }).check();
+
+    }
+
+    @Override
+    public void onErrorRole(String role) {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                //Now we need an AlertDialog.Builder object
+                //setting the view of the builder to our custom view that we already inflated
+
+
+                //finally creating the alert dialog and displaying it
+
+
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getActivity());
+                //then we will inflate the custom alert dialog xml that we created
+                View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_dialog_alarm, null);
+                builder.setView(dialogView);
+
+//                img_done = dialogView.findViewById(R.id.img_done);
+                Button btn_ok = dialogView.findViewById(R.id.btn_ok);
+
+
+                androidx.appcompat.app.AlertDialog dialog = builder.create();
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+
+                btn_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (role.equalsIgnoreCase(RoleEnum.PILOT.rawValue())) {
+
+                            goAppInGooglePlay(Constants.PACKAGE_NAME_PILOT);
+
+                        } else if (role.equalsIgnoreCase(RoleEnum.STOREADMIN.rawValue())) {
+                            goAppInGooglePlay(Constants.PACKAGE_NAME_STOREADMIN);
+                        }
+
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
+            }
+        });
+    }
+
+
+    private void goAppInGooglePlay(String appPackageName) {
+
+        Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage(appPackageName);
+
+        if (intent == null) {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            } catch (android.content.ActivityNotFoundException ex) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            }
+        } else {
+            startActivity(intent);
+
+        }
 
     }
 }

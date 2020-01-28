@@ -41,4 +41,8 @@ public class Constants {
     public static final String BUYING_ORDER_ID = "BUYING_ORDER_ID";
     public static final String EXTRA_PHONE_NUMBER = "EXTRA_PHONE_NUMBER";
     public static final String EXTRA_PASSWORD = "EXTRA_PASSWORD";
+
+    public static final String PACKAGE_NAME_PILOT = "com.corptia.bringero.pilot";
+    public static final String PACKAGE_NAME_STOREADMIN= "com.corptia.bringero.store";
+
 }

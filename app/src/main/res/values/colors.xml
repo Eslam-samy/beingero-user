@@ -58,4 +58,9 @@
     <color name="color_line_box_language">#707070</color>
     <color name="border_image">#E7E7E8</color>
 
+    <!-- For PinView -->
+    <color name="line_selected">@color/colorPrimary</color>
+    <color name="line_focused">#4C69FF</color>
+    <color name="line_default">@color/color_line_box_language</color>
+
 </resources>

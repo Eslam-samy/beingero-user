@@ -125,8 +125,8 @@ public class Common {
 
         SelectDeliveryLocationAdapter adapter;
         bottomSheetDialog = new BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme);
-        bottomSheetDialog.setCanceledOnTouchOutside(true);
-        bottomSheetDialog.setCancelable(true);
+//        bottomSheetDialog.setCanceledOnTouchOutside(false);
+//        bottomSheetDialog.setCancelable(false);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); //I use this line because this class not activity
         View sheetView = inflater.inflate(R.layout.layout_select_delivery_location, null);
@@ -160,7 +160,7 @@ public class Common {
                     Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-                //Here Open Maps
+                //Here Open AllowLocationActivity
                 Common.isUpdateCurrentLocation = true;
                 context.startActivity(new Intent(context, AllowLocationActivity.class));
                 finalBottomSheetDialog.dismiss();
@@ -188,7 +188,7 @@ public class Common {
 //        bottomSheetDialog.getWindow().setBackgroundDrawableResource(R.drawable.round_up_bottom_sheet);
 
         bottomSheetDialog.setContentView(sheetView);
-        bottomSheetDialog.setCancelable(false);
+//        bottomSheetDialog.setCancelable(false);
         bottomSheetDialog.show();
 
         return bottomSheetDialog;

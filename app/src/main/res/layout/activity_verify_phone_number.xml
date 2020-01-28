@@ -48,12 +48,13 @@
         app:itemCount="6"
         app:itemHeight="48dp"
         app:itemRadius="10dp"
-        app:lineColor="#4C69FF"
-        app:cursorColor="#4C69FF"
+        app:cursorColor="@color/colorPrimary"
         app:viewType="rectangle"
         app:layout_constraintTop_toBottomOf="@+id/txt_lab_message"
         app:layout_constraintStart_toStartOf="@+id/logo"
         android:layout_marginTop="@dimen/large_margin"
+        app:lineColor="@drawable/selector_pinview_linecolor"
+        android:state_selected="true"
         />
 
     <Button

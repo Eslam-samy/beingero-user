@@ -234,6 +234,8 @@
     <string name="house">House</string>
     <string name="office">Office</string>
     <string name="other">Other</string>
+    <string name="please_allow_app_access_to_your_location_to_n_find_stores_near_you">Please allow app access to your location to   find stores near you.</string>
+    <string name="find_stores_n_near_your_location">Find stores   near your location!</string>
 
 </resources>
 

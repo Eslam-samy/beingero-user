@@ -8,7 +8,7 @@ public class LoginContract {
 
         //void login(String username, String password, OnLoginFinishedListener listener);
         void onSuccessLoginToMap();
-
+        void onErrorRole(String role);
     }
 
     public interface LoginPresenter{

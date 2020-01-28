@@ -250,7 +250,7 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
             Gender gender =userData.getGender();
             if (gender.rawValue().equalsIgnoreCase(Gender.MALE.rawValue()))
                 radioMail.setChecked(true);
-            else
+            else if (gender.rawValue().equalsIgnoreCase(Gender.FEMALE.rawValue()))
                 radioFemail.setChecked(true);
 
         }
@@ -289,8 +289,10 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
 
         if (radioMail.isChecked())
             gender = Gender.MALE;
-        else
+        else  if (radioFemail.isChecked())
             gender = Gender.FEMALE;
+        else
+            gender = Gender.$UNKNOWN;
 
 
         if (!email.isEmpty()){
@@ -306,24 +308,52 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
         UserInfo userInfo;
 
         if (!email.isEmpty()){
-            userInfo = UserInfo.builder()
-                    .firstName(firstName)
-                    .lastName(lastName)
-                    .avatarImageId(avatarImageId)
-                    .birthDate(birthDate)
-                    .gender(gender)
-                    .email(email)
-                    .build();
+
+            if (gender==null){
+                userInfo = UserInfo.builder()
+                        .firstName(firstName)
+                        .lastName(lastName)
+                        .avatarImageId(avatarImageId)
+                        .birthDate(birthDate)
+                        .email(email)
+                        .build();
+            }
+            else
+            {
+                userInfo = UserInfo.builder()
+                        .firstName(firstName)
+                        .lastName(lastName)
+                        .avatarImageId(avatarImageId)
+                        .birthDate(birthDate)
+                        .gender(gender)
+                        .email(email)
+                        .build();
+            }
+
         }
         else
         {
-            userInfo = UserInfo.builder()
-                    .firstName(firstName)
-                    .lastName(lastName)
-                    .avatarImageId(avatarImageId)
-                    .birthDate(birthDate)
-                    .gender(gender)
-                    .build();
+
+            if (gender==null){
+                userInfo = UserInfo.builder()
+                        .firstName(firstName)
+                        .lastName(lastName)
+                        .avatarImageId(avatarImageId)
+                        .birthDate(birthDate)
+                        .build();
+            }
+            else
+            {
+                userInfo = UserInfo.builder()
+                        .firstName(firstName)
+                        .lastName(lastName)
+                        .avatarImageId(avatarImageId)
+                        .birthDate(birthDate)
+                        .gender(gender)
+                        .build();
+            }
+
+
         }
 
         MyApolloClient.getApollowClientAuthorization().mutate(UpdateUserInfoMutation.builder().data(userInfo).build())
@@ -337,6 +367,8 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
                             @Override
                             public void run() {
 
+                                dialog.dismiss();
+
                                 if (response.data().UserMutation().updateInfo().status() == 200)
                                 {
                                     Common.CURRENT_USER.setFirstName(firstName);
@@ -346,7 +378,11 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
                                     if (response.data().UserMutation().updateInfo().data().AvatarResponse().status() == 200)
                                     Common.CURRENT_USER.setAvatarName(response.data().UserMutation().updateInfo().data().AvatarResponse().data().name());
 
-                                    Common.CURRENT_USER.setGender(gender);
+                                    if (gender!=null)
+                                        Common.CURRENT_USER.setGender(response.data().UserMutation().updateInfo().data().gender());
+                                    else
+                                        Common.CURRENT_USER.setGender(Gender.$UNKNOWN);
+
                                     Common.CURRENT_USER.setBirthDate(edt_date.getText().toString());
 
                                     Toasty.success(getActivity() , getString(R.string.successful_update)  ).show();
@@ -356,13 +392,11 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(intent);
 
-                                    dialog.hide();
 
                                 }
 
                                 else {
 
-                                    dialog.hide();
 
                                 }
                             }
@@ -378,7 +412,7 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
                             @Override
                             public void run() {
 
-                                dialog.hide();
+                                dialog.dismiss();
                             }
                         });
                     }
