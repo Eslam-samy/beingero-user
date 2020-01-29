@@ -45,6 +45,7 @@ type BuyingOrder implements IModelData {
     TotalPrice: Float
     _id: ID!
     createdAt: Date
+    createdAtDateTime: DateTime
     customerUserId: ID!
     deliveryOrderId: ID!
     orderMaxPreparingMinutes: Int
@@ -58,7 +59,7 @@ type BuyingOrderItem implements IModelData {
     Price: Float
     PricingProductResponse: PricingProductSingleResponse
     _id: ID!
-    amount: Int
+    amount: Float
     createdAt: Date
     discountActive: Boolean
     discountRatio: Float
@@ -152,7 +153,7 @@ type CartItem implements IModelData {
     PricingProduct: PricingProduct
     PricingProductResponse: PricingProductSingleResponse
     _id: ID!
-    amount: Int!
+    amount: Float!
     createdAt: Date
     pricingProductId: ID
     totalPrice: Float
@@ -583,6 +584,7 @@ type Notification implements IModelData {
     _id: ID!
     actionType: String
     createdAt: Date
+    createdAtDateTime: DateTime
     display: String
     docId: ID
     docStatus: String
@@ -748,14 +750,16 @@ type PricingProduct implements IModelData {
     ProductResponse: ProductSingleResponse
     StoreResponse: StoreSingleResponse
     _id: ID!
-    amount: Int
+    amount: Float
     createdAt: Date
     discountActive: Boolean
     discountRatio: Float
     isAvailable: Boolean
+    minSellingUnits: Float
     productId: ID!
     storeId: ID!
     storePrice: Float!
+    unitStep: Float
     updatedAt: Date
 }
 
@@ -811,10 +815,12 @@ type Product implements IModelData {
     formPerUnit: Int
     imageId: ID
     manufacturerId: ID
+    minSellingUnits: Float
     multiLangs(fields: [ProductMultiLangsFieldsEnum!] = [name, description]): ProductMultiLangs
     name: String
     typeId: ID
     unitId: ID
+    unitStep: Float
     updatedAt: Date
 }
 
@@ -1102,6 +1108,7 @@ type ProductUnit implements IModelData {
     createdAt: Date
     icon: Icon
     imageId: ID
+    isScalarUnit: Boolean
     multiLangs(fields: [ProductUnitMultiLangsFieldsEnum!] = [name]): ProductUnitMultiLangs
     name: String
     updatedAt: Date
@@ -1384,7 +1391,7 @@ type Subscription {
 
 type TestModel implements IModelData {
     _id: ID!
-    amount: Int
+    amount: Float
     createdAt: Date
     dateField: Date
     description: String
@@ -2126,7 +2133,7 @@ input BuyingOrderFilterRange {
 
 input BuyingOrderItemFilterInput {
     _id: ID
-    amount: Int
+    amount: Float
     createdAt: Date
     orderId: ID
     pricingProductId: ID
@@ -2151,7 +2158,7 @@ input CartItemFilterArray {
 input CartItemFilterInput {
     IN: CartItemFilterArray
     _id: ID
-    amount: Int
+    amount: Float
     createdAt: Date
     pricingProductId: ID
     updatedAt: Date
@@ -2411,7 +2418,7 @@ input PolyLineCooridinatesInput {
 
 input PricingProductFilterInput {
     _id: ID
-    amount: Int
+    amount: Float
     createdAt: Date
     discountActive: Boolean
     isAvailable: Boolean
@@ -2553,6 +2560,7 @@ input ProductTypeSortingInput {
 input ProductUnitFilterInput {
     _id: ID
     createdAt: Date
+    isScalarUnit: Boolean
     name: String
     updatedAt: Date
 }
@@ -2691,13 +2699,13 @@ input createBuyingOrder {
 }
 
 input createBuyingOrderItem {
-    amount: Int!
+    amount: Float!
     orderId: ID!
     pricingProductId: ID!
 }
 
 input createCartItem {
-    amount: Int!
+    amount: Float!
     pricingProductId: ID!
 }
 
@@ -2761,13 +2769,15 @@ input createPilotVehicle {
 }
 
 input createPricingProduct {
-    amount: Int
+    amount: Float
     discountActive: Boolean
     discountRatio: Float
     isAvailable: Boolean = true
+    minSellingUnits: Float
     productId: ID!
     storeId: ID!
     storePrice: Float!
+    unitStep: Float
 }
 
 input createProduct {
@@ -2781,8 +2791,11 @@ input createProduct {
     formPerUnit: Int
     imageId: ID
     manufacturerId: ID
+    minSellingUnits: Float
     name: multilanguageInput
+    typeId: ID
     unitId: ID
+    unitStep: Float
 }
 
 input createProductBrand {
@@ -2824,6 +2837,7 @@ input createProductType {
 input createProductUnit {
     icon: IconInput
     imageId: ID
+    isScalarUnit: Boolean
     name: multilanguageInput
 }
 
@@ -2859,7 +2873,7 @@ Mutation Inputs:
 Create Mutation Input
 """
 input createTestModel {
-    amount: Int
+    amount: Float
     dateField: Date
     description: multilanguageInput
     intArray: [Int]
@@ -3069,11 +3083,11 @@ input updateBuyingOrder {
 }
 
 input updateBuyingOrderItem {
-    amount: Int!
+    amount: Float!
 }
 
 input updateCartItem {
-    amount: Int!
+    amount: Float!
 }
 
 input updateDeliveryOrder {
@@ -3130,13 +3144,15 @@ input updatePilotVehicle {
 }
 
 input updatePricingProduct {
-    amount: Int
+    amount: Float
     discountActive: Boolean
     discountRatio: Float
     isAvailable: Boolean
+    minSellingUnits: Float
     productId: ID
     storeId: ID
     storePrice: Float
+    unitStep: Float
 }
 
 input updateProduct {
@@ -3150,8 +3166,11 @@ input updateProduct {
     formPerUnit: Int
     imageId: ID
     manufacturerId: ID
+    minSellingUnits: Float
     name: multilanguageInput
+    typeId: ID
     unitId: ID
+    unitStep: Float
 }
 
 input updateProductBrand {
@@ -3194,6 +3213,7 @@ input updateProductType {
 input updateProductUnit {
     icon: IconInput
     imageId: ID
+    isScalarUnit: Boolean
     name: multilanguageInput
 }
 
@@ -3236,7 +3256,7 @@ input updateTestModel {
     PULL: testModelArraySingles
     PUSH_ARRAY: testModelPushArrays
     PUSH_SINGLE: testModelArraySingles
-    amount: Int
+    amount: Float
     dateField: Date
     description: multilanguageInput
     intArray: [Int]

@@ -21,7 +21,8 @@ query NotificationQuery(
                 message
                 model
                 status
-                createdAt
+#                createdAt
+                createdAtDateTime
                 docStatus
                 docId
             }

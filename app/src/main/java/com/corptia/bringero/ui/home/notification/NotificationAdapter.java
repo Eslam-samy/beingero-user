@@ -1,6 +1,8 @@
 package com.corptia.bringero.ui.home.notification;
 
 import android.content.Context;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +14,19 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.airbnb.lottie.L;
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseViewHolder;
 import com.corptia.bringero.graphql.NotificationQuery;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,6 +93,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         TextView txt_messages_notification;
         @BindView(R.id.txt_date_notification)
         TextView txt_date_notification;
+        @BindView(R.id.txt_time)
+        TextView txt_time;
         @BindView(R.id.card_image_notification)
         CardView card_image_notification;
 
@@ -101,14 +110,59 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             NotificationQuery.NotificationDatum notification = notificationList.get(position);
 
-            txt_date_notification.setText(notification.createdAt().toString());
+            if (notification.createdAtDateTime() != null) {
+
+                try {
+
+
+                    long time = Long.parseLong(notification.createdAtDateTime().toString());
+                    Log.d("HAZEM", "HHH " + time);
+
+                    long now = System.currentTimeMillis();
+                    CharSequence ago =
+                            DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+
+                    Common.LOG("Error : " + ago.toString());
+                    txt_time.setText(ago);
+
+                }
+                catch (Exception ex){
+                    Common.LOG("Error : " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+
+
+
+
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+//                sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+//                try {
+//                    Common.LOG("Error sdfsdfsdf : " +notification.createdAtDateTime());
+//
+//                    Common.LOG("time : " + time);
+//                    long now = System.currentTimeMillis();
+//                    CharSequence ago =
+//                            DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+//
+//                    Common.LOG("Error : " + ago.toString());
+//                    txt_time.setText("ago " + ago);
+//
+//                } catch (ParseException e) {
+//                    Common.LOG("Error : " + e.getMessage());
+//                    e.printStackTrace();
+//                }
+
+
+            }
+
+//            txt_date_notification.setText(notification.createdAt().toString());
             txt_messages_notification.setText(notification.message());
 
             String uriColor = "@color/" + notification.docStatus().toLowerCase();
             int colorResource = context.getResources().getIdentifier(uriColor, null, context.getPackageName());
             card_image_notification.setCardBackgroundColor(context.getResources().getColor(colorResource));
 
-            String uriImage = "@drawable/ic_notification_" +  notification.docStatus().toLowerCase();
+            String uriImage = "@drawable/ic_notification_" + notification.docStatus().toLowerCase();
             int imageResource = context.getResources().getIdentifier(uriImage, null, context.getPackageName());
 //            Drawable res = context.getResources().getDrawable(imageResource);
 

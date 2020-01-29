@@ -165,7 +165,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             String productId = "";
 
             //for cart
-            int amount = 0;
+            double amount = 0;
             cartProductId = "";
 
             if (!isSearch) {

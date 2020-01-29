@@ -135,9 +135,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                         if (!isDelete) {
                             //If not Button delete food From Cart Click
-                            int totalAmountStore = 9999;
-                            if (item.PricingProduct().amount() != null)
-                                totalAmountStore = item.PricingProduct().amount();
+//                            int totalAmountStore = 9999;
+//                            if (item.PricingProduct().amount() != null)
+//                                totalAmountStore = item.PricingProduct().amount();
 
                             if (isDecrease) //if Decrease quantity
                             {
@@ -313,9 +313,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                         if (!isDelete) {
                             //If not Button delete food From Cart Click
-                            int totalAmountStore = 9999;
-                            if (item.PricingProduct().amount() != null)
-                                totalAmountStore = item.PricingProduct().amount();
+//                            int totalAmountStore = 9999;
+//                            if (item.PricingProduct().amount() != null)
+//                                totalAmountStore = item.PricingProduct().amount();
 
                             if (isDecrease) //if Decrease quantity
                             {

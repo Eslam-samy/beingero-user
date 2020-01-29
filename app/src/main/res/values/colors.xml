@@ -26,15 +26,21 @@
 
 
 
-    <color name="delivering">#1F74FF</color>
-    <color name="prepared">#ffba00</color>
-    <color name="delivered">#F13181</color>
-    <color name="assignedtopilot">#D5A53A</color>
-    <color name="ordersrequested">#46C93A</color>
-    <color name="storesprepared">#113D74</color>
-    <color name="storesreplied">#AC5D21</color>
-    <color name="approved">#46C93A</color>
-    <color name="rejected">#FF4757</color>
+    <color name="ordersrequested">#F9C80E</color>
+    <color name="storesreplied">#0DD52E</color>
+    <color name="storesprepared">#AC65F6</color>
+    <color name="assignedtopilot">#FF5702</color>
+    <color name="delivering">#23C9FF</color>
+
+
+    <color name="requested">#F9C80E</color>
+    <color name="approved">#0DD52E</color>
+    <color name="rejected">#FF6663</color>
+    <color name="canceled">#555B6E</color>
+    <color name="preparing">#FCA958</color>
+    <color name="prepared">#AC65F6</color>
+    <color name="pilotrecived">#13BC68</color>
+    <color name="delivered">#2176FF</color>
 
     <color name="blueLight">#4C69FF</color>
     <color name="backgroundSplash">#23192d</color>

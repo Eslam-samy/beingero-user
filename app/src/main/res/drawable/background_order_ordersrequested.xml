@@ -4,6 +4,6 @@
     <corners
         android:radius="4dp"/>
     <solid
-        android:color="@color/approved"/>
+        android:color="@color/ordersrequested"/>
 
 </shape>

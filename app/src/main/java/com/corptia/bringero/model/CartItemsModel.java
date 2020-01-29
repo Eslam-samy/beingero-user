@@ -5,9 +5,9 @@ public class CartItemsModel {
     String cartProductId;
     String pricingProductId;
     double totalPrice;
-    int amount;
+    double amount;
 
-    public CartItemsModel(String cartProductId, String pricingProductId, double totalPrice, int amount) {
+    public CartItemsModel(String cartProductId, String pricingProductId, double totalPrice, double amount) {
         this.cartProductId = cartProductId;
         this.pricingProductId = pricingProductId;
         this.totalPrice = totalPrice;
@@ -17,11 +17,11 @@ public class CartItemsModel {
     public CartItemsModel() {
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

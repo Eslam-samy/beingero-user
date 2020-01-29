@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -297,5 +298,8 @@ public class Common {
         return currentDeliveryAddressModel;
     }
 
+    public static void LOG(String log) {
+        Log.d("HAZEM" , "Log : "+log);
+    }
 
 }

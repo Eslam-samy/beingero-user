@@ -21,11 +21,11 @@
 
         <ImageView
             android:id="@+id/image_notification"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:src="@drawable/ic_notification_delivering"
             android:layout_gravity="center"
+            android:padding="2dp"
             />
 
     </androidx.cardview.widget.CardView>
@@ -41,7 +41,8 @@
         app:layout_constraintStart_toEndOf="@+id/card_image_notification"
         app:layout_constraintTop_toTopOf="@+id/card_image_notification"
         app:layout_constraintVertical_chainStyle="packed"
-        android:layout_width="0dp"/>
+        android:layout_width="0dp"
+        android:layout_marginEnd="6dp"/>
 
 
     <TextView
@@ -54,6 +55,7 @@
         android:text="Lorem Ipsum is simply dummy text. "
         android:fontFamily="@font/poppinsregular"
         android:textSize="@dimen/low_xx_text_size"
+        android:visibility="gone"
         />
 
     <TextView

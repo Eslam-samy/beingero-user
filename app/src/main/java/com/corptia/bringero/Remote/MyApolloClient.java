@@ -155,6 +155,40 @@ public class MyApolloClient {
         };
 
 
+        // Custom Time Scalar Type
+        CustomTypeAdapter dateTimeCustomTypeAdapter = new CustomTypeAdapter<Long>() {
+            @Override
+            public Long decode(CustomTypeValue value) {
+
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormatParse = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                try {
+                    // Log.d("decode","decode");
+
+                    //Date date = dateFormatParse.parse(value.value.toString());
+                    //Date startDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(value.value.toString()).getTime());
+//                    Date startDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(value.value.toString()).getTime());
+
+                    Date pars = dateFormatParse.parse(value.value.toString());
+
+                    Common.LOG("HAZEM toString : " + pars.toString());
+                    Common.LOG("HAZEM  getTime : " + pars.getTime());
+
+                    // Log.d("DateDate" , "Date >> "+startDate);
+                    return pars.getTime() + (3600 * 2000) ;
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+
+                }
+            }
+
+            @Override
+            public CustomTypeValue encode(Long value) {
+                  Log.d("HAZEM","encode " + value);
+                return new CustomTypeValue.GraphQLString(value.toString());
+            }
+        };
+
+
 
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -196,6 +230,7 @@ public class MyApolloClient {
                 .okHttpClient(okHttpClient)
                 .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
                 .addCustomTypeAdapter(CustomType.EMAIL, emailTypeAdapter)
+                .addCustomTypeAdapter(CustomType.DATETIME, dateTimeCustomTypeAdapter)
                 .build();
 
         return apolloClient;
@@ -249,6 +284,35 @@ public class MyApolloClient {
             }
         };
 
+        // Custom DateTime Scalar Type
+        CustomTypeAdapter dateTimeCustomTypeAdapter = new CustomTypeAdapter<Date>() {
+            @Override
+            public Date decode(CustomTypeValue value) {
+
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormatParse = new SimpleDateFormat("HH:mm:ss.SSS'Z'");
+                try {
+                    // Log.d("decode","decode");
+
+                    //Date date = dateFormatParse.parse(value.value.toString());
+                    //Date startDate = new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(value.value.toString()).getTime());
+                    Date startDate = new java.sql.Date(new SimpleDateFormat("HH:mm:ss.SSS'Z'").parse(value.value.toString()).getTime());
+
+
+                    // Log.d("DateDate" , "Date >> "+startDate);
+                    return startDate ;
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+
+                }
+            }
+
+            @Override
+            public CustomTypeValue encode(Date value) {
+                //  Log.d("encode","encode " + value);
+                return new CustomTypeValue.GraphQLString(value.toString());
+            }
+        };
+
 
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
@@ -283,6 +347,7 @@ public class MyApolloClient {
                 .okHttpClient(okHttpClient)
                 .addCustomTypeAdapter(CustomType.DATE, dateCustomTypeAdapter)
                 .addCustomTypeAdapter(CustomType.EMAIL, emailTypeAdapter)
+                .addCustomTypeAdapter(CustomType.DATETIME, dateTimeCustomTypeAdapter)
                 .build();
 
         return apolloClient;
