@@ -814,6 +814,7 @@ type Product implements IModelData {
     formId: ID
     formPerUnit: Int
     imageId: ID
+    isPackaged: Boolean
     manufacturerId: ID
     minSellingUnits: Float
     multiLangs(fields: [ProductMultiLangsFieldsEnum!] = [name, description]): ProductMultiLangs
@@ -2790,6 +2791,7 @@ input createProduct {
     formId: ID
     formPerUnit: Int
     imageId: ID
+    isPackaged: Boolean
     manufacturerId: ID
     minSellingUnits: Float
     name: multilanguageInput
@@ -3165,6 +3167,7 @@ input updateProduct {
     formId: ID
     formPerUnit: Int
     imageId: ID
+    isPackaged: Boolean
     manufacturerId: ID
     minSellingUnits: Float
     name: multilanguageInput

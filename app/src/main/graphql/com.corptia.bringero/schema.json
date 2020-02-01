@@ -6258,6 +6258,18 @@
               "deprecationReason": null
             },
             {
+              "name": "isPackaged",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "Price",
               "description": "",
               "args": [
@@ -25714,6 +25726,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "isPackaged",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -25876,6 +25898,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Float",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "isPackaged",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
                 "ofType": null
               },
               "defaultValue": null

@@ -32,9 +32,9 @@ public class User implements LoginContract.LoginModel {
         // check password lenght greter than 6
         if (TextUtils.isEmpty(getPhone()))
             return 0;
-        else if (!Patterns.PHONE.matcher(getPhone()).matches())
+        else if (!Patterns.PHONE.matcher(getPhone()).matches() || getPhone().length()!=11)
             return 1;
-        else if (getPassword().length()<6)
+        else if (getPassword().length()<8)
             return 2;
         else
             return -1;

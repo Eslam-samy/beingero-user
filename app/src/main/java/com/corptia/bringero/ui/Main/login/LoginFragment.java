@@ -25,6 +25,7 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.splash.SplashActivity;
+import com.corptia.bringero.utils.button.ProgressButton;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
@@ -40,6 +41,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
+import es.dmoral.toasty.Toasty;
 
 import static com.corptia.bringero.Common.Common.isFirstTimeAddLocation;
 
@@ -50,7 +52,7 @@ import static com.corptia.bringero.Common.Common.isFirstTimeAddLocation;
 public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
     @BindView(R.id.btn_login)
-    Button btn_login;
+    View btn_login;
     @BindView(R.id.input_phone_number)
     TextInputLayout input_phone_number;
     @BindView(R.id.input_password)
@@ -67,6 +69,8 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
     Handler handler = new Handler();
 
+    //This Custom Button Loading
+    ProgressButton progressButton;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -78,7 +82,9 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+
         ButterKnife.bind(this, view);
+        progressButton = new ProgressButton(getActivity(), btn_login);
         waitingDialog = new SpotsDialog.Builder().setContext(getActivity()).setCancelable(false).build();
 
         loginPresenter = new LoginPresenter(this);
@@ -112,23 +118,36 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
     @Override
     public void showProgressBar() {
-        showBarHideBtn(progress_Loading, btn_login);
+        progressButton.showProgressBar();
+        btn_login.setEnabled(false);
 
+        input_password.setEnabled(false);
+        input_phone_number.setEnabled(false);
     }
 
     @Override
     public void hideProgressBar() {
-        handler.post(() ->
-                showBarHideBtn(progress_Loading, btn_login));
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                btn_login.setEnabled(true);
+                progressButton.hideProgressBar();
+
+                input_password.setEnabled(true);
+                input_phone_number.setEnabled(true);
+
+            }
+        });
     }
 
     @Override
     public void showErrorMessage(String Message) {
 
         handler.post(() -> {
-            showBtnHideBar(btn_login, progress_Loading);
 //            waitingDialog.dismiss();
-            Toast.makeText(getActivity(), "" + Message, Toast.LENGTH_SHORT).show();
+            Toasty.info(getActivity(), "" + Message).show();
         });
 
     }

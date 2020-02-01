@@ -131,7 +131,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     //Event
                     cartViewHolder.setListener((view, position1, isDecrease, isDelete) -> {
 
-                        int amount = Integer.parseInt(cartViewHolder.txt_quantity.getText().toString());
+                        int amount = (int) item.amount();
+//                        int amount = Integer.parseInt(cartViewHolder.txt_quantity.getText().toString());
 
                         if (!isDelete) {
                             //If not Button delete food From Cart Click
@@ -308,7 +309,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     //Event
                     cartDiscount.setListener((view, position1, isDecrease, isDelete) -> {
 
-                        int amount = Integer.parseInt(cartDiscount.txt_quantity.getText().toString());
+                        int amount = (int) item.amount();
+//                        int amount = Integer.parseInt(cartDiscount.txt_quantity.getText().toString());
 
 
                         if (!isDelete) {
