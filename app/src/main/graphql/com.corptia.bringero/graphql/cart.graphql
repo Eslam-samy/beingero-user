@@ -25,11 +25,15 @@ query MyCartQuery {
                 }
                 Items {
                     _id
-
                     PricingProduct {
                         Product {
                             _id
                             name
+
+                            isPackaged
+                            minSellingUnits
+                            unitStep
+
                             ImageResponse {
                                 data {
                                     name
@@ -47,11 +51,15 @@ query MyCartQuery {
                         discountRatio
                     }
 
+
                     amount
                     totalPrice
+
                 }
                 ItemsCount
                 TotalPrice
+
+
 
             }
             ItemsCount
@@ -152,10 +160,22 @@ query GetCartItemsCount($filter: CartItemFilterInput!){
             }
 
             data{
-                cartProductId:_id
+                cartProductId:
+                _id
                 pricingProductId
                 amount
                 totalPrice
+
+                PricingProduct{
+                    ProductResponse{
+                        status
+                        data{
+                            isPackaged
+                            minSellingUnits
+                            unitStep
+                        }
+                    }
+                }
             }
         }
     }

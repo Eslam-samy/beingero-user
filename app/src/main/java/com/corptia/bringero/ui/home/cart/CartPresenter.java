@@ -44,7 +44,7 @@ public class CartPresenter {
 
     }
 
-    public void updateCartItems(String itemsId , int amount){
+    public void updateCartItems(String itemsId , double amount){
 
         UpdateCartItem updateAmount = UpdateCartItem.builder().amount(amount).build();
         MyApolloClient.getApollowClientAuthorization().mutate(UpdateCartItemMutation.builder().id(itemsId).data(updateAmount).build())

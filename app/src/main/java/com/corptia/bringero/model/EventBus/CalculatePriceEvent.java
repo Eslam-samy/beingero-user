@@ -4,7 +4,7 @@ public class CalculatePriceEvent {
 
     boolean isSuccess;
     String productId;
-    int amount;
+    double amount;
     double storePrice;
     double totalProductPrice;
 
@@ -12,7 +12,7 @@ public class CalculatePriceEvent {
 //    int totalPriceStore ;
 //    int totalPriceCart ;
 
-    public CalculatePriceEvent(boolean isSuccess,String productId, int amount, double storePrice) {
+    public CalculatePriceEvent(boolean isSuccess,String productId, double amount, double storePrice) {
         this.productId = productId;
         this.amount = amount;
         this.storePrice = storePrice;
@@ -51,7 +51,7 @@ public class CalculatePriceEvent {
         this.productId = productId;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 

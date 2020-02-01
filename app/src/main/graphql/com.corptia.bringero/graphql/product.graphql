@@ -51,11 +51,18 @@ query getStoreProducts(
                 discountActive
                 discountRatio
 
+
+
                 Product {
                     _id
                     name
                     unitId
                     typeId
+
+                    isPackaged
+                    unitStep
+                    minSellingUnits
+
                     ImageResponse {
                         status
                         data {
@@ -214,6 +221,10 @@ query StoreSearch(
                 Product {
                     _id
                     name
+
+                    isPackaged
+                    minSellingUnits
+                    unitStep
 
                     ImageResponse {
                         status

@@ -168,6 +168,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             double amount = 0;
             cartProductId = "";
 
+            //isPackaged
+            boolean isPackaged = false;
+            double unitStep , minSellingUnits;
+
+
             if (!isSearch) {
 
                 product = productsList.get(position);
@@ -194,6 +199,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 productName = product.Product().name();
                 productId = product._id();
+                isPackaged = product.Product().isPackaged();
 
                 if (product.Product().ImageResponse().status() == 200)
                     productImage = product.Product().ImageResponse().data().name();
@@ -229,6 +235,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     productId = productSearch._id();
 
                     productName = productSearch.Product().name();
+                    isPackaged = productSearch.Product().isPackaged();
 
                     if (productSearch.Product().ImageResponse().status() == 200)
                         productImage = productSearch.Product().ImageResponse().data().name();
@@ -246,9 +253,12 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     btn_delete.setVisibility(View.VISIBLE);
                     bg_delete.setVisibility(View.VISIBLE);
 
-                    txt_amount.setText("" + item.getAmount());
-
                     amount = item.getAmount();
+                    if (item.isPackaged())
+                    txt_amount.setText("" +((int) amount));
+                    else
+                        txt_amount.setText("" + amount);
+
                     cartProductId = item.getCartProductId();
 
                     break;
@@ -273,6 +283,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             if (listener != null && Common.IS_AVAILABLE_STORE) {
 
                 double finalPrice1 = price;
+                boolean finalIsPackaged = isPackaged;
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -297,7 +308,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 btn_delete.setVisibility(View.VISIBLE);
                                 bg_delete.setVisibility(View.VISIBLE);
 
-                                txt_amount.setText("" + count);
+                                    if (finalIsPackaged){
+                                        txt_amount.setText("" + count);
+                                    }
                             }
 
 

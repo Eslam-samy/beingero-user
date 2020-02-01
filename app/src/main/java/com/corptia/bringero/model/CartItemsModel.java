@@ -6,12 +6,22 @@ public class CartItemsModel {
     String pricingProductId;
     double totalPrice;
     double amount;
+    boolean isPackaged;
 
-    public CartItemsModel(String cartProductId, String pricingProductId, double totalPrice, double amount) {
+    public CartItemsModel(String cartProductId, String pricingProductId, double totalPrice, double amount, boolean isPackaged) {
         this.cartProductId = cartProductId;
         this.pricingProductId = pricingProductId;
         this.totalPrice = totalPrice;
         this.amount = amount;
+        this.isPackaged = isPackaged;
+    }
+
+    public boolean isPackaged() {
+        return isPackaged;
+    }
+
+    public void setPackaged(boolean packaged) {
+        isPackaged = packaged;
     }
 
     public CartItemsModel() {

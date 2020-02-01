@@ -328,8 +328,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
     }
 
-    private void calculateCartTotalPrice(String productId, int amount, double storePrice) {
-
+    private void calculateCartTotalPrice(String productId, double amount, double storePrice) {
 
         cartPresenter.updateCartItems(productId, amount);
 
@@ -341,7 +340,9 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         total_price.setText(new StringBuilder().append(Common.getDecimalNumber(Common.TOTAL_CART_PRICE)).append(" ").append(getString(R.string.currency)));
 
 
-        if (Common.TOTAL_CART_PRICE <= 0) {
+        Common.LOG("TOTAL FROM CART FRAGMENT : >> " + Common.TOTAL_CART_PRICE);
+
+        if (Common.TOTAL_CART_PRICE <= 0.1f) {
             showPlaceHolder();
             loading.setVisibility(View.GONE);
             Common.TOTAL_CART_PRICE = 0;

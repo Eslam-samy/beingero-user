@@ -33,12 +33,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 
 public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    //Note
+    //-> this class have three view ( Check out - Normal cart - cart With Discount )
 
     Context context;
     List<MyCartQuery.Item> cartItems = new ArrayList<>();
@@ -103,35 +107,41 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
-        MyCartQuery.Item item = cartItems.get(position);
+        AtomicReference<MyCartQuery.Item> itemInCart = new AtomicReference<>(cartItems.get(position));
 
-        String productName = item.PricingProduct().Product().name();
+        String productName = itemInCart.get().PricingProduct().Product().name();
 
         switch (holder.getItemViewType()) {
 
 
             case VIEW_TYPE_CART_NORMAL:
+
+
                 ViewHolderCart cartViewHolder = (ViewHolderCart) holder;
 
-
-                cartViewHolder.txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+                cartViewHolder.txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
                 cartViewHolder.txt_name_product.setText(productName.length() >= 30 ? productName.substring(0, 20) + "..." : productName);
 
 
-                if (item.PricingProduct().Product().ImageResponse().data() != null)
-                    PicassoUtils.setImage(Common.BASE_URL_IMAGE + item.PricingProduct().Product().ImageResponse().data().name(), cartViewHolder.image_product);
+                if (itemInCart.get().PricingProduct().Product().ImageResponse().data() != null)
+                    PicassoUtils.setImage(Common.BASE_URL_IMAGE + itemInCart.get().PricingProduct().Product().ImageResponse().data().name(), cartViewHolder.image_product);
 
                 //Log.d("HAZEM" , "FULL : " +Common.BASE_URL_IMAGE +item.PricingProduct().Product().imageId() );
 
 
                 if (isCart) {
-                    cartViewHolder.txt_quantity.setText("" + item.amount());
-                    cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(item.totalPrice())).append(" ").append(context.getString(R.string.currency)));
+
+                    if (itemInCart.get().PricingProduct().Product().isPackaged())
+                        cartViewHolder.txt_quantity.setText("" + ((int) itemInCart.get().amount()));
+                    else
+                        cartViewHolder.txt_quantity.setText("" + itemInCart.get().amount());
+
+                    cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(itemInCart.get().totalPrice())).append(" ").append(context.getString(R.string.currency)));
 
                     //Event
                     cartViewHolder.setListener((view, position1, isDecrease, isDelete) -> {
 
-                        int amount = (int) item.amount();
+                        double amount =  itemInCart.get().amount();
 //                        int amount = Integer.parseInt(cartViewHolder.txt_quantity.getText().toString());
 
                         if (!isDelete) {
@@ -142,29 +152,36 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                             if (isDecrease) //if Decrease quantity
                             {
-                                if (amount > 1) {
+                                if (itemInCart.get().PricingProduct().Product().isPackaged()) {
 
-                                    amount -= 1;
+                                    if (amount > 1) {
 
-                                    cartViewHolder.txt_quantity.setText("" + amount);
-                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(true, item._id(), amount, -item.PricingProduct().storePrice()));
-                                    cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(amount * item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+                                        amount -= 1;
+
+                                        cartViewHolder.txt_quantity.setText("" + ((int)amount));
+                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, -itemInCart.get().PricingProduct().storePrice()));
+                                        cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(amount * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+                                    }
+
                                 }
 
                             } else if (amount < 99) {
 
-                                if (item.PricingProduct().storePrice() + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
+                                if (itemInCart.get().PricingProduct().storePrice() + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
 
                                     Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
                                     return;
                                 } else {
 
-                                    amount += 1;
+                                    if (itemInCart.get().PricingProduct().Product().isPackaged()) {
 
-                                    //                        if (amount < totalAmountStore) {
-                                    cartViewHolder.txt_quantity.setText("" + amount);
-                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(true, item._id(), amount, item.PricingProduct().storePrice()));
-                                    cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * item.PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+                                        amount += 1;
+                                        cartViewHolder.txt_quantity.setText("" + ((int)amount));
+                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, itemInCart.get().PricingProduct().storePrice()));
+                                        cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+
+                                    }
+
 
 //                        }
                                 }
@@ -187,7 +204,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
                             //Update Amount local list
-                            updateCartItemsLocal(position, amount, amount * item.PricingProduct().storePrice());
+                            updateCartItemsLocal(position, amount, amount * itemInCart.get().PricingProduct().storePrice());
+                            itemInCart.set(updateCurrentItems(amount, itemInCart.get()));
 
 
                         } else {
@@ -209,8 +227,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                             loading.showProgressBar(context, false);
 
-                            int finalAmount = amount;
-                            MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(item._id()).build())
+                            double finalAmount = amount;
+                            MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(itemInCart.get()._id()).build())
                                     .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
                                         @Override
                                         public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
@@ -237,12 +255,12 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                                         notifyItemRemoved(position);
                                                         notifyItemRangeChanged(position, cartItems.size());
 
-                                                        double totalProductPrice = finalAmount * item.PricingProduct().storePrice();
+                                                        double totalProductPrice = finalAmount * itemInCart.get().PricingProduct().storePrice();
 
 
                                                         //TODO I stop this code
 
-                                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, item._id(), -finalAmount, -(finalAmount) * item.PricingProduct().storePrice()));
+                                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), -finalAmount, -(finalAmount) * itemInCart.get().PricingProduct().storePrice()));
 
                                                         iClickRecyclerAdapter.onClickAdapter(position);
 
@@ -263,7 +281,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                                 @Override
                                                 public void run() {
 
-                                                    Toasty.error(context , "Error in connecting to the Internet").show();
+                                                    Toasty.error(context, "Error in connecting to the Internet").show();
 
                                                     loading.hideProgressBar();
 
@@ -288,28 +306,31 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 ViewHolderCartDiscount cartDiscount = (ViewHolderCartDiscount) holder;
 
-                double priceAfterDiscount = (1 - item.PricingProduct().discountRatio()) * item.PricingProduct().storePrice();
+                double priceAfterDiscount = (1 - itemInCart.get().PricingProduct().discountRatio()) * itemInCart.get().PricingProduct().storePrice();
 
                 cartDiscount.txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(priceAfterDiscount)).append(" ").append(context.getString(R.string.currency)));
 
                 cartDiscount.txt_name_product.setText(productName.length() >= 30 ? productName.substring(0, 20) + "..." : productName);
 
 
-                if (item.PricingProduct().Product().ImageResponse().data() != null)
-                    PicassoUtils.setImage(Common.BASE_URL_IMAGE + item.PricingProduct().Product().ImageResponse().data().name(), cartDiscount.image_product);
+                if (itemInCart.get().PricingProduct().Product().ImageResponse().data() != null)
+                    PicassoUtils.setImage(Common.BASE_URL_IMAGE + itemInCart.get().PricingProduct().Product().ImageResponse().data().name(), cartDiscount.image_product);
 
                 //Log.d("HAZEM" , "FULL : " +Common.BASE_URL_IMAGE +item.PricingProduct().Product().imageId() );
 
                 if (isCart) {
-                    cartDiscount.txt_quantity.setText("" + item.amount());
-                    cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(item.totalPrice())).append(" ").append(context.getString(R.string.currency)));
-                    cartDiscount.txt_discount.setText(new StringBuilder().append((int) (item.PricingProduct().discountRatio() * 100)).append(" %"));
-                    cartDiscount.txt_old_price.setText(new StringBuilder().append(item.PricingProduct().storePrice()).append(" ").append(context.getString(R.string.currency)));
+                    if (itemInCart.get().PricingProduct().Product().isPackaged())
+                        cartDiscount.txt_quantity.setText("" + ((int) itemInCart.get().amount()));
+                    else
+                        cartDiscount.txt_quantity.setText("" + itemInCart.get().amount());
+                    cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(itemInCart.get().totalPrice())).append(" ").append(context.getString(R.string.currency)));
+                    cartDiscount.txt_discount.setText(new StringBuilder().append((int) (itemInCart.get().PricingProduct().discountRatio() * 100)).append(" %"));
+                    cartDiscount.txt_old_price.setText(new StringBuilder().append(itemInCart.get().PricingProduct().storePrice()).append(" ").append(context.getString(R.string.currency)));
 
                     //Event
                     cartDiscount.setListener((view, position1, isDecrease, isDelete) -> {
 
-                        int amount = (int) item.amount();
+                        double amount =  itemInCart.get().amount();
 //                        int amount = Integer.parseInt(cartDiscount.txt_quantity.getText().toString());
 
 
@@ -322,10 +343,14 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                             if (isDecrease) //if Decrease quantity
                             {
                                 if (amount > 1) {
-                                    amount -= 1;
-                                    cartDiscount.txt_quantity.setText("" + amount);
-                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(true, item._id(), amount, -priceAfterDiscount));
-                                    cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(amount * priceAfterDiscount)).append(" ").append(context.getString(R.string.currency)));
+
+                                    if (itemInCart.get().PricingProduct().Product().isPackaged()) {
+                                        amount -= 1;
+                                        cartDiscount.txt_quantity.setText("" + ((int)amount));
+                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, -priceAfterDiscount));
+                                        cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(amount * priceAfterDiscount)).append(" ").append(context.getString(R.string.currency)));
+                                    }
+
                                 }
 
                             } else if (amount < 99) {
@@ -334,12 +359,15 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                                     Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
                                 } else {
-                                    amount += 1;
-                                    //                        if (amount < totalAmountStore) {
-                                    cartDiscount.txt_quantity.setText("" + amount);
-                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(true, item._id(), amount, priceAfterDiscount));
-                                    cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(amount * priceAfterDiscount)).append(" ").append(context.getString(R.string.currency)));
 
+                                    if (itemInCart.get().PricingProduct().Product().isPackaged()) {
+
+                                        amount += 1;
+                                        cartDiscount.txt_quantity.setText("" + ((int)amount));
+                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, priceAfterDiscount));
+                                        cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * priceAfterDiscount)).append(" ").append(context.getString(R.string.currency)));
+
+                                    }
 //                        }
                                 }
 
@@ -361,6 +389,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                             //Update Amount local list
                             updateCartItemsLocal(position, amount, amount * priceAfterDiscount);
+                            itemInCart.set(updateCurrentItems(amount, itemInCart.get()));
 
                         } else {
 
@@ -381,8 +410,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                             loading.showProgressBar(context, false);
 
-                            int finalAmount = amount;
-                            MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(item._id()).build())
+                            double finalAmount = amount;
+                            MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(itemInCart.get()._id()).build())
                                     .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
                                         @Override
                                         public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
@@ -411,7 +440,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                                                         double totalProductPrice = finalAmount * priceAfterDiscount;
 
                                                         //I stop this code
-                                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, item._id(), -finalAmount, -(finalAmount) * priceAfterDiscount));
+                                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), -finalAmount, -(finalAmount) * priceAfterDiscount));
 
 
                                                         iClickRecyclerAdapter.onClickAdapter(position);
@@ -447,17 +476,19 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 ViewHolderCart cartViewHolder2 = (ViewHolderCart) holder;
 
-                cartViewHolder2.txt_price.setText("" + item.PricingProduct().storePrice() + " " + context.getString(R.string.currency));
+                cartViewHolder2.txt_price.setText("" + itemInCart.get().PricingProduct().storePrice() + " " + context.getString(R.string.currency));
                 cartViewHolder2.txt_name_product.setText(productName.length() >= 30 ? productName.substring(0, 20) + "..." : productName);
 
 
-                if (item.PricingProduct().Product().ImageResponse().data() != null)
-                    PicassoUtils.setImage(Common.BASE_URL_IMAGE + item.PricingProduct().Product().ImageResponse().data().name(), cartViewHolder2.image_product);
+                if (itemInCart.get().PricingProduct().Product().ImageResponse().data() != null)
+                    PicassoUtils.setImage(Common.BASE_URL_IMAGE + itemInCart.get().PricingProduct().Product().ImageResponse().data().name(), cartViewHolder2.image_product);
 
 
                 break;
         }
     }
+
+
 
 
 //        holder.edt_quantity.setFilters(new InputFilter[]{ new InputFilterMinMax(1, item.PricingProduct().amount())});
@@ -594,8 +625,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
 
-    private void updateCartItemsLocal(int position, int amount, double totalPrice) {
-
+    private void updateCartItemsLocal(int position, double amount, double totalPrice) {
 
         MyCartQuery.Item tempItem = cartItems.get(position);
 
@@ -608,5 +638,10 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     }
 
+
+    private MyCartQuery.Item updateCurrentItems(double amount , MyCartQuery.Item tempItem) {
+
+        return new MyCartQuery.Item(tempItem.__typename() , tempItem._id() , tempItem.PricingProduct() , amount , tempItem.PricingProduct().storePrice() * amount) ;
+    }
 
 }
