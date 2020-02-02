@@ -48,14 +48,14 @@
 
         <TextView
             android:id="@+id/txt_quantity"
-            android:layout_width="20dp"
+            android:layout_width="40dp"
             android:layout_height="20dp"
             android:layout_marginStart="@dimen/normal_margin"
             android:layout_marginEnd="@dimen/normal_margin"
             android:background="@color/white"
             android:gravity="center"
             android:scrollHorizontally="true"
-            android:text="99"
+            android:text="9.57"
             android:textSize="@dimen/medium_text_size"
             android:fontFamily="@font/poppinssemibold"
             android:textColor="#333" />

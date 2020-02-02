@@ -330,10 +330,10 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
     private void calculateCartTotalPrice(String productId, double amount, double storePrice) {
 
+
         cartPresenter.updateCartItems(productId, amount);
 
         totalPrice += storePrice;
-
         Common.TOTAL_CART_PRICE += storePrice;
         Common.TOTAL_CART_AMOUNT += amount;
 
@@ -341,6 +341,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
 
         Common.LOG("TOTAL FROM CART FRAGMENT : >> " + Common.TOTAL_CART_PRICE);
+        Common.LOG("storePrice : >> " + storePrice);
+        Common.LOG("amount : >> " + amount);
 
         if (Common.TOTAL_CART_PRICE <= 0.1f) {
             showPlaceHolder();

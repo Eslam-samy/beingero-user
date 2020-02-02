@@ -28,7 +28,6 @@ import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.CreateCartItemMutation;
-import com.corptia.bringero.model.CartItemsModel;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
 import com.corptia.bringero.type.CreateCartItem;
 import com.corptia.bringero.ui.home.HomeActivity;
@@ -218,7 +217,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             totalPages = product.pagination().totalPages();
             storeDetailAdapter.addItems(product.Products());
 
-                storeDetailAdapter.setListener((view, position) -> {
+            storeDetailAdapter.setListener((view, position,price , amount) -> {
 
 //                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
 //                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
@@ -227,20 +226,22 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 //                    intent.putExtra(Constants.EXTRA_PRODUCT_IMAGE , mProduct.Product().ImageResponse().data().name());
 //                    startActivity(intent);
 
-                    //Here Add To Cart
-                    //Get Data Store
+                //Here Add To Cart
+                //Get Data Store
+
                     GetStoreProductsQuery.Product items = storeDetailAdapter.productsList.get(position);
+
                     double priceProduct ;
                     if (items.discountActive()!=null &&items.discountActive())
                         priceProduct =(1- items.discountRatio()) * items.storePrice();
                     else
                         priceProduct = items.storePrice();
 
-                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, priceProduct , 1));
+                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, price , amount));
+                    addToCart(storeDetailAdapter.getSelectProduct(position)._id() , position , amount);
 
-                    addToCart(storeDetailAdapter.getSelectProduct(position)._id() , position);
 
-                });
+            });
 
 
 
@@ -283,61 +284,34 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     //TODO Here Make Refresh
     //notifyItemChanged(position); (have two adapter product and search)
-    public void addToCart(String pricingProductId , int positionItemInAdapter) {
+    public void addToCart(String pricingProductId , int position , double amount) {
 
-        CreateCartItem item = CreateCartItem.builder().amount(1).pricingProductId(pricingProductId).build();
+        CreateCartItem item = CreateCartItem.builder().amount(amount).pricingProductId(pricingProductId).build();
         MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
                 .enqueue(new ApolloCall.Callback<CreateCartItemMutation.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {
 
                         CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
-
                         if (createResponse.status() == 200) {
 
-                            //Get position
-                            int position = Common.CART_ITEMS_ID.indexOf(pricingProductId);
-                            if (position!=-1){
-                                //This product is here
-                                Common.LOG("Have New Amount" + createResponse.data().amount());
-                                Common.CART_ITEMS_MODELS.set(position , new CartItemsModel(
-                                        createResponse.data()._id() ,
-                                        pricingProductId ,
-                                        createResponse.data().totalPrice() ,
-                                        createResponse.data().amount() ,
-                                        createResponse.data().PricingProductResponse().data().ProductResponse().data().isPackaged() ));
+                            Common.GetCartItemsCount(new CallbackListener() {
+                                @Override
+                                public void OnSuccessCallback() {
+//                                    Log.d("HAZEM" , "Welcome OnSuccessCallback " +position);
+                                    handler.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+//                                            storeDetailAdapter.notifyItemChanged(position);
+                                        }
+                                    });
+                                }
 
-                            }else{
-                                //add Product to list
-                                Common.CART_ITEMS_MODELS.add(new CartItemsModel(
-                                        createResponse.data()._id() ,
-                                        pricingProductId ,
-                                        createResponse.data().totalPrice() ,
-                                        createResponse.data().amount() ,
-                                        createResponse.data().PricingProductResponse().data().ProductResponse().data().isPackaged() ));
+                                @Override
+                                public void OnFailedCallback() {
 
-                            }
-
-
-
-
-//                            Common.GetCartItemsCount(new CallbackListener() {
-//                                @Override
-//                                public void OnSuccessCallback() {
-////                                    Log.d("HAZEM" , "Welcome OnSuccessCallback " +position);
-//                                    handler.post(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-////                                            storeDetailAdapter.notifyItemChanged(position);
-//                                        }
-//                                    });
-//                                }
-//
-//                                @Override
-//                                public void OnFailedCallback() {
-//
-//                                }
-//                            });
+                                }
+                            });
 
 
                         } else {

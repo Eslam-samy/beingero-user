@@ -4,10 +4,10 @@ public class CalculateCartEvent {
 
     boolean isSuccess;
     double productPrice;
-    int amount;
+    double amount;
 
 
-    public CalculateCartEvent(boolean isSuccess, double productPrice , int amount) {
+    public CalculateCartEvent(boolean isSuccess, double productPrice , double amount) {
         this.isSuccess = isSuccess;
         this.productPrice = productPrice;
         this.amount = amount;
@@ -32,7 +32,7 @@ public class CalculateCartEvent {
         this.productPrice = productPrice;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 

@@ -28,6 +28,7 @@ import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.CallbackListener;
+import com.corptia.bringero.Interface.IOnProductClickListener;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
@@ -273,20 +274,20 @@ public class SearchProductsActivity extends BaseActivity {
         adapter = new StoreDetailAdapter(SearchProductsActivity.this, null , true);
         recycler_product.setAdapter(adapter);
 
-        adapter.setListener((view, position) -> {
-
-//                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
-//                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
-//                    intent.putExtra(Constants.EXTRA_PRODUCT_ID , mProduct._id());
-//                    if (mProduct.Product().ImageResponse().data()!=null)
-//                    intent.putExtra(Constants.EXTRA_PRODUCT_IMAGE , mProduct.Product().ImageResponse().data().name());
-//                    startActivity(intent);
-
-            //Here Add To Cart
-
-            Log.d("HAZEM" , "From Activity : " +position);
-
-        });
+//        adapter.setListener((view, position,price) -> {
+//
+////                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
+////                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
+////                    intent.putExtra(Constants.EXTRA_PRODUCT_ID , mProduct._id());
+////                    if (mProduct.Product().ImageResponse().data()!=null)
+////                    intent.putExtra(Constants.EXTRA_PRODUCT_IMAGE , mProduct.Product().ImageResponse().data().name());
+////                    startActivity(intent);
+//
+//            //Here Add To Cart
+//
+//            Log.d("HAZEM" , "From Activity : " +position);
+//
+//        });
 
         initPlaceHolderSearch();
 
@@ -350,22 +351,19 @@ public class SearchProductsActivity extends BaseActivity {
                                     totalPages = response.data().PricingProductQuery().getStoreProducts().pagination().totalPages();
                                     adapter.addItemsSearch(data.ProductQuery());
 
-                                    adapter.setListener(new IOnRecyclerViewClickListener() {
-                                        @Override
-                                        public void onClick(View view, int position) {
+                                    adapter.setListener((view, position, price , amount) -> {
 
-                                            //Get Data Store
-                                            StoreSearchQuery.ProductQuery items = adapter.getItemSearch(position);
-                                            double priceProduct ;
-                                            if (items.discountActive()!=null &&items.discountActive())
-                                                priceProduct =(1- items.discountRatio()) * items.storePrice();
-                                            else
-                                                priceProduct = items.storePrice();
+                                        //Get Data Store
+                                        StoreSearchQuery.ProductQuery items = adapter.getItemSearch(position);
+                                        double priceProduct ;
+                                        if (items.discountActive()!=null &&items.discountActive())
+                                            priceProduct =(1- items.discountRatio()) * items.storePrice();
+                                        else
+                                            priceProduct = items.storePrice();
 
-                                            //Here Add To Cart
-                                            EventBus.getDefault().postSticky(new CalculateCartEvent(true, priceProduct , 1));
-                                            addToCart(adapter.getItemSearch(position)._id(),position);
-                                        }
+                                        //Here Add To Cart
+                                        EventBus.getDefault().postSticky(new CalculateCartEvent(true, price , amount));
+                                        addToCart(adapter.getItemSearch(position)._id(),position);
                                     });
 
 

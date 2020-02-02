@@ -16,11 +16,11 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Interface.IOnProductClickListener;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseViewHolder;
-import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.graphql.RemoveCartItemMutation;
 import com.corptia.bringero.graphql.StoreSearchQuery;
 import com.corptia.bringero.graphql.UpdateCartItemMutation;
@@ -56,15 +56,13 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     List<GetStoreProductsQuery.Product> productsList = new ArrayList<>();
     List<StoreSearchQuery.ProductQuery> productsListSearch = new ArrayList<>();
 
-    IOnRecyclerViewClickListener listener;
+    IOnProductClickListener listener;
 
 
     boolean isSearch;
 
     //Var
     String cartProductId = "";
-    int posItem=0;
-
     double price = 0;
     double oldPrice = 0;
     double discountRatio = 0;
@@ -77,6 +75,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     //for cart
     double amount = 0;
 
+    //isPackaged
+    boolean isPackaged = false;
+    double unitStep, minSellingUnits;
 
     public StoreDetailAdapter(SearchProductsActivity context, List<StoreSearchQuery.ProductQuery> products, boolean isSearch) {
         this.context = context;
@@ -86,7 +87,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         this.isSearch = true;
     }
 
-    public void setListener(IOnRecyclerViewClickListener listener) {
+    public void setListener(IOnProductClickListener listener) {
         this.listener = listener;
     }
 
@@ -170,12 +171,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             GetStoreProductsQuery.Product product;
 
 
-
             cartProductId = "";
-
-            //isPackaged
-            boolean isPackaged = false;
-            double unitStep, minSellingUnits;
 
 
             if (!isSearch) {
@@ -209,8 +205,14 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 if (product.Product().ImageResponse().status() == 200)
                     productImage = product.Product().ImageResponse().data().name();
 
+                if (!isPackaged) {
+                    unitStep = product.Product().unitStep();
+                    minSellingUnits = product.Product().minSellingUnits();
+
+                }
 
             } else {
+
                 productSearch = productsListSearch.get(position);
 
                 if (productSearch != null) {
@@ -248,53 +250,33 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 }
             }
 
+
             //This My Cart
-//            for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
-//
-//                if (item.getPricingProductId().equalsIgnoreCase(productId)) {
-//
-//                    txt_amount.setVisibility(View.VISIBLE);
-//                    btn_delete.setVisibility(View.VISIBLE);
-//                    bg_delete.setVisibility(View.VISIBLE);
-//
-//                    amount = item.getAmount();
-//                    if (item.isPackaged())
-//                        txt_amount.setText("" + ((int) amount));
-//                    else
-//                        txt_amount.setText("" + amount);
-//
-//                    cartProductId = item.getCartProductId();
-//
-//                    break;
-//
-//                } else {
-//                    txt_amount.setVisibility(View.GONE);
-//                    btn_delete.setVisibility(View.GONE);
-//                    bg_delete.setVisibility(View.GONE);
-//                }
-//            }
-            //Update Methode
-            posItem = Common.CART_ITEMS_ID.indexOf(productId);
-            if (posItem != -1) {
+            for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
 
-                txt_amount.setVisibility(View.VISIBLE);
-                btn_delete.setVisibility(View.VISIBLE);
-                bg_delete.setVisibility(View.VISIBLE);
+                if (item.getPricingProductId().equalsIgnoreCase(productId)) {
 
-                amount = Common.CART_ITEMS_MODELS.get(posItem).getAmount();
-                if (Common.CART_ITEMS_MODELS.get(posItem).isPackaged())
-                    txt_amount.setText("" + ((int) amount));
-                else
-                    txt_amount.setText("" + amount);
+                    txt_amount.setVisibility(View.VISIBLE);
+                    btn_delete.setVisibility(View.VISIBLE);
+                    bg_delete.setVisibility(View.VISIBLE);
 
-                cartProductId = Common.CART_ITEMS_MODELS.get(posItem).getCartProductId();
+                    amount = item.getAmount();
+                    if (item.isPackaged())
+                        txt_amount.setText("" + ((int) amount));
+                    else
+                        txt_amount.setText("" + amount);
 
-            } else {
+                    cartProductId = item.getCartProductId();
 
-                txt_amount.setVisibility(View.GONE);
-                btn_delete.setVisibility(View.GONE);
-                bg_delete.setVisibility(View.GONE);
+                    break;
+
+                } else {
+                    txt_amount.setVisibility(View.GONE);
+                    btn_delete.setVisibility(View.GONE);
+                    bg_delete.setVisibility(View.GONE);
+                }
             }
+
 
             //Here Set Data On Cart
             txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(price)).append(" ").append(context.getString(R.string.currency)));
@@ -309,69 +291,65 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 double finalPrice1 = price;
                 boolean finalIsPackaged = isPackaged;
-                double finalAmount = amount;
 
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                         //Here Condition Limit Max Price
-                        if (Common.TOTAL_CART_PRICE + finalPrice1 > Common.BASE_MAX_PRICE) {
 
-                            Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
-                            return;
+                        if (!isPackaged) {
 
-                        } else {
-
-                            if (finalIsPackaged) {
-
-                                Common.LOG("productId " + productId);
-                                posItem = Common.CART_ITEMS_ID.indexOf(productId);
-                                Common.LOG("posItem " + posItem);
-
-                                    double count=0;
-
-                                    if (posItem!=-1){
-
-                                        count = Common.CART_ITEMS_MODELS.get(posItem).getAmount() + 1;
-                                        Common.LOG("posItem!=-1 " + count);
-
-                                    }else{
-
-                                        count+=1;
-
-                                        Common.LOG("");
-                                        Common.LOG("posItem==-1 " + count);
-
-                                        Common.CART_ITEMS_ID.add(productId);
-                                        Common.CART_ITEMS_MODELS.add(new CartItemsModel(null , productId , 0,count , true));
-                                    }
-
-                                    if (count < 100) {
-
-                                        Common.TOTAL_CART_AMOUNT += 1;
-                                        Common.TOTAL_CART_PRICE += finalPrice1;
-
-                                        listener.onClick(itemView, position);
-
-                                        txt_amount.setVisibility(View.VISIBLE);
-                                        btn_delete.setVisibility(View.VISIBLE);
-                                        bg_delete.setVisibility(View.VISIBLE);
-
-                                    }
-
-                                    txt_amount.setText("" + ((int) count));
-
-
-                                    if (count != 1)
-                                        txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                                            }
-                                        });
-
+                            double count, actualAmount = 0;
+                            if (Double.parseDouble(txt_amount.getText().toString()) == 0f) {
+                                count = minSellingUnits;
+                                actualAmount = minSellingUnits;
+                                Common.LOG("minSellingUnits : == 0 ** " + minSellingUnits + " Count " + count);
+                            } else {
+                                count = unitStep;
+                                actualAmount = Double.parseDouble(txt_amount.getText().toString()) + unitStep;
+                                Common.LOG("minSellingUnits : " + minSellingUnits + " unitStep " + unitStep);
                             }
+
+                            if (Common.TOTAL_CART_PRICE + (finalPrice1 * count) > Common.BASE_MAX_PRICE) {
+                                Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+                                Common.LOG("Common.TOTAL_CART_PRICE : " + Common.TOTAL_CART_PRICE + " finalPrice1 " + finalPrice1);
+                                return;
+                            }
+
+
+                            if (actualAmount < 100) {
+
+//                                    Common.TOTAL_CART_AMOUNT += 1;
+                                Common.TOTAL_CART_PRICE += finalPrice1 * count;
+
+                                Common.LOG("Common.TOTAL_CART_PRICE " + Common.TOTAL_CART_PRICE);
+
+                                Common.LOG("finalPrice1 * count : " + finalPrice1 * count);
+
+
+
+                                txt_amount.setVisibility(View.VISIBLE);
+                                btn_delete.setVisibility(View.VISIBLE);
+                                bg_delete.setVisibility(View.VISIBLE);
+
+                                if (!finalIsPackaged) {
+                                    txt_amount.setText("" + actualAmount);
+                                }
+
+                                listener.onClick(itemView, position, finalPrice1 * count, count);
+                            }
+
+
+                            if (count != 1)
+                                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+                                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+
+                                    }
+                                });
 
 
                             //Update Local Item Cart
@@ -386,8 +364,58 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 //                            }
 //                        }
 
-                            //Here Update Item And List
-                            updateItemsLocal(position, finalAmount, finalPrice1);
+
+                        } else {
+
+                            if (Common.TOTAL_CART_PRICE + finalPrice1 > Common.BASE_MAX_PRICE) {
+                                Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+
+                                Common.LOG("Common.TOTAL_CART_PRICE : " + Common.TOTAL_CART_PRICE + " finalPrice1 " + finalPrice1);
+                                return;
+                            }
+
+                            int count;
+                            count = Integer.parseInt(txt_amount.getText().toString()) + 1;
+
+
+                            if (count < 100) {
+
+                                Common.TOTAL_CART_AMOUNT += 1;
+                                Common.TOTAL_CART_PRICE += finalPrice1;
+
+                                listener.onClick(itemView, position, finalPrice1, count);
+
+                                txt_amount.setVisibility(View.VISIBLE);
+                                btn_delete.setVisibility(View.VISIBLE);
+                                bg_delete.setVisibility(View.VISIBLE);
+
+                                if (finalIsPackaged) {
+                                    txt_amount.setText("" + count);
+                                }
+                            }
+
+
+                            if (count != 1)
+                                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                    }
+                                });
+
+
+                            //Update Local Item Cart
+//                        if (!isSearch) {
+//                            int x = 0;
+//                            for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
+//
+//                                if (item.getPricingProductId().equalsIgnoreCase(finalProductId1)) {
+//                                    Common.CART_ITEMS_MODELS.get(x).setAmount(count);
+//                                }
+//                                x++;
+//                            }
+//                        }
+
 
                         }
 
@@ -661,27 +689,6 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         EventBus.getDefault().postSticky(new CalculateCartEvent(true, -price, -1));
 
         Common.GetCartItemsCount(null);
-
-    }
-
-
-    private void updateItemsLocal(int position, double finalAmount, double price) {
-
-//        if (isSearch){
-//
-//            StoreSearchQuery.ProductQuery tempProduct = productsListSearch.get(position);
-//
-//            StoreSearchQuery.ProductQuery newItem = new StoreSearchQuery.ProductQuery(
-//                    tempProduct.__typename(),
-//                    tempProduct._id(),
-//                    tempProduct.storePrice(),tempProduct.isAvailable(),tempProduct.discountRatio(),tempProduct.discountActive(),, finalAmount * price );
-//
-//            cartItems.set(position, newItem);
-//
-//        }
-//
-//        StoreSearchQuery.ProductQuery productSearch;
-//        GetStoreProductsQuery.Product product;
 
     }
 
