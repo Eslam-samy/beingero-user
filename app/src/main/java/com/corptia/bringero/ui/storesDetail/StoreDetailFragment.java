@@ -28,6 +28,7 @@ import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.CreateCartItemMutation;
+import com.corptia.bringero.model.CartItemsModel;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
 import com.corptia.bringero.type.CreateCartItem;
 import com.corptia.bringero.ui.home.HomeActivity;
@@ -236,6 +237,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                         priceProduct = items.storePrice();
 
                     EventBus.getDefault().postSticky(new CalculateCartEvent(true, priceProduct , 1));
+
                     addToCart(storeDetailAdapter.getSelectProduct(position)._id() , position);
 
                 });
@@ -281,7 +283,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     //TODO Here Make Refresh
     //notifyItemChanged(position); (have two adapter product and search)
-    public void addToCart(String pricingProductId , int position) {
+    public void addToCart(String pricingProductId , int positionItemInAdapter) {
 
         CreateCartItem item = CreateCartItem.builder().amount(1).pricingProductId(pricingProductId).build();
         MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
@@ -290,25 +292,52 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                     public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {
 
                         CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
+
                         if (createResponse.status() == 200) {
 
-                            Common.GetCartItemsCount(new CallbackListener() {
-                                @Override
-                                public void OnSuccessCallback() {
-//                                    Log.d("HAZEM" , "Welcome OnSuccessCallback " +position);
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-//                                            storeDetailAdapter.notifyItemChanged(position);
-                                        }
-                                    });
-                                }
+                            //Get position
+                            int position = Common.CART_ITEMS_ID.indexOf(pricingProductId);
+                            if (position!=-1){
+                                //This product is here
+                                Common.LOG("Have New Amount" + createResponse.data().amount());
+                                Common.CART_ITEMS_MODELS.set(position , new CartItemsModel(
+                                        createResponse.data()._id() ,
+                                        pricingProductId ,
+                                        createResponse.data().totalPrice() ,
+                                        createResponse.data().amount() ,
+                                        createResponse.data().PricingProductResponse().data().ProductResponse().data().isPackaged() ));
 
-                                @Override
-                                public void OnFailedCallback() {
+                            }else{
+                                //add Product to list
+                                Common.CART_ITEMS_MODELS.add(new CartItemsModel(
+                                        createResponse.data()._id() ,
+                                        pricingProductId ,
+                                        createResponse.data().totalPrice() ,
+                                        createResponse.data().amount() ,
+                                        createResponse.data().PricingProductResponse().data().ProductResponse().data().isPackaged() ));
 
-                                }
-                            });
+                            }
+
+
+
+
+//                            Common.GetCartItemsCount(new CallbackListener() {
+//                                @Override
+//                                public void OnSuccessCallback() {
+////                                    Log.d("HAZEM" , "Welcome OnSuccessCallback " +position);
+//                                    handler.post(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+////                                            storeDetailAdapter.notifyItemChanged(position);
+//                                        }
+//                                    });
+//                                }
+//
+//                                @Override
+//                                public void OnFailedCallback() {
+//
+//                                }
+//                            });
 
 
                         } else {

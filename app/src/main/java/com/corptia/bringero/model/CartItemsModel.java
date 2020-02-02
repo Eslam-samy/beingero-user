@@ -1,5 +1,7 @@
 package com.corptia.bringero.model;
 
+import com.corptia.bringero.Common.Common;
+
 public class CartItemsModel {
 
     String cartProductId;
@@ -14,6 +16,9 @@ public class CartItemsModel {
         this.totalPrice = totalPrice;
         this.amount = amount;
         this.isPackaged = isPackaged;
+
+        if (!Common.CART_ITEMS_ID.contains(pricingProductId))
+        Common.CART_ITEMS_ID.add(pricingProductId);
     }
 
     public boolean isPackaged() {

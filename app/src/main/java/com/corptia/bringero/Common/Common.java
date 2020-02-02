@@ -218,7 +218,7 @@ public class Common {
 
                             for (GetCartItemsCountQuery.Data1 product : Items) {
 
-                                CART_ITEMS_MODELS.add(new CartItemsModel(product.cartProductId(), product.pricingProductId(), product.totalPrice(), product.amount() , product.PricingProduct().ProductResponse().data().isPackaged()));
+                                CART_ITEMS_MODELS.add(new CartItemsModel(product.cartProductId(), product.pricingProductId(), product.totalPrice(), product.amount() , product.PricingProductResponse().data().ProductResponse().data().isPackaged()));
                                 CART_ITEMS_ID.add(product.cartProductId());
 
                                 if (isFirstTimeGetCartCount) {

@@ -86,6 +86,18 @@ mutation createCartItem($data: createCartItem) {
                 userId
                 pricingProductId
                 amount
+                totalPrice
+
+                PricingProductResponse{
+                    data{
+                        ProductResponse{
+                            data{
+                                isPackaged
+                            }
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -166,16 +178,26 @@ query GetCartItemsCount($filter: CartItemFilterInput!){
                 amount
                 totalPrice
 
-                PricingProduct{
-                    ProductResponse{
-                        status
-                        data{
-                            isPackaged
-                            minSellingUnits
-                            unitStep
+                PricingProductResponse{
+                    data{
+                        ProductResponse{
+                            data{
+                                isPackaged
+                            }
                         }
                     }
                 }
+
+#                PricingProduct{
+#                    ProductResponse{
+#                        status
+#                        data{
+#                            isPackaged
+#                            minSellingUnits
+#                            unitStep
+#                        }
+#                    }
+#                }
             }
         }
     }

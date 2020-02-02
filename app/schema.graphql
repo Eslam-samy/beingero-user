@@ -2491,6 +2491,7 @@ input ProductFilterInput {
     categoryIds: [ID]
     customerPrice: Float
     formId: ID
+    isPackaged: Boolean
     manufacturerId: ID
     name: String
     typeId: ID
@@ -2692,6 +2693,7 @@ input changePasswordInput {
 }
 
 input createBuyingOrder {
+    couponCode: String
     """
     from user cart : create order
     get userId from token
@@ -2785,7 +2787,7 @@ input createProduct {
     attributeGroupId: ID
     barcode: String
     brandId: ID
-    categoryId: ID
+    categoryIds: [ID]
     customerPrice: Float
     description: multilanguageInput
     formId: ID

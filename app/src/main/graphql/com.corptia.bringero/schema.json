@@ -15902,6 +15902,16 @@
               "defaultValue": null
             },
             {
+              "name": "isPackaged",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
               "name": "SEARCH",
               "description": "",
               "type": {
@@ -22856,6 +22866,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "couponCode",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -25628,12 +25648,16 @@
               "defaultValue": null
             },
             {
-              "name": "categoryId",
+              "name": "categoryIds",
               "description": "",
               "type": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },

@@ -51,8 +51,6 @@ query getStoreProducts(
                 discountActive
                 discountRatio
 
-
-
                 Product {
                     _id
                     name
