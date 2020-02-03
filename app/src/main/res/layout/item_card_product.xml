@@ -45,8 +45,8 @@
                 android:layout_marginTop="@dimen/large_margin"
                 android:visibility="gone"
                 tools:visibility="visible"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"/>
 

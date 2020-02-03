@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,17 +16,14 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Interface.IOnProductClickListener;
-import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseViewHolder;
 import com.corptia.bringero.graphql.RemoveCartItemMutation;
 import com.corptia.bringero.graphql.StoreSearchQuery;
 import com.corptia.bringero.graphql.UpdateCartItemMutation;
-import com.corptia.bringero.model.CartItems;
 import com.corptia.bringero.model.CartItemsModel;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
-import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 import com.corptia.bringero.type.UpdateCartItem;
 import com.corptia.bringero.ui.search.SearchProductsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -39,7 +35,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -265,7 +260,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     if (item.isPackaged())
                         txt_amount.setText(new StringBuilder().append(((int)(amount))).append(" ").append("X"));
                     else
-                        txt_amount.setText(new StringBuilder().append(amount).append(" ").append(context.getString(R.string.km)));
+                        txt_amount.setText(new StringBuilder().append(amount).append(" ").append(context.getString(R.string.kg)));
 
                     cartProductId = item.getCartProductId();
 
@@ -350,7 +345,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 bg_delete.setVisibility(View.VISIBLE);
 
                                 if (!finalIsPackaged) {
-                                    txt_amount.setText(new StringBuilder().append(actualAmount).append(" ").append(context.getString(R.string.km)) );
+                                    txt_amount.setText(new StringBuilder().append(actualAmount).append(" ").append(context.getString(R.string.kg)) );
                                 }
 
                                 listener.onClick(itemView, position, finalPrice1 * step, step , isPackaged);
@@ -495,7 +490,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                         if (amountNow >= minSellingUnits) {
 
-                            txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.km)));
+                            txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.kg)));
 
                             txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                 @Override
@@ -591,7 +586,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                                 if (amountNow >= minSellingUnits) {
 
-                                    txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.km)));
+                                    txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.kg)));
 
                                     txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                         @Override

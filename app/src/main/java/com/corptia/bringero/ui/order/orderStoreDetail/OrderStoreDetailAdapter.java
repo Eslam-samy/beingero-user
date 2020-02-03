@@ -15,6 +15,8 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.SingleOrderQuery;
 import com.corptia.bringero.utils.PicassoUtils;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,26 +36,33 @@ public class OrderStoreDetailAdapter extends RecyclerView.Adapter<OrderStoreDeta
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_card_orders_details_items , parent , false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_card_orders_details_items, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         SingleOrderQuery.ItemsDatum item = itemsList.get(position);
-
+        SingleOrderQuery.@Nullable Data2 productPricing = item.PricingProductResponse().data().ProductResponse().data();
         //holder.image_product;
-        if (item.PricingProductResponse().data().ProductResponse().data().ImageResponse().status() == 200)
-            PicassoUtils.setImage(Common.BASE_URL_IMAGE + item.PricingProductResponse().data().ProductResponse().data().ImageResponse().data().name() ,
+        if (productPricing.ImageResponse().status() == 200)
+            PicassoUtils.setImage(Common.BASE_URL_IMAGE + productPricing.ImageResponse().data().name(),
                     holder.image_product);
 
-        holder.txt_name_product.setText(item.productName().length() > 40 ? item.productName().substring(0,40) +"..." : item.productName());
+        holder.txt_name_product.setText(item.productName().length() > 40 ? item.productName().substring(0, 40) + "..." : item.productName());
 
         holder.txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(item.storePrice())).append(" ").append(context.getString(R.string.currency)));
 
-        holder.txt_amount.setText("x"+item.amount());
+        if (productPricing.isPackaged()) {
+            double amount = item.amount();
+            holder.txt_amount.setText(new StringBuilder().append(((int) amount)).append(" ").append("x"));
+        }
+        else
+        {
+            holder.txt_amount.setText(new StringBuilder().append( item.amount()).append(" ").append(context.getString(R.string.kg)));
+        }
 
-        holder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(item.amount()*item.storePrice())).append(" ").append(context.getString(R.string.currency)));
+        holder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(item.amount() * item.storePrice())).append(" ").append(context.getString(R.string.currency)));
 
     }
 
@@ -78,7 +87,7 @@ public class OrderStoreDetailAdapter extends RecyclerView.Adapter<OrderStoreDeta
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ButterKnife.bind(this , itemView);
+            ButterKnife.bind(this, itemView);
 
         }
     }

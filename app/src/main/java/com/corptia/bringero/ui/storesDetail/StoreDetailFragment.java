@@ -293,7 +293,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     public void addToCart(String pricingProductId , int position , double amount) {
 
         CreateCartItem item = CreateCartItem.builder().amount(amount).pricingProductId(pricingProductId).build();
-        MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
+        MyApolloClient.getApolloClient().mutate(CreateCartItemMutation.builder().data(item).build())
                 .enqueue(new ApolloCall.Callback<CreateCartItemMutation.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {

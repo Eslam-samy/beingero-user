@@ -580,7 +580,9 @@ query SingleOrderQuery($buyingOrderId: ID) {
                         PricingProductResponse {
                             data {
                                 ProductResponse {
+
                                     data {
+                                        isPackaged
                                         ImageResponse {
                                             status
                                             data {

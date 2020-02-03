@@ -1,7 +1,14 @@
 package com.corptia.bringero.ui.Main;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.corptia.bringero.Adapter.ViewPagerAdapter;
 import com.corptia.bringero.Common.Common;
@@ -13,7 +20,7 @@ import com.corptia.bringero.ui.Main.login.LoginFragment;
 import com.corptia.bringero.ui.Main.signup.SignupFragment;
 import com.google.android.material.tabs.TabLayout;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends AppCompatActivity {
 
 
     //For Fragment
@@ -28,7 +35,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LocaleHelper.setLocale(this, "ar");
 
         img_logo = findViewById(R.id.img_logo);
 
@@ -49,10 +55,24 @@ public class MainActivity extends BaseActivity {
 
     }
 
+//    @Nullable
+//    @Override
+//    public View onCreateView(@Nullable View parent, @NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+//        LocaleHelper.setLocale(this,"en");
+//        return super.onCreateView(parent, name, context, attrs);
+//    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (Common.CURRENT_USER!=null)
         LocaleHelper.setLocale(this, Common.CURRENT_USER.getLanguage().toLowerCase());
     }
+
+//
+//    //For Get Language
+//    @Override
+//    protected void attachBaseContext(Context base) {
+//        super.attachBaseContext(LocaleHelper.onAttach(base));
+//    }
 }
