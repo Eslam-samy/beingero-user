@@ -146,6 +146,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                 if (myCartData.storeData().size() != 0) {
 
                     Common.CURRENT_CART = myCartData.storeData();
+                    Common.TOTAL_CART_PRICE = myCartData.TotalPrice();
 
                     if (getContext() != null)
                         total_price.setText(new StringBuilder().append(Common.getDecimalNumber(Common.TOTAL_CART_PRICE)).append(" ").append(getString(R.string.currency)));
@@ -373,7 +374,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         super.onStop();
         EventBus.getDefault().removeAllStickyEvents();
         EventBus.getDefault().unregister(this);
-        Common.isFirstTimeGetCartCount = true;
+//        Common.isFirstTimeGetCartCount = true;
+//        Common.LOG("Hello onStop");
         Common.GetCartItemsCount(null);
     }
 

@@ -199,6 +199,7 @@ public class Common {
 
     public static void GetCartItemsCount(CallbackListener listener) {
 
+
         MyApolloClient.getApollowClientAuthorization().query(GetCartItemsCountQuery.builder().filter(CartItemFilterInput.builder().build()).build())
                 .enqueue(new ApolloCall.Callback<GetCartItemsCountQuery.Data>() {
                     @Override
@@ -222,11 +223,18 @@ public class Common {
                                 CART_ITEMS_ID.add(product.cartProductId());
 
                                 if (isFirstTimeGetCartCount) {
+                                    Common.LOG("Hello first");
                                     TOTAL_CART_PRICE += product.totalPrice();
-                                    TOTAL_CART_AMOUNT += product.amount();
                                 }
 
                             }
+
+                            if (isFirstTimeGetCartCount) {
+                                TOTAL_CART_AMOUNT = CART_ITEMS_MODELS.size();
+                            }
+
+
+
 
                             if (listener != null)
                                 listener.OnSuccessCallback();
@@ -239,6 +247,7 @@ public class Common {
                             TOTAL_CART_AMOUNT = 0;
                             CART_ITEMS_MODELS = new ArrayList<>();
                             CART_ITEMS_ID = new ArrayList<>();
+                            isFirstTimeGetCartCount = false;
 
                         }
                     }

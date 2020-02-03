@@ -64,6 +64,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static com.corptia.bringero.Common.Common.isFirstTimeGetCartCount;
 
 
 public class HomeActivity extends BaseActivity implements
@@ -410,6 +411,11 @@ public class HomeActivity extends BaseActivity implements
         super.onResume();
         getDataUser();
         countNotificationUnread();
+
+        isFirstTimeGetCartCount = true;
+        Common.GetCartItemsCount(null);
+
+
     }
 
 

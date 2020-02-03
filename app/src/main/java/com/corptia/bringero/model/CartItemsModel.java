@@ -17,8 +17,9 @@ public class CartItemsModel {
         this.amount = amount;
         this.isPackaged = isPackaged;
 
-        if (!Common.CART_ITEMS_ID.contains(pricingProductId))
-        Common.CART_ITEMS_ID.add(pricingProductId);
+//        if (!Common.CART_ITEMS_ID.contains(pricingProductId))
+//        Common.CART_ITEMS_ID.add(pricingProductId);
+
     }
 
     public boolean isPackaged() {

@@ -22,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.corptia.bringero.Common.Common.isFirstTimeGetCartCount;
+
 public class LoginPresenter implements LoginContract.LoginPresenter {
 
     private LoginContract.LoginView loginView;
@@ -148,8 +150,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
 
                                     Common.CURRENT_USER= userModel;
-
-                                    Common.GetCartItemsCount(null);
 
                                     if (userData.currentDeliveryAddress()!=null)
                                         loginView.onSuccessMessage("");

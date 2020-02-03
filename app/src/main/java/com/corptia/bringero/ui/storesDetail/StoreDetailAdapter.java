@@ -79,6 +79,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     boolean isPackaged = false;
     double unitStep, minSellingUnits;
 
+    //For Count product
+    boolean isCount;
+
     public StoreDetailAdapter(SearchProductsActivity context, List<StoreSearchQuery.ProductQuery> products, boolean isSearch) {
         this.context = context;
         if (products != null)
@@ -298,22 +301,30 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                         //Here Condition Limit Max Price
 
+                        if (Common.TOTAL_CART_PRICE <= 0) {
+                            Common.TOTAL_CART_PRICE = 0;
+                        }
+
                         if (!isPackaged) {
 
-                            double count, actualAmount = 0;
+//                            Common.LOG(">>>>>>>>>>>>>>>> txt_amount.getText().toString() " + txt_amount.getText().toString());
+//                            Common.LOG("Before Increment TOTAL " + Common.TOTAL_CART_PRICE);
+
+
+                            double step, actualAmount = 0;
                             if (Double.parseDouble(txt_amount.getText().toString()) == 0f) {
-                                count = minSellingUnits;
+                                step = minSellingUnits;
                                 actualAmount = minSellingUnits;
-                                Common.LOG("minSellingUnits : == 0 ** " + minSellingUnits + " Count " + count);
+//                                Common.LOG("minSellingUnits : == 0 ** " + minSellingUnits + " Count " + step);
                             } else {
-                                count = unitStep;
+                                step = unitStep;
                                 actualAmount = Double.parseDouble(txt_amount.getText().toString()) + unitStep;
-                                Common.LOG("minSellingUnits : " + minSellingUnits + " unitStep " + unitStep);
+//                                Common.LOG("minSellingUnits : " + minSellingUnits + " unitStep " + unitStep);
                             }
 
-                            if (Common.TOTAL_CART_PRICE + (finalPrice1 * count) > Common.BASE_MAX_PRICE) {
+                            if (Common.TOTAL_CART_PRICE + (finalPrice1 * step) > Common.BASE_MAX_PRICE) {
                                 Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
-                                Common.LOG("Common.TOTAL_CART_PRICE : " + Common.TOTAL_CART_PRICE + " finalPrice1 " + finalPrice1);
+//                                Common.LOG("Common.TOTAL_CART_PRICE : " + Common.TOTAL_CART_PRICE + " finalPrice1 " + finalPrice1);
                                 return;
                             }
 
@@ -321,12 +332,13 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                             if (actualAmount < 100) {
 
 //                                    Common.TOTAL_CART_AMOUNT += 1;
-                                Common.TOTAL_CART_PRICE += finalPrice1 * count;
+                                Common.LOG("Total Before : " + Common.TOTAL_CART_PRICE + " - finalPrice1 : " + finalPrice1 + " - step : " + step + " - Both : " + (finalPrice1 * step));
 
-                                Common.LOG("Common.TOTAL_CART_PRICE " + Common.TOTAL_CART_PRICE);
+                                Common.TOTAL_CART_PRICE += (finalPrice1 * step);
 
-                                Common.LOG("finalPrice1 * count : " + finalPrice1 * count);
+//                                Common.LOG("Common.TOTAL_CART_PRICE " + Common.TOTAL_CART_PRICE);
 
+//                                Common.LOG("finalPrice1 * count : " + finalPrice1 * step);
 
 
                                 txt_amount.setVisibility(View.VISIBLE);
@@ -337,11 +349,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                     txt_amount.setText("" + actualAmount);
                                 }
 
-                                listener.onClick(itemView, position, finalPrice1 * count, count);
+                                listener.onClick(itemView, position, finalPrice1 * step, step);
                             }
 
 
-                            if (count != 1)
+                            if (step != 1)
                                 txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                     @Override
                                     public void run() {
@@ -380,7 +392,6 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                             if (count < 100) {
 
-                                Common.TOTAL_CART_AMOUNT += 1;
                                 Common.TOTAL_CART_PRICE += finalPrice1;
 
                                 listener.onClick(itemView, position, finalPrice1, count);
@@ -420,6 +431,13 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                         }
 
 
+                        if (!isCount && cartProductId.isEmpty()) {
+                            isCount = true;
+                            Common.TOTAL_CART_AMOUNT +=1;
+                            //I am product new
+                        }
+
+
                     }
                 });
             }
@@ -433,86 +451,169 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 if (!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)) {
 
-                    Log.d("HAZEM", "!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)");
 
-                    int amountNow = Integer.parseInt(txt_amount.getText().toString()) - 1;
+                    if (isPackaged) {
 
-                    if (amountNow > 0) {
+                        Log.d("HAZEM", "!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)");
 
-                        txt_amount.setText("" + amountNow);
+                        double amountNow = Double.parseDouble(txt_amount.getText().toString()) - 1;
 
-                        txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                            }
-                        });
+                        if (amountNow > 0) {
+
+                            txt_amount.setText("" + amountNow);
+
+                            txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                }
+                            });
 
 
-                        updateCartItems(cartProductId, amountNow, finalPrice);
+                            updateCartItems(cartProductId, amountNow, finalPrice);
 
-                    } else if (amountNow <= 0) {
-                        txt_amount.setVisibility(View.INVISIBLE);
-                        btn_delete.setVisibility(View.INVISIBLE);
-                        bg_delete.setVisibility(View.INVISIBLE);
+                        } else if (amountNow <= 0) {
+                            txt_amount.setVisibility(View.INVISIBLE);
+                            btn_delete.setVisibility(View.INVISIBLE);
+                            bg_delete.setVisibility(View.INVISIBLE);
 
-                        txt_amount.setText("0");
+                            txt_amount.setText("0");
 
-                        deleteCartItems(cartProductId, finalPrice);
+                            deleteCartItems(cartProductId, finalPrice);
+
+                        }
+
+                    } else {
+
+                        Log.d("HAZEM", "!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)");
+                        double amountNow = Double.parseDouble(txt_amount.getText().toString()) - unitStep;
+                        Common.LOG("After cast : " + Double.parseDouble(txt_amount.getText().toString()) + " --- " + amountNow);
+
+                        if (amountNow >= minSellingUnits) {
+
+                            txt_amount.setText("" + amountNow);
+
+                            txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                }
+                            });
+
+                            updateCartItems(cartProductId, amountNow, finalPrice * unitStep);
+
+                        } else {
+                            txt_amount.setVisibility(View.INVISIBLE);
+                            btn_delete.setVisibility(View.INVISIBLE);
+                            bg_delete.setVisibility(View.INVISIBLE);
+
+                            txt_amount.setText("0");
+
+                            deleteCartItems(cartProductId, finalPrice * minSellingUnits);
+
+                        }
+
 
                     }
+
+
                 } else {
 
 
                     Log.d("HAZEM", "ELSE :: !cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)");
-
 
                     //This My Cart
                     for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
 
                         if (item.getPricingProductId().equalsIgnoreCase(finalProductId)) {
 
+                            if (isPackaged) {
 
-//                            txt_amount.setText("" + item.getAmount());
+                                //                            txt_amount.setText("" + item.getAmount());
 //                            amount = item.getAmount();
-                            cartProductId = item.getCartProductId();
-                            Log.d("HAZEM", "cartProductId 2 : " + cartProductId + " -- " + item.getCartProductId());
+                                cartProductId = item.getCartProductId();
+                                Log.d("HAZEM", "cartProductId 2 : " + cartProductId + " -- " + item.getCartProductId());
 
-                            for (String x : Common.CART_ITEMS_ID) {
-                                Log.d("HAZEM", "IDs 3 : " + x + " SIZE : " + Common.CART_ITEMS_ID.size());
+                                for (String x : Common.CART_ITEMS_ID) {
+                                    Log.d("HAZEM", "IDs 3 : " + x + " SIZE : " + Common.CART_ITEMS_ID.size());
+
+                                }
+
+
+                                double amountNow = Double.parseDouble(txt_amount.getText().toString()) - 1;
+
+                                if (amountNow > 0) {
+
+                                    txt_amount.setText("" + amountNow);
+
+                                    txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                        }
+                                    });
+
+
+                                    updateCartItems(item.getCartProductId(), amountNow, finalPrice);
+
+                                } else if (amountNow <= 0) {
+                                    txt_amount.setVisibility(View.INVISIBLE);
+                                    btn_delete.setVisibility(View.INVISIBLE);
+                                    bg_delete.setVisibility(View.INVISIBLE);
+
+                                    txt_amount.setText("0");
+
+                                    deleteCartItems(item.getCartProductId(), finalPrice);
+
+                                }
+
+
+                                break;
+
+                            } else {
+
+                                //                            txt_amount.setText("" + item.getAmount());
+//                            amount = item.getAmount();
+                                cartProductId = item.getCartProductId();
+                                Log.d("HAZEM", "cartProductId 2 : " + cartProductId + " -- " + item.getCartProductId());
+
+                                for (String x : Common.CART_ITEMS_ID) {
+                                    Log.d("HAZEM", "IDs 3 : " + x + " SIZE : " + Common.CART_ITEMS_ID.size());
+
+                                }
+
+//                                double unitStep, minSellingUnits;
+                                double amountNow = Double.parseDouble(txt_amount.getText().toString()) - unitStep;
+
+                                if (amountNow >= minSellingUnits) {
+
+                                    txt_amount.setText("" + amountNow);
+
+                                    txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                        }
+                                    });
+
+
+                                    updateCartItems(item.getCartProductId(), amountNow, finalPrice * unitStep);
+
+                                } else {
+
+                                    txt_amount.setVisibility(View.INVISIBLE);
+                                    btn_delete.setVisibility(View.INVISIBLE);
+                                    bg_delete.setVisibility(View.INVISIBLE);
+
+                                    txt_amount.setText("0");
+
+                                    deleteCartItems(item.getCartProductId(), finalPrice * minSellingUnits);
+                                }
+
+
+                                break;
 
                             }
-
-
-                            int amountNow = Integer.parseInt(txt_amount.getText().toString()) - 1;
-
-                            if (amountNow > 0) {
-
-                                txt_amount.setText("" + amountNow);
-
-                                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                                    }
-                                });
-
-
-                                updateCartItems(item.getCartProductId(), amountNow, finalPrice);
-
-                            } else if (amountNow <= 0) {
-                                txt_amount.setVisibility(View.INVISIBLE);
-                                btn_delete.setVisibility(View.INVISIBLE);
-                                bg_delete.setVisibility(View.INVISIBLE);
-
-                                txt_amount.setText("0");
-
-                                deleteCartItems(item.getCartProductId(), finalPrice);
-
-                            }
-
-
-                            break;
 
                         }
                     }
@@ -627,7 +728,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
 
-    public void updateCartItems(String itemsId, int amount, double price) {
+    public void updateCartItems(String itemsId, double amount, double price) {
 
         Common.TOTAL_CART_AMOUNT -= 1;
         Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
@@ -654,8 +755,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     }
                 });
 
-        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -price, -1));
-
+        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -price, amount));
 
         Common.GetCartItemsCount(null);
 

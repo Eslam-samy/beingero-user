@@ -141,8 +141,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     //Event
                     cartViewHolder.setListener((view, position1, isDecrease, isDelete) -> {
 
-                        double amount =  itemInCart.get().amount(); //View UI
-                        double step=0;
+                        double amount = itemInCart.get().amount(); //View UI
+                        double step = 0;
 //                        int amount = Integer.parseInt(cartViewHolder.txt_quantity.getText().toString());
 
                         if (!isDelete) {
@@ -159,20 +159,17 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                                         amount -= 1;
 
-                                        cartViewHolder.txt_quantity.setText("" + ((int)amount));
+                                        cartViewHolder.txt_quantity.setText("" + ((int) amount));
                                         EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, -itemInCart.get().PricingProduct().storePrice()));
                                         cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(amount * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
                                     }
 
-                                }
-
-                                else
-                                {
+                                } else {
 
                                     amount -= itemInCart.get().PricingProduct().Product().unitStep();
                                     step = itemInCart.get().PricingProduct().Product().unitStep();
 
-                                    if (amount+step <= itemInCart.get().PricingProduct().Product().minSellingUnits()) {
+                                    if (amount + step <= itemInCart.get().PricingProduct().Product().minSellingUnits()) {
 
                                         return;
                                     }
@@ -191,36 +188,34 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 //                                    return;
 //                                } else {
 
-                                    if (itemInCart.get().PricingProduct().Product().isPackaged()) {
+                                if (itemInCart.get().PricingProduct().Product().isPackaged()) {
 
-                                        if (itemInCart.get().PricingProduct().storePrice() + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
-                                            Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
-                                            return;
-                                        }
-
-
-                                        amount += 1;
-                                        cartViewHolder.txt_quantity.setText("" + ((int)amount));
-                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, itemInCart.get().PricingProduct().storePrice()));
-                                        cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
-
+                                    if (itemInCart.get().PricingProduct().storePrice() + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
+                                        Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+                                        return;
                                     }
-                                    else
-                                    {
 
-                                        amount += itemInCart.get().PricingProduct().Product().unitStep();
-                                        step = itemInCart.get().PricingProduct().Product().unitStep();
 
-                                        if ((itemInCart.get().PricingProduct().storePrice()*step)  + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
-                                            Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
-                                            return;
-                                        }
+                                    amount += 1;
+                                    cartViewHolder.txt_quantity.setText("" + ((int) amount));
+                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, itemInCart.get().PricingProduct().storePrice()));
+                                    cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
 
-                                        cartViewHolder.txt_quantity.setText("" + (amount));
-                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, itemInCart.get().PricingProduct().storePrice() * step));
-                                        cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+                                } else {
 
+                                    amount += itemInCart.get().PricingProduct().Product().unitStep();
+                                    step = itemInCart.get().PricingProduct().Product().unitStep();
+
+                                    if ((itemInCart.get().PricingProduct().storePrice() * step) + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
+                                        Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+                                        return;
                                     }
+
+                                    cartViewHolder.txt_quantity.setText("" + (amount));
+                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, itemInCart.get().PricingProduct().storePrice() * step));
+                                    cartViewHolder.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+
+                                }
 
 
 //                        }
@@ -370,7 +365,8 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     //Event
                     cartDiscount.setListener((view, position1, isDecrease, isDelete) -> {
 
-                        double amount =  itemInCart.get().amount();
+                        double amount = itemInCart.get().amount(); //View UI
+                        double step = 0;
 //                        int amount = Integer.parseInt(cartDiscount.txt_quantity.getText().toString());
 
 
@@ -382,35 +378,73 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                             if (isDecrease) //if Decrease quantity
                             {
-                                if (amount > 1) {
+                                if (itemInCart.get().PricingProduct().Product().isPackaged()) {
 
-                                    if (itemInCart.get().PricingProduct().Product().isPackaged()) {
+                                    if (amount > 1) {
+
                                         amount -= 1;
-                                        cartDiscount.txt_quantity.setText("" + ((int)amount));
-                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, -priceAfterDiscount));
-                                        cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(amount * priceAfterDiscount)).append(" ").append(context.getString(R.string.currency)));
+
+                                        cartDiscount.txt_quantity.setText("" + ((int) amount));
+                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, -itemInCart.get().PricingProduct().storePrice()));
+                                        cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(amount * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
                                     }
+
+                                } else {
+
+                                    amount -= itemInCart.get().PricingProduct().Product().unitStep();
+                                    step = itemInCart.get().PricingProduct().Product().unitStep();
+
+                                    if (amount + step <= itemInCart.get().PricingProduct().Product().minSellingUnits()) {
+
+                                        return;
+                                    }
+
+                                    cartDiscount.txt_quantity.setText("" + (amount));
+                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, -(itemInCart.get().PricingProduct().storePrice() * step)));
+                                    cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
 
                                 }
 
                             } else if (amount < 99) {
 
-                                if (priceAfterDiscount + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
+//                                if (itemInCart.get().PricingProduct().storePrice() + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
+//
+//                                    Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+//                                    return;
+//                                } else {
 
-                                    Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+                                if (itemInCart.get().PricingProduct().Product().isPackaged()) {
+
+                                    if (itemInCart.get().PricingProduct().storePrice() + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
+                                        Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+                                        return;
+                                    }
+
+
+                                    amount += 1;
+                                    cartDiscount.txt_quantity.setText("" + ((int) amount));
+                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, itemInCart.get().PricingProduct().storePrice()));
+                                    cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+
                                 } else {
 
-                                    if (itemInCart.get().PricingProduct().Product().isPackaged()) {
+                                    amount += itemInCart.get().PricingProduct().Product().unitStep();
+                                    step = itemInCart.get().PricingProduct().Product().unitStep();
 
-                                        amount += 1;
-                                        cartDiscount.txt_quantity.setText("" + ((int)amount));
-                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, priceAfterDiscount));
-                                        cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * priceAfterDiscount)).append(" ").append(context.getString(R.string.currency)));
-
+                                    if ((itemInCart.get().PricingProduct().storePrice() * step) + Common.TOTAL_CART_PRICE > Common.BASE_MAX_PRICE) {
+                                        Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
+                                        return;
                                     }
-//                        }
+
+                                    cartDiscount.txt_quantity.setText("" + (amount));
+                                    EventBus.getDefault().postSticky(new CalculatePriceEvent(true, itemInCart.get()._id(), amount, itemInCart.get().PricingProduct().storePrice() * step));
+                                    cartDiscount.txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber((amount) * itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
+
                                 }
 
+
+//                        }
+//                                }
 
                             }
 
@@ -527,8 +561,6 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 break;
         }
     }
-
-
 
 
 //        holder.edt_quantity.setFilters(new InputFilter[]{ new InputFilterMinMax(1, item.PricingProduct().amount())});
@@ -679,9 +711,9 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
 
-    private MyCartQuery.Item updateCurrentItems(double amount , MyCartQuery.Item tempItem) {
+    private MyCartQuery.Item updateCurrentItems(double amount, MyCartQuery.Item tempItem) {
 
-        return new MyCartQuery.Item(tempItem.__typename() , tempItem._id() , tempItem.PricingProduct() , amount , tempItem.PricingProduct().storePrice() * amount) ;
+        return new MyCartQuery.Item(tempItem.__typename(), tempItem._id(), tempItem.PricingProduct(), amount, tempItem.PricingProduct().storePrice() * amount);
     }
 
 }
