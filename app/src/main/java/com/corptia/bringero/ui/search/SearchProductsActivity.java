@@ -351,7 +351,13 @@ public class SearchProductsActivity extends BaseActivity {
                                     totalPages = response.data().PricingProductQuery().getStoreProducts().pagination().totalPages();
                                     adapter.addItemsSearch(data.ProductQuery());
 
-                                    adapter.setListener((view, position, price , amount) -> {
+                                    adapter.setListener((view, position, price , amount , isPackaged) -> {
+
+                                        double finalAmount = 0;
+                                        if (isPackaged)
+                                            finalAmount = 1;
+                                        else
+                                            finalAmount = amount;
 
                                         //Get Data Store
                                         StoreSearchQuery.ProductQuery items = adapter.getItemSearch(position);
@@ -362,8 +368,8 @@ public class SearchProductsActivity extends BaseActivity {
                                             priceProduct = items.storePrice();
 
                                         //Here Add To Cart
-                                        EventBus.getDefault().postSticky(new CalculateCartEvent(true, price , amount));
-                                        addToCart(adapter.getItemSearch(position)._id(),position);
+                                        EventBus.getDefault().postSticky(new CalculateCartEvent(true, price , finalAmount));
+                                        addToCart(adapter.getItemSearch(position)._id(),position,finalAmount);
                                     });
 
 
@@ -569,9 +575,9 @@ public class SearchProductsActivity extends BaseActivity {
 
 
 
-    public void addToCart(String pricingProductId , int position) {
+    public void addToCart(String pricingProductId , int position ,double amount) {
 
-        CreateCartItem item = CreateCartItem.builder().amount(1).pricingProductId(pricingProductId).build();
+        CreateCartItem item = CreateCartItem.builder().amount(amount).pricingProductId(pricingProductId).build();
         MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
                 .enqueue(new ApolloCall.Callback<CreateCartItemMutation.Data>() {
                     @Override

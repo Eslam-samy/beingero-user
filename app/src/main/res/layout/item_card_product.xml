@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_count_product"
-                android:text="0"
+                android:text="0 "
                 android:textAlignment="center"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -45,7 +45,10 @@
                 android:layout_marginTop="@dimen/large_margin"
                 android:visibility="gone"
                 tools:visibility="visible"
-                android:padding="10dp"/>
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"/>
 
 
             <TextView

@@ -173,9 +173,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             StoreSearchQuery.ProductQuery productSearch;
             GetStoreProductsQuery.Product product;
 
-
             cartProductId = "";
-
 
             if (!isSearch) {
 
@@ -265,9 +263,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                     amount = item.getAmount();
                     if (item.isPackaged())
-                        txt_amount.setText("" + ((int) amount));
+                        txt_amount.setText(new StringBuilder().append(((int)(amount))).append(" ").append("X"));
                     else
-                        txt_amount.setText("" + amount);
+                        txt_amount.setText(new StringBuilder().append(amount).append(" ").append(context.getString(R.string.km)));
 
                     cartProductId = item.getCartProductId();
 
@@ -312,13 +310,13 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
 
                             double step, actualAmount = 0;
-                            if (Double.parseDouble(txt_amount.getText().toString()) == 0f) {
+                            if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
                                 step = minSellingUnits;
                                 actualAmount = minSellingUnits;
 //                                Common.LOG("minSellingUnits : == 0 ** " + minSellingUnits + " Count " + step);
                             } else {
                                 step = unitStep;
-                                actualAmount = Double.parseDouble(txt_amount.getText().toString()) + unitStep;
+                                actualAmount = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) + unitStep;
 //                                Common.LOG("minSellingUnits : " + minSellingUnits + " unitStep " + unitStep);
                             }
 
@@ -330,6 +328,12 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
 
                             if (actualAmount < 100) {
+
+                                if (cartProductId.isEmpty()) {
+                                    //I am product new
+                                    Common.TOTAL_CART_AMOUNT +=1;
+                                    cartProductId="any";
+                                }
 
 //                                    Common.TOTAL_CART_AMOUNT += 1;
                                 Common.LOG("Total Before : " + Common.TOTAL_CART_PRICE + " - finalPrice1 : " + finalPrice1 + " - step : " + step + " - Both : " + (finalPrice1 * step));
@@ -346,10 +350,10 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 bg_delete.setVisibility(View.VISIBLE);
 
                                 if (!finalIsPackaged) {
-                                    txt_amount.setText("" + actualAmount);
+                                    txt_amount.setText(new StringBuilder().append(actualAmount).append(" ").append(context.getString(R.string.km)) );
                                 }
 
-                                listener.onClick(itemView, position, finalPrice1 * step, step);
+                                listener.onClick(itemView, position, finalPrice1 * step, step , isPackaged);
                             }
 
 
@@ -387,21 +391,30 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                             }
 
                             int count;
-                            count = Integer.parseInt(txt_amount.getText().toString()) + 1;
+                            count = Integer.parseInt(txt_amount.getText().toString().split(" ")[0]) + 1;
 
 
                             if (count < 100) {
 
+                                if (cartProductId.isEmpty()) {
+                                    //I am product new
+                                    Common.TOTAL_CART_AMOUNT +=1;
+                                    cartProductId="any";
+                                }
+
                                 Common.TOTAL_CART_PRICE += finalPrice1;
 
-                                listener.onClick(itemView, position, finalPrice1, count);
+                                Common.LOG("Hi I am count : " + count);
+
+                                listener.onClick(itemView, position, finalPrice1, count , isPackaged);
 
                                 txt_amount.setVisibility(View.VISIBLE);
                                 btn_delete.setVisibility(View.VISIBLE);
                                 bg_delete.setVisibility(View.VISIBLE);
 
                                 if (finalIsPackaged) {
-                                    txt_amount.setText("" + count);
+                                    txt_amount.setText(new StringBuilder().append(count).append(" ").append("X") );
+
                                 }
                             }
 
@@ -430,14 +443,6 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                         }
 
-
-                        if (!isCount && cartProductId.isEmpty()) {
-                            isCount = true;
-                            Common.TOTAL_CART_AMOUNT +=1;
-                            //I am product new
-                        }
-
-
                     }
                 });
             }
@@ -456,11 +461,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                         Log.d("HAZEM", "!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)");
 
-                        double amountNow = Double.parseDouble(txt_amount.getText().toString()) - 1;
+                        double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - 1;
 
                         if (amountNow > 0) {
 
-                            txt_amount.setText("" + amountNow);
+                            txt_amount.setText(new StringBuilder().append(((int) amountNow)).append(" ").append("X"));
 
                             txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                 @Override
@@ -477,7 +482,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                             btn_delete.setVisibility(View.INVISIBLE);
                             bg_delete.setVisibility(View.INVISIBLE);
 
-                            txt_amount.setText("0");
+                            txt_amount.setText("0 ");
 
                             deleteCartItems(cartProductId, finalPrice);
 
@@ -486,12 +491,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     } else {
 
                         Log.d("HAZEM", "!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)");
-                        double amountNow = Double.parseDouble(txt_amount.getText().toString()) - unitStep;
-                        Common.LOG("After cast : " + Double.parseDouble(txt_amount.getText().toString()) + " --- " + amountNow);
+                        double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - unitStep;
 
                         if (amountNow >= minSellingUnits) {
 
-                            txt_amount.setText("" + amountNow);
+                            txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.km)));
 
                             txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                 @Override
@@ -507,7 +511,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                             btn_delete.setVisibility(View.INVISIBLE);
                             bg_delete.setVisibility(View.INVISIBLE);
 
-                            txt_amount.setText("0");
+                            txt_amount.setText("0 ");
 
                             deleteCartItems(cartProductId, finalPrice * minSellingUnits);
 
@@ -540,11 +544,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 }
 
 
-                                double amountNow = Double.parseDouble(txt_amount.getText().toString()) - 1;
+                                double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - 1;
 
                                 if (amountNow > 0) {
 
-                                    txt_amount.setText("" + amountNow);
+                                    txt_amount.setText(new StringBuilder().append(((int) amountNow)).append(" ").append("X"));
 
                                     txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                         @Override
@@ -561,7 +565,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                     btn_delete.setVisibility(View.INVISIBLE);
                                     bg_delete.setVisibility(View.INVISIBLE);
 
-                                    txt_amount.setText("0");
+                                    txt_amount.setText("0 ");
 
                                     deleteCartItems(item.getCartProductId(), finalPrice);
 
@@ -583,11 +587,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 }
 
 //                                double unitStep, minSellingUnits;
-                                double amountNow = Double.parseDouble(txt_amount.getText().toString()) - unitStep;
+                                double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - unitStep;
 
                                 if (amountNow >= minSellingUnits) {
 
-                                    txt_amount.setText("" + amountNow);
+                                    txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.km)));
 
                                     txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                         @Override
@@ -605,7 +609,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                     btn_delete.setVisibility(View.INVISIBLE);
                                     bg_delete.setVisibility(View.INVISIBLE);
 
-                                    txt_amount.setText("0");
+                                    txt_amount.setText("0 ");
 
                                     deleteCartItems(item.getCartProductId(), finalPrice * minSellingUnits);
                                 }

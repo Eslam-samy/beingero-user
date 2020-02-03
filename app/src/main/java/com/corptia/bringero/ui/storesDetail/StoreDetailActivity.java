@@ -121,7 +121,6 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         //TODO
 
 
-
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -282,7 +281,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     public void request(CalculateCartEvent event) {
         if (event != null) {
 
-            Log.d("HAZEM" , "Here Bus");
+            Log.d("HAZEM", "Here Bus");
 
             if (event.isSuccess()) {
 
@@ -298,16 +297,17 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 //                Common.TOTAL_CART_PRICE +=event.getProductPrice();
 //                Common.TOTAL_CART_AMOUNT +=event.getAmount();
 
-                countOfCart += event.getAmount();
+                countOfCart = Common.TOTAL_CART_AMOUNT;
                 totalPriceCart += event.getProductPrice();
 
                 isHaveCart = true;
                 layout_speed_cart.setVisibility(View.VISIBLE);
                 txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
-                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+//                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
 
 
-                if (totalPriceCart <= 0.0f){
+                if (totalPriceCart <= 0.0f) {
                     isHaveCart = false;
                     layout_speed_cart.setVisibility(View.GONE);
                 }
@@ -335,13 +335,15 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
             isHaveCart = false;
             layout_speed_cart.setVisibility(View.GONE);
         } else {
+
             isHaveCart = true;
             layout_speed_cart.setVisibility(View.VISIBLE);
             totalPriceCart = Common.TOTAL_CART_PRICE;
             countOfCart = Common.TOTAL_CART_AMOUNT;
 
             txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
-            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+//            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
         }
 
 

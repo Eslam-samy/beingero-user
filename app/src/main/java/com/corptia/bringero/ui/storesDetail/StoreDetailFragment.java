@@ -217,7 +217,13 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             totalPages = product.pagination().totalPages();
             storeDetailAdapter.addItems(product.Products());
 
-            storeDetailAdapter.setListener((view, position,price , amount) -> {
+            storeDetailAdapter.setListener((view, position,price , amount , isPackaged) -> {
+
+                double finalAmount = 0;
+                if (isPackaged)
+                    finalAmount = 1;
+                else
+                    finalAmount = amount;
 
 //                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
 //                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
@@ -238,7 +244,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                         priceProduct = items.storePrice();
 
                     EventBus.getDefault().postSticky(new CalculateCartEvent(true, price , amount));
-                    addToCart(storeDetailAdapter.getSelectProduct(position)._id() , position , amount);
+                    addToCart(storeDetailAdapter.getSelectProduct(position)._id() , position , finalAmount);
 
 
             });
