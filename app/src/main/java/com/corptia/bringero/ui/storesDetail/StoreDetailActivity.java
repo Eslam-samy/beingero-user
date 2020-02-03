@@ -298,7 +298,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 //                Common.TOTAL_CART_PRICE +=event.getProductPrice();
 //                Common.TOTAL_CART_AMOUNT +=event.getAmount();
 
-                countOfCart = Common.TOTAL_CART_AMOUNT;
+                countOfCart += event.getAmount();
                 totalPriceCart += event.getProductPrice();
 
                 isHaveCart = true;
