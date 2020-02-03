@@ -235,16 +235,16 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 //Here Add To Cart
                 //Get Data Store
 
-                    GetStoreProductsQuery.Product items = storeDetailAdapter.productsList.get(position);
+                GetStoreProductsQuery.Product items = storeDetailAdapter.productsList.get(position);
 
-                    double priceProduct ;
-                    if (items.discountActive()!=null &&items.discountActive())
-                        priceProduct =(1- items.discountRatio()) * items.storePrice();
-                    else
-                        priceProduct = items.storePrice();
+                double priceProduct ;
+                if (items.discountActive()!=null &&items.discountActive())
+                    priceProduct =(1- items.discountRatio()) * items.storePrice();
+                else
+                    priceProduct = items.storePrice();
 
-                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, price , amount));
-                    addToCart(storeDetailAdapter.getSelectProduct(position)._id() , position , finalAmount);
+                EventBus.getDefault().postSticky(new CalculateCartEvent(true, price , amount));
+                addToCart(storeDetailAdapter.getSelectProduct(position)._id() , position , finalAmount);
 
 
             });

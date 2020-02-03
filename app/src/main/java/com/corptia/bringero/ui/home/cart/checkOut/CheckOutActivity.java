@@ -124,7 +124,7 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
             txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
 
             txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
-            txt_delivery_fees.setText(new StringBuilder().append(15).append(" ").append(getString(R.string.currency)));
+            txt_delivery_fees.setText(new StringBuilder().append(Common.DELIVERY_COST).append(" ").append(getString(R.string.currency)));
             txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(15 + totalPrice)).append(" ").append(getString(R.string.currency)));
 
             total_price.setText(new StringBuilder().append(Common.getDecimalNumber(15 + totalPrice)).append(" ").append(getString(R.string.currency)));

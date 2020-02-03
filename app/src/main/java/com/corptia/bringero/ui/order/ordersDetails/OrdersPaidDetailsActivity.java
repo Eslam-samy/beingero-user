@@ -305,7 +305,11 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
 
                 //For Tracking Line
-                if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESREPLIED.rawValue())) {
+                if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.ORDERSREQUESTED.rawValue())) {
+                    img_requsted.setImageResource(R.drawable.tracking_status_requsted);
+                    layout_pilot.setVisibility(View.GONE);
+                }
+               else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESREPLIED.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
                     layout_pilot.setVisibility(View.GONE);
                 } else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESPREPARED.rawValue())) {

@@ -25,6 +25,9 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.GeneralOptionQuery;
+import com.corptia.bringero.type.GeneralOptionFilter;
+import com.corptia.bringero.type.GeneralOptionNameEnum;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
@@ -168,7 +171,6 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                                             @Override
                                             public void run() {
 
-                                                loadingDialog.hideProgressBar();
 
                                                 if (myCart.status() == 200) {
 
@@ -177,6 +179,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                                                     for (MyCartQuery.StoreDatum stores : myCart.storeData()) {
                                                         isAvailableStores.add(stores.Store().isAvailable());
+                                                        loadingDialog.hideProgressBar();
                                                     }
 
                                                     if (isAvailableStores.contains(false)) {
@@ -185,20 +188,22 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                                                         btn_next.setEnabled(false);
                                                         cartPresenter.getMyCart();
 
+                                                        loadingDialog.hideProgressBar();
 
-                                                    } else {
+                                                    } else if (myCart.TotalPrice() > Common.BASE_MAX_PRICE){
 
-                                                        btn_next.setBackgroundResource(R.drawable.round_main_button);
-                                                        btn_next.setEnabled(true);
+                                                        loadingDialog.hideProgressBar();
+                                                    }
+                                                        else{
 
-                                                        Common.CURRENT_CART = myCart.storeData();
+                                                            getCost(myCart);
 
-                                                        Intent intent = new Intent(getActivity(), CheckOutActivity.class);
-                                                        intent.putExtra(Constants.EXTRA_TOTAL_CART, myCart.TotalPrice());
-                                                        startActivity(intent);
                                                     }
 
                                                 }
+
+
+
 //                                                 else if (myCart.status() == 404) {
 //                                                } else {
 //                                                }
@@ -246,6 +251,38 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
 
         });
+    }
+
+    private void getCost(MyCartQuery.MyCart myCart) {
+
+        MyApolloClient.getApolloClient().query(GeneralOptionQuery.builder().filter(GeneralOptionFilter.builder().name(GeneralOptionNameEnum.DELIVERYCOST).build()).build())
+                .enqueue(new ApolloCall.Callback<GeneralOptionQuery.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<GeneralOptionQuery.Data> response) {
+
+                        if (response.data().GeneralOptionQuery().getOne().status() ==200){
+
+                            Common.DELIVERY_COST = response.data().GeneralOptionQuery().getOne().data().value();
+
+                            btn_next.setBackgroundResource(R.drawable.round_main_button);
+                            btn_next.setEnabled(true);
+                            Common.CURRENT_CART = myCart.storeData();
+                            Intent intent = new Intent(getActivity(), CheckOutActivity.class);
+                            intent.putExtra(Constants.EXTRA_TOTAL_CART, myCart.TotalPrice());
+                            startActivity(intent);
+
+                            loadingDialog.hideProgressBar();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
+
+
+
     }
 
     @Override

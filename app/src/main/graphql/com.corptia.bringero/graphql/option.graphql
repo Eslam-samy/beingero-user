@@ -1,0 +1,26 @@
+query GeneralOptionQuery($filter: GeneralOptionFilter){
+    GeneralOptionQuery{
+        getOne(filter:$filter){
+            status
+            message
+            errors{
+                code
+                path
+                message
+            }
+            data{
+                _id
+                name
+                label
+                value
+                valueType
+                multiLangs{
+                    label{
+                        ar
+                        en
+                    }
+                }
+            }
+        }
+    }
+}

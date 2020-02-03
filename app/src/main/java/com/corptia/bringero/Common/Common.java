@@ -58,6 +58,8 @@ public class Common {
     public static final String BASE_URL_IMAGE_UPLOAD = "http://bringero.site:8000/images/";
 
     public static final double BASE_MAX_PRICE = 500.00;
+    public static  String DELIVERY_COST ;
+
     public static Boolean IS_AVAILABLE_STORE = false;
 
     public static String TOKEN_FIREBASE = "";
