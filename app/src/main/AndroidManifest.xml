@@ -9,79 +9,100 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true">
-
-
-        <activity android:name=".ui.allowLocation.AllowLocationActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.order.orderStoreDetail.OrderStoreDetailsActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.tracking.TrackingActivity"
-            android:screenOrientation = "portrait"/>
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ui.Main.suspend.SuspendActivity"></activity>
+        <activity android:name=".ui.Main.underMaintenance.UnderMaintenanceActivity" />
+        <activity android:name=".ui.Main.comingSoon.ComingSoonActivity"></activity>
+        <activity
+            android:name=".ui.allowLocation.AllowLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.order.orderStoreDetail.OrderStoreDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.tracking.TrackingActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.search.SearchProductsActivity"
-            android:windowSoftInputMode="adjustResize|stateHidden"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.home.cart.checkOut.CheckOutActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.location.AllLocation.LocationsDeliveryActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.location.addNewLocation.AddNewLocationActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.location.deliveryLocation.SelectDeliveryLocationActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.pricingProduct.PricingProductActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.order.ordersDetails.OrdersPaidDetailsActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.locations.LocationsActivity"
-            android:screenOrientation = "portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".ui.home.cart.checkOut.CheckOutActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.location.AllLocation.LocationsDeliveryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.location.addNewLocation.AddNewLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.location.deliveryLocation.SelectDeliveryLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.pricingProduct.PricingProductActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.order.ordersDetails.OrdersPaidDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.locations.LocationsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.cart.CartActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.notification.NotificationActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.setting.language.LanguageActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.setting.contactUs.ContactUsActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.setting.changePassword.ChangePasswordActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.setting.editProfile.EditProfileActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.setting.main.SettingActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.productDetail.ProductDetailActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.storesDetail.StoreDetailActivity"
-            android:screenOrientation = "portrait"/>
-        <activity android:name=".ui.stores.StoresActivity"
-            android:screenOrientation = "portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ui.notification.NotificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.setting.language.LanguageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.setting.contactUs.ContactUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.setting.changePassword.ChangePasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.setting.editProfile.EditProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.setting.main.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.productDetail.ProductDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.storesDetail.StoreDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.stores.StoresActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.HomeActivity"
             android:label="@string/title_activity_store_types"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:screenOrientation = "portrait"/>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".ui.Main.otp.VerifyPhoneNumberActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation = "portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.splash.SplashActivity"
-            android:theme="@style/FullWindow"
-            android:screenOrientation = "portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/FullWindow">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -91,12 +112,12 @@
         </activity>
         <activity
             android:name=".ui.Main.MainActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation = "portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.MapWork.MapsActivity"
-            android:theme="@style/FullWindow"
-            android:screenOrientation = "portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/FullWindow" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

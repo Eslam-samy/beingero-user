@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>app_version_pilot</key>
+        <value>0.0</value>
+    </entry>
+    <entry>
+        <key>app_version_user</key>
+        <value>0.0</value>
+    </entry>
+    <entry>
+        <key>app_version_store</key>
+        <value>0.0</value>
+    </entry>
+
+    <entry>
+        <key>under_maintenance</key>
+        <value>false</value>
+    </entry>
+
+
+    <entry>
+        <key>isComingSoon</key>
+        <value>false</value>
+    </entry>
+
+    <entry>
+        <key>countDownDate</key>
+        <value>30/12/1992</value>
+    </entry>
+
+
+</defaultsMap>

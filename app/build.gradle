@@ -157,7 +157,12 @@ dependencies {
 
     implementation 'com.github.uzairiqbal91:CircularTimerView:1.0'
 
+    //For Can Distance
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
+
+    implementation 'com.google.firebase:firebase-config:19.0.0'
+
+    implementation 'com.github.iwgang:countdownview:2.1.6'
 
 
 }

@@ -45,4 +45,10 @@ public class Constants {
     public static final String PACKAGE_NAME_PILOT = "com.corptia.bringero.pilot";
     public static final String PACKAGE_NAME_STOREADMIN= "com.corptia.bringero.store";
 
+    //Remote
+    public static final String COUNT_DOWNDATE = "countDownDate";
+    public static final String UNDER_MAINTENANCE = "under_maintenance";
+    public static final String IS_COMING_SOON = "isComingSoon";
+    public static final String APP_VERSION= "app_version_user";
+
 }

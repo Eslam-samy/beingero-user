@@ -3,6 +3,9 @@ package com.corptia.bringero.ui.home;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.apollographql.apollo.ApolloCall;
@@ -23,6 +26,7 @@ import com.corptia.bringero.graphql.NotificationCountUnreadQuery;
 import com.corptia.bringero.graphql.UpdateNotificationMutation;
 import com.corptia.bringero.model.NotificationCount;
 import com.corptia.bringero.type.NotificationFilterInput;
+import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.home.notification.NotificationFragment;
 import com.corptia.bringero.ui.location.AllLocation.LocationsDeliveryActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
@@ -34,12 +38,16 @@ import com.corptia.bringero.ui.home.order.OrderFragment;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.language.LocaleHelper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -50,6 +58,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -103,6 +112,9 @@ public class HomeActivity extends BaseActivity implements
     TextView txt_user_name,txt_user_phone ;
     CircleImageView img_avatar;
 
+    //For Get New Update
+    private FirebaseRemoteConfig mFirebaseRemoteConfig;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +122,8 @@ public class HomeActivity extends BaseActivity implements
         if (Common.CURRENT_USER!=null)
             LocaleHelper.setLocale(this, Common.CURRENT_USER.getLanguage().toLowerCase());
         setContentView(R.layout.activity_home);
+
+        initRemoteConfig();
 
         ButterKnife.bind(this);
 
@@ -415,6 +429,7 @@ public class HomeActivity extends BaseActivity implements
         isFirstTimeGetCartCount = true;
         Common.GetCartItemsCount(null);
 
+        checkNewVersion();
 
     }
 
@@ -471,6 +486,109 @@ public class HomeActivity extends BaseActivity implements
 
         if (notificationCount != null) {
             countNotificationUnread();
+        }
+
+    }
+
+
+
+    // ********************* This For Show Dialog Update To New Version *********************
+    private void checkNewVersion() {
+
+
+        mFirebaseRemoteConfig.fetchAndActivate()
+                .addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Boolean> task) {
+
+                        if (task.isSuccessful()) {
+
+//                                boolean updated = task.getResult();
+
+//                            mFirebaseRemoteConfig.activateFetched();
+                            mFirebaseRemoteConfig.activate();
+
+                            Common.LAST_APP_VERSION  = mFirebaseRemoteConfig.getDouble(Constants.APP_VERSION);
+
+                            if (Common.LAST_APP_VERSION > getCurrentVersionCode()) {
+
+                                //Must Update You App
+                                showUpdateDialog();
+
+                            } else {
+                                //No need To Update
+                                Common.LOG("NO NEED TO UPDATE " + Common.LAST_APP_VERSION + " ---- " + getCurrentVersionCode());
+                            }
+
+                        } else {
+
+                        }
+                    }
+                });
+    }
+
+    private void showUpdateDialog() {
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(HomeActivity.this);
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(HomeActivity.this).inflate(R.layout.layout_dialog_update, null);
+        builder.setView(dialogView);
+
+//                img_done = dialogView.findViewById(R.id.img_done);
+        Button btn_update = dialogView.findViewById(R.id.btn_update);
+        androidx.appcompat.app.AlertDialog dialog = builder.create();
+
+//        dialog.getWindow().setLayout(600, 400); //Controlling width and height.
+
+        dialog.setCancelable(false);
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        btn_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //start Activity To App
+                goAppInGooglePlay();
+
+            }
+        });
+
+        dialog.show();
+
+
+    }
+
+    private double getCurrentVersionCode() {
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    private void initRemoteConfig() {
+
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(30) //TODO This For Wait Before Update
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
+
+        mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
+
+    }
+
+
+    private void goAppInGooglePlay() {
+
+        String appPackageName = getPackageName();
+
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException ex) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
         }
 
     }

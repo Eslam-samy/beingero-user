@@ -23,6 +23,8 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.type.RoleEnum;
+import com.corptia.bringero.ui.Main.resetPassword.ResetPasswordActivity;
+import com.corptia.bringero.ui.Main.suspend.SuspendActivity;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.splash.SplashActivity;
 import com.corptia.bringero.utils.button.ProgressButton;
@@ -99,22 +101,14 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
             @Override
             public void onClick(View view) {
 
+                getActivity().finish();
+                startActivity(new Intent(getActivity() , ResetPasswordActivity.class));
+
             }
         });
 
         return view;
     }
-
-    private void showBtnHideBar(View viewToShow, View viewToHide) {
-        viewToHide.setVisibility(View.GONE);
-        ((Button) viewToShow).setText(getString(R.string.login));
-    }
-
-    private void showBarHideBtn(View viewToShow, View viewToHide) {
-        ((Button) viewToHide).setText("");
-        viewToShow.setVisibility(View.VISIBLE);
-    }
-
 
     @Override
     public void showProgressBar() {
@@ -242,6 +236,22 @@ public class LoginFragment extends Fragment implements LoginContract.LoginView {
 
             }
         });
+    }
+
+    @Override
+    public void OnSuspendedCallback() {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                startActivity(new Intent(getActivity(), SuspendActivity.class));
+                getActivity().overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+                isFirstTimeAddLocation = true;
+                getActivity().finish();
+            }
+        });
+
     }
 
 
