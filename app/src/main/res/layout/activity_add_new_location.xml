@@ -34,7 +34,8 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_region"
-                style="@style/TextInputLayoutStyle">
+                style="@style/TextInputLayoutStyle"
+                android:layout_marginTop="@dimen/normal_margin">
 
                 <EditText
                     style="@style/EditTextStyle"

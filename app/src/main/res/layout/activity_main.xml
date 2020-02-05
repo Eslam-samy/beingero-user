@@ -23,6 +23,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/app_margin"
             android:layout_marginBottom="@dimen/app_margin"
+            app:layout_scrollFlags="scroll|enterAlways"
             />
 
         <com.google.android.material.tabs.TabLayout
@@ -36,11 +37,20 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+<!--    <androidx.viewpager.widget.ViewPager-->
+<!--        android:id="@+id/viewPaper2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+<!--        android:background="@color/backgroundSplash"/>-->
+
+
     <com.corptia.bringero.utils.lib.CustomViewPager
         android:id="@+id/viewPaper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </com.corptia.bringero.utils.lib.CustomViewPager>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
