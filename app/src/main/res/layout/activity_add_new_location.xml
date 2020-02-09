@@ -32,30 +32,45 @@
                 android:layout_marginStart="@dimen/app_margin"
                 android:layout_marginEnd="@dimen/app_margin"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_region"
-                style="@style/TextInputLayoutStyle"
-                android:layout_marginTop="@dimen/normal_margin">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ShadowLayoutInput">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_region"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_marginTop="@dimen/normal_margin">
 
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/region"
-                    android:inputType="text"
-                    />
+                    <EditText
+                        style="@style/EditTextStyle"
+                        android:hint="@string/region"
+                        android:inputType="text"
+                        />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_address_name"
-                style="@style/TextInputLayoutStyle">
 
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/address_name"
-                    android:inputType="text"
-                    />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ShadowLayoutInput">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_address_name"
+                    style="@style/TextInputLayoutStyle">
+
+                    <EditText
+                        style="@style/EditTextStyle"
+                        android:hint="@string/address_name"
+                        android:inputType="text"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+            </RelativeLayout>
+
 
 
             <TextView
@@ -77,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:spinnerMode="dialog"
                     android:textSize="15sp"
-                    android:background="@drawable/shadow_edittext"
+                    android:background="@drawable/shadow_test200"
                     android:paddingStart="26dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -90,7 +105,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginEnd="40dp"/>
+                    android:layout_marginEnd="30dp"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -112,57 +127,91 @@
 <!--                tools:padding="@dimen/high_padding" />-->
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_street"
-                style="@style/TextInputLayoutStyle">
-
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/street"
-                    android:inputType="text"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_building"
-                style="@style/TextInputLayoutStyle">
-
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/building"
-                    android:inputType="number"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_floor"
-                style="@style/TextInputLayoutStyle"
-                android:visibility="gone">
-
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/floor"
-                    android:inputType="number"
-                    />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input__flat"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/TextInputLayoutStyle"
+                style="@style/ShadowLayoutInput">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_street"
+                    style="@style/TextInputLayoutStyle">
+
+                    <EditText
+                        style="@style/EditTextStyle"
+                        android:hint="@string/street"
+                        android:inputType="text"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ShadowLayoutInput">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_building"
+                    style="@style/TextInputLayoutStyle">
+
+                    <EditText
+                        style="@style/EditTextStyle"
+                        android:hint="@string/building"
+                        android:inputType="number"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:id="@+id/layout_input_floor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ShadowLayoutInput"
                 android:visibility="gone">
 
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/flat"
-                    android:inputType="number"
-                    />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_floor"
+                    style="@style/TextInputLayoutStyle"
+                    >
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        style="@style/EditTextStyle"
+                        android:hint="@string/floor"
+                        android:inputType="number"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_input__flat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ShadowLayoutInput">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input__flat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/TextInputLayoutStyle"
+                    android:visibility="gone">
+
+                    <EditText
+                        style="@style/EditTextStyle"
+                        android:hint="@string/flat"
+                        android:inputType="number"
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+
 
 
         </LinearLayout>

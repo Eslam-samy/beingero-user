@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.corptia.bringero.Common.Common;
@@ -68,6 +69,11 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
     TextInputLayout input_flat;
     @BindView(R.id.btn_save)
     Button btn_save;
+
+    @BindView(R.id.layout_input_floor)
+    RelativeLayout layout_input_floor;
+    @BindView(R.id.layout_input__flat)
+    RelativeLayout layout_input__flat;
 
     SelectDeliveryLocationPresenter presenter = new SelectDeliveryLocationPresenter(this);
 
@@ -238,10 +244,16 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                     input_floor.setVisibility(View.GONE);
                     input_floor.getEditText().setText("");
 
+                    //add
+                    layout_input_floor.setVisibility(View.GONE);
+                    layout_input__flat.setVisibility(View.GONE);
 
                 }else{
                     input_flat.setVisibility(View.VISIBLE);
                     input_floor.setVisibility(View.VISIBLE);
+
+                    layout_input_floor.setVisibility(View.VISIBLE);
+                    layout_input__flat.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -299,6 +311,9 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
                 if (building!=0){
                     input_flat.setVisibility(View.VISIBLE);
                     input_floor.setVisibility(View.VISIBLE);
+
+                    layout_input_floor.setVisibility(View.VISIBLE);
+                    layout_input__flat.setVisibility(View.VISIBLE);
                 }else
                 {
                     input_building.getEditText().setText("");
@@ -307,11 +322,13 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 
                     input_flat.setVisibility(View.GONE);
                     input_floor.setVisibility(View.GONE);
+
+                    layout_input_floor.setVisibility(View.GONE);
+                    layout_input__flat.setVisibility(View.GONE);
                 }
 
 
                 isUpdateCurrentLocation = intent.getBooleanExtra(Constants.EXTRA_IS_UPDATE_CURRENT_LOCATION, true);
-
 
             } else {
 

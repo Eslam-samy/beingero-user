@@ -44,7 +44,7 @@
 
     <TextView
         android:id="@+id/txt_amount"
-        android:layout_width="25dp"
+        android:layout_width="50dp"
         android:layout_height="25dp"
         tools:text="X2"
         android:textColor="@color/white"

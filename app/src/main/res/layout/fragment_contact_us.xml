@@ -23,75 +23,80 @@
         android:layout_marginBottom="@dimen/medium_margin"
         >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_name"
-                style="@style/TextInputLayoutStyle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:translationY="0dp"
-                >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ShadowLayoutInput">
 
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/name"
-                    android:inputType="text"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="Hazem"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_name"
+                    style="@style/TextInputLayoutStyle"
+                    >
 
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        style="@style/EditTextStyle"
+                        android:hint="@string/name"
+                        android:inputType="text"
+                        tools:text="Hazem"
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_email"
-                style="@style/TextInputLayoutStyle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:translationY="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/input_name"
-                >
-
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="Hazem@yahoo.com"
-
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+            </RelativeLayout>
 
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_message"
-                style="@style/TextInputLayoutStyle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:translationY="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/input_email"
-                >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ShadowLayoutInput">
 
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/message"
-                    android:inputType="textMultiLine"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:text="Message"
-                    android:lines="6"
-                    android:gravity="start"
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_email"
+                    style="@style/TextInputLayoutStyle"
+                    >
+
+                    <EditText
+                        style="@style/EditTextStyle"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        tools:text="Hazem@yahoo.com"
+
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/ShadowLayoutInput">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_message"
+                    style="@style/TextInputLayoutStyle"
+                    >
+
+                    <EditText
+                        style="@style/EditTextStyle"
+                        android:hint="@string/message"
+                        android:inputType="textMultiLine"
+                        tools:text="Message"
+                        android:lines="6"
+                        android:gravity="start"
+                        />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        </LinearLayout>
 
 
 

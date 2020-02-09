@@ -20,6 +20,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.ui.Main.comingSoon.ComingSoonActivity;
+import com.corptia.bringero.ui.Main.login.LoginActivity;
 import com.corptia.bringero.ui.Main.suspend.SuspendActivity;
 import com.corptia.bringero.ui.Main.underMaintenance.UnderMaintenanceActivity;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
@@ -35,6 +36,7 @@ import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationA
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -156,7 +158,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
                                                 Intent intent;
                                                 if (millisecondsFromNow <= 0) {
-                                                    intent = new Intent(SplashActivity.this, MainActivity.class);
+                                                    intent = new Intent(SplashActivity.this, LoginActivity.class);
                                                 } else {
                                                     intent = new Intent(SplashActivity.this, ComingSoonActivity.class);
                                                     intent.putExtra("millisecondsFromNow", millisecondsFromNow);
@@ -199,6 +201,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
 
         }, 1000);
+
     }
 
     private void checkLoginUser() {
@@ -214,7 +217,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
         } else {
 
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             //startActivity(intent,options.toBundle());
             startActivity(intent);
             finish();

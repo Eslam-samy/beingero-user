@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+
         img_logo = findViewById(R.id.img_logo);
 
         //Views fragments

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.ui.Main.MainActivity;
+import com.corptia.bringero.ui.Main.login.LoginActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -110,7 +111,7 @@ public class ComingSoonActivity extends AppCompatActivity {
             @Override
             public void onEnd(CountdownView cv) {
 
-                Intent intent = new Intent(ComingSoonActivity.this , MainActivity.class);
+                Intent intent = new Intent(ComingSoonActivity.this , LoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
                 finish();

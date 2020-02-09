@@ -307,3 +307,13 @@ mutation ResetPassword($data: resetPasswordInput){
         }
     }
 }
+
+
+query phoneExists($phone: String!){
+    UserQuery{
+        phoneExists(phone:$phone)
+    }
+}
+
+
+

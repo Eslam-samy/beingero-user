@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ShadowLayoutInput">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_firstName"
+            style="@style/TextInputLayoutStyle">
+
+            <EditText
+                style="@style/EditTextStyle"
+                android:hint="@string/firstName"
+                android:inputType="text"
+                tools:text="Hazem@yahoo.com"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/ShadowLayoutInput">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_lastName"
+            style="@style/TextInputLayoutStyle">
+
+            <EditText
+                style="@style/EditTextStyle"
+                android:hint="@string/lastName"
+                android:inputType="text"
+                tools:text="Hazem@yahoo.com"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

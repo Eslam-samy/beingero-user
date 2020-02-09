@@ -51,4 +51,5 @@ public class Constants {
     public static final String IS_COMING_SOON = "isComingSoon";
     public static final String APP_VERSION= "app_version_user";
 
+    public static final String EXTRA_SIGNUP = "EXTRA_SIGNUP";
 }

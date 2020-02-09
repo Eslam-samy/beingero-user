@@ -1603,6 +1603,7 @@ type UserQuery {
     getOne(filter: UserFilterInput): UserSingleResponse
     getRolesCounts: [userRoleCount]
     me: UserSingleResponse
+    phoneExists(phone: String!): Boolean
 }
 
 type UserSingleResponse implements ISingleResponse {

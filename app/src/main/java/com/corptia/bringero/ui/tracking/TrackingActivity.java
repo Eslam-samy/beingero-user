@@ -166,11 +166,22 @@ public class TrackingActivity extends BaseActivity implements
             }
         });
 
+        btn_satellite.setTag("MAP_TYPE_NORMAL");
         btn_satellite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                mMap.setMapType(mMap.MAP_TYPE_SATELLITE); // Here is where you set the map type
+                if (btn_satellite.getTag().equals("MAP_TYPE_SATELLITE")) {
+                    btn_satellite.setTag("MAP_TYPE_NORMAL");
+                    mMap.setMapType(mMap.MAP_TYPE_NORMAL);
+                    btn_satellite.setBackgroundResource(R.drawable.layout_btn_satellite);
+                } else {
+                    mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
+                    btn_satellite.setTag("MAP_TYPE_SATELLITE");
+                    btn_satellite.setBackgroundResource(R.drawable.layout_btn_satellite_active);
+
+                }
+                // Here is where you set the map type
 
             }
         });

@@ -50,10 +50,11 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
             loginView.showProgressBar();
 
+            if (Common.CURRENT_IMIE!=null)
             if (Common.CURRENT_IMIE.isEmpty())
                 Common.CURRENT_IMIE = "456";
 
-            UserDeviceInput userDeviceInput = UserDeviceInput.builder().deviceType(UserDeviceType.ANDROID).imie(Common.CURRENT_IMIE).token(Common.TOKEN_FIREBASE).build();
+            UserDeviceInput userDeviceInput = UserDeviceInput.builder().deviceType(UserDeviceType.ANDROID).token(Common.TOKEN_FIREBASE).build();
             LoginInput loginInput = LoginInput.builder().phone(phone).password(password).device(userDeviceInput).build();
 
             MyApolloClient.getApollowClient().mutate(LogInMutation.builder().loginData(loginInput).build())

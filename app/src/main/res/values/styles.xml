@@ -53,15 +53,47 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <!-- Old -->
+<!--    &lt;!&ndash; EditText &ndash;&gt;-->
+<!--    <style name="EditTextStyle">-->
+<!--        <item name="android:textColor">@color/black</item>-->
+<!--        <item name="android:textSize">12sp</item>-->
+<!--        <item name="android:layout_width">match_parent</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--        <item name="android:paddingStart">32dp</item>-->
+<!--        <item name="android:paddingEnd">32dp</item>-->
+<!--&lt;!&ndash;        <item name="android:background">@drawable/shadow_edittext</item>&ndash;&gt;-->
+<!--        <item name="android:background">@drawable/shadow_test200</item>-->
+<!--        <item name="android:fontFamily">@font/poppinsmedium</item>-->
+<!--    </style>-->
+
+<!--    &lt;!&ndash;   TextInputLayout      &ndash;&gt;-->
+<!--    <style name="TextInputLayoutStyle">-->
+<!--        <item name="android:layout_width">match_parent</item>-->
+<!--        <item name="android:layout_height">wrap_content</item>-->
+<!--&lt;!&ndash;        <item name="android:layout_marginStart">14dp</item>&ndash;&gt;-->
+<!--&lt;!&ndash;        <item name="android:layout_marginEnd">14dp</item>&ndash;&gt;-->
+<!--        <item name="android:layout_marginTop">0dp</item>-->
+<!--        <item name="android:textSize">14sp</item>-->
+<!--        <item name="hintAnimationEnabled">true</item>-->
+<!--        <item name="hintEnabled">true</item>-->
+
+<!--        &lt;!&ndash; <item firstName="android:translationY">-10dp</item> &ndash;&gt;-->
+<!--    </style>-->
+
+    <!-- New -->
     <!-- EditText -->
     <style name="EditTextStyle">
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingStart">32dp</item>
-        <item name="android:paddingEnd">32dp</item>
-        <item name="android:background">@drawable/shadow_edittext</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <!--        <item name="android:background">@drawable/shadow_edittext</item>-->
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:fontFamily">@font/poppinsmedium</item>
     </style>
 
@@ -69,16 +101,18 @@
     <style name="TextInputLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-<!--        <item name="android:layout_marginStart">14dp</item>-->
-<!--        <item name="android:layout_marginEnd">14dp</item>-->
-        <item name="android:layout_marginTop">0dp</item>
-        <item name="android:textSize">14sp</item>
-        <item name="hintAnimationEnabled">true</item>
-        <item name="hintEnabled">true</item>
-
-        <!-- <item firstName="android:translationY">-10dp</item> -->
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="hintTextAppearance">@style/HintTextStyle</item>
+<!--        <item name="android:paddingTop">5dp</item>-->
 
     </style>
+
+    <style name="ShadowLayoutInput">
+        <item name="android:background">@drawable/shadow_test200</item>
+    </style>
+
+
+    <!-- ********************************************************************** -->
 
 
     <!--   Button      -->
@@ -309,5 +343,8 @@
 <!--        &lt;!&ndash; Hint for edit text&ndash;&gt;-->
 <!--        <item name="android:hint">@string/search_hint</item>-->
 <!--    </style>-->
+
+    <!-- that 's new Style For Input EditText -->
+
 
 </resources>

@@ -16,6 +16,8 @@ import android.widget.Button;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.ui.Main.login.LoginActivity;
+import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.corptia.bringero.ui.Main.MainActivity;
@@ -117,10 +119,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_log_out:
                 //Toasty.warning(getActivity() , "LogOut").show();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 PrefUtils.saveToPrefs(getActivity() , PrefKeys.USER_LOGIN,false);
                 //getActivity().finishAffinity();
+                LocaleHelper.setLocale(getActivity(), "en");
                 startActivity(intent);
                 break;
 
