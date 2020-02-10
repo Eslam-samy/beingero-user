@@ -5,14 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
@@ -36,6 +40,8 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dmax.dialog.SpotsDialog;
@@ -56,6 +62,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     @BindView(R.id.txt_signUp)
     TextView txt_signUp;
 
+    @BindView(R.id.btn_changelanguage)
+    View btn_changelanguage;
+
     LoginPresenter loginPresenter;
 
     AlertDialog waitingDialog;
@@ -67,6 +76,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        String oldLang = LocaleHelper.getLanguage(LoginActivity.this);
+        Common.LOG("My Lang " + oldLang);
 
         ButterKnife.bind(this);
         progressButton = new ProgressButton(this, btn_login);
@@ -84,7 +96,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(LoginActivity.this , ResetPasswordActivity.class));
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
 //                finish();
 
             }
@@ -94,11 +106,40 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
             @Override
             public void onClick(View view) {
 
-                startActivity(new Intent(LoginActivity.this , SignupActivity.class));
+                startActivity(new Intent(LoginActivity.this, SignupActivity.class));
+            }
+        });
+
+        btn_changelanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView lang = btn_changelanguage.findViewById(R.id.lang);
+                if (lang.getText().toString().equalsIgnoreCase("English")){
+                    setLocale("en");
+                }
+                else
+                {
+                    setLocale("ar");
+                }
+
+//                String oldLang = LocaleHelper.getLanguage(LoginActivity.this);
+//
+//                if (oldLang.equalsIgnoreCase("ar"))
+//                    setLocale("en");
+//                else
+//                    setLocale("ar");
+
             }
         });
 
 
+    }
+
+    private void changeLanguage(String language) {
+
+        Common.LOG("I Set : " + language);
+        LocaleHelper.setLocale(this, language);
+        recreate();
     }
 
     @Override
@@ -251,7 +292,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
             @Override
             public void run() {
                 startActivity(new Intent(LoginActivity.this, SuspendActivity.class));
-                overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 isFirstTimeAddLocation = true;
                 finish();
             }
@@ -275,5 +316,64 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
         }
 
+    }
+
+
+    public void setLocale(String lang) {
+
+//        Locale myLocale = new Locale(lang);
+//        Resources res = getResources();
+//        DisplayMetrics dm = res.getDisplayMetrics();
+//        Configuration conf = res.getConfiguration();
+//        conf.locale = myLocale;
+//        res.updateConfiguration(conf, dm);
+//        onConfigurationChanged(conf);
+/*Intent refresh = new Intent(this, AndroidLocalize.class);
+startActivity(refresh);*/
+
+//        Common.LOG("Hi " + lang);
+//
+//
+//        Resources res = getResources();
+//// Change locale settings in the app.
+//        DisplayMetrics dm = res.getDisplayMetrics();
+//        android.content.res.Configuration conf = res.getConfiguration();
+//        conf.setLocale(new Locale(lang.toLowerCase())); // API 17+ only.
+//// Use conf.locale = new Locale(...) if targeting lower versions
+//        res.updateConfiguration(conf, dm);
+
+        Common.LOG("My Lang " + lang);
+
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+
+        Common.LOG("My Lang " + lang);
+
+        LocaleHelper.setLocale(this, lang);
+
+        recreate();
+
+//        Intent refresh = new Intent(this, LoginActivity.class);
+//
+//        finish();
+//        startActivity(refresh);
+
+    }
+
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        // refresh your views here
+        super.onConfigurationChanged(newConfig);
+// Checks the active language
+        if (newConfig.locale == Locale.ENGLISH) {
+            Toast.makeText(this, "English", Toast.LENGTH_SHORT).show();
+        } else if (newConfig.locale == Locale.FRENCH) {
+            Toast.makeText(this, "French", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -63,7 +63,7 @@
 <!--        <item name="android:paddingStart">32dp</item>-->
 <!--        <item name="android:paddingEnd">32dp</item>-->
 <!--&lt;!&ndash;        <item name="android:background">@drawable/shadow_edittext</item>&ndash;&gt;-->
-<!--        <item name="android:background">@drawable/shadow_test200</item>-->
+<!--        <item name="android:background">@drawable/shadow_layout_input</item>-->
 <!--        <item name="android:fontFamily">@font/poppinsmedium</item>-->
 <!--    </style>-->
 
@@ -95,6 +95,8 @@
         <!--        <item name="android:background">@drawable/shadow_edittext</item>-->
         <item name="android:background">@android:color/transparent</item>
         <item name="android:fontFamily">@font/poppinsmedium</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textAlignment">viewStart</item>
     </style>
 
     <!--   TextInputLayout      -->
@@ -108,7 +110,7 @@
     </style>
 
     <style name="ShadowLayoutInput">
-        <item name="android:background">@drawable/shadow_test200</item>
+        <item name="android:background">@drawable/shadow_layout_input</item>
     </style>
 
 

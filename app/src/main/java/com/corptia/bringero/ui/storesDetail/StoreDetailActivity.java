@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.SingleStoreHeaderQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.type.StoreFilterInput;
+import com.duolingo.open.rtlviewpager.RtlViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,7 +55,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     @BindView(R.id.tabLayout)
     TabLayout tabLayout;
     @BindView(R.id.viewPager)
-    ViewPager viewPager;
+    RtlViewPager viewPager;
 
     @BindView(R.id.image_store)
     ImageView image_store;
@@ -83,6 +85,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     @BindView(R.id.layout_speed_cart)
     ConstraintLayout layout_speed_cart;
 
+    int actionBarHeight ;
     //Search
     public static final int EXTRA_REVEAL_CENTER_PADDING = 40;
 
@@ -93,9 +96,15 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 
         ButterKnife.bind(this);
 
-        if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")) {
-            viewPager.setRotationY(180);
+        TypedValue tv = new TypedValue();
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
         }
+
+//        if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")) {
+//            viewPager.setRotationY(180);
+//        }
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -323,6 +332,13 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
                 }
             }
 
+            if (isHaveCart){
+                viewPager.setPadding(0, 0, 0, actionBarHeight);
+            }else
+            {
+                viewPager.setPadding(0, 0, 0, 0);
+            }
+
         }
 
 
@@ -346,6 +362,13 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
             btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
         }
 
+        if (isHaveCart){
+            viewPager.setPadding(0, 0, 0, actionBarHeight);
+        }else
+        {
+            viewPager.setPadding(0, 0, 0, 0);
+        }
+        Common.LOG("actionBarHeight : " + actionBarHeight);
 
 //        MyApolloClient.getApollowClientAuthorization().query(SpeedCartQuery.builder().build())
 //                .enqueue(new ApolloCall.Callback<SpeedCartQuery.Data>() {

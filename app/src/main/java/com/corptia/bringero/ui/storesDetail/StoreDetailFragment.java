@@ -89,6 +89,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     public StoreDetailFragment() {
         storeDetailPresenter = new StoreDetailPresenter(this);
+        Common.LOG("Hi StoreDetailFragment");
     }
 
     @Override
@@ -101,10 +102,10 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
         isLoading = false;
         isLastPage = false;
 
-        if (Common.CURRENT_USER != null)
-            if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")) {
-                root.setRotationY(180);
-            }
+//        if (Common.CURRENT_USER != null)
+//            if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")) {
+//                root.setRotationY(180);
+//            }
 
         gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
@@ -152,6 +153,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 if (currentPage <= totalPages) {
                     storeDetailAdapter.addLoading();
                     storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId ,currentPage);
+                    Common.LOG("Hi loadMoreItems");
                 } else {
                     isLastPage = true;
                 }
@@ -250,6 +252,8 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             });
 
 
+
+            Common.LOG("Hi Product");
 
         });
 

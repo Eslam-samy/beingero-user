@@ -241,7 +241,10 @@
     <string name="update_now">Update Now</string>
     <string name="update_title">New version available</string>
     <string name="update_message">There is a newer version available for download! Please update the app by visiting the Google Play Store</string>
-    <string name="don_t_have_an_account">Don\'t have an account</string>
+    <string name="don_t_have_an_account">ليس لديك حساب</string>
+    <string name="sign_in">سجل دخول</string>
+    <string name="welcome_back">مرحبا بعودتك !!!</string>
+    <string name="create_new_account">انشاء حساب جديد</string>
 
 </resources>
 

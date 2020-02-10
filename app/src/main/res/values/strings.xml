@@ -243,6 +243,9 @@
     <string name="update_title">New version available</string>
     <string name="update_message">There is a newer version available for download! Please update the app by visiting the Google Play Store</string>
     <string name="don_t_have_an_account">Don\'t have an account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="welcome_back">Welcome back!!!</string>
+    <string name="create_new_account">Create new account</string>
 
 </resources>
 

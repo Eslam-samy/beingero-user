@@ -8,8 +8,8 @@ android {
         applicationId "com.corptia.bringero"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 38
-        versionName "0.38"
+        versionCode 39
+        versionName "0.39"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -164,6 +164,8 @@ dependencies {
 
     implementation 'com.github.iwgang:countdownview:2.1.6'
 
+    implementation 'androidx.viewpager:viewpager:1.0.0'
+    implementation 'com.duolingo.open:rtl-viewpager:2.0.0'
 
 }
 

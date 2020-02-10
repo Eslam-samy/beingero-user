@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:spinnerMode="dialog"
                     android:textSize="15sp"
-                    android:background="@drawable/shadow_test200"
+                    android:background="@drawable/shadow_layout_input"
                     android:paddingStart="26dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
