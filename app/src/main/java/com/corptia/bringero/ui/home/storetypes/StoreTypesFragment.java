@@ -117,5 +117,10 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
 
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter!=null)
+            adapter.notifyDataSetChanged();
+    }
 }

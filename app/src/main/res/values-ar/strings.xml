@@ -237,14 +237,16 @@
     <string name="find_stores_n_near_your_location">Find stores   near your location!</string>
     <string name="kg">كجم</string>
     <string name="please_wait">من فضلك انتظر ....</string>
-    <string name="coming_soon">Coming Soon</string>
-    <string name="update_now">Update Now</string>
-    <string name="update_title">New version available</string>
-    <string name="update_message">There is a newer version available for download! Please update the app by visiting the Google Play Store</string>
+    <string name="coming_soon">قريبا</string>
+    <string name="update_now">حدث الآن</string>
+    <string name="update_title">نسخة جديدة متاحة</string>
+    <string name="update_message">هناك إصدار أحدث متاح للتنزيل! يرجى تحديث التطبيق من خلال زيارة متجر Google Play</string>
     <string name="don_t_have_an_account">ليس لديك حساب</string>
     <string name="sign_in">سجل دخول</string>
     <string name="welcome_back">مرحبا بعودتك !!!</string>
     <string name="create_new_account">انشاء حساب جديد</string>
+    <string name="minutes">دقيقه</string>
+    <string name="minute">دقائق</string>
 
 </resources>
 

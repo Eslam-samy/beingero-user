@@ -171,8 +171,8 @@ public class MyApolloClient {
 
                     Date pars = dateFormatParse.parse(value.value.toString());
 
-                    Common.LOG("HAZEM toString : " + pars.toString());
-                    Common.LOG("HAZEM  getTime : " + pars.getTime());
+//                    Common.LOG("HAZEM toString : " + pars.toString());
+//                    Common.LOG("HAZEM  getTime : " + pars.getTime());
 
                     // Log.d("DateDate" , "Date >> "+startDate);
                     return pars.getTime() + (3600 * 2000) ;

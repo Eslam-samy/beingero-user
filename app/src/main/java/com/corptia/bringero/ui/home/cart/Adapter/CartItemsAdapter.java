@@ -1,11 +1,18 @@
 package com.corptia.bringero.ui.home.cart.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
+import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -27,11 +35,13 @@ import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.graphql.RemoveCartItemMutation;
 import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
 
+
 import org.greenrobot.eventbus.EventBus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -39,7 +49,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 
-public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>   {
 
     //Note
     //-> this class have three view ( Check out - Normal cart - cart With Discount )
@@ -122,6 +132,12 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 cartViewHolder.txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(itemInCart.get().PricingProduct().storePrice())).append(" ").append(context.getString(R.string.currency)));
                 cartViewHolder.txt_name_product.setText(productName.length() >= 30 ? productName.substring(0, 20) + "..." : productName);
 
+//                cartViewHolder.image_product.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                    }
+//                });
 
                 if (itemInCart.get().PricingProduct().Product().ImageResponse().data() != null)
                     PicassoUtils.setImage(Common.BASE_URL_IMAGE + itemInCart.get().PricingProduct().Product().ImageResponse().data().name(), cartViewHolder.image_product);
@@ -594,6 +610,7 @@ public class CartItemsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemCount() {
         return cartItems.size();
     }
+
 
     public class ViewHolderCart extends RecyclerView.ViewHolder implements View.OnClickListener {
 

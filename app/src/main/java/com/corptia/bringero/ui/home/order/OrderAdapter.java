@@ -34,6 +34,11 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderList = new ArrayList<>();
 
     IOnRecyclerViewClickListener clickListener;
+    private boolean clicked;
+
+    //Fast taps (clicks) on RecyclerView opens multiple Orders Activity
+    private long mLastClickTime = System.currentTimeMillis();
+    private static final long CLICK_TIME_INTERVAL = 1000;
 
     public void setClickListener(IOnRecyclerViewClickListener clickListener) {
         this.clickListener = clickListener;
@@ -139,7 +144,17 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
 
                 if (clickListener != null)
-                    itemView.setOnClickListener(view -> clickListener.onClick(view, position));
+                    itemView.setOnClickListener(view -> {
+
+                        if(clicked){
+                            return;
+                        }
+                        clicked = true;
+                        view.postDelayed(() -> clicked = false,500);
+
+                        clickListener.onClick(view, position);
+
+                    });
             } else {
             }
 

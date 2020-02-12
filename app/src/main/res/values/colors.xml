@@ -61,7 +61,7 @@
     <color name="colorClick">#867C7F81</color>
     <color name="colorGrayStore">#98979D</color>
 
-    <color name="color_line_box_language">#707070</color>
+    <color name="color_line_box_language">#EEE</color>
     <color name="border_image">#E7E7E8</color>
 
     <!-- For PinView -->

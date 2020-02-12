@@ -74,8 +74,11 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
 
         btn_set_location.setOnClickListener(view -> {
 
+            btn_set_location.setEnabled(false);
+
             //UpdateLocation And Goto Home Activity
             startActivity(new Intent(this, HomeActivity.class));
+            overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
             finish();
 
         });

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,15 +23,18 @@ import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.SingleOrderQuery;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.appbar.AppBarLayout;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OrderStoreDetailsActivity extends BaseActivity {
+public class OrderStoreDetailsActivity extends BaseActivity implements OrderStoreDetailsView {
 
     @BindView(R.id.recycler_items)
     RecyclerView recycler_items;
@@ -45,11 +49,18 @@ public class OrderStoreDetailsActivity extends BaseActivity {
     TextView txt_total_price;
     @BindView(R.id.img_store)
     ImageView img_store;
+    @BindView(R.id.shimmerLayout_loading)
+    ShimmerFrameLayout shimmerLayout_loading;
+
+    @BindView(R.id.root)
+    AppBarLayout root;
 
 
-    String BUYING_ORDER_ID = "" ,EXTRA_STORE_NAME ,EXTRA_STORE_IMAGE;
+    String BUYING_ORDER_ID = ""  ;
 
     OrderStoreDetailAdapter adapter ;
+
+    OrderStoreDetailsPresenter presenter = new OrderStoreDetailsPresenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +68,8 @@ public class OrderStoreDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_order_store_details);
 
         ButterKnife.bind(this);
+        
+        shimmerLayout_loading.setVisibility(View.VISIBLE);
 
         initActionBar();
 
@@ -68,55 +81,53 @@ public class OrderStoreDetailsActivity extends BaseActivity {
 
         if (intent != null) {
             BUYING_ORDER_ID = intent.getStringExtra(Constants.BUYING_ORDER_ID);
-            EXTRA_STORE_NAME = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
-            EXTRA_STORE_IMAGE = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
+//            EXTRA_STORE_NAME = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
+//            EXTRA_STORE_IMAGE = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
         }
 
-        txt_name.setText(EXTRA_STORE_NAME);
-        if (EXTRA_STORE_IMAGE!=null || !EXTRA_STORE_IMAGE.isEmpty())
-        PicassoUtils.setImage(Common.BASE_URL_IMAGE + EXTRA_STORE_IMAGE , img_store);
+//        txt_name.setText(EXTRA_STORE_NAME);
+//        if (EXTRA_STORE_IMAGE!=null || !EXTRA_STORE_IMAGE.isEmpty())
+//        PicassoUtils.setImage(Common.BASE_URL_IMAGE + EXTRA_STORE_IMAGE , img_store);
 
-        fetchData(BUYING_ORDER_ID);
+
+        presenter.getOrderStoreDetails(BUYING_ORDER_ID);
+
 
     }
 
-    private void fetchData(String BUYING_ORDER_ID) {
-
-        MyApolloClient.getApollowClientAuthorization().query(SingleOrderQuery.builder().buyingOrderId(BUYING_ORDER_ID).build())
-                .enqueue(new ApolloCall.Callback<SingleOrderQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<SingleOrderQuery.Data> response) {
-
-                        SingleOrderQuery.Get orderResponse = response.data().BuyingOrderQuery().get();
-                        if (orderResponse.status() == 200) {
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-
-                                    txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(orderResponse.SingleOrder().TotalPrice())).append(getString(R.string.currency)));
-                                    txt_order_id.setText(new StringBuilder().append("# ").append(orderResponse.SingleOrder().serial()));
-
-                                    List<SingleOrderQuery.ItemsDatum> items = orderResponse.SingleOrder().ItemsResponse().ItemsData();
-                                    adapter = new OrderStoreDetailAdapter(OrderStoreDetailsActivity.this, items);
-                                    recycler_items.setAdapter(adapter);
-
-                                }
-                            });
-
-
-                        } else {
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-
-                    }
-                });
-
-    }
+//    private void fetchData(String BUYING_ORDER_ID) {
+//
+//        MyApolloClient.getApollowClientAuthorization().query(SingleOrderQuery.builder().buyingOrderId(BUYING_ORDER_ID).build())
+//                .enqueue(new ApolloCall.Callback<SingleOrderQuery.Data>() {
+//                    @Override
+//                    public void onResponse(@NotNull Response<SingleOrderQuery.Data> response) {
+//
+//
+//
+//                        if (orderResponse.status() == 200) {
+//
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//
+//
+//
+//                                }
+//                            });
+//
+//
+//                        } else {
+//
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NotNull ApolloException e) {
+//
+//                    }
+//                });
+//
+//    }
 
     private void initActionBar() {
         setSupportActionBar(toolbar);
@@ -132,5 +143,57 @@ public class OrderStoreDetailsActivity extends BaseActivity {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setOrderStoreDetails(SingleOrderQuery.Get storeDetails) {
+
+        SingleOrderQuery.Get orderResponse = storeDetails;
+        SingleOrderQuery.@Nullable Data1 storeData = orderResponse.SingleOrder().StoreResponse().data();
+
+        runOnUiThread(() -> {
+
+            root.setVisibility(View.VISIBLE);
+
+            txt_name.setText(storeData.name());
+            if (storeData.ImageResponse().status() == 200)
+                PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeData.ImageResponse().data().name() , img_store);
+
+            txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(orderResponse.SingleOrder().TotalPrice())).append(getString(R.string.currency)));
+
+            txt_order_id.setText(new StringBuilder().append("# ").append(orderResponse.SingleOrder().serial()));
+
+            List<SingleOrderQuery.ItemsDatum> items = orderResponse.SingleOrder().ItemsResponse().ItemsData();
+            adapter = new OrderStoreDetailAdapter(OrderStoreDetailsActivity.this, items);
+            recycler_items.setAdapter(adapter);
+        });
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+        shimmerLayout_loading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                shimmerLayout_loading.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    @Override
+    public void showErrorMessage(String Message) {
+
+    }
+
+    @Override
+    public void onSuccessMessage(String message) {
+
     }
 }

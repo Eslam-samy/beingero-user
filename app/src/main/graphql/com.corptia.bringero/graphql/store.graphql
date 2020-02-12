@@ -11,6 +11,7 @@ query getStoresOfASingleCategory($typeId: ID,$paginate:paginationInput) {
             Stores : data {
                 _id
                 name
+                orderMaxPreparingMinutes
                 ImageResponse {
                     data {
                         name

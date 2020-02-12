@@ -168,7 +168,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
                                 viewPager.setAdapter(adapter);
                                 tabLayout.setupWithViewPager(viewPager);
                                 viewPager.setCurrentItem(0, true);
-                                adapter.notifyDataSetChanged();
+//                                adapter.notifyDataSetChanged();
 
                             } else {
 

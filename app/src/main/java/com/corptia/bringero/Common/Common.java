@@ -228,7 +228,7 @@ public class Common {
                                 CART_ITEMS_ID.add(product.cartProductId());
 
                                 if (isFirstTimeGetCartCount) {
-                                    Common.LOG("Hello first");
+//                                    Common.LOG("Hello first");
                                     TOTAL_CART_PRICE += product.totalPrice();
                                 }
 

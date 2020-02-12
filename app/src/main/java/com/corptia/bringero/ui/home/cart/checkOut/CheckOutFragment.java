@@ -131,4 +131,8 @@ public class CheckOutFragment extends Fragment implements CheckOutView{
     }
 
 
+    @Override
+    public void onSuccessCreateOrder(String orderId, int serial) {
+
+    }
 }

@@ -52,4 +52,8 @@ public class Constants {
     public static final String APP_VERSION= "app_version_user";
 
     public static final String EXTRA_SIGNUP = "EXTRA_SIGNUP";
+
+    public static final String EXTRA_TERMS_CONDITIONS = "EXTRA_TERMS_CONDITIONS";
+    public static final String EXTRA_PRIVACY_POLICY = "EXTRA_PRIVACY_POLICY";
+    public static final String EXTRA_FAQ_SUPPORT = "EXTRA_FAQ_SUPPORT";
 }

@@ -566,6 +566,19 @@ query SingleOrderQuery($buyingOrderId: ID) {
                 TotalPrice
                 orderMaxPreparingMinutes
 
+                StoreResponse{
+                    status
+                    data{
+                        name
+                        ImageResponse{
+                            status
+                            data{
+                                name
+                            }
+                        }
+                    }
+                }
+
                 ItemsResponse {
                     status
                     message

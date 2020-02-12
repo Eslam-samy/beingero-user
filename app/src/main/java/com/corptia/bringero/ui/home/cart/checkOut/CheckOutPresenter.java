@@ -28,7 +28,12 @@ public class CheckOutPresenter {
 
                         if (response.data().BuyingOrderMutation().create().status() == 200) {
 
-                            view.onSuccessMessage("");
+                            String orderId =  response.data().BuyingOrderMutation().create().data()._id();
+                            int serial =  response.data().BuyingOrderMutation().create().data().serial();
+                            view.onSuccessCreateOrder(orderId , serial);
+
+//                            view.onSuccessMessage("");
+
                         } else {
                             view.showErrorMessage(response.data().BuyingOrderMutation().create().message());
 

@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.home.notification;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -18,8 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.NotificationQuery;
+import com.corptia.bringero.ui.order.orderStoreDetail.OrderStoreDetailsActivity;
+import com.corptia.bringero.ui.order.ordersDetails.OrdersPaidDetailsActivity;
 import com.corptia.bringero.utils.recyclerview.PaginationListener;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 
@@ -38,7 +43,7 @@ public class NotificationFragment extends Fragment implements NotificationView {
     LottieAnimationView loading;
 
     NotificationAdapter adapter;
-    LinearLayoutManager linearLayoutManager ;
+    LinearLayoutManager linearLayoutManager;
 
     Handler handler = new Handler();
 
@@ -117,16 +122,42 @@ public class NotificationFragment extends Fragment implements NotificationView {
     @Override
     public void setNotification(NotificationQuery.GetAll notificationList) {
 
-            handler.post(() -> {
+        handler.post(() -> {
 
-                if (isLoading) {
-                    adapter.removeLoading();
-                    isLoading = false;
+            if (isLoading) {
+                adapter.removeLoading();
+                isLoading = false;
+            }
+
+            totalPages = notificationList.pagination().totalPages();
+            adapter.addItems(notificationList.NotificationData());
+
+            adapter.setClickListener(new IOnRecyclerViewClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+
+                    NotificationQuery.NotificationDatum notification = adapter.getItem(position);
+                    Intent intent=null;
+//                    Common.LOG("status : " + notification.status().rawValue());
+//                    Common.LOG("docStatus : " + notification.docStatus());
+//                    Common.LOG("model : " + notification.model());
+//                    Common.LOG("_id : " + notification._id());
+//                    Common.LOG("docId : " + notification.docId());
+//                    Common.LOG("userId : " + notification.userId());
+
+                    if (notification.model().equalsIgnoreCase("BuyingOrder")){
+
+                        intent = new Intent(getActivity(), OrderStoreDetailsActivity.class);
+                        intent.putExtra(Constants.BUYING_ORDER_ID , notification.docId());
+
+                    } else if (notification.model().equalsIgnoreCase("DeliveryOrder")){
+                        intent = new Intent(getActivity(), OrdersPaidDetailsActivity.class);
+                        intent.putExtra(Constants.EXTRA_ORDER_ID , notification.docId());
+                    }
+                    startActivity(intent);
                 }
-
-                totalPages = notificationList.pagination().totalPages();
-                adapter.addItems(notificationList.NotificationData());
             });
+        });
 
 
     }

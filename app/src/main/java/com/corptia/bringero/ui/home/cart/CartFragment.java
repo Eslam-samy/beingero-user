@@ -137,6 +137,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
             layout_placeholder.setVisibility(View.GONE);
             recycler_cart.setVisibility(View.VISIBLE);
+            layout_checkOut.setVisibility(View.VISIBLE);
+
 
             totalPrice = myCartData.TotalPrice();
 
@@ -178,6 +180,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                                                     List<Boolean> isAvailableStores = new ArrayList<>();
 
                                                     for (MyCartQuery.StoreDatum stores : myCart.storeData()) {
+                                                        stores.TotalPrice();
+
                                                         isAvailableStores.add(stores.Store().isAvailable());
                                                         loadingDialog.hideProgressBar();
                                                     }
@@ -419,6 +423,10 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @Override
     public void onResume() {
         super.onResume();
+        recycler_cart.setVisibility(View.GONE);
+        loading.setVisibility(View.VISIBLE);
+        layout_checkOut.setVisibility(View.GONE);
+
         cartPresenter.getMyCart();
     }
 }

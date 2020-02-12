@@ -59,7 +59,10 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
         holder.txt_name_storetype.setText(storeTypes.StoreType().name());
         holder.txt_count_storetype.setText(new StringBuilder().append(storeTypes.storeCount()).append(" ").append(context.getString(R.string.stores)));
 
+        holder.itemView.setEnabled(true);
+
         holder.itemView.setOnClickListener(view -> {
+            holder.itemView.setEnabled(false);
             Intent intent = new Intent(context , StoresActivity.class);
             intent.putExtra(Constants.EXTRA_CATEGOTY_ID , storeTypes.StoreType()._id());
             intent.putExtra(Constants.EXTRA_STORE_TYPE_NAME , storeTypes.StoreType().name());

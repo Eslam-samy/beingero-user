@@ -30,6 +30,7 @@ public class OrdersPaidDetailsAdapter extends RecyclerView.Adapter<OrdersPaidDet
 
     Context context;
     List<DeliveryOneOrderQuery.BuyingOrderResponseDatum> orderResponseData = new ArrayList<>();
+    boolean clicked = false;
 //    OrdersPaidDetailsItemsAdapter adapterItems ;
 
     public OrdersPaidDetailsAdapter(Context context, @Nullable List<DeliveryOneOrderQuery.BuyingOrderResponseDatum> orderResponseData) {
@@ -71,6 +72,12 @@ public class OrdersPaidDetailsAdapter extends RecyclerView.Adapter<OrdersPaidDet
 //        holder.recycler_items.setNestedScrollingEnabled(false);
 
         holder.itemView.setOnClickListener(view -> {
+
+            if(clicked){
+                return;
+            }
+            clicked = true;
+            view.postDelayed(() -> clicked = false,500);
 
             Intent intent = new Intent(context, OrderStoreDetailsActivity.class);
             intent.putExtra(Constants.BUYING_ORDER_ID, order._id());

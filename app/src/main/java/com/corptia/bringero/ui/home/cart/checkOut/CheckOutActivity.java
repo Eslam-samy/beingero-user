@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.ui.order.ordersDetails.OrdersPaidDetailsActivity;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.home.cart.Adapter.CartAdapter;
@@ -103,7 +105,6 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
 //                HomeActivity.bottomNavigationView.setVisibility(View.VISIBLE);
 //                HomeActivity.fab.show();
 
-
             checkOutPresenter.sendOrder();
 
             // HomeActivity.navController.navigate(R.id.action_checkOutFragment_to_nav_cart);
@@ -182,13 +183,13 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
     @Override
     public void onSuccessMessage(String message) {
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showConfirmDialog();
-
-            }
-        });
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//
+//            }
+//        });
 
 //        runOnUiThread(new Runnable() {
 //            @Override
@@ -203,7 +204,7 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
     }
 
 
-    private void showConfirmDialog() {
+    private void showConfirmDialog(String orderId , int serial) {
 
         //then we will inflate the custom alert dialog xml that we created
         View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_success, null);
@@ -223,7 +224,17 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                if(dialog!=null)
+                dialog.dismiss();
+
                 alertDialog.dismiss();
+
+                Intent intent = new Intent(CheckOutActivity.this , OrdersPaidDetailsActivity.class);
+                intent.putExtra(Constants.EXTRA_ORDER_ID , orderId);
+                intent.putExtra(Constants.EXTRA_ORDER_SERIAL , serial);
+                startActivity(intent);
+
                 finish();
             }
         });
@@ -246,11 +257,21 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
     protected void onStop() {
         super.onStop();
 
-        if (dialog != null) {
-            dialog.dismiss();
-            finish();
-        }
+//        if (dialog != null) {
+//            finish();
+//        }
     }
 
 
+    @Override
+    public void onSuccessCreateOrder(String orderId, int serial) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showConfirmDialog(orderId , serial);
+            }
+        });
+
+    }
 }

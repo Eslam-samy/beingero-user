@@ -40,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 
 import static com.corptia.bringero.Common.Constants.VIEW_TYPE_ITEM;
 import static com.corptia.bringero.Common.Constants.VIEW_TYPE_LOADING;
@@ -153,7 +154,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 if (currentPage <= totalPages) {
                     storeDetailAdapter.addLoading();
                     storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId ,currentPage);
-                    Common.LOG("Hi loadMoreItems");
                 } else {
                     isLastPage = true;
                 }
@@ -215,7 +215,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 isLoading = false;
             }
 
-
             totalPages = product.pagination().totalPages();
             storeDetailAdapter.addItems(product.Products());
 
@@ -250,10 +249,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
 
             });
-
-
-
-            Common.LOG("Hi Product");
 
         });
 

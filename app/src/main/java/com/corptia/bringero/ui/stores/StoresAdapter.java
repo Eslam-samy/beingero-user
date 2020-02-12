@@ -55,13 +55,19 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
 //            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.img_store);
 
         holder.txt_name_store.setText(storeTypes.name());
+        if (storeTypes.orderMaxPreparingMinutes() <=10)
+        holder.txt_preparing_time.setText(new StringBuilder().append(storeTypes.orderMaxPreparingMinutes()).append(" ").append(context.getString(R.string.minute)));
+        else
+            holder.txt_preparing_time.setText(new StringBuilder().append(storeTypes.orderMaxPreparingMinutes()).append(" ").append(context.getString(R.string.minutes)));
 
+        holder.itemView.setEnabled(true);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
                 if (storeTypes.isAvailable()){
+                    holder.itemView.setEnabled(false);
 
                     Intent intentStore = new Intent(context , StoreDetailActivity.class);
                     intentStore.putExtra(Constants.EXTRA_STORE_ID , storeTypes._id());
@@ -147,6 +153,8 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
         ImageView img_lock;
         @BindView(R.id.txt_name_store)
         TextView txt_name_store;
+        @BindView(R.id.txt_preparing_time)
+        TextView txt_preparing_time;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

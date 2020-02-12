@@ -78,8 +78,7 @@ public class OrderPresenter {
         DeliveryOrderFilterInput filterInput = DeliveryOrderFilterInput.builder()
                 .customerUserId(Common.CURRENT_USER.getId())
                 .iN(DeliveryOrderFilterArray.builder()
-                        .status(statusList).build())
-                .status(DeliveryOrderStatus.DELIVERED).build();
+                        .status(statusList).build()).build();
 
         MyApolloClient.getApollowClientAuthorization()
                 .query(DeliveryOrdersQuery.builder().filter(filterInput).build())

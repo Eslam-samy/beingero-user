@@ -43,7 +43,7 @@ public class OrderStoreDetailAdapter extends RecyclerView.Adapter<OrderStoreDeta
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         SingleOrderQuery.ItemsDatum item = itemsList.get(position);
-        SingleOrderQuery.@Nullable Data2 productPricing = item.PricingProductResponse().data().ProductResponse().data();
+        SingleOrderQuery.@Nullable Data4 productPricing = item.PricingProductResponse().data().ProductResponse().data();
         //holder.image_product;
         if (productPricing.ImageResponse().status() == 200)
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + productPricing.ImageResponse().data().name(),

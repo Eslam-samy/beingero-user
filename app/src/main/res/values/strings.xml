@@ -246,6 +246,8 @@
     <string name="sign_in">Sign In</string>
     <string name="welcome_back">Welcome back!!!</string>
     <string name="create_new_account">Create new account</string>
+    <string name="minutes">Minutes</string>
+    <string name="minute">Minutes</string>
 
 </resources>
 

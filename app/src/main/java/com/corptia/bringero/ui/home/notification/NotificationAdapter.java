@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.L;
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseViewHolder;
 import com.corptia.bringero.graphql.NotificationQuery;
@@ -41,6 +42,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     Context context;
     List<NotificationQuery.NotificationDatum> notificationList = new ArrayList<>();
 
+    IOnRecyclerViewClickListener clickListener;
+
+    private boolean clicked;
+
+
+    public void setClickListener(IOnRecyclerViewClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
 
     public NotificationAdapter(Context context, @Nullable List<NotificationQuery.NotificationDatum> notificationList) {
         this.context = context;
@@ -110,24 +119,21 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
             NotificationQuery.NotificationDatum notification = notificationList.get(position);
 
+            //For Show Ago
             if (notification.createdAtDateTime() != null) {
 
                 try {
 
 
                     long time = Long.parseLong(notification.createdAtDateTime().toString());
-                    Log.d("HAZEM", "HHH " + time);
-
                     long now = System.currentTimeMillis();
                     CharSequence ago =
                             DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
 
-                    Common.LOG("Error : " + ago.toString());
                     txt_time.setText(ago);
 
                 }
                 catch (Exception ex){
-                    Common.LOG("Error : " + ex.getMessage());
                     ex.printStackTrace();
                 }
 
@@ -163,10 +169,32 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             card_image_notification.setCardBackgroundColor(context.getResources().getColor(colorResource));
 
             String uriImage = "@drawable/ic_notification_" + notification.docStatus().toLowerCase();
+//            Common.LOG("Hi : " + uriImage);
             int imageResource = context.getResources().getIdentifier(uriImage, null, context.getPackageName());
 //            Drawable res = context.getResources().getDrawable(imageResource);
 
             image_notification.setImageResource(imageResource);
+
+            //For Resolved Status To Arabic
+//            String uriString = "@string/order_status_" + notification.docStatus().toLowerCase();
+//            int stringResource = context.getResources().getIdentifier(uriString, null, context.getPackageName());
+//            txt_status.setText(""+context.getResources().getString(stringResource));
+//            Common.LOG("uriString : " + uriString);
+//            int stringResource = context.getResources().getIdentifier(uriString, null, context.getPackageName());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(clicked){
+                        return;
+                    }
+                    clicked = true;
+                    view.postDelayed(() -> clicked = false,500);
+
+                    clickListener.onClick(view , position);
+                }
+            });
 
         }
 

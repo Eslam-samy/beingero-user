@@ -117,7 +117,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
 //            getSupportActionBar().setTitle(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
 
-            txt_order_id.setText(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
+//            txt_order_id.setText(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
 
             detailsPresenter.getSingleOrder(orderid);
 
@@ -262,8 +262,9 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
             @Override
             public void run() {
 
-
                 layout_data.setVisibility(View.VISIBLE);
+
+                txt_order_id.setText(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(deliveryOrderData.serial()));
 
                 adapter = new OrdersPaidDetailsAdapter(OrdersPaidDetailsActivity.this,
                         deliveryOrderData.BuyingOrderResponse().BuyingOrderResponseData());

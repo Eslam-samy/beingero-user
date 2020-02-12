@@ -35,6 +35,7 @@ import com.corptia.bringero.ui.setting.main.SettingActivity;
 import com.corptia.bringero.ui.home.cart.CartFragment;
 import com.corptia.bringero.ui.home.storetypes.StoreTypesFragment;
 import com.corptia.bringero.ui.home.order.OrderFragment;
+import com.corptia.bringero.ui.webview.WebViewActivity;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.language.LocaleHelper;
@@ -188,7 +189,7 @@ public class HomeActivity extends BaseActivity implements
 
     private void setCurrentLocation() {
 
-        Log.d("HAZEM" , "Hello Again " + Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
+//        Log.d("HAZEM" , "Hello Again " + Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
 
         if (Common.CURRENT_USER != null) {
             if (Common.CURRENT_USER.getCurrentDeliveryAddress() != null) {
@@ -298,15 +299,41 @@ public class HomeActivity extends BaseActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
 
+        Intent intent =null;
+
         switch (id) {
             case R.id.nav_settings:
-                startActivity(new Intent(this, SettingActivity.class));
+                intent = new Intent(this, SettingActivity.class);
                 break;
             case R.id.nav_addresses:
-                startActivity(new Intent(this, LocationsDeliveryActivity.class));
+                intent = new Intent(this, LocationsDeliveryActivity.class);
                 break;
 
+                case R.id.nav_terms_conditions:
+                    intent = new Intent(this, WebViewActivity.class);
+                    intent.putExtra(Constants.EXTRA_TERMS_CONDITIONS , "EXTRA_TERMS_CONDITIONS");
+                break;
+
+            case R.id.nav_privacy_policy:
+                intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra(Constants.EXTRA_PRIVACY_POLICY , "EXTRA_PRIVACY_POLICY");
+                break;
+
+            case R.id.nav_faq_support:
+                intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra(Constants.EXTRA_FAQ_SUPPORT , "EXTRA_FAQ_SUPPORT");
+                break;
+
+                default:
+                    drawer = findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    return true;
+
         }
+
+        startActivity(intent);
+        overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+
 
         drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -517,7 +544,7 @@ public class HomeActivity extends BaseActivity implements
 
                             } else {
                                 //No need To Update
-                                Common.LOG("NO NEED TO UPDATE " + Common.LAST_APP_VERSION + " ---- " + getCurrentVersionCode());
+//                                Common.LOG("NO NEED TO UPDATE " + Common.LAST_APP_VERSION + " ---- " + getCurrentVersionCode());
                             }
 
                         } else {
