@@ -88,7 +88,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
         setContentView(R.layout.activity_splash);
 
-        Common.TOKEN_FIREBASE = (String) PrefUtils.getFromPrefs(this, "user_token", "");
+        Common.TOKEN_FIREBASE = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_TOKEN_FIREBASE, "");
 
         Common.CURRENT_IMIE = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);

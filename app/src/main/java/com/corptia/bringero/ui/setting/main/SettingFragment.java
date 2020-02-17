@@ -9,14 +9,17 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.ui.Main.login.LoginActivity;
+import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
@@ -29,7 +32,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingFragment extends Fragment implements View.OnClickListener {
+public class SettingFragment extends Fragment implements View.OnClickListener , SettingView {
 
 
     NavController navController;
@@ -47,6 +50,9 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
     @BindView(R.id.btn_log_out)
     Button btn_log_out;
 
+    //For Logout
+    SettingPresenter presenter = new SettingPresenter(this);
+    CustomLoading loading ;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -59,6 +65,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         ButterKnife.bind(this, view);
+
+        loading = new CustomLoading(getActivity(), true);
 
         navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
 
@@ -118,13 +126,11 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 //HomeActivity.navController.navigate(R.id.action_nav_settings_to_languageFragment2);
                 break;
             case R.id.btn_log_out:
-                //Toasty.warning(getActivity() , "LogOut").show();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                PrefUtils.saveToPrefs(getActivity() , PrefKeys.USER_LOGIN,false);
-                //getActivity().finishAffinity();
-                LocaleHelper.setLocale(getActivity(), "en");
-                startActivity(intent);
+
+                String token =(String) PrefUtils.getFromPrefs(getActivity() , PrefKeys.USER_TOKEN_FIREBASE , "");
+
+                presenter.logOut(token);
+
                 break;
 
             default:
@@ -132,6 +138,71 @@ public class SettingFragment extends Fragment implements View.OnClickListener {
                 break;
 
         }
+
+
+    }
+
+    Handler handler = new Handler();
+
+    @Override
+    public void OnSuccessLogOut() {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                //Toasty.warning(getActivity() , "LogOut").show();
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                PrefUtils.saveToPrefs(getActivity() , PrefKeys.USER_LOGIN,false);
+                //getActivity().finishAffinity();
+                LocaleHelper.setLocale(getActivity(), "en");
+                startActivity(intent);
+
+            }
+        });
+
+    }
+
+    @Override
+    public void OnFailedLogOut() {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+        loading.showProgressBar(getActivity() , false);
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                loading.hideProgressBar();
+
+            }
+        });
+    }
+
+    @Override
+    public void showErrorMessage(String Message) {
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                loading.hideProgressBar();
+
+            }
+        });
+    }
+
+    @Override
+    public void onSuccessMessage(String message) {
 
 
     }

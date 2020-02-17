@@ -11,4 +11,5 @@ public class PrefKeys {
     public static final String USER_SALARY_LONG= "USER_SALARY_LONG";
 
 
+    public static final String USER_TOKEN_FIREBASE = "user_token";
 }
