@@ -57,6 +57,73 @@
                 </RelativeLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginEnd="@dimen/app_margin">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="Apply Coupon Code"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textColor="@color/blueLight"
+                        android:layout_marginTop="@dimen/medium_margin" />
+
+                    <TextView
+                        android:id="@+id/btn_control_coupon"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Add"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textColor="@color/blueLight"
+                        android:layout_marginTop="@dimen/medium_margin"
+                        android:gravity="end"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_coupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:visibility="gone">
+
+                    <EditText
+                        android:id="@+id/edt_coupon_code"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        style="@style/EditTextStyle"
+                        android:background="@drawable/shadow_layout_input"
+                        android:layout_marginStart="8dp"
+                        android:hint="Coupon Code"
+                        android:paddingStart="@dimen/large_padding"
+                        android:paddingTop="12dp"/>
+
+
+                    <Button
+                        android:id="@+id/btn_add_coupon"
+                        style="@style/ButtonNormalStyle"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="0dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginEnd="@dimen/app_margin"
+                        android:text="@string/add"/>
+
+
+                </LinearLayout>
+
+
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +145,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3"
-                    android:layout_marginStart="@dimen/app_margin">
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginEnd="@dimen/app_margin">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -96,7 +164,8 @@
                         tools:text="USD 300.00"
                         android:fontFamily="@font/poppinsmedium"
                         android:textColor="@color/black"
-                        android:layout_marginTop="@dimen/medium_margin"/>
+                        android:layout_marginTop="@dimen/medium_margin"
+                        android:textAlignment="textEnd"/>
 
                 </LinearLayout>
 
@@ -106,25 +175,40 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3"
-                    android:layout_marginStart="@dimen/app_margin">
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginEnd="@dimen/app_margin">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        android:layout_weight="1"
                         android:text="@string/delivery_fees"
                         android:fontFamily="@font/poppinsmedium"
                         android:textColor="@color/black"
                         android:layout_marginTop="@dimen/medium_margin"/>
 
                     <TextView
-                        android:id="@+id/txt_delivery_fees"
+                        android:id="@+id/txt_delivery_fees_old"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         tools:text="USD 300.00"
                         android:fontFamily="@font/poppinsmedium"
                         android:textColor="@color/black"
-                        android:layout_marginTop="@dimen/medium_margin"/>
+                        android:layout_marginTop="@dimen/medium_margin"
+                        android:visibility="invisible"
+                        android:textAlignment="center"/>
+
+                    <TextView
+                        android:id="@+id/txt_delivery_fees_new"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        tools:text="USD 300.00"
+                        android:fontFamily="@font/poppinsmedium"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/medium_margin"
+                        android:textAlignment="textEnd"/>
+
 
                 </LinearLayout>
 
@@ -134,7 +218,8 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3"
-                    android:layout_marginStart="@dimen/app_margin">
+                    android:layout_marginStart="@dimen/app_margin"
+                    android:layout_marginEnd="@dimen/app_margin">
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -152,7 +237,8 @@
                         tools:text="USD 300.00"
                         android:fontFamily="@font/poppinsmedium"
                         android:textColor="@color/black"
-                        android:layout_marginTop="@dimen/medium_margin"/>
+                        android:layout_marginTop="@dimen/medium_margin"
+                        android:textAlignment="textEnd"/>
 
                 </LinearLayout>
 

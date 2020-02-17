@@ -61,6 +61,7 @@ public class Common {
     public static  double LAST_APP_VERSION ;
 
     public static  String DELIVERY_COST ;
+    public static  String MINDELIVERY_COST ;
 
     public static Boolean IS_AVAILABLE_STORE = false;
 

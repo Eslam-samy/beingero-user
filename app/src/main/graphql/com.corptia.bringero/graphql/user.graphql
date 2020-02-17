@@ -317,3 +317,17 @@ query phoneExists($phone: String!){
 
 
 
+mutation logout($device: userDeviceInput!) {
+    UserMutation {
+        logout(device: $device) {
+            status
+            message
+
+            data {
+                _id
+            }
+
+
+        }
+    }
+}

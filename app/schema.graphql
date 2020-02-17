@@ -224,6 +224,54 @@ type DeliveryAddress {
     street: String
 }
 
+type DeliveryCoupon implements IModelData {
+    _id: ID!
+    code: String!
+    createdAt: Date
+    dicountValue: Float
+    discountFixed: Boolean
+    discountRatio: Float
+    endDate: DateTime
+    isActive: Boolean
+    maxUsagePerUser: Int
+    maxUsers: Int
+    startDate: DateTime
+    updatedAt: Date
+    usageCount: Int
+    userCanUse(userId: ID!): userCanUse
+    userUsageCount(userId: ID!): Int
+    usersCount: Int
+    usersUsage: [userDeliveryCouponUsage]
+}
+
+type DeliveryCouponMultipleResponse implements IQueryMultipleResponse {
+    data: [DeliveryCoupon]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type DeliveryCouponMutation {
+    create(data: createDeliveryCoupon): DeliveryCouponSingleResponse
+    update(_id: ID, data: updateDeliveryCoupon): DeliveryCouponSingleResponse
+    updateOne(data: updateDeliveryCoupon, filter: DeliveryCouponFilterInput): DeliveryCouponSingleResponse
+}
+
+type DeliveryCouponQuery {
+    get(_id: ID): DeliveryCouponSingleResponse
+    getAll(filter: DeliveryCouponFilterInput, pagination: paginationInput, sorting: DeliveryCouponSortingInput): DeliveryCouponMultipleResponse
+    getOne(filter: DeliveryCouponFilterInput): DeliveryCouponSingleResponse
+}
+
+type DeliveryCouponSingleResponse implements ISingleResponse {
+    data: DeliveryCoupon
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
 type DeliveryOrder implements IModelData {
     BuyingOrderResponse: BuyingOrderMultipleResponse
     CustomerUserReponse: UserSingleResponse
@@ -233,12 +281,16 @@ type DeliveryOrder implements IModelData {
     SubTotal: Float
     TripResponse: TrackingTripSingleResponse
     _id: ID!
+    copounId: ID
     createdAt: Date
     createdAtDateTime: DateTime
     createdAtTime: Time
     customerDeliveryAddress: DeliveryAddress
     customerUserId: ID!
     deliveryCost: Float
+    dicountValue: Float
+    discountFixed: Boolean
+    discountRatio: Float
     pilotId: ID
     serial: Int
     status: DeliveryOrderStatus!
@@ -552,6 +604,7 @@ type Mutation {
     BuyingOrderItemMutation: BuyingOrderItemMutation
     BuyingOrderMutation: BuyingOrderMutation
     CartItemMutation: CartItemMutation
+    DeliveryCouponMutation: DeliveryCouponMutation
     DeliveryOrderMutation: DeliveryOrderMutation
     GeneralOptionMutation: GeneralOptionMutation
     ImageCollectionMutation: ImageCollectionMutation
@@ -1151,6 +1204,7 @@ type Query {
     BuyingOrderItemQuery: BuyingOrderItemQuery
     BuyingOrderQuery: BuyingOrderQuery
     CartItemQuery: CartItemQuery
+    DeliveryCouponQuery: DeliveryCouponQuery
     DeliveryOrderQuery: DeliveryOrderQuery
     GeneralOptionQuery: GeneralOptionQuery
     ImageCollectionQuery: ImageCollectionQuery
@@ -1629,6 +1683,16 @@ type objAttrType {
     keyStr: String
 }
 
+type userCanUse {
+    canUse: Boolean
+    maxUserUsage: Boolean
+}
+
+type userDeliveryCouponUsage {
+    usageCount: Int
+    userId: ID
+}
+
 type userDeviceRecord {
     deviceType: UserDeviceType
     imie: String
@@ -1690,6 +1754,18 @@ enum ConditionOperator {
     Or
 }
 
+enum DeliveryCouponFilterByEnum {
+    _id
+    code
+}
+
+enum DeliveryCouponSortByEnum {
+    _id
+    createdAt
+    name
+    updatedAt
+}
+
 enum DeliveryOrderSortByEnum {
     _id
     createdAt
@@ -1719,6 +1795,7 @@ enum Gender {
 
 enum GeneralOptionNameEnum {
     DeliveryCost
+    MinDeliveryCost
 }
 
 enum GeneralOptionValueType {
@@ -2209,6 +2286,33 @@ input DeliveryAddressSingles {
     deliveryAddresses: DeliveryAddressInput
 }
 
+input DeliveryCouponArrayScalerFilter {
+    _id: ID
+    createdAt: Date
+}
+
+input DeliveryCouponArrayfilters {
+    scalers: DeliveryCouponArrayScalerFilter
+}
+
+input DeliveryCouponFilterInput {
+    _id: ID
+    code: String
+    createdAt: Date
+    updatedAt: Date
+}
+
+input DeliveryCouponInFilters {
+    _id: [ID]
+    code: [String]
+    createdAt: [Date]
+}
+
+input DeliveryCouponSortingInput {
+    sortBy: DeliveryCouponSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
 input DeliveryOrderFilterArray {
     status: [DeliveryOrderStatus]
 }
@@ -2216,6 +2320,7 @@ input DeliveryOrderFilterArray {
 input DeliveryOrderFilterInput {
     IN: DeliveryOrderFilterArray
     _id: ID
+    copounId: ID
     createdAt: Date
     customerUserId: ID
     pilotId: ID
@@ -2713,6 +2818,20 @@ input createCartItem {
     pricingProductId: ID!
 }
 
+input createDeliveryCoupon {
+    code: String!
+    dicountValue: Float
+    discountFixed: Boolean
+    discountRatio: Float
+    endDate: Date
+    isActive: Boolean
+    maxUsagePerUser: Int
+    maxUsers: Int
+    startDate: Date
+    usageCount: Int
+    usersCount: Int
+}
+
 input createDeliveryOrder {
     """
     from user cart : create order
@@ -3093,6 +3212,20 @@ input updateBuyingOrderItem {
 
 input updateCartItem {
     amount: Float!
+}
+
+input updateDeliveryCoupon {
+    code: String
+    dicountValue: Float
+    discountFixed: Boolean
+    discountRatio: Float
+    endDate: Date
+    isActive: Boolean
+    maxUsagePerUser: Int
+    maxUsers: Int
+    startDate: Date
+    usageCount: Int
+    usersCount: Int
 }
 
 input updateDeliveryOrder {

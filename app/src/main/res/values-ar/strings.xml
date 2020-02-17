@@ -247,6 +247,10 @@
     <string name="create_new_account">انشاء حساب جديد</string>
     <string name="minutes">دقيقه</string>
     <string name="minute">دقائق</string>
+    <string name="remove">الغاء</string>
+    <string name="change">تغير</string>
+    <string name="coupon_code_is_required">Coupon code is required</string>
+    <string name="you_have_run_out_of_this_coupon">استنفذت عدد مرات هذا الكوبون</string>
 
 </resources>
 

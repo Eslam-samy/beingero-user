@@ -25,6 +25,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.GeneralOptionAllQuery;
 import com.corptia.bringero.graphql.GeneralOptionQuery;
 import com.corptia.bringero.type.GeneralOptionFilter;
 import com.corptia.bringero.type.GeneralOptionNameEnum;
@@ -194,18 +195,16 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                                                         loadingDialog.hideProgressBar();
 
-                                                    } else if (myCart.TotalPrice() > Common.BASE_MAX_PRICE){
+                                                    } else if (myCart.TotalPrice() > Common.BASE_MAX_PRICE) {
 
                                                         loadingDialog.hideProgressBar();
-                                                    }
-                                                        else{
+                                                    } else {
 
-                                                            getCost(myCart);
+                                                        getCost(myCart);
 
                                                     }
 
                                                 }
-
 
 
 //                                                 else if (myCart.status() == 404) {
@@ -259,24 +258,60 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
     private void getCost(MyCartQuery.MyCart myCart) {
 
-        MyApolloClient.getApolloClient().query(GeneralOptionQuery.builder().filter(GeneralOptionFilter.builder().name(GeneralOptionNameEnum.DELIVERYCOST).build()).build())
-                .enqueue(new ApolloCall.Callback<GeneralOptionQuery.Data>() {
+
+//
+//        MyApolloClient.getApolloClient().query(GeneralOptionQuery.builder().filter(GeneralOptionFilter.builder().name(GeneralOptionNameEnum.DELIVERYCOST).build()).build())
+//                .enqueue(new ApolloCall.Callback<GeneralOptionQuery.Data>() {
+//                    @Override
+//                    public void onResponse(@NotNull Response<GeneralOptionQuery.Data> response) {
+//
+//                        if (response.data().GeneralOptionQuery().getOne().status() ==200){
+//
+//                            Common.DELIVERY_COST = response.data().GeneralOptionQuery().getOne().data().value();
+//
+//                            btn_next.setBackgroundResource(R.drawable.round_main_button);
+//                            btn_next.setEnabled(true);
+//                            Common.CURRENT_CART = myCart.storeData();
+//                            Intent intent = new Intent(getActivity(), CheckOutActivity.class);
+//                            intent.putExtra(Constants.EXTRA_TOTAL_CART, myCart.TotalPrice());
+//                            startActivity(intent);
+//
+//                            loadingDialog.hideProgressBar();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NotNull ApolloException e) {
+//
+//                    }
+//                });
+
+        MyApolloClient.getApollowClientAuthorization().query(GeneralOptionAllQuery.builder().build())
+                .enqueue(new ApolloCall.Callback<GeneralOptionAllQuery.Data>() {
                     @Override
-                    public void onResponse(@NotNull Response<GeneralOptionQuery.Data> response) {
+                    public void onResponse(@NotNull Response<GeneralOptionAllQuery.Data> response) {
 
-                        if (response.data().GeneralOptionQuery().getOne().status() ==200){
+                        for (GeneralOptionAllQuery.Data1 option : response.data().GeneralOptionQuery().getAll().data()) {
 
-                            Common.DELIVERY_COST = response.data().GeneralOptionQuery().getOne().data().value();
+                            if (option.name().rawValue().equalsIgnoreCase(GeneralOptionNameEnum.DELIVERYCOST.rawValue())) {
 
-                            btn_next.setBackgroundResource(R.drawable.round_main_button);
-                            btn_next.setEnabled(true);
-                            Common.CURRENT_CART = myCart.storeData();
-                            Intent intent = new Intent(getActivity(), CheckOutActivity.class);
-                            intent.putExtra(Constants.EXTRA_TOTAL_CART, myCart.TotalPrice());
-                            startActivity(intent);
+                                Common.DELIVERY_COST = option.value();
 
-                            loadingDialog.hideProgressBar();
+                            } else if (option.name().rawValue().equalsIgnoreCase(GeneralOptionNameEnum.MINDELIVERYCOST.rawValue())) {
+
+                                Common.MINDELIVERY_COST = option.value();
+                            }
                         }
+
+
+                        btn_next.setBackgroundResource(R.drawable.round_main_button);
+                        btn_next.setEnabled(true);
+                        Common.CURRENT_CART = myCart.storeData();
+                        Intent intent = new Intent(getActivity(), CheckOutActivity.class);
+                        intent.putExtra(Constants.EXTRA_TOTAL_CART, myCart.TotalPrice());
+                        startActivity(intent);
+
+                        loadingDialog.hideProgressBar();
                     }
 
                     @Override
@@ -285,6 +320,32 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                     }
                 });
 
+
+//        MyApolloClient.getApolloClient().query(GeneralOptionQuery.builder().filter(GeneralOptionFilter.builder().name(GeneralOptionNameEnum.DELIVERYCOST).build()).build())
+//                .enqueue(new ApolloCall.Callback<GeneralOptionQuery.Data>() {
+//                    @Override
+//                    public void onResponse(@NotNull Response<GeneralOptionQuery.Data> response) {
+//
+//                        if (response.data().GeneralOptionQuery().getOne().status() == 200) {
+//
+//                            Common.DELIVERY_COST = response.data().GeneralOptionQuery().getOne().data().value();
+//
+//                            btn_next.setBackgroundResource(R.drawable.round_main_button);
+//                            btn_next.setEnabled(true);
+//                            Common.CURRENT_CART = myCart.storeData();
+//                            Intent intent = new Intent(getActivity(), CheckOutActivity.class);
+//                            intent.putExtra(Constants.EXTRA_TOTAL_CART, myCart.TotalPrice());
+//                            startActivity(intent);
+//
+//                            loadingDialog.hideProgressBar();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NotNull ApolloException e) {
+//
+//                    }
+//                });
 
 
     }

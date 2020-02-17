@@ -1,0 +1,67 @@
+query validateCoupon($filter: DeliveryCouponFilterInput ,$userId : ID! ){
+    DeliveryCouponQuery{
+        getOne(filter:$filter){
+            status
+            message
+            data{
+                userUsageCount(userId:$userId)
+                userCanUse(userId:$userId){
+                    canUse
+                    maxUserUsage
+                }
+                usersCount
+                usageCount
+                maxUsers
+                maxUsagePerUser
+
+                dicountValue
+                isActive
+                discountFixed
+                discountRatio
+            }
+        }
+    }
+}
+
+mutation confirmOrder($data: createBuyingOrder) {
+    BuyingOrderMutation {
+        create(data: $data) {
+            status
+            message
+            errors{
+                path
+                code
+                message
+            }
+            data {
+                _id
+                copounId
+                serial
+                deliveryCost
+                discountFixed
+                dicountValue
+                discountRatio
+            }
+        }
+    }
+}
+
+
+query MinDeliveryCost{
+    GeneralOptionQuery{
+        getOne(filter:{
+            name:MinDeliveryCost
+        }){
+            data{
+                name
+                label
+                value
+                valueType
+
+
+
+            }
+        }
+    }
+}
+

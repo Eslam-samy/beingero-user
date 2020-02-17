@@ -24,3 +24,17 @@ query GeneralOptionQuery($filter: GeneralOptionFilter){
         }
     }
 }
+
+query GeneralOptionAllQuery{
+    GeneralOptionQuery{
+        getAll(filter:{
+        }){
+            data{
+                name
+                label
+                value
+                valueType
+            }
+        }
+    }
+}

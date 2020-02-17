@@ -248,6 +248,10 @@
     <string name="create_new_account">Create new account</string>
     <string name="minutes">Minutes</string>
     <string name="minute">Minutes</string>
+    <string name="remove">Remove</string>
+    <string name="change">Change</string>
+    <string name="coupon_code_is_required">Coupon code is required</string>
+    <string name="you_have_run_out_of_this_coupon">You have run out of this coupon</string>
 
 </resources>
 

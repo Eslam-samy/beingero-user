@@ -16,6 +16,7 @@ import android.widget.Button;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
+import com.corptia.bringero.graphql.ValidateCouponQuery;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.ui.home.cart.Adapter.CartAdapter;
 
@@ -73,7 +74,7 @@ public class CheckOutFragment extends Fragment implements CheckOutView{
 
 
 
-                checkOutPresenter.sendOrder();
+                checkOutPresenter.sendOrder("");
 
                // HomeActivity.navController.navigate(R.id.action_checkOutFragment_to_nav_cart);
                 //requireActivity().finish();
@@ -133,6 +134,16 @@ public class CheckOutFragment extends Fragment implements CheckOutView{
 
     @Override
     public void onSuccessCreateOrder(String orderId, int serial) {
+
+    }
+
+    @Override
+    public void onSuccessValidateCoupon(ValidateCouponQuery.Data1 couponData) {
+
+    }
+
+    @Override
+    public void onNotFoundValidateCoupon() {
 
     }
 }

@@ -56,4 +56,8 @@ public class Constants {
     public static final String EXTRA_TERMS_CONDITIONS = "EXTRA_TERMS_CONDITIONS";
     public static final String EXTRA_PRIVACY_POLICY = "EXTRA_PRIVACY_POLICY";
     public static final String EXTRA_FAQ_SUPPORT = "EXTRA_FAQ_SUPPORT";
+
+    public static final String TAG_COUPON_ADD = "TAG_COUPON_ADD";
+    public static final String TAG_COUPON_REMOVE = "TAG_COUPON_REMOVE";
+    public static final String TAG_COUPON_CHANGE = "TAG_COUPON_CHANGE";
 }

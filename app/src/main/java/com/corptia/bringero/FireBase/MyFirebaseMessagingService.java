@@ -105,6 +105,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         sendNotification(messageBody);
+
+        Common.LOG("Yes I am User ^_^ ,, " + messageBody + " notId " + notId + " model " + model );
     }
 
     /**
