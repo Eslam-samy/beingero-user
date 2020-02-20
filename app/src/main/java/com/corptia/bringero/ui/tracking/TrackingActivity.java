@@ -37,6 +37,8 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.Remote.map.IGoogleAPI;
+import com.corptia.bringero.Remote.map.RetrofitClient;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.TripQuery;
 import com.corptia.bringero.type.DeliveryOrderStatus;
@@ -56,6 +58,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -76,6 +80,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.disposables.CompositeDisposable;
 
 import static com.corptia.bringero.Common.Constants.MAPVIEW_BUNDLE_KEY;
 
@@ -149,11 +154,27 @@ public class TrackingActivity extends BaseActivity implements
     @BindView(R.id.btn_back)
     Button btn_back;
 
+    //------------------------------ For Animation ---------------------------------
+
+    private Handler mHandler;
+    private int index , next;
+    private LatLng start , end;
+    private float v;
+    private double lat , lng;
+    private Polyline blackPolyline , greyPolyline;
+    private PolylineOptions polylineOptions , blackPolylineOption ;
+    private List<LatLng> polylineList ;
+    private IGoogleAPI iGoogleAPI;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking);
+
+        iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
+
 
         initView();
 
@@ -505,6 +526,7 @@ public class TrackingActivity extends BaseActivity implements
     @Override
     public void onDestroy() {
         mMapView.onDestroy();
+        compositeDisposable.clear();
         super.onDestroy();
     }
 

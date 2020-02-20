@@ -385,9 +385,9 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
                     btn_add_coupon.setVisibility(View.GONE);
 
                     if (couponData.discountFixed())
-                        finalDeliveryCost = (allDelivery * couponData.dicountValue()) / 100;
+                        finalDeliveryCost = (allDelivery * (1-couponData.discountRatio()));
                     else {
-                        finalDeliveryCost = allDelivery - couponData.dicountValue();
+                        finalDeliveryCost = ( Integer.parseInt(Common.DELIVERY_COST) - couponData.dicountValue()) *  Common.CURRENT_CART.size();
                     }
 
                     if (finalDeliveryCost <= Double.parseDouble(Common.MINDELIVERY_COST)) {

@@ -310,6 +310,10 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                     img_requsted.setImageResource(R.drawable.tracking_status_requsted);
                     layout_pilot.setVisibility(View.GONE);
                 }
+                else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.ASSIGNEDTOPILOT.rawValue())) {
+                    img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
+                    layout_pilot.setVisibility(View.VISIBLE);
+                }
                else if (deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.STORESREPLIED.rawValue())) {
                     img_confirmed.setImageResource(R.drawable.tracking_status_confirmed);
                     layout_pilot.setVisibility(View.GONE);
