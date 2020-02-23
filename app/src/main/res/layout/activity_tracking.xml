@@ -6,175 +6,291 @@
     android:layout_height="match_parent"
     tools:context=".ui.tracking.TrackingActivity">
 
+
     <com.google.android.gms.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
-
-    <View
-        android:id="@+id/btn_satellite"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/layout_btn_satellite"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btn_currentLocation"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:layout_marginEnd="@dimen/large_margin"/>
-
-
-    <View
-        android:id="@+id/btn_currentLocation"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/layout_btn_current"
-        app:layout_constraintTop_toBottomOf="@+id/btn_satellite"
-        app:layout_constraintEnd_toEndOf="@id/btn_satellite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="@dimen/large_margin"/>
-
-
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/root_data"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:cardElevation="2dp"
-        app:cardCornerRadius="12dp"
-        android:layout_margin="@dimen/large_margin">
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/large_padding">
+            android:background="@color/transparent"
+            app:elevation="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/img_pilot"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_placeholder_profile"
-                app:civ_border_color="@color/border_image"
-                app:civ_border_width="4dp"
-                app:civ_circle_background_color="#fff"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <TextView
-                android:id="@+id/txt_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Hazem Elnahas"
-                app:layout_constraintTop_toTopOf="@+id/img_pilot"
-                app:layout_constraintStart_toEndOf="@+id/img_pilot"
-                android:layout_marginTop="@dimen/low_margin"
-                android:textColor="@color/black"
-                android:fontFamily="@font/poppinssemibold"
-                android:layout_marginStart="@dimen/normal_margin"
-                />
-
-            <TextView
-                android:id="@+id/txt_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4.6"
-                android:fontFamily="@font/poppinssemibold"
-                app:layout_constraintTop_toBottomOf="@+id/txt_name"
-                app:layout_constraintStart_toStartOf="@+id/txt_name"
-                android:textColor="@color/black"
-                android:textSize="@dimen/low_xx_text_size"
-                android:drawableStart="@drawable/star"
-                android:drawablePadding="5dp"/>
-
-            <View
-                android:id="@+id/line"
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                app:layout_constraintTop_toBottomOf="@+id/img_pilot"
-                android:background="@color/color_line_box_language"
-                android:layout_marginTop="@dimen/normal_margin"/>
-
-            <TextView
-                android:id="@+id/txt_lab_tracking_order"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tracking Order"
-                android:fontFamily="@font/poppinsmedium"
-                android:textColor="@color/black"
-                android:textSize="@dimen/normal_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/line"
-                android:layout_marginTop="@dimen/normal_margin"/>
-
-            <TextView
-                android:id="@+id/txt_order_id"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Order #1233"
-                android:textColor="@color/colorPrimary"
-                android:fontFamily="@font/poppinssemibold"
-                android:textStyle="bold"
-                android:textSize="@dimen/normal_text_size"
-                app:layout_constraintStart_toStartOf="@+id/txt_lab_tracking_order"
-                app:layout_constraintEnd_toEndOf="@+id/txt_lab_tracking_order"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_tracking_order"/>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@android:color/black"
+            android:background="@color/transparent"
+            app:layout_scrollFlags="scroll|enterAlways"
+            />
+        </com.google.android.material.appbar.AppBarLayout>
 
 
-            <TextView
-                android:id="@+id/txt_lab_arrived_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/arrived_in"
-                android:fontFamily="@font/poppinsregular"
-                android:textColor="@color/black"
-                android:textSize="@dimen/normal_text_size"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_order_id"
-                app:layout_constraintEnd_toStartOf="@+id/txt_arrived_in"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:layout_marginEnd="@dimen/normal_margin"
-                android:layout_marginTop="@dimen/large_margin"
-                />
-
-            <TextView
-                android:id="@+id/txt_arrived_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10:32 min"
-                app:layout_constraintStart_toEndOf="@+id/txt_lab_arrived_in"
-                app:layout_constraintTop_toTopOf="@+id/txt_lab_arrived_in"
-                app:layout_constraintBottom_toBottomOf="@+id/txt_lab_arrived_in"
-                android:textSize="@dimen/large_text_size"
-                android:fontFamily="@font/poppinssemibold"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+        <View
+            android:id="@+id/btn_satellite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="@dimen/large_margin"
+            android:background="@drawable/layout_btn_satellite"
+            app:layout_constraintBottom_toTopOf="@id/btn_currentLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
 
 
-            <Button
-                android:id="@+id/btn_back"
+        <View
+            android:id="@+id/btn_currentLocation"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="@dimen/large_margin"
+            android:background="@drawable/layout_btn_current"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/btn_satellite"
+            app:layout_constraintTop_toBottomOf="@+id/btn_satellite" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/root_pilot"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/large_margin"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_main_button"
-                android:text="@string/order_details"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppinssemibold"
-                android:textSize="@dimen/large_text_size"
-                app:layout_constraintTop_toBottomOf="@+id/txt_arrived_in"
-                android:layout_marginTop="@dimen/large_margin"/>
+                android:padding="@dimen/large_padding">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_pilot"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_placeholder_profile"
+                    app:civ_border_color="@color/border_image"
+                    app:civ_border_width="2dp"
+                    app:civ_circle_background_color="#fff"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_pilot_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/normal_margin"
+                    android:layout_marginTop="@dimen/low_margin"
+                    android:fontFamily="@font/poppinssemibold"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@+id/img_pilot"
+                    app:layout_constraintTop_toTopOf="@+id/img_pilot"
+                    tools:text="Hazem Elnahas" />
+
+                <TextView
+                    android:id="@+id/txt_pilot_rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/star"
+                    android:drawablePadding="5dp"
+                    android:fontFamily="@font/poppinssemibold"
+                    android:text="4.6"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/low_xx_text_size"
+                    app:layout_constraintStart_toStartOf="@+id/txt_pilot_name"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_pilot_name" />
+
+
+                <ImageButton
+                    android:id="@+id/btn_call"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/round_btn_call"
+                    android:src="@drawable/ic_call"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
 
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </androidx.cardview.widget.CardView>
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:visibility="visible"
+        >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/item_shimmer_loading_profile"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+            <include layout="@layout/item_shimmer_loading"/>
+
+        </LinearLayout>
+
+
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--<androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:padding="@dimen/large_padding">-->
+
+    <!--<de.hdodenhof.circleimageview.CircleImageView-->
+    <!--    android:id="@+id/img_pilot"-->
+    <!--    android:layout_width="60dp"-->
+    <!--    android:layout_height="60dp"-->
+    <!--    android:scaleType="centerCrop"-->
+    <!--    android:src="@drawable/ic_placeholder_profile"-->
+    <!--    app:civ_border_color="@color/border_image"-->
+    <!--    app:civ_border_width="4dp"-->
+    <!--    app:civ_circle_background_color="#fff"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintTop_toTopOf="parent"/>-->
+
+    <!--<TextView-->
+    <!--    android:id="@+id/txt_name"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    tools:text="Hazem Elnahas"-->
+    <!--    app:layout_constraintTop_toTopOf="@+id/img_pilot"-->
+    <!--    app:layout_constraintStart_toEndOf="@+id/img_pilot"-->
+    <!--    android:layout_marginTop="@dimen/low_margin"-->
+    <!--    android:textColor="@color/black"-->
+    <!--    android:fontFamily="@font/poppinssemibold"-->
+    <!--    android:layout_marginStart="@dimen/normal_margin"-->
+    <!--    />-->
+
+    <!--<TextView-->
+    <!--    android:id="@+id/txt_rating"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:text="4.6"-->
+    <!--    android:fontFamily="@font/poppinssemibold"-->
+    <!--    app:layout_constraintTop_toBottomOf="@+id/txt_name"-->
+    <!--    app:layout_constraintStart_toStartOf="@+id/txt_name"-->
+    <!--    android:textColor="@color/black"-->
+    <!--    android:textSize="@dimen/low_xx_text_size"-->
+    <!--    android:drawableStart="@drawable/star"-->
+    <!--    android:drawablePadding="5dp"/>-->
+
+    <!--<View-->
+    <!--    android:id="@+id/line"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="0.1dp"-->
+    <!--    app:layout_constraintTop_toBottomOf="@+id/img_pilot"-->
+    <!--    android:background="@color/color_line_box_language"-->
+    <!--    android:layout_marginTop="@dimen/normal_margin"/>-->
+
+    <!--<TextView-->
+    <!--    android:id="@+id/txt_lab_tracking_order"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:text="Tracking Order"-->
+    <!--    android:fontFamily="@font/poppinsmedium"-->
+    <!--    android:textColor="@color/black"-->
+    <!--    android:textSize="@dimen/normal_text_size"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintEnd_toEndOf="parent"-->
+    <!--    app:layout_constraintTop_toBottomOf="@+id/line"-->
+    <!--    android:layout_marginTop="@dimen/normal_margin"/>-->
+
+    <!--<TextView-->
+    <!--    android:id="@+id/txt_order_id"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    tools:text="Order #1233"-->
+    <!--    android:textColor="@color/colorPrimary"-->
+    <!--    android:fontFamily="@font/poppinssemibold"-->
+    <!--    android:textStyle="bold"-->
+    <!--    android:textSize="@dimen/normal_text_size"-->
+    <!--    app:layout_constraintStart_toStartOf="@+id/txt_lab_tracking_order"-->
+    <!--    app:layout_constraintEnd_toEndOf="@+id/txt_lab_tracking_order"-->
+    <!--    app:layout_constraintTop_toBottomOf="@+id/txt_lab_tracking_order"/>-->
+
+
+    <!--<TextView-->
+    <!--    android:id="@+id/txt_lab_arrived_in"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:text="@string/arrived_in"-->
+    <!--    android:fontFamily="@font/poppinsregular"-->
+    <!--    android:textColor="@color/black"-->
+    <!--    android:textSize="@dimen/normal_text_size"-->
+    <!--    app:layout_constraintStart_toStartOf="parent"-->
+    <!--    app:layout_constraintTop_toBottomOf="@+id/txt_order_id"-->
+    <!--    app:layout_constraintEnd_toStartOf="@+id/txt_arrived_in"-->
+    <!--    app:layout_constraintHorizontal_chainStyle="packed"-->
+    <!--    android:layout_marginEnd="@dimen/normal_margin"-->
+    <!--    android:layout_marginTop="@dimen/large_margin"-->
+    <!--    />-->
+
+    <!--<TextView-->
+    <!--    android:id="@+id/txt_arrived_in"-->
+    <!--    android:layout_width="wrap_content"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:text="10:32 min"-->
+    <!--    app:layout_constraintStart_toEndOf="@+id/txt_lab_arrived_in"-->
+    <!--    app:layout_constraintTop_toTopOf="@+id/txt_lab_arrived_in"-->
+    <!--    app:layout_constraintBottom_toBottomOf="@+id/txt_lab_arrived_in"-->
+    <!--    android:textSize="@dimen/large_text_size"-->
+    <!--    android:fontFamily="@font/poppinssemibold"-->
+    <!--    android:textColor="@color/colorPrimary"-->
+    <!--    app:layout_constraintEnd_toEndOf="parent"-->
+    <!--    />-->
+
+
+    <!--<Button-->
+    <!--    android:id="@+id/btn_back"-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="wrap_content"-->
+    <!--    android:background="@drawable/round_main_button"-->
+    <!--    android:text="@string/order_details"-->
+    <!--    android:textAllCaps="false"-->
+    <!--    android:textColor="@color/white"-->
+    <!--    android:fontFamily="@font/poppinssemibold"-->
+    <!--    android:textSize="@dimen/large_text_size"-->
+    <!--    app:layout_constraintTop_toBottomOf="@+id/txt_arrived_in"-->
+    <!--    android:layout_marginTop="@dimen/large_margin"/>-->
+
+
+    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->

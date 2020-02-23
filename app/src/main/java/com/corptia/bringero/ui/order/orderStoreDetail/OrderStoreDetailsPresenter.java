@@ -6,6 +6,7 @@ import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.BuyingOrderRatingMutation;
 import com.corptia.bringero.graphql.SingleOrderQuery;
 import com.corptia.bringero.utils.PicassoUtils;
 
@@ -24,7 +25,7 @@ public class OrderStoreDetailsPresenter {
 
     public void getOrderStoreDetails(String BUYING_ORDER_ID){
 
-        view.showProgressBar();
+//        view.showProgressBar();
 
         MyApolloClient.getApollowClientAuthorization().query(SingleOrderQuery.builder().buyingOrderId(BUYING_ORDER_ID).build())
                 .enqueue(new ApolloCall.Callback<SingleOrderQuery.Data>() {
@@ -37,7 +38,7 @@ public class OrderStoreDetailsPresenter {
 
 
                             view.setOrderStoreDetails(orderResponse);
-                            view.hideProgressBar();
+//                            view.hideProgressBar();
 
                         } else {
 
@@ -47,10 +48,37 @@ public class OrderStoreDetailsPresenter {
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
 
-                        view.hideProgressBar();
+//                        view.hideProgressBar();
                     }
                 });
 
+
+    }
+
+    public void storeServiceRating(String BUYING_ORDER_ID , int rating){
+
+        view.showProgressBar();
+
+        MyApolloClient
+                .getApollowClientAuthorization()
+                .mutate(BuyingOrderRatingMutation.builder()._id(BUYING_ORDER_ID).rate(rating).build())
+                .enqueue(new ApolloCall.Callback<BuyingOrderRatingMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<BuyingOrderRatingMutation.Data> response) {
+
+                        view.hideProgressBar();
+
+                        if (response.data().BuyingOrderMutation().storeServiceRating().status() == 200){
+                            view.onSuccessRating(response.data().BuyingOrderMutation().storeServiceRating().data().StoreResponse().data().Rate().Service().TotalRate());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                        view.hideProgressBar();
+                    }
+                });
 
     }
 }

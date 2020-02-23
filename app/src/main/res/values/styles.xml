@@ -348,6 +348,10 @@
 
     <!-- that 's new Style For Input EditText -->
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/color_rating_off</item>
+        <item name="colorControlActivated">@color/color_rating_active</item>
+    </style>
 
 
 </resources>

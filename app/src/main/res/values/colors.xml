@@ -69,4 +69,11 @@
     <color name="line_focused">#4C69FF</color>
     <color name="line_default">@color/color_line_box_language</color>
 
+
+    <color name="color_rating_active">#FFBB46</color>
+    <color name="color_rating_off">#C1C3CA</color>
+
+
+
+
 </resources>

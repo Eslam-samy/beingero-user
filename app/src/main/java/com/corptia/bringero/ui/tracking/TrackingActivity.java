@@ -1,16 +1,21 @@
 package com.corptia.bringero.ui.tracking;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -25,14 +30,14 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
-import android.widget.RatingBar;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.bumptech.glide.Glide;
+import com.corptia.bringero.Adapter.InfoWindowAdapter;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
@@ -43,7 +48,9 @@ import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.TripQuery;
 import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.type.TrackingTripFilterInput;
+import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.utils.PicassoMarker;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.LocationCallback;
@@ -69,6 +76,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.maps.GeoApiContext;
 import com.google.maps.android.PolyUtil;
 import com.logicbeanzs.uberpolylineanimation.MapAnimator;
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -143,27 +151,37 @@ public class TrackingActivity extends BaseActivity implements
 
     @BindView(R.id.img_pilot)
     CircleImageView img_pilot;
-    @BindView(R.id.txt_name)
-    TextView txt_name;
-    @BindView(R.id.txt_rating)
-    TextView txt_rating;
-    @BindView(R.id.txt_order_id)
-    TextView txt_order_id;
-    @BindView(R.id.txt_arrived_in)
-    TextView txt_arrived_in;
-    @BindView(R.id.btn_back)
-    Button btn_back;
+    @BindView(R.id.txt_pilot_name)
+    TextView txt_pilot_name;
+    @BindView(R.id.txt_pilot_rating)
+    TextView txt_pilot_rating;
+//    @BindView(R.id.txt_order_id)
+//    TextView txt_order_id;
+    @BindView(R.id.btn_call)
+    ImageButton btn_call;
+    @BindView(R.id.root_pilot)
+    CardView root_pilot;
+    @BindView(R.id.shimmerLayout_loading)
+    ShimmerFrameLayout shimmerLayout_loading;
+    @BindView(R.id.root_data)
+    ConstraintLayout root_data;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+//    @BindView(R.id.txt_arrived_in)
+//    TextView txt_arrived_in;
+//    @BindView(R.id.btn_back)
+//    Button btn_back;
 
     //------------------------------ For Animation ---------------------------------
 
     private Handler mHandler;
-    private int index , next;
-    private LatLng start , end;
+    private int index, next;
+    private LatLng start, end;
     private float v;
-    private double lat , lng;
-    private Polyline blackPolyline , greyPolyline;
-    private PolylineOptions polylineOptions , blackPolylineOption ;
-    private List<LatLng> polylineList ;
+    private double lat, lng;
+    private Polyline blackPolyline, greyPolyline;
+    private PolylineOptions polylineOptions, blackPolylineOption;
+    private List<LatLng> polylineList;
     private IGoogleAPI iGoogleAPI;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -173,6 +191,9 @@ public class TrackingActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracking);
 
+//        toolbar.getBackground().setAlpha(0);
+
+
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
 
 
@@ -180,12 +201,12 @@ public class TrackingActivity extends BaseActivity implements
 
         initGoogleMap(savedInstanceState);
 
-        btn_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+//        btn_back.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
 
         btn_satellite.setTag("MAP_TYPE_NORMAL");
         btn_satellite.setOnClickListener(new View.OnClickListener() {
@@ -206,6 +227,23 @@ public class TrackingActivity extends BaseActivity implements
 
             }
         });
+
+
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
+
+        btn_currentLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                zoomRoute(latLngs);
+
+            }
+        });
+
     }
 
 //
@@ -254,7 +292,8 @@ public class TrackingActivity extends BaseActivity implements
                             pilotMarker = mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(location.latitude, location.longitude))
                                     .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_pilot))
-                                    .title("الطيار"));
+                                    .title(""));
+
                         }
 
                         latLng[0] = location.latitude;
@@ -327,20 +366,18 @@ public class TrackingActivity extends BaseActivity implements
             if (PolyUtil.isLocationOnPath(latLng, currentSegment, true, 50)) {
                 // save index of last point and exit loop
                 ixLastPoint = i;
-                Log.d("HAZEM" , "ixLastPoint " + ixLastPoint + " ---- " + latLngs.get(i).latitude + " --- " +  latLngs.get(i).longitude);
+//                Log.d("HAZEM" , "ixLastPoint " + ixLastPoint + " ---- " + latLngs.get(i).latitude + " --- " +  latLngs.get(i).longitude);
 
-                Log.d("HAZEM" , "SIZE Befor : " + latLngs.size());
-                latLngs.subList(0,i).clear();
-                Log.d("HAZEM" , "SIZE After : " + latLngs.size());
+//                Log.d("HAZEM" , "SIZE Befor : " + latLngs.size());
+                latLngs.subList(0, i).clear();
+//                Log.d("HAZEM" , "SIZE After : " + latLngs.size());
 //                mMap.clear();
                 MapAnimator.getInstance().animateRoute(mMap, latLngs);
 
 
-
                 break;
-            }
-            else {
-                Log.d("HAZEM" , "facke");
+            } else {
+//                Log.d("HAZEM" , "facke");
             }
         }
 
@@ -383,8 +420,6 @@ public class TrackingActivity extends BaseActivity implements
         }
 
 
-
-
         gestureDetector = new ScaleGestureDetector(TrackingActivity.this, new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
@@ -414,8 +449,11 @@ public class TrackingActivity extends BaseActivity implements
 
         getTrip(getIntent().getStringExtra(Constants.EXTRA_ORDER_ID));
 
-    }
 
+        InfoWindowAdapter infoWindowAdapter = new InfoWindowAdapter(this);
+        mMap.setInfoWindowAdapter(infoWindowAdapter);
+
+    }
 
     private void initGoogleMap(Bundle savedInstanceState) {
 
@@ -548,6 +586,16 @@ public class TrackingActivity extends BaseActivity implements
         int routePadding = 50;
         LatLngBounds latLngBounds = boundsBuilder.build();
 
+
+//
+//        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+//            @Override
+//            public void onMapLoaded() {
+//
+//
+//            }
+//        });
+
         mMap.animateCamera(
                 CameraUpdateFactory.newLatLngBounds(latLngBounds, routePadding),
                 600,
@@ -661,9 +709,8 @@ public class TrackingActivity extends BaseActivity implements
     }
 
 
-
     //Get Data Trip
-    private void getTrip(String deliveryOrderId){
+    private void getTrip(String deliveryOrderId) {
 
         TrackingTripFilterInput trackingTripFilterInput = TrackingTripFilterInput.builder().deliveryOrderId(deliveryOrderId).build();
         MyApolloClient.getApollowClientAuthorization()
@@ -677,11 +724,13 @@ public class TrackingActivity extends BaseActivity implements
                             @Override
                             public void run() {
 
-                                if (response.data().TrackingTripQuery().getOne().status() == 200){
+                                if (response.data().TrackingTripQuery().getOne().status() == 200) {
 
                                     TripQuery.@Nullable Data1 data = response.data().TrackingTripQuery().getOne().data();
+                                    TripQuery.@Nullable PilotUserResponse dataPilot = response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().PilotUserResponse();
 
-                                    List<TripQuery.AvailableTrack> realTrack = data.availableTracks().get(data.availableTracks().size()-1);
+
+                                    List<TripQuery.AvailableTrack> realTrack = data.availableTracks().get(data.availableTracks().size() - 1);
 
 
                                     if (getIntent() != null && !response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())) {
@@ -702,28 +751,47 @@ public class TrackingActivity extends BaseActivity implements
                                     if (Common.CURRENT_USER != null) {
                                         String avatar = Common.CURRENT_USER.getAvatarName();
 
-                                        mMap.addMarker(new MarkerOptions()
+                                        Marker user =  mMap.addMarker(new MarkerOptions()
                                                 .position(new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude))
-                                                .icon(BitmapDescriptorFactory
-                                                        .fromBitmap(
-                                                                createCustomMarker(
-                                                                        TrackingActivity.this
-                                                                        , Common.BASE_URL_IMAGE + avatar))))
-                                                .setTitle(Common.CURRENT_USER.getFullName());
+                                                .title("5\nMin")
+                                                .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_marker_user)));
+
+                                        user.showInfoWindow();
+
                                     }
 
 
-                                }
-                                else
-                                {
+                                    if (dataPilot.status() == 200) {
 
+                                        btn_call.setOnClickListener(view -> {
+
+                                            String phone = dataPilot.data().phone();
+
+                                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                                            startActivity(intent);
+
+
+                                        });
+
+                                        txt_pilot_name.setText(dataPilot.data().fullName());
+
+
+                                        if (dataPilot.data().AvatarResponse().status() == 200)
+                                            Picasso.get().load(Common.BASE_URL_IMAGE + dataPilot.data().AvatarResponse().data().name()).into(img_pilot);
+
+                                    }
+
+                                    shimmerLayout_loading.setVisibility(View.GONE);
+                                    root_data.setVisibility(View.VISIBLE);
+
+
+                                } else {
 
 
                                 }
 
                             }
                         });
-
 
 
                     }
@@ -734,6 +802,17 @@ public class TrackingActivity extends BaseActivity implements
                     }
                 });
 
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // close this activity and return to preview activity (if there is any)
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

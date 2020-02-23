@@ -1,0 +1,25 @@
+mutation buyingOrderRating($_id: ID!,$rate: Int!){
+    #    run one by one by appropriate the right user token
+    BuyingOrderMutation{
+        #     By Customer (customerUserId)
+        storeServiceRating(_id:$_id,rate:$rate){
+            status
+            message
+            errors{
+                path
+                message
+            }
+            data{
+                StoreResponse{
+                    data{
+                        Rate{
+                            Service{
+                                TotalRate
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

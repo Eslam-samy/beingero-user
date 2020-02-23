@@ -8,14 +8,15 @@
     android:background="@color/white"
     android:fitsSystemWindows="true">
 
-
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/root"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
             app:elevation="0dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            tools:visibility="visible"
+            >
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -26,9 +27,6 @@
                 android:background="@color/white"
                 app:layout_scrollFlags="scroll|enterAlways"
                 />
-
-
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -79,6 +77,20 @@
                     android:textSize="@dimen/normal_text_size"
                     android:fontFamily="@font/poppinsregular"
                     android:visibility="gone"/>
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="?android:attr/ratingBarStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:isIndicator="true"
+                    android:numStars="5"
+                    android:progressDrawable="@drawable/ratingstars"
+                    tools:rating="3.4"
+                    android:stepSize="1"
+                    app:layout_constraintStart_toStartOf="@+id/txt_name"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_name"/>
 
                 <TextView
                     android:id="@+id/txt_lab_order_id"

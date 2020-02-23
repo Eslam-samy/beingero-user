@@ -166,7 +166,6 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                             }
                         }).check();
 
-
             }
         });
 

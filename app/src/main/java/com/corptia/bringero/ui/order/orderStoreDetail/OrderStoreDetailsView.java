@@ -7,4 +7,6 @@ public interface OrderStoreDetailsView extends BaseView {
 
     void setOrderStoreDetails(SingleOrderQuery.Get storeDetails);
 
+    void onSuccessRating(int rating);
+    void onFailedRating();
 }

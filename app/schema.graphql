@@ -49,9 +49,12 @@ type BuyingOrder implements IModelData {
     customerUserId: ID!
     deliveryOrderId: ID!
     orderMaxPreparingMinutes: Int
+    pilotCollectRating: Int
     serial: Int
     status: BuyingOrderStatus
     storeId: ID!
+    storePreparationRating: Int
+    storeServiceRating: Int
     updatedAt: Date
 }
 
@@ -109,6 +112,9 @@ type BuyingOrderMultipleResponse implements IQueryMultipleResponse {
 
 type BuyingOrderMutation {
     create(data: createBuyingOrder): DeliveryOrderSingleResponse
+    pilotCollectRating(_id: ID!, rate: Int!): BuyingOrderSingleResponse
+    storePreparationRating(_id: ID!, rate: Int!): BuyingOrderSingleResponse
+    storeServiceRating(_id: ID!, rate: Int!): BuyingOrderSingleResponse
     update(_id: ID, data: updateBuyingOrder): BuyingOrderSingleResponse
     updateOne(data: updateBuyingOrder, filter: BuyingOrderFilterInput): BuyingOrderSingleResponse
 }
@@ -696,6 +702,7 @@ type PathError {
 }
 
 type Pilot implements IModelData {
+    CollectRating: Rate
     DrivingLicenceImageResponse: ImageSingleResponse
     UserResponse: UserSingleResponse
     VehicleResponse: PilotVehicleSingleResponse
@@ -1232,12 +1239,23 @@ type Query {
     UserQuery: UserQuery
 }
 
+type Rate {
+    RateAvg: Float
+    RateCount: Int
+    TotalRate: Int
+}
+
 type Store implements IModelData {
     AdminUserResponse: UserSingleResponse
     CityReponse: LocationCitySingleResponse
     ImageResponse: ImageSingleResponse
     PricingProducts(filter: PricingProductFilterInput, pagination: paginationInput, sorting: PricingProductSortingInput): PricingProductMultipleResponse
     ProductTypesResponse: ProductTypeMultipleResponse
+    """
+    ServiceRating: Rate
+    PreparationRating: Rate
+    """
+    Rate: StoreRate
     _id: ID!
     adminUserId: ID
     cityId: ID
@@ -1249,6 +1267,7 @@ type Store implements IModelData {
     multiLangs(fields: [StoreMultiLangsFieldsEnum!] = [name, description]): StoreMultiLangs
     name: String
     orderMaxPreparingMinutes: Int
+    orderMinPrice: Float
     phones: [String]
     productTypeIds: [ID]
     storeTypeId: ID
@@ -1330,6 +1349,11 @@ type StoreQuery {
     get(_id: ID): StoreSingleResponse
     getAll(filter: StoreFilterInput, pagination: paginationInput, sorting: StoreSortingInput): StoreMultipleResponse
     getOne(filter: StoreFilterInput): StoreSingleResponse
+}
+
+type StoreRate {
+    Preparation: Rate
+    Service: Rate
 }
 
 type StoreSingleResponse implements ISingleResponse {
@@ -1644,6 +1668,7 @@ type UserMutation {
     invite(data: inviteInput): UserSingleResponse
     login(data: loginInput): userTokenResponse
     logout(device: userDeviceInput!): UserSingleResponse
+    logoutAll(device: userDeviceInput!): UserSingleResponse
     resetPassword(data: resetPasswordInput): userTokenResponse
     signup(data: signupInput): userTokenResponse
     update(_id: ID!, data: updateUser): UserSingleResponse
@@ -2974,6 +2999,7 @@ input createStore {
     locationPoint: PointCooridinatesInput
     name: multilanguageInput
     orderMaxPreparingMinutes: Int
+    orderMinPrice: Float
     phones: [String]
     storeTypeId: ID
 }
@@ -3365,6 +3391,7 @@ input updateStore {
     locationPoint: PointCooridinatesInput
     name: multilanguageInput
     orderMaxPreparingMinutes: Int
+    orderMinPrice: Float
     phones: [String]
     storeTypeId: ID
 }
