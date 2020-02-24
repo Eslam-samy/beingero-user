@@ -133,7 +133,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 style="@style/EditTextStyle"
                 android:paddingTop="0dp"
-                android:layout_marginBottom="0dp"/>
+                android:layout_marginBottom="0dp"
+                />
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -60,6 +60,10 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
         else
             holder.txt_preparing_time.setText(new StringBuilder().append(storeTypes.orderMaxPreparingMinutes()).append(" ").append(context.getString(R.string.minutes)));
 
+
+        holder.txt_minimum_order.setText(new StringBuilder().append(storeTypes.orderMinPrice()!=null ? storeTypes.orderMinPrice() : 0));
+        holder.txt_rating.setText(new StringBuilder().append(storeTypes.Rate().Service().RateAvg()!=null ? storeTypes.Rate().Service().RateAvg() : 0));
+
         holder.itemView.setEnabled(true);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +159,10 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
         TextView txt_name_store;
         @BindView(R.id.txt_preparing_time)
         TextView txt_preparing_time;
+        @BindView(R.id.txt_rating)
+        TextView txt_rating;
+        @BindView(R.id.txt_minimum_order)
+        TextView txt_minimum_order;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

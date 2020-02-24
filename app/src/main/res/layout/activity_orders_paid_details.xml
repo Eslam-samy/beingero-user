@@ -277,7 +277,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/delivery_address"
-                            android:textColor="@color/black"
+                            android:textColor="#2B2B2B"
                             android:layout_marginTop="@dimen/medium_margin"
                             android:textSize="@dimen/large_text_size"
                             android:fontFamily="@font/poppinssemibold"

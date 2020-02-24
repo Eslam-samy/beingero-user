@@ -47,6 +47,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 
 public class CartFragment extends Fragment implements CartContract.CartView {
 
@@ -184,8 +185,21 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                                                         stores.TotalPrice();
 
                                                         isAvailableStores.add(stores.Store().isAvailable());
-                                                        loadingDialog.hideProgressBar();
+
+                                                        if (stores.Store().orderMinPrice()!=null)
+                                                        {
+                                                            if (stores.TotalPrice()  < stores.Store().orderMinPrice())
+                                                            {
+                                                                loadingDialog.hideProgressBar();
+                                                                Toasty.info(getActivity() , new StringBuilder().append(" طلبك من المتجر ").append(stores.Store().name()).append(" لا يتعدي الحد المسموح لاتمام عملية الشراء ")).show();
+//                                                                break;
+                                                                return;
+                                                            }
+                                                        }
+
                                                     }
+                                                    loadingDialog.hideProgressBar();
+
 
                                                     if (isAvailableStores.contains(false)) {
 

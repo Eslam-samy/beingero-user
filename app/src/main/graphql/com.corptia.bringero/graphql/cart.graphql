@@ -15,6 +15,7 @@ query MyCartQuery {
                     name
                     isAvailable
                     orderMaxPreparingMinutes
+                    orderMinPrice
 
                     ImageResponse {
                         status
