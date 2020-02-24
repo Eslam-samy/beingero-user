@@ -33,7 +33,7 @@
                     android:id="@+id/title"
                     android:textSize="18sp"
                     android:textColor="@android:color/primary_text_light"
-                    android:layout_marginTop="55dp"
+                    android:layout_marginTop="65dp"
                     android:text="How was your order ? "/>
 
                 <TextView
@@ -57,7 +57,7 @@
                     android:backgroundTint="@color/color_rating_active"
                     android:numStars="5"
                     android:progressTint="@color/color_rating_active"
-                    android:rating="1"
+                    android:rating="5"
                     android:secondaryProgressTint="@android:color/transparent"
                     android:stepSize="1"
                     android:layout_marginTop="10dp"/>

@@ -1,6 +1,7 @@
 mutation buyingOrderRating($_id: ID!,$rate: Int!){
     #    run one by one by appropriate the right user token
     BuyingOrderMutation{
+
         #     By Customer (customerUserId)
         storeServiceRating(_id:$_id,rate:$rate){
             status
@@ -9,17 +10,7 @@ mutation buyingOrderRating($_id: ID!,$rate: Int!){
                 path
                 message
             }
-            data{
-                StoreResponse{
-                    data{
-                        Rate{
-                            Service{
-                                TotalRate
-                            }
-                        }
-                    }
-                }
-            }
+
         }
     }
 }

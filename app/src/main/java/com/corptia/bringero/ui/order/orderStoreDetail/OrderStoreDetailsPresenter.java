@@ -69,7 +69,7 @@ public class OrderStoreDetailsPresenter {
                         view.hideProgressBar();
 
                         if (response.data().BuyingOrderMutation().storeServiceRating().status() == 200){
-                            view.onSuccessRating(response.data().BuyingOrderMutation().storeServiceRating().data().StoreResponse().data().Rate().Service().TotalRate());
+                            view.onSuccessRating(0);
                         }
                     }
 

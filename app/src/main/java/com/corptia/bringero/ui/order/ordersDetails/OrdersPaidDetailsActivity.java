@@ -24,6 +24,7 @@ import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.ui.tracking.TrackingActivity;
 import com.corptia.bringero.utils.PicassoUtils;
+import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -105,6 +106,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         ButterKnife.bind(this);
 
         recycler_order.setLayoutManager(new LinearLayoutManager(this));
+        recycler_order.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(10 , this)));
         recycler_order.setNestedScrollingEnabled(true);
 
         Intent intent = getIntent();

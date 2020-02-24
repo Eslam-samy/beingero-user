@@ -11,11 +11,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
@@ -55,8 +57,8 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
     ImageView img_store;
     @BindView(R.id.shimmerLayout_loading)
     ShimmerFrameLayout shimmerLayout_loading;
-    @BindView(R.id.ratingBar)
-    RatingBar myRatingBar;
+    @BindView(R.id.currentRatingStore)
+    RatingBar currentRatingStore;
 
     @BindView(R.id.root)
     AppBarLayout root;
@@ -67,10 +69,16 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
 
     OrderStoreDetailsPresenter presenter = new OrderStoreDetailsPresenter(this);
 
+    //Dialog
     AlertDialog dialog;
+    CircleImageView img_rate_store ;
+    RatingBar ratingBar ;
+    Button btn_submit ;
 
     CustomLoading loading;
 
+    SingleOrderQuery.@Nullable Data1 storeData;
+    SingleOrderQuery.Get orderResponse;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +112,24 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
 
         presenter.getOrderStoreDetails(BUYING_ORDER_ID);
 
+//        currentRatingStore.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//
+//
+//            }
+//        });
+
+        currentRatingStore.setOnTouchListener((view, motionEvent) -> {
+
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+
+                if(currentRatingStore.getRating()==0 && orderResponse.SingleOrder().status().rawValue().equalsIgnoreCase("Delivered"))
+                    showDialogRating(storeData);
+            }
+            return true;
+        });
 
     }
 
@@ -160,8 +186,8 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
     @Override
     public void setOrderStoreDetails(SingleOrderQuery.Get storeDetails) {
 
-        SingleOrderQuery.Get orderResponse = storeDetails;
-        SingleOrderQuery.@Nullable Data1 storeData = orderResponse.SingleOrder().StoreResponse().data();
+        orderResponse = storeDetails;
+        storeData = orderResponse.SingleOrder().StoreResponse().data();
 
         runOnUiThread(() -> {
 
@@ -172,7 +198,7 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
             if (storeData.ImageResponse().status() == 200)
                 PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeData.ImageResponse().data().name(), img_store);
 
-            txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(orderResponse.SingleOrder().TotalPrice())).append(getString(R.string.currency)));
+            txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(orderResponse.SingleOrder().TotalPrice())).append(" ").append(getString(R.string.currency)));
 
             txt_order_id.setText(new StringBuilder().append("# ").append(orderResponse.SingleOrder().serial()));
 
@@ -180,10 +206,18 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
             adapter = new OrderStoreDetailAdapter(OrderStoreDetailsActivity.this, items);
             recycler_items.setAdapter(adapter);
 
-            if (storeData.Rate().Service().TotalRate() == 0 && storeDetails.SingleOrder().status().rawValue().equalsIgnoreCase("Delivered"))
-                showDialogRating(storeData);
+            int serviceRating= 0;
+            if (orderResponse.SingleOrder().storeServiceRating() != null)
+                serviceRating = orderResponse.SingleOrder().storeServiceRating();
 
-            myRatingBar.setRating(storeData.Rate().Service().TotalRate());
+
+            if (serviceRating == 0 &&
+                    storeDetails.SingleOrder().status().rawValue().equalsIgnoreCase("Delivered"))
+                showDialogRating(storeData);
+            else
+                currentRatingStore.setRating(serviceRating);
+
+
 
         });
 
@@ -197,16 +231,16 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
         android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_rating, null);
 
-        CircleImageView img_store = dialogView.findViewById(R.id.img_store);
-        RatingBar ratingBar = dialogView.findViewById(R.id.ratingBar);
-        Button btn_submit = dialogView.findViewById(R.id.btn_submit);
+        img_rate_store = dialogView.findViewById(R.id.img_store);
+        ratingBar = dialogView.findViewById(R.id.ratingBar);
+        btn_submit = dialogView.findViewById(R.id.btn_submit);
 
         //Set Image Store
         if (storeData.ImageResponse().status() == 200)
             Picasso.get()
                     .load(Common.BASE_URL_IMAGE + storeData.ImageResponse().data().name())
                     .placeholder(R.drawable.ic_placeholder_store)
-                    .into(img_store);
+                    .into(img_rate_store);
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,7 +321,7 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
             public void run() {
 
                 dialog.dismiss();
-                myRatingBar.setRating(rating);
+                currentRatingStore.setRating(ratingBar.getRating());
 
             }
         });

@@ -7,15 +7,20 @@ import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -50,6 +55,8 @@ import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.type.TrackingTripFilterInput;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.utils.PicassoMarker;
+import com.corptia.bringero.utils.sharedPref.PrefKeys;
+import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
@@ -60,6 +67,7 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -73,8 +81,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
 import com.google.maps.android.PolyUtil;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.GeocodedWaypoint;
+import com.google.protobuf.CodedOutputStream;
 import com.logicbeanzs.uberpolylineanimation.MapAnimator;
 import com.squareup.picasso.Picasso;
 
@@ -110,7 +124,6 @@ public class TrackingActivity extends BaseActivity implements
     private static final int PLAY_SERVICE_RESULATION_REQUEST = 300193;
 
     private GoogleMap mMap;
-    private GeoApiContext mGeoApiContext;
 
     //For Zoom
     private LatLngBounds mMapBoundary;
@@ -184,6 +197,10 @@ public class TrackingActivity extends BaseActivity implements
     private List<LatLng> polylineList;
     private IGoogleAPI iGoogleAPI;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
+
+
+    //For Get
+    private GeoApiContext mGeoApiContext;
 
 
     @Override
@@ -447,11 +464,14 @@ public class TrackingActivity extends BaseActivity implements
         });
 
 
+        getLastLocation();
+
         getTrip(getIntent().getStringExtra(Constants.EXTRA_ORDER_ID));
 
 
         InfoWindowAdapter infoWindowAdapter = new InfoWindowAdapter(this);
         mMap.setInfoWindowAdapter(infoWindowAdapter);
+
 
     }
 
@@ -720,9 +740,6 @@ public class TrackingActivity extends BaseActivity implements
                     public void onResponse(@NotNull Response<TripQuery.Data> response) {
 
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
 
                                 if (response.data().TrackingTripQuery().getOne().status() == 200) {
 
@@ -744,45 +761,78 @@ public class TrackingActivity extends BaseActivity implements
                                     }
 
 
-                                    //Create Line
-                                    MapAnimator.getInstance().animateRoute(mMap, latLngs);
-                                    zoomRoute(latLngs);
+
 
                                     if (Common.CURRENT_USER != null) {
-                                        String avatar = Common.CURRENT_USER.getAvatarName();
 
-                                        Marker user =  mMap.addMarker(new MarkerOptions()
-                                                .position(new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude))
-                                                .title("5\nMin")
-                                                .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_marker_user)));
+//                                        String avatar = Common.CURRENT_USER.getAvatarName();
 
-                                        user.showInfoWindow();
+                                        LatLng pilotLocation , customerLocation;
+
+                                        pilotLocation = new LatLng(latLngs.get(0).latitude, latLngs.get(0).longitude);
+                                        customerLocation = new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude);
+
+
+
+                                       String isHaveId = (String) PrefUtils.getFromPrefs(TrackingActivity.this , PrefKeys.ORDER_BUYING_ID , "");
+
+                                       if(isHaveId.isEmpty())
+                                           calculateDirections(pilotLocation,customerLocation);
+                                       else
+                                       {
+                                           runOnUiThread(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                                   Marker user =  mMap.addMarker(new MarkerOptions()
+                                                           .position(customerLocation)
+                                                           .title(isHaveId+"\nMin")
+                                                           .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_marker_user)));
+
+                                                   user.showInfoWindow();
+                                               }
+                                           });
+                                       }
+
+
+
+
 
                                     }
 
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
 
-                                    if (dataPilot.status() == 200) {
+                                            //Create Line
+                                            MapAnimator.getInstance().animateRoute(mMap, latLngs);
+                                            zoomRoute(latLngs);
 
-                                        btn_call.setOnClickListener(view -> {
+                                            if (dataPilot.status() == 200) {
 
-                                            String phone = dataPilot.data().phone();
+                                                btn_call.setOnClickListener(view -> {
 
-                                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                                            startActivity(intent);
+                                                    String phone = dataPilot.data().phone();
 
-
-                                        });
-
-                                        txt_pilot_name.setText(dataPilot.data().fullName());
+                                                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                                                    startActivity(intent);
 
 
-                                        if (dataPilot.data().AvatarResponse().status() == 200)
-                                            Picasso.get().load(Common.BASE_URL_IMAGE + dataPilot.data().AvatarResponse().data().name()).into(img_pilot);
+                                                });
 
-                                    }
+                                                txt_pilot_name.setText(dataPilot.data().fullName());
 
-                                    shimmerLayout_loading.setVisibility(View.GONE);
-                                    root_data.setVisibility(View.VISIBLE);
+
+                                                if (dataPilot.data().AvatarResponse().status() == 200)
+                                                    Picasso.get().load(Common.BASE_URL_IMAGE + dataPilot.data().AvatarResponse().data().name()).into(img_pilot);
+
+                                            }
+
+                                            shimmerLayout_loading.setVisibility(View.GONE);
+                                            root_data.setVisibility(View.VISIBLE);
+                                        }
+                                    });
+
+
 
 
                                 } else {
@@ -790,8 +840,7 @@ public class TrackingActivity extends BaseActivity implements
 
                                 }
 
-                            }
-                        });
+
 
 
                     }
@@ -813,6 +862,101 @@ public class TrackingActivity extends BaseActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private void calculateDirections(LatLng pilotLocation , LatLng customerLocation) {
+
+
+        com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(
+                pilotLocation.latitude,
+                pilotLocation.longitude
+        );
+        DirectionsApiRequest directions = new DirectionsApiRequest(mGeoApiContext);
+
+        directions.language("en");
+        directions.alternatives(false);
+        directions.origin(
+                new com.google.maps.model.LatLng(
+                        customerLocation.latitude,
+                        customerLocation.longitude
+                )
+        );
+        Log.d(TAG, "calculateDirections: destination: " + destination.toString());
+        directions.destination(destination).setCallback(new PendingResult.Callback<DirectionsResult>() {
+            @Override
+            public void onResult(DirectionsResult result) {
+
+//                for (DirectionsStep step : result.routes[0].legs[0].steps
+//                ) {
+//
+//                    Common.LOG("onResult : " +step.endLocation.toString() );
+//                }
+//                Common.LOG("onResult: routes : " +result.routes[0].toString() );
+//
+//                for (GeocodedWaypoint x : result.geocodedWaypoints) {
+//
+//                    Common.LOG("onResult: geocodedWayPoints: : " +x.toString() );
+//
+//                }
+
+                String[] durationArray = result.routes[0].legs[0].duration.humanReadable.split(" ");
+                PrefUtils.saveToPrefs(TrackingActivity.this , PrefKeys.ORDER_BUYING_ID , ""+durationArray[0]);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Marker user =  mMap.addMarker(new MarkerOptions()
+                                .position(customerLocation)
+                                .title(durationArray[0]+"\nMin")
+                                .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_marker_user)));
+
+                        user.showInfoWindow();
+                    }
+                });
+
+
+
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                Log.e(TAG, "onFailure: " + e.getMessage());
+            }
+        });
+    }
+
+
+    void getLastLocation() {
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+                return;
+            }
+        }
+        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+        if (location != null) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
+
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
+                    .zoom(17)                   // Sets the zoom
+//                    .bearing(90)                // Sets the orientation of the camera to east
+//                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+
     }
 
 }

@@ -582,6 +582,10 @@ query SingleOrderQuery($buyingOrderId: ID) {
                 TotalPrice
                 orderMaxPreparingMinutes
 
+                storeServiceRating
+                pilotCollectRating
+                storePreparationRating
+
                 StoreResponse{
                     status
                     data{
@@ -594,22 +598,7 @@ query SingleOrderQuery($buyingOrderId: ID) {
                             }
                         }
 
-                        Rate{
-                            Service {
 
-                                TotalRate
-                                RateCount
-                                RateAvg
-
-                            }
-
-                            Preparation {
-
-                                TotalRate
-                                RateCount
-                                RateAvg
-                            }
-                        }
                     }
                 }
 
