@@ -98,6 +98,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -141,8 +142,8 @@ public class TrackingActivity extends BaseActivity implements
     private Handler handler = new Handler();
 
     //For Get Location Pilot
-    final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("MyLocation");
-    final GeoFire geoFire = new GeoFire(dbRef);
+    final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Pilots");
+    GeoFire geoFire;
     Marker pilotMarker;
 
     //TackTrip
@@ -168,7 +169,7 @@ public class TrackingActivity extends BaseActivity implements
     TextView txt_pilot_name;
     @BindView(R.id.txt_pilot_rating)
     TextView txt_pilot_rating;
-//    @BindView(R.id.txt_order_id)
+    //    @BindView(R.id.txt_order_id)
 //    TextView txt_order_id;
     @BindView(R.id.btn_call)
     ImageButton btn_call;
@@ -212,7 +213,7 @@ public class TrackingActivity extends BaseActivity implements
 
 
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
-
+        geoFire = new GeoFire(dbRef.child(getIntent().getStringExtra(Constants.EXTRA_PILOT_ID)));
 
         initView();
 
@@ -296,7 +297,14 @@ public class TrackingActivity extends BaseActivity implements
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                geoFire.getLocation(idPilot, new LocationCallback() {
+                String compassValue = dataSnapshot.child("compassValue").getValue().toString();
+
+//                Double value = dataSnapshot.getValue(Double.class);
+//                String value = dataSnapshot.getValue(String.class);
+
+//                Common.LOG("value : " + compassValue);
+
+                geoFire.getLocation("Location", new LocationCallback() {
                     @Override
                     public void onLocationResult(String key, GeoLocation location) {
 
@@ -305,12 +313,13 @@ public class TrackingActivity extends BaseActivity implements
 //
 //                        pilotMarker = mMap.addMarker(new MarkerOptions().title("الطياااار").position(new LatLng(location.latitude, location.longitude)));
 
+                        //** Stop Here **
                         if (pilotMarker == null) {
                             pilotMarker = mMap.addMarker(new MarkerOptions()
                                     .position(new LatLng(location.latitude, location.longitude))
                                     .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_pilot))
-                                    .title(""));
-
+                                    .title("")
+                                    .flat(true));
                         }
 
                         latLng[0] = location.latitude;
@@ -336,7 +345,9 @@ public class TrackingActivity extends BaseActivity implements
                             //float bearing = (float) bearingBetweenLocations(driverLatLng, new LatLng(location.getLatitude(), location.getLongitude()));
                             if (pilotMarker != null) {
                                 moveVechile(pilotMarker, location);
-                                rotateMarker(pilotMarker, 1f, start_rotation);
+
+//                                float bearing = (float) bearingBetweenLocations(oldLocation, newLocaation);
+                                rotateMarker(pilotMarker, (float) Double.parseDouble(compassValue));
 
                                 //UpdateLine
                                 updateLine(pilotMarker);
@@ -346,6 +357,8 @@ public class TrackingActivity extends BaseActivity implements
                         } else {
 
                         }
+
+                        //***********
 
 
 //                        rotateMarker(pilotMarker,bearingBetweenLocations(,1f));
@@ -701,31 +714,38 @@ public class TrackingActivity extends BaseActivity implements
     }
 
 
-    public void rotateMarker(final Marker marker, final float toRotation, final float st) {
-        final Handler handler = new Handler();
-        final long start = SystemClock.uptimeMillis();
-        final float startRotation = marker.getRotation();
-        final long duration = 1555;
+    private void rotateMarker(final Marker marker, final float toRotation) {
+        if(!isMarkerRotating) {
+            final Handler handler = new Handler();
+            final long start = SystemClock.uptimeMillis();
+            final float startRotation = marker.getRotation();
+            final long duration = 2000;
 
-        final Interpolator interpolator = new LinearInterpolator();
+            final Interpolator interpolator = new LinearInterpolator();
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                long elapsed = SystemClock.uptimeMillis() - start;
-                float t = interpolator.getInterpolation((float) elapsed / duration);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    isMarkerRotating = true;
 
-                float rot = t * toRotation + (1 - t) * startRotation;
+                    long elapsed = SystemClock.uptimeMillis() - start;
+                    float t = interpolator.getInterpolation((float) elapsed / duration);
 
+                    float rot = t * toRotation + (1 - t) * startRotation;
 
-                marker.setRotation(-rot > 180 ? rot / 2 : rot);
-                start_rotation = -rot > 180 ? rot / 2 : rot;
-                if (t < 1.0) {
-                    // Post again 16ms later.
-                    handler.postDelayed(this, 16);
+                    float bearing =  -rot > 180 ? rot / 2 : rot;
+
+                    marker.setRotation(bearing);
+
+                    if (t < 1.0) {
+                        // Post again 16ms later.
+                        handler.postDelayed(this, 16);
+                    } else {
+                        isMarkerRotating = false;
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 
@@ -740,107 +760,95 @@ public class TrackingActivity extends BaseActivity implements
                     public void onResponse(@NotNull Response<TripQuery.Data> response) {
 
 
+                        if (response.data().TrackingTripQuery().getOne().status() == 200) {
 
-                                if (response.data().TrackingTripQuery().getOne().status() == 200) {
-
-                                    TripQuery.@Nullable Data1 data = response.data().TrackingTripQuery().getOne().data();
-                                    TripQuery.@Nullable PilotUserResponse dataPilot = response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().PilotUserResponse();
-
-
-                                    List<TripQuery.AvailableTrack> realTrack = data.availableTracks().get(data.availableTracks().size() - 1);
+                            TripQuery.@Nullable Data1 data = response.data().TrackingTripQuery().getOne().data();
+                            TripQuery.@Nullable PilotUserResponse dataPilot = response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().PilotUserResponse();
 
 
-                                    if (getIntent() != null && !response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())) {
-                                        getLiveLocationPilot(getIntent().getStringExtra(Constants.EXTRA_PILOT_ID));
-                                    }
+                            List<TripQuery.AvailableTrack> realTrack = data.availableTracks().get(data.availableTracks().size() - 1);
 
 
-                                    latLngs = new ArrayList<>();
-                                    for (TripQuery.AvailableTrack latLng : realTrack) {
-                                        latLngs.add(new LatLng(latLng.lat(), latLng.lng()));
-                                    }
+                            if (getIntent() != null && !response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())) {
+                                getLiveLocationPilot(getIntent().getStringExtra(Constants.EXTRA_PILOT_ID));
+                            }
 
 
+                            latLngs = new ArrayList<>();
+                            for (TripQuery.AvailableTrack latLng : realTrack) {
+                                latLngs.add(new LatLng(latLng.lat(), latLng.lng()));
+                            }
 
 
-                                    if (Common.CURRENT_USER != null) {
+                            if (Common.CURRENT_USER != null) {
 
 //                                        String avatar = Common.CURRENT_USER.getAvatarName();
 
-                                        LatLng pilotLocation , customerLocation;
+                                LatLng pilotLocation, customerLocation;
 
-                                        pilotLocation = new LatLng(latLngs.get(0).latitude, latLngs.get(0).longitude);
-                                        customerLocation = new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude);
-
-
-
-                                       String isHaveId = (String) PrefUtils.getFromPrefs(TrackingActivity.this , PrefKeys.ORDER_BUYING_ID , "");
-
-                                       if(isHaveId.isEmpty())
-                                           calculateDirections(pilotLocation,customerLocation);
-                                       else
-                                       {
-                                           runOnUiThread(new Runnable() {
-                                               @Override
-                                               public void run() {
-                                                   Marker user =  mMap.addMarker(new MarkerOptions()
-                                                           .position(customerLocation)
-                                                           .title(isHaveId+"\nMin")
-                                                           .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_marker_user)));
-
-                                                   user.showInfoWindow();
-                                               }
-                                           });
-                                       }
+                                pilotLocation = new LatLng(latLngs.get(0).latitude, latLngs.get(0).longitude);
+                                customerLocation = new LatLng(latLngs.get(latLngs.size() - 1).latitude, latLngs.get(latLngs.size() - 1).longitude);
 
 
+                                String isHaveId = (String) PrefUtils.getFromPrefs(TrackingActivity.this, PrefKeys.ORDER_BUYING_ID, "");
 
-
-
-                                    }
-
+                                if (isHaveId.isEmpty())
+                                    calculateDirections(pilotLocation, customerLocation);
+                                else {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+                                            Marker user = mMap.addMarker(new MarkerOptions()
+                                                    .position(customerLocation)
+                                                    .title(isHaveId + "\nMin")
+                                                    .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_marker_user)));
 
-                                            //Create Line
-                                            MapAnimator.getInstance().animateRoute(mMap, latLngs);
-                                            zoomRoute(latLngs);
-
-                                            if (dataPilot.status() == 200) {
-
-                                                btn_call.setOnClickListener(view -> {
-
-                                                    String phone = dataPilot.data().phone();
-
-                                                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
-                                                    startActivity(intent);
-
-
-                                                });
-
-                                                txt_pilot_name.setText(dataPilot.data().fullName());
-
-
-                                                if (dataPilot.data().AvatarResponse().status() == 200)
-                                                    Picasso.get().load(Common.BASE_URL_IMAGE + dataPilot.data().AvatarResponse().data().name()).into(img_pilot);
-
-                                            }
-
-                                            shimmerLayout_loading.setVisibility(View.GONE);
-                                            root_data.setVisibility(View.VISIBLE);
+                                            user.showInfoWindow();
                                         }
                                     });
-
-
-
-
-                                } else {
-
-
                                 }
 
 
+                            }
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    //Create Line
+                                    MapAnimator.getInstance().animateRoute(mMap, latLngs);
+                                    zoomRoute(latLngs);
+
+                                    if (dataPilot.status() == 200) {
+
+                                        btn_call.setOnClickListener(view -> {
+
+                                            String phone = dataPilot.data().phone();
+
+                                            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+                                            startActivity(intent);
+
+
+                                        });
+
+                                        txt_pilot_name.setText(dataPilot.data().fullName());
+
+
+                                        if (dataPilot.data().AvatarResponse().status() == 200)
+                                            Picasso.get().load(Common.BASE_URL_IMAGE + dataPilot.data().AvatarResponse().data().name()).into(img_pilot);
+
+                                    }
+
+                                    shimmerLayout_loading.setVisibility(View.GONE);
+                                    root_data.setVisibility(View.VISIBLE);
+                                }
+                            });
+
+
+                        } else {
+
+
+                        }
 
 
                     }
@@ -865,7 +873,7 @@ public class TrackingActivity extends BaseActivity implements
     }
 
 
-    private void calculateDirections(LatLng pilotLocation , LatLng customerLocation) {
+    private void calculateDirections(LatLng pilotLocation, LatLng customerLocation) {
 
 
         com.google.maps.model.LatLng destination = new com.google.maps.model.LatLng(
@@ -901,20 +909,19 @@ public class TrackingActivity extends BaseActivity implements
 //                }
 
                 String[] durationArray = result.routes[0].legs[0].duration.humanReadable.split(" ");
-                PrefUtils.saveToPrefs(TrackingActivity.this , PrefKeys.ORDER_BUYING_ID , ""+durationArray[0]);
+                PrefUtils.saveToPrefs(TrackingActivity.this, PrefKeys.ORDER_BUYING_ID, "" + durationArray[0]);
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Marker user =  mMap.addMarker(new MarkerOptions()
+                        Marker user = mMap.addMarker(new MarkerOptions()
                                 .position(customerLocation)
-                                .title(durationArray[0]+"\nMin")
+                                .title(durationArray[0] + "\nMin")
                                 .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_marker_user)));
 
                         user.showInfoWindow();
                     }
                 });
-
 
 
             }

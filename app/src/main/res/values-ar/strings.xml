@@ -166,7 +166,7 @@
     <string name="recent_address">العناوين النستخدمه مؤخرا</string>
     <string name="apply_location">حفظ الموقع</string>
     <string name="google_maps_api_key" translatable="false">AIzaSyCFLGLtMef9wqfYyy489n3S21jei9h2Vq0</string>
-    <string name="stores">المتاجر</string>
+    <string name="stores">متاجر</string>
     <string name="delivery_address">عنوان التوصيل</string>
     <string name="subtotal">الاجمالي</string>
     <string name="delivery_fees">مصاريف التوصيل</string>
@@ -251,6 +251,8 @@
     <string name="change">تغير</string>
     <string name="coupon_code_is_required">Coupon code is required</string>
     <string name="you_have_run_out_of_this_coupon">استنفذت عدد مرات هذا الكوبون</string>
+    <string name="product">منتج</string>
+    <string name="store">متجر</string>
 
 </resources>
 

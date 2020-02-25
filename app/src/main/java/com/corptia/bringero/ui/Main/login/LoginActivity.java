@@ -192,11 +192,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
             @Override
             public void run() {
 
-                LocaleHelper.setLocale(LoginActivity.this, Common.CURRENT_USER.getLanguage().toLowerCase());
+                Common.LOG("My Token " + Common.CURRENT_USER.getToken());
 
-                PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_LOGIN, true);
-                PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PHONE, input_phone_number.getEditText().getText().toString());
-                PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PASSWORD, input_password.getEditText().getText().toString());
+                saveLocalDataToPref();
 
                 startActivity(new Intent(LoginActivity.this, SelectDeliveryLocationActivity.class));
 
@@ -207,12 +205,25 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         });
     }
 
+    private void saveLocalDataToPref() {
+
+        LocaleHelper.setLocale(LoginActivity.this, Common.CURRENT_USER.getLanguage().toLowerCase());
+
+        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_LOGIN, true);
+        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PHONE, input_phone_number.getEditText().getText().toString());
+        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PASSWORD, input_password.getEditText().getText().toString());
+
+        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_TOKEN_API,Common.CURRENT_USER.getToken());
+    }
+
     @Override
     public void onSuccessLoginToMap() {
         Dexter.withActivity(LoginActivity.this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
+
+                        saveLocalDataToPref();
 
                         startActivity(new Intent(LoginActivity.this, MapsActivity.class));
                         isFirstTimeAddLocation = true;
@@ -371,9 +382,9 @@ startActivity(refresh);*/
         super.onConfigurationChanged(newConfig);
 // Checks the active language
         if (newConfig.locale == Locale.ENGLISH) {
-            Toast.makeText(this, "English", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "English", Toast.LENGTH_SHORT).show();
         } else if (newConfig.locale == Locale.FRENCH) {
-            Toast.makeText(this, "French", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "French", Toast.LENGTH_SHORT).show();
         }
     }
 }

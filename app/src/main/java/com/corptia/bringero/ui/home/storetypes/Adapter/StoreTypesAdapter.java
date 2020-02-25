@@ -57,7 +57,7 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
 //            PicassoUtils.setImage( holder.image_storetype);
 
         holder.txt_name_storetype.setText(storeTypes.StoreType().name());
-        holder.txt_count_storetype.setText(new StringBuilder().append(storeTypes.storeCount()).append(" ").append(context.getString(R.string.stores)));
+        holder.txt_count_storetype.setText(new StringBuilder().append(storeTypes.storeCount()).append(" ").append(storeTypes.storeCount() == 1 ? context.getString(R.string.store) : context.getString(R.string.stores)));
 
         holder.itemView.setEnabled(true);
 

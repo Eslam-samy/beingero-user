@@ -17,6 +17,7 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.ui.order.orderStoreDetail.OrderStoreDetailsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
+import com.corptia.bringero.utils.language.LocaleHelper;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -62,8 +63,9 @@ public class OrdersPaidDetailsAdapter extends RecyclerView.Adapter<OrdersPaidDet
             PicassoUtils.setImage(holder.image_store);
 
         if (Common.CURRENT_USER!=null)
-            if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar"))
+            if (LocaleHelper.getLanguage(context).equalsIgnoreCase("ar"))
                 holder.img_arrow.setImageResource(R.drawable.ic_arrow_rtl);
+
 //
 //        adapterItems = new OrdersPaidDetailsItemsAdapter(context , order.ItemsResponse().data());
 //        holder.recycler_items.setLayoutManager(new LinearLayoutManager(context));

@@ -21,10 +21,13 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
+import com.corptia.bringero.model.UserModel;
 import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.ui.tracking.TrackingActivity;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.utils.sharedPref.PrefKeys;
+import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -103,6 +106,14 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders_paid_details);
 
+        if (Common.CURRENT_USER == null)
+        {
+            Common.CURRENT_USER = new UserModel();
+            String token = (String)PrefUtils.getFromPrefs(this, PrefKeys.USER_TOKEN_API,"Null");
+//            Common.LOG("My token Pref :  " + token);
+            Common.CURRENT_USER.setToken(token);
+        }
+
         ButterKnife.bind(this);
 
         recycler_order.setLayoutManager(new LinearLayoutManager(this));
@@ -116,6 +127,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         if (intent != null) {
             orderid = intent.getStringExtra(Constants.EXTRA_ORDER_ID);
             int serialOrder = intent.getIntExtra(Constants.EXTRA_ORDER_SERIAL, 0);
+
 
 //            getSupportActionBar().setTitle(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
 

@@ -13,4 +13,5 @@ public class PrefKeys {
 
     public static final String USER_TOKEN_FIREBASE = "user_token";
     public static final String ORDER_BUYING_ID = "ORDER_BUYING_ID";
+    public static final String USER_TOKEN_API = "USER_TOKEN_API";
 }

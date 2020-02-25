@@ -136,11 +136,11 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 txt_content_count.setText(
                         new StringBuilder().append(orderDatum.StoresCount())
                                 .append(" ")
-                                .append(context.getString(R.string.stores))
+                                .append(orderDatum.ItemsCount()==1? context.getString(R.string.store) : context.getString(R.string.stores) )
                                 .append(" , ")
                                 .append(orderDatum.ItemsCount())
                                 .append(" ")
-                                .append(context.getString(R.string.products)));
+                                .append(orderDatum.ItemsCount()==1? context.getString(R.string.product) : context.getString(R.string.products)));
 
 
                 if (clickListener != null)

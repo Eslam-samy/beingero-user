@@ -49,8 +49,8 @@
     <string name="firstName">First Name</string>
     <string name="lastName">Last Name</string>
     <string name="date_of_birth_optional">Date Of Birth ( Optional )</string>
-    <string name="femail">Femail</string>
-    <string name="mail">Mail</string>
+    <string name="femail">Female</string>
+    <string name="mail">Male</string>
     <string name="select_date">Select Date</string>
     <string name="gender_optional">Gender ( Optional )</string>
     <string name="receive_updates_of_offers_npromotions_and_discount">Receive Updates Of Offers ,\nPromotions And Discount</string>
@@ -252,6 +252,8 @@
     <string name="change">Change</string>
     <string name="coupon_code_is_required">Coupon code is required</string>
     <string name="you_have_run_out_of_this_coupon">You have run out of this coupon</string>
+    <string name="product">product</string>
+    <string name="store">store</string>
 
 </resources>
 

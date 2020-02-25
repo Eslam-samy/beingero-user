@@ -81,7 +81,9 @@ public class OrderPresenter {
                         .status(statusList).build()).build();
 
         MyApolloClient.getApollowClientAuthorization()
-                .query(DeliveryOrdersQuery.builder().filter(filterInput).build())
+                .query(DeliveryOrdersQuery.builder().filter(filterInput)
+                        .pagination(PaginationInput.builder().limit(3).page(1).build())
+                        .build())
                 .enqueue(new ApolloCall.Callback<DeliveryOrdersQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<DeliveryOrdersQuery.Data> response) {

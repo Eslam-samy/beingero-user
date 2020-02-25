@@ -34,8 +34,11 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.model.NotificationCount;
+import com.corptia.bringero.ui.order.orderStoreDetail.OrderStoreDetailsActivity;
+import com.corptia.bringero.ui.order.ordersDetails.OrdersPaidDetailsActivity;
 import com.corptia.bringero.ui.splash.SplashActivity;
 
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
@@ -65,7 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static final String MODEL_NOT = "model_not";
 
-    String id, notId;
+    String docId, notId;
     String model;
 
     /**
@@ -76,15 +79,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
-
-
         String messageBody = "";
 
         String messageST = remoteMessage.getData().get("message");
         notId = remoteMessage.getData().get("_id");
+        docId = remoteMessage.getData().get("docId");
 
         model = remoteMessage.getData().get("model");
+
         try {
+
             JSONObject message = new JSONObject(messageST);
 
             if (!messageST.contains("\"ar\"") && !messageST.contains("\"en\"")) {
@@ -97,14 +101,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 messageBody = remoteMessage.getData().get("message");
             }
 
-            if (getSharedPreferences().getBoolean("notificationEnabled", true))
-                sendNotification(messageBody);
+//            if (getSharedPreferences().getBoolean("notificationEnabled", true))
+//                sendNotification(messageBody);
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        sendNotification(messageBody);
+        sendNotification(messageBody, model, docId);
 
 //        Common.LOG("Yes I am User ^_^ ,, " + messageBody + " notId " + notId + " model " + model );
     }
@@ -157,9 +162,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String messageBody, String model, String docId) {
+
         PendingIntent pendingIntent;
-        Intent newIntent = new Intent(this, SplashActivity.class);
+        Intent newIntent;
+
+        if (model.equalsIgnoreCase("BuyingOrder")) {
+            newIntent = new Intent(this, OrderStoreDetailsActivity.class);
+             newIntent.putExtra(Constants.BUYING_ORDER_ID , docId);
+        } else if (model.equalsIgnoreCase("DeliveryOrder")) {
+            newIntent = new Intent(this, OrdersPaidDetailsActivity.class);
+            newIntent.putExtra(Constants.EXTRA_ORDER_ID , docId);
+        } else
+            newIntent = new Intent(this, SplashActivity.class);
+
 
         NotificationChannel notificationChannel;
 
@@ -226,7 +242,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         editor.putString(name, check);
         editor.commit();
 
-        PrefUtils.saveToPrefs(getApplicationContext() , name , check);
+        PrefUtils.saveToPrefs(getApplicationContext(), name, check);
 
     }/////////////////
 

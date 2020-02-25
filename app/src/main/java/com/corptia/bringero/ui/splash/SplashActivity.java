@@ -254,6 +254,8 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
             LocaleHelper.setLocale(SplashActivity.this, Common.CURRENT_USER.getLanguage().toLowerCase());
 
+            PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.USER_TOKEN_API,Common.CURRENT_USER.getToken());
+
             startActivity(new Intent(SplashActivity.this, SelectDeliveryLocationActivity.class));
 
             finish();
@@ -270,6 +272,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
             @Override
             public void run() {
 
+                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.USER_TOKEN_API,Common.CURRENT_USER.getToken());
                 startActivity(new Intent(SplashActivity.this, AllowLocationActivity.class));
                 overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
                 isFirstTimeAddLocation = true;

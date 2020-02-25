@@ -24,9 +24,13 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.SingleOrderQuery;
+import com.corptia.bringero.model.UserModel;
+import com.corptia.bringero.ui.splash.SplashActivity;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
+import com.corptia.bringero.utils.sharedPref.PrefKeys;
+import com.corptia.bringero.utils.sharedPref.PrefUtils;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.squareup.picasso.Picasso;
@@ -84,6 +88,14 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_store_details);
 
+        if (Common.CURRENT_USER == null)
+        {
+            Common.CURRENT_USER = new UserModel();
+            String token = (String)PrefUtils.getFromPrefs(this, PrefKeys.USER_TOKEN_API,"Null");
+//            Common.LOG("My token Pref :  " + token);
+            Common.CURRENT_USER.setToken(token);
+        }
+
         ButterKnife.bind(this);
         loading = new CustomLoading(this , true);
 
@@ -101,6 +113,8 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
             BUYING_ORDER_ID = intent.getStringExtra(Constants.BUYING_ORDER_ID);
 //            EXTRA_STORE_NAME = intent.getStringExtra(Constants.EXTRA_STORE_NAME);
 //            EXTRA_STORE_IMAGE = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
+
+
         }
 
 //        txt_name.setText(EXTRA_STORE_NAME);
