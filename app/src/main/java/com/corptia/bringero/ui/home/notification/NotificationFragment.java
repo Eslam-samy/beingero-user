@@ -84,7 +84,9 @@ public class NotificationFragment extends Fragment implements NotificationView {
 
         linearLayoutManager = new LinearLayoutManager(getActivity());
         recycler_notification.setLayoutManager(linearLayoutManager);
-        recycler_notification.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, getActivity())));
+        recycler_notification.addItemDecoration(new LinearSpacingItemDecoration(15));
+//        recycler_notification.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, getActivity())));
+
         adapter = new NotificationAdapter(getActivity(), null);
         recycler_notification.setAdapter(adapter);
 

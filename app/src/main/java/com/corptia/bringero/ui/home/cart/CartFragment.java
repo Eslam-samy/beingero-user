@@ -99,7 +99,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         ButterKnife.bind(this, view);
 
         recycler_cart.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, getActivity())));
+        recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(10, getActivity())));
 
         initPlaceHolder();
 

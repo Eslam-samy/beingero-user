@@ -115,6 +115,7 @@
             app:tabIndicatorColor="@color/colorPrimary"
             app:tabSelectedTextColor="@color/colorPrimary"
             app:tabContentStart="0dp"
+            app:tabMode="scrollable"
             />
 
     </com.google.android.material.appbar.AppBarLayout>

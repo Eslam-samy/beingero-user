@@ -57,6 +57,9 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     boolean isSearch;
 
     //Var
+    StoreSearchQuery.ProductQuery productSearch;
+    GetStoreProductsQuery.Product product;
+
     String cartProductId = "";
     double price = 0;
     double oldPrice = 0;
@@ -164,9 +167,6 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
             super.onBind(position);
-
-            StoreSearchQuery.ProductQuery productSearch;
-            GetStoreProductsQuery.Product product;
 
             cartProductId = "";
 
@@ -292,6 +292,87 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                     @Override
                     public void onClick(View view) {
 
+
+                        //Refresh Current data
+
+                        if (!isSearch) {
+
+                            product = productsList.get(position);
+
+                            price = product.storePrice();
+                            oldPrice = product.storePrice();
+
+                            //Product Have Discount
+                            if (product.discountActive() != null && product.discountActive()) {
+
+                                txt_discount.setVisibility(View.VISIBLE);
+                                txt_old_price.setVisibility(View.VISIBLE);
+
+                                discountActive = product.discountActive();
+                                discountRatio = product.discountRatio();
+
+                                price = (1 - discountRatio) * oldPrice;
+
+                            } else {
+
+                                txt_discount.setVisibility(View.GONE);
+                                txt_old_price.setVisibility(View.GONE);
+                            }
+
+                            productName = product.Product().name();
+                            productId = product._id();
+                            isPackaged = product.Product().isPackaged();
+
+                            if (product.Product().ImageResponse().status() == 200)
+                                productImage = product.Product().ImageResponse().data().name();
+
+                            if (!isPackaged) {
+                                unitStep = product.Product().unitStep();
+                                minSellingUnits = product.Product().minSellingUnits();
+
+                            }
+
+                        } else {
+
+                            productSearch = productsListSearch.get(position);
+
+                            if (productSearch != null) {
+
+                                oldPrice = productSearch.storePrice();
+
+                                //Product Have Discount Search
+                                if (productSearch.discountActive() != null && productSearch.discountActive()) {
+
+                                    txt_discount.setVisibility(View.VISIBLE);
+                                    txt_old_price.setVisibility(View.VISIBLE);
+
+                                    discountActive = productSearch.discountActive();
+                                    discountRatio = productSearch.discountRatio();
+
+                                    price = (1 - discountRatio) * oldPrice;
+
+                                } else {
+
+                                    txt_discount.setVisibility(View.GONE);
+                                    txt_old_price.setVisibility(View.GONE);
+
+                                    price = productSearch.storePrice();
+
+                                }
+
+                                productId = productSearch._id();
+
+                                productName = productSearch.Product().name();
+                                isPackaged = productSearch.Product().isPackaged();
+
+                                if (productSearch.Product().ImageResponse().status() == 200)
+                                    productImage = productSearch.Product().ImageResponse().data().name();
+
+                            }
+                        }
+
+
+
                         //Here Condition Limit Max Price
 
                         if (Common.TOTAL_CART_PRICE <= 0) {
@@ -299,6 +380,8 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                         }
 
                         if (!isPackaged) {
+
+
 
 //                            Common.LOG(">>>>>>>>>>>>>>>> txt_amount.getText().toString() " + txt_amount.getText().toString());
 //                            Common.LOG("Before Increment TOTAL " + Common.TOTAL_CART_PRICE);
@@ -321,7 +404,6 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 return;
                             }
 
-
                             if (actualAmount < 100) {
 
                                 if (cartProductId.isEmpty()) {
@@ -331,7 +413,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 }
 
 //                                    Common.TOTAL_CART_AMOUNT += 1;
-                                Common.LOG("Total Before : " + Common.TOTAL_CART_PRICE + " - finalPrice1 : " + finalPrice1 + " - step : " + step + " - Both : " + (finalPrice1 * step));
+//                                Common.LOG("Total Before : " + Common.TOTAL_CART_PRICE + " - finalPrice1 : " + finalPrice1 + " - step : " + step + " - Both : " + (finalPrice1 * step));
 
                                 Common.TOTAL_CART_PRICE += (finalPrice1 * step);
 
@@ -378,10 +460,11 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                         } else {
 
+                            Common.LOG("Hello I am package <3 " + productName + " position : " + position);
+
                             if (Common.TOTAL_CART_PRICE + finalPrice1 > Common.BASE_MAX_PRICE) {
                                 Toasty.warning(context, context.getString(R.string.limit_max_cart)).show();
-
-                                Common.LOG("Common.TOTAL_CART_PRICE : " + Common.TOTAL_CART_PRICE + " finalPrice1 " + finalPrice1);
+//                                Common.LOG("Common.TOTAL_CART_PRICE : " + Common.TOTAL_CART_PRICE + " finalPrice1 " + finalPrice1);
                                 return;
                             }
 

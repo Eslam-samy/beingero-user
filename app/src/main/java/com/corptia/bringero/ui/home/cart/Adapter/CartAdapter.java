@@ -146,7 +146,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         holder.recycler_items.setNestedScrollingEnabled(false);
         holder.recycler_items.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-        holder.recycler_items.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, context)));
+        holder.recycler_items.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(10, context)));
         holder.recycler_items.setAdapter(itemsAdapter);
 
         holder.txt_name_store.setText(cartModel.Store().name());

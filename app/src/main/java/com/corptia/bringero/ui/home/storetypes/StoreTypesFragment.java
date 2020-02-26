@@ -78,12 +78,12 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
 
         recycler_store.addItemDecoration(new GridSpacingItemDecoration(
                 2,
-                Common.dpToPx(5, getActivity()),
+                Common.dpToPx(0, getActivity()), //All Space card in all round
                 true,
                 0,
-                Common.dpToPx(17, getActivity()),
-                Common.dpToPx(10, getActivity()),
-                Common.dpToPx(10, getActivity())));
+                Common.dpToPx(17, getActivity()), // Top
+                Common.dpToPx(10, getActivity()), // Left
+                Common.dpToPx(10, getActivity()))); // Right
 
 
         adapter = new StoreTypesAdapter(getActivity(), repositoryList);
