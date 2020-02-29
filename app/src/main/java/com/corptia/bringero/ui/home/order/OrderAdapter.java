@@ -186,7 +186,7 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         int position = deliveryOrderList.size() - 1;
         DeliveryOrdersQuery.DeliveryOrderDatum item = getItem(position);
         if (item == null) {
-            Log.d("HAZEM", " Done Delete ");
+//            Log.d("HAZEM", " Done Delete ");
             deliveryOrderList.remove(position);
             notifyItemRemoved(position);
         }

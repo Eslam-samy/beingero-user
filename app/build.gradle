@@ -8,8 +8,8 @@ android {
         applicationId "com.corptia.bringero"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 44
-        versionName "0.44"
+        versionCode 45
+        versionName "0.45"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
@@ -49,6 +49,7 @@ android {
 //        javaMaxHeapSize "1g"
 //    }
 }
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'

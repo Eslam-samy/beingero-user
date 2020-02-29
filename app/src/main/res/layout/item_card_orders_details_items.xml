@@ -28,7 +28,8 @@
         android:textSize="@dimen/normal_text_size"
         android:textColor="@color/black"
         android:fontFamily="@font/poppinsmedium"
-        app:layout_constraintBottom_toTopOf="@+id/txt_price"/>
+        app:layout_constraintBottom_toTopOf="@+id/txt_price"
+        android:layout_marginStart="@dimen/normal_margin"/>
 
     <TextView
         android:id="@+id/txt_price"
