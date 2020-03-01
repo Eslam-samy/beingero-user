@@ -7,6 +7,9 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
+import com.corptia.bringero.type.SortDirectionEnum;
+import com.corptia.bringero.type.StoreSortByEnum;
+import com.corptia.bringero.type.StoreSortingInput;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +27,12 @@ public class StoresPresenter {
 
         brandsView.showProgressBar();
 
-        MyApolloClient.getApollowClientAuthorization().query(GetStoresOfASingleCategoryQuery.builder().typeId(categoryId).build())
+        StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.ISAVAILABLE).sortDirection(SortDirectionEnum.DESC).build();
+
+        MyApolloClient.getApollowClientAuthorization()
+                .query(GetStoresOfASingleCategoryQuery.builder()
+                        .sorting(sortingInput)
+                        .typeId(categoryId).build())
                 .enqueue(new ApolloCall.Callback<GetStoresOfASingleCategoryQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GetStoresOfASingleCategoryQuery.Data> response) {

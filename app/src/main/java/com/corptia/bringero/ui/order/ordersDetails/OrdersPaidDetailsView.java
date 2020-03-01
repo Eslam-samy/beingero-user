@@ -9,4 +9,10 @@ public interface OrdersPaidDetailsView extends BaseView {
 
     void setSingleOrder(DeliveryOneOrderQuery.@Nullable DeliveryOrderData deliveryOrderData);
 
+    void onShowLoadingDialog();
+    void onHideLoadingDialog();
+
+    void onSuccessRating();
+    void onFailedRating();
+
 }

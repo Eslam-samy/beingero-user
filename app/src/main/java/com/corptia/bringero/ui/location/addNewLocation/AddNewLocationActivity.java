@@ -419,7 +419,7 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
             @Override
             public void run() {
                 finish();
-                Common.CURRENT_USER.getDeliveryAddressesList().remove(intent.getIntExtra(Constants.EXTRA_UPDATE,0));
+                Common.CURRENT_USER.getDeliveryAddressesList().remove(intent.getIntExtra(Constants.EXTRA_ADDRESS_POSITION,0));
             }
         });
     }

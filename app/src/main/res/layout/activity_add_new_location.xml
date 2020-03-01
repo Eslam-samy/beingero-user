@@ -192,14 +192,15 @@
                 android:id="@+id/layout_input__flat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/ShadowLayoutInput">
+                style="@style/ShadowLayoutInput"
+                android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input__flat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
-                    android:visibility="gone">
+                    >
 
                     <EditText
                         style="@style/EditTextStyle"

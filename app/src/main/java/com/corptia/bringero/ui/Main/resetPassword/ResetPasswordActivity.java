@@ -112,16 +112,18 @@ public class ResetPasswordActivity extends BaseActivity {
 
                                 if (response.data().UserQuery().phoneExists()){
 
-                                    Toasty.error(ResetPasswordActivity.this ,"This phone number is already registered").show();
+                                    Intent intent = new Intent(ResetPasswordActivity.this , VerifyPhoneNumberActivity.class);
+                                    intent.putExtra(Constants.EXTRA_PHONE_NUMBER,phone);
+                                    intent.putExtra(Constants.EXTRA_PASSWORD,password);
+                                    startActivity(intent);
+
 //                                    input_phone_number.setErrorEnabled(true);
 //                                    input_phone_number.setError("");
                                 }
                                 else
                                 {
-                                    Intent intent = new Intent(ResetPasswordActivity.this , VerifyPhoneNumberActivity.class);
-                                    intent.putExtra(Constants.EXTRA_PHONE_NUMBER,phone);
-                                    intent.putExtra(Constants.EXTRA_PASSWORD,password);
-                                    startActivity(intent);
+                                    Toasty.error(ResetPasswordActivity.this ,"This phone number  not registered").show();
+
                                 }
                             }
                         });

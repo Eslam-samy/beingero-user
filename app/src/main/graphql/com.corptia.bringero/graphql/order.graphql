@@ -116,6 +116,8 @@ query deliveryOneOrder($_id: ID) {
                 deliveryCost
                 SubTotal
 
+                pilotDeliveryRating
+
                 BuyingOrderResponse {
                     status
                     message
@@ -126,6 +128,7 @@ query deliveryOneOrder($_id: ID) {
                         storeId
                         status
                         TotalPrice
+
 
                         StoreResponse {
                             data {

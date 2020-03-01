@@ -14,3 +14,20 @@ mutation buyingOrderRating($_id: ID!,$rate: Int!){
         }
     }
 }
+
+mutation deliveryOrderRating($_id: ID!,$rate: Int!){
+    #    run one by one by appropriate the right user token
+    DeliveryOrderMutation{
+
+        #     By Customer (customerUserId)
+        pilotDeliveryRating(_id:$_id,rate:$rate){
+            status
+            message
+            errors{
+                path
+                message
+            }
+
+        }
+    }
+}

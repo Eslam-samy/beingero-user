@@ -292,11 +292,13 @@ type DeliveryOrder implements IModelData {
     createdAtDateTime: DateTime
     createdAtTime: Time
     customerDeliveryAddress: DeliveryAddress
+    customerRating: Int
     customerUserId: ID!
     deliveryCost: Float
     dicountValue: Float
     discountFixed: Boolean
     discountRatio: Float
+    pilotDeliveryRating: Int
     pilotId: ID
     serial: Int
     status: DeliveryOrderStatus!
@@ -312,6 +314,8 @@ type DeliveryOrderMultipleResponse implements IQueryMultipleResponse {
 }
 
 type DeliveryOrderMutation {
+    customerRating(_id: ID!, rate: Int!): DeliveryOrderSingleResponse
+    pilotDeliveryRating(_id: ID!, rate: Int!): DeliveryOrderSingleResponse
     update(_id: ID, data: updateDeliveryOrder): DeliveryOrderSingleResponse
 }
 
@@ -816,11 +820,13 @@ type PricingProduct implements IModelData {
     discountRatio: Float
     isAvailable: Boolean
     minSellingUnits: Float
+    percentRatio: Float
     productId: ID!
     storeId: ID!
     storePrice: Float!
     unitStep: Float
     updatedAt: Date
+    waitStep: Float
 }
 
 type PricingProductMultipleResponse implements IQueryMultipleResponse {
@@ -875,14 +881,17 @@ type Product implements IModelData {
     formPerUnit: Int
     imageId: ID
     isPackaged: Boolean
+    isVariable: Boolean
     manufacturerId: ID
     minSellingUnits: Float
     multiLangs(fields: [ProductMultiLangsFieldsEnum!] = [name, description]): ProductMultiLangs
     name: String
+    percentRatio: Float
     typeId: ID
     unitId: ID
     unitStep: Float
     updatedAt: Date
+    waitStep: Float
 }
 
 type ProductBrand implements IModelData {
@@ -2093,6 +2102,7 @@ enum StoreMultiLangsFieldsEnum {
 enum StoreSortByEnum {
     _id
     createdAt
+    isAvailable
     name
     updatedAt
 }
@@ -2622,6 +2632,7 @@ input ProductFilterInput {
     categoryIds: [ID]
     customerPrice: Float
     formId: ID
+    isEdited: Boolean
     isPackaged: Boolean
     manufacturerId: ID
     name: String
@@ -2922,10 +2933,12 @@ input createPricingProduct {
     discountRatio: Float
     isAvailable: Boolean = true
     minSellingUnits: Float
+    percentRatio: Float
     productId: ID!
     storeId: ID!
     storePrice: Float!
     unitStep: Float
+    waitStep: Float
 }
 
 input createProduct {
@@ -2939,12 +2952,15 @@ input createProduct {
     formPerUnit: Int
     imageId: ID
     isPackaged: Boolean
+    isVariable: Boolean
     manufacturerId: ID
     minSellingUnits: Float
     name: multilanguageInput
+    percentRatio: Float
     typeId: ID
     unitId: ID
     unitStep: Float
+    waitStep: Float
 }
 
 input createProductBrand {
@@ -3313,10 +3329,12 @@ input updatePricingProduct {
     discountRatio: Float
     isAvailable: Boolean
     minSellingUnits: Float
+    percentRatio: Float
     productId: ID
     storeId: ID
     storePrice: Float
     unitStep: Float
+    waitStep: Float
 }
 
 input updateProduct {
@@ -3330,12 +3348,15 @@ input updateProduct {
     formPerUnit: Int
     imageId: ID
     isPackaged: Boolean
+    isVariable: Boolean
     manufacturerId: ID
     minSellingUnits: Float
     name: multilanguageInput
+    percentRatio: Float
     typeId: ID
     unitId: ID
     unitStep: Float
+    waitStep: Float
 }
 
 input updateProductBrand {

@@ -62,7 +62,7 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
 
 
         holder.txt_minimum_order.setText(new StringBuilder().append(storeTypes.orderMinPrice()!=null ? storeTypes.orderMinPrice() : 0));
-        holder.txt_rating.setText(new StringBuilder().append(storeTypes.Rate().Service().RateAvg()!=null ? storeTypes.Rate().Service().RateAvg() : 0));
+        holder.txt_rating.setText(new StringBuilder().append(storeTypes.Rate().Service().RateAvg()!=null ? Common.getDecimalNumber(storeTypes.Rate().Service().RateAvg()) : 0));
 
         holder.itemView.setEnabled(true);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
