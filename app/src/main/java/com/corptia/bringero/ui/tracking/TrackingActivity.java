@@ -1,7 +1,6 @@
 package com.corptia.bringero.ui.tracking;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -14,8 +13,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.hardware.SensorEvent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -33,10 +35,14 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -53,7 +59,6 @@ import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.TripQuery;
 import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.type.TrackingTripFilterInput;
-import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.utils.PicassoMarker;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
@@ -85,10 +90,8 @@ import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
 import com.google.maps.android.PolyUtil;
+import com.google.maps.android.SphericalUtil;
 import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.DirectionsStep;
-import com.google.maps.model.GeocodedWaypoint;
-import com.google.protobuf.CodedOutputStream;
 import com.logicbeanzs.uberpolylineanimation.MapAnimator;
 import com.squareup.picasso.Picasso;
 
@@ -98,7 +101,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -157,7 +159,6 @@ public class TrackingActivity extends BaseActivity implements
     LatLng driverLatLng;
     private PicassoMarker marker;
 
-
     @BindView(R.id.btn_satellite)
     View btn_satellite;
     @BindView(R.id.btn_currentLocation)
@@ -181,6 +182,8 @@ public class TrackingActivity extends BaseActivity implements
     ConstraintLayout root_data;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    Marker markerUser;
 //    @BindView(R.id.txt_arrived_in)
 //    TextView txt_arrived_in;
 //    @BindView(R.id.btn_back)
@@ -203,6 +206,8 @@ public class TrackingActivity extends BaseActivity implements
     //For Get
     private GeoApiContext mGeoApiContext;
 
+    @BindView(R.id.img_moto)
+    ImageView img_moto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,6 +267,26 @@ public class TrackingActivity extends BaseActivity implements
             }
         });
 
+
+        mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_pilot_image);
+
+    }
+
+    float currentAzimuth = 0;
+
+
+    private void adjustArrow(float azimuth) {
+
+        Animation an = new RotateAnimation(-currentAzimuth, -azimuth,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+                0.5f);
+        currentAzimuth = azimuth;
+
+        an.setDuration(500);
+        an.setRepeatCount(0);
+        an.setFillAfter(true);
+
+        img_moto.startAnimation(an);
     }
 
 //
@@ -349,6 +374,7 @@ public class TrackingActivity extends BaseActivity implements
 //                                float bearing = (float) bearingBetweenLocations(oldLocation, newLocaation);
                                 rotateMarker(pilotMarker, (float) Double.parseDouble(compassValue));
 
+//                                adjustArrow((float) Double.parseDouble(compassValue));
                                 //UpdateLine
                                 updateLine(pilotMarker);
 
@@ -673,7 +699,7 @@ public class TrackingActivity extends BaseActivity implements
         final Handler handler = new Handler();
         final long start = SystemClock.uptimeMillis();
         final Interpolator interpolator = new AccelerateDecelerateInterpolator();
-        final float durationInMs = 3000;
+        final float durationInMs = 1000;
         final boolean hideMarker = false;
 
         handler.post(new Runnable() {
@@ -715,7 +741,8 @@ public class TrackingActivity extends BaseActivity implements
 
 
     private void rotateMarker(final Marker marker, final float toRotation) {
-        if(!isMarkerRotating) {
+
+        if (!isMarkerRotating) {
             final Handler handler = new Handler();
             final long start = SystemClock.uptimeMillis();
             final float startRotation = marker.getRotation();
@@ -733,7 +760,7 @@ public class TrackingActivity extends BaseActivity implements
 
                     float rot = t * toRotation + (1 - t) * startRotation;
 
-                    float bearing =  -rot > 180 ? rot / 2 : rot;
+                    float bearing = -rot > 180 ? rot / 2 : rot;
 
                     marker.setRotation(bearing);
 
@@ -748,6 +775,61 @@ public class TrackingActivity extends BaseActivity implements
         }
     }
 
+    public void rotateMarker2(final Marker marker, final float toRotation) {
+
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        final float startRotation = marker.getRotation();
+        final long duration = 1555;
+
+        final Interpolator interpolator = new LinearInterpolator();
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed / duration);
+
+                float rot = t * toRotation + (1 -t) * startRotation;
+
+                marker.setRotation(-rot > 180 ? rot/2 : rot);
+                if (t < 1.0) {
+                    // Post again 16ms later.
+                    handler.postDelayed(this, 16);
+                }
+            }
+        });
+    }
+
+    Bitmap mBitmap;
+    public void onSensorChanged( Marker marker, final float toRotation) {
+
+
+        if (mBitmap!=null)
+        {
+
+            Matrix mat = new Matrix();
+            mat.postRotate(Math.round(toRotation));
+            Bitmap bMapRotate = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), mat, true);
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(bMapRotate));
+        }
+
+//        mMap.clear();
+        // marker = mMap.addMarker(x);
+    }
+
+
+
+
+//    public double calculateBearing(double lat1, double lng1, double lat2, double lng2) {
+//
+//        LatLng sourceLatLng = new LatLng(lat1, lng1);
+//        LatLng destinationLatLng = new LatLng(lat2, lng2);
+//
+//        double x = SphericalUtil.computeHeading(sourceLatLng, destinationLatLng);
+//
+//        return x;
+//    }
 
     //Get Data Trip
     private void getTrip(String deliveryOrderId) {
@@ -833,6 +915,11 @@ public class TrackingActivity extends BaseActivity implements
 
                                         txt_pilot_name.setText(dataPilot.data().fullName());
 
+                                        txt_pilot_rating.setText(new StringBuilder()
+                                                .append(dataPilot.data().CustomerRating().RateAvg()!=null ?
+                                                        Common.getDecimalNumber( dataPilot.data().CustomerRating().RateAvg() )
+                                                        : 0));
+
 
                                         if (dataPilot.data().AvatarResponse().status() == 200)
                                             Picasso.get().load(Common.BASE_URL_IMAGE + dataPilot.data().AvatarResponse().data().name()).into(img_pilot);
@@ -914,12 +1001,12 @@ public class TrackingActivity extends BaseActivity implements
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Marker user = mMap.addMarker(new MarkerOptions()
+                        markerUser = mMap.addMarker(new MarkerOptions()
                                 .position(customerLocation)
                                 .title(durationArray[0] + "\nMin")
                                 .icon(bitmapDescriptorFromVector(TrackingActivity.this, R.drawable.ic_marker_user)));
 
-                        user.showInfoWindow();
+                        markerUser.showInfoWindow();
                     }
                 });
 

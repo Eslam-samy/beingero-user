@@ -468,6 +468,9 @@ query trip($filter: TrackingTripFilterInput) {
                             data {
                                 fullName
                                 phone
+                                CustomerRating{
+                                    RateAvg
+                                }
                                 AvatarResponse{
                                     status
                                     data{

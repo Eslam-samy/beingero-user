@@ -1,6 +1,6 @@
-query getStoresOfASingleCategory($typeId: ID,$paginate:paginationInput , $sorting: StoreSortingInput) {
+query getStoresOfASingleCategory($filter: StoreFilterInput,$paginate:paginationInput , $sorting: StoreSortingInput) {
     StoreQuery {
-        getAll(filter: { storeTypeId: $typeId },pagination:$paginate , sorting:$sorting) {
+        getAll(filter: $filter , pagination:$paginate , sorting:$sorting) {
             status
             message
             pagination {

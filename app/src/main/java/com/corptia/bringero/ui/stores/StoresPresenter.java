@@ -8,6 +8,7 @@ import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
 import com.corptia.bringero.type.SortDirectionEnum;
+import com.corptia.bringero.type.StoreFilterInput;
 import com.corptia.bringero.type.StoreSortByEnum;
 import com.corptia.bringero.type.StoreSortingInput;
 
@@ -15,34 +16,40 @@ import org.jetbrains.annotations.NotNull;
 
 public class StoresPresenter {
 
-    StoresContract.BrandsView brandsView;
-    Handler handler ;
+    StoresContract.StoresView storesView;
+    Handler handler;
 
-    public StoresPresenter(StoresContract.BrandsView brandsView) {
-        this.brandsView = brandsView;
+    public StoresPresenter(StoresContract.StoresView storesView) {
+        this.storesView = storesView;
         handler = new Handler();
     }
 
-    void getStores(String categoryId){
+    void getStores(String typeId, boolean isAvailable) {
 
-        brandsView.showProgressBar();
+        storesView.showProgressBar();
 
         StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.DISPLAYPRIORITY).sortDirection(SortDirectionEnum.DESC).build();
+        StoreFilterInput filterInput = StoreFilterInput.builder().storeTypeId(typeId).isAvailable(isAvailable).build();
 
         MyApolloClient.getApollowClientAuthorization()
                 .query(GetStoresOfASingleCategoryQuery.builder()
                         .sorting(sortingInput)
-                        .typeId(categoryId).build())
+                        .filter(filterInput)
+                        .build())
                 .enqueue(new ApolloCall.Callback<GetStoresOfASingleCategoryQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GetStoresOfASingleCategoryQuery.Data> response) {
 
-                        brandsView.hideProgressBar();
 
-                        if (response.data().StoreQuery().getAll().status() == 200){
+                        if (response.data().StoreQuery().getAll().status() == 200) {
 
-                            response.data().StoreQuery().getAll().Stores();
-                            brandsView.setStores(response.data().StoreQuery().getAll().Stores());
+                            if (!isAvailable)
+                                storesView.hideProgressBar();
+
+//                            if (isAvailable)
+                                storesView.setStores(response.data().StoreQuery().getAll().Stores());
+//                            else
+//                                storesView.setStoresOffline(response.data().StoreQuery().getAll().Stores());
 
                         }
 

@@ -110,7 +110,7 @@ public class HomeActivity extends BaseActivity implements
     BottomNavigationMenuView menuView;
     BottomNavigationItemView itemViewNotification;
 
-    TextView txt_user_name,txt_user_phone ;
+    TextView txt_user_name,txt_user_phone ,txt_rating;
     CircleImageView img_avatar;
 
     //For Get New Update
@@ -161,10 +161,12 @@ public class HomeActivity extends BaseActivity implements
         View headerView = navigationView.getHeaderView(0);
         txt_user_name = headerView.findViewById(R.id.txt_user_name);
         txt_user_phone = headerView.findViewById(R.id.txt_user_phone);
+        txt_rating = headerView.findViewById(R.id.txt_rating);
         img_avatar = headerView.findViewById(R.id.img_avatar);
 
         txt_user_name.setText(Common.CURRENT_USER.getFullName());
         txt_user_phone.setText(Common.CURRENT_USER.getPhone());
+        txt_rating.setText(new StringBuilder().append(Common.getDecimalNumber(Common.CURRENT_USER.getCustomerRating())));
 
         if (Common.CURRENT_USER.getAvatarImageId()!=null)
         Picasso.get().load(Common.BASE_URL_IMAGE + Common.CURRENT_USER.getAvatarName())

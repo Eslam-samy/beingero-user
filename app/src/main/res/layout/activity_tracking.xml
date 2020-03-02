@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.tracking.TrackingActivity">
 
-
     <com.google.android.gms.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/mapView"
         android:layout_width="match_parent"
@@ -165,6 +164,18 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
+
+    <ImageView
+        android:id="@+id/img_moto"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="@dimen/large_margin"
+        android:src="@drawable/ic_pilot"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginTop="@dimen/large_margin"
+        android:visibility="gone"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

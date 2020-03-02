@@ -6,10 +6,11 @@ import java.util.List;
 
 public class StoresContract {
 
-    public interface BrandsView
+    public interface StoresView
     {
 
         void setStores( List<GetStoresOfASingleCategoryQuery.Store> repositoryList);
+        void setStoresOffline( List<GetStoresOfASingleCategoryQuery.Store> repositoryList);
         void displayError(String errorMessage);
         void showProgressBar();
         void hideProgressBar();

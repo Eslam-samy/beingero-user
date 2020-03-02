@@ -120,6 +120,8 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                                         userModel.setPhone(userData.phone());
                                         userModel.setStatus(userData.status().rawValue());
 
+                                        userModel.setCustomerRating(userData.CustomerRating().RateAvg()!=null ? userData.CustomerRating().RateAvg() : 0);
+
 
                                         CurrentDeliveryAddress currentDeliveryAddressModel = null ;
 

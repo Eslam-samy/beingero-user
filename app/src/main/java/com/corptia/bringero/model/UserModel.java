@@ -23,8 +23,18 @@ public class UserModel  {
     private CurrentDeliveryAddress currentDeliveryAddress;
     private List<DeliveryAddresses> deliveryAddressesList;
 
+    double customerRating ;
+
     public UserModel() {
 
+    }
+
+    public double getCustomerRating() {
+        return customerRating;
+    }
+
+    public void setCustomerRating(double customerRating) {
+        this.customerRating = customerRating;
     }
 
     public Gender getGender() {
