@@ -365,7 +365,7 @@ type GeneralOptionMultipleResponse implements IQueryMultipleResponse {
 type GeneralOptionMutation {
     initOptions(filter: GeneralOptionFilter, pagination: paginationInput, sorting: ProductTypeSortingInput): GeneralOptionMultipleResponse
     setAllOptions(options: [GeneralOptionInput]): GeneralOptionMultipleResponse
-    setOption(data: GeneralOptionInput): GeneralOptionResponse
+    setOption(data: SetOptionInput!): GeneralOptionResponse
 }
 
 type GeneralOptionQuery {
@@ -707,6 +707,7 @@ type PathError {
 
 type Pilot implements IModelData {
     CollectRating: Rate
+    DeliveryRating: Rate
     DrivingLicenceImageResponse: ImageSingleResponse
     UserResponse: UserSingleResponse
     VehicleResponse: PilotVehicleSingleResponse
@@ -1260,16 +1261,13 @@ type Store implements IModelData {
     ImageResponse: ImageSingleResponse
     PricingProducts(filter: PricingProductFilterInput, pagination: paginationInput, sorting: PricingProductSortingInput): PricingProductMultipleResponse
     ProductTypesResponse: ProductTypeMultipleResponse
-    """
-    ServiceRating: Rate
-    PreparationRating: Rate
-    """
     Rate: StoreRate
     _id: ID!
     adminUserId: ID
     cityId: ID
     createdAt: Date
     description: String
+    displayPriority: Int
     imageId: ID
     isAvailable: Boolean
     locationPoint: PointCooridinates
@@ -1628,6 +1626,7 @@ type UnitTypeSingleResponse implements ISingleResponse {
 type User implements IModelData {
     Avatar: Image
     AvatarResponse: ImageSingleResponse
+    CustomerRating: Rate
     PilotResponse: PilotSingleResponse
     StoreResponse: StoreSingleResponse
     _id: ID!
@@ -2102,6 +2101,7 @@ enum StoreMultiLangsFieldsEnum {
 enum StoreSortByEnum {
     _id
     createdAt
+    displayPriority
     isAvailable
     name
     updatedAt
@@ -2719,12 +2719,20 @@ input SEARCH_Input {
     searchWord: String!
 }
 
+input SetOptionInput {
+    label: multilanguageInput
+    name: GeneralOptionNameEnum!
+    value: String
+    valueType: GeneralOptionValueType
+}
+
 input StoreFilterInput {
     SEARCH: SEARCH_Input
     _id: ID
     adminUserId: ID
     cityId: ID
     description: String
+    displayPriority: Int
     isAvailable: Boolean
     name: String
     productTypeIds: [ID]
@@ -3010,6 +3018,7 @@ input createStore {
     adminUserId: ID!
     cityId: ID!
     description: multilanguageInput
+    displayPriority: Int
     imageId: ID
     isAvailable: Boolean = true
     locationPoint: PointCooridinatesInput
@@ -3029,6 +3038,7 @@ input createStoreTracks {
 
 input createStoreType {
     description: multilanguageInput
+    displayPriority: Int
     imageId: ID
     name: multilanguageInput!
     productTypeIds: [ID!]!
@@ -3407,6 +3417,7 @@ input updateStore {
     adminUserId: ID
     cityId: ID
     description: multilanguageInput
+    displayPriority: Int
     imageId: ID
     isAvailable: Boolean
     locationPoint: PointCooridinatesInput
@@ -3430,6 +3441,7 @@ input updateStoreTracks {
 
 input updateStoreType {
     description: multilanguageInput
+    displayPriority: Int
     imageId: ID
     name: multilanguageInput
     productTypeIds: [ID!]

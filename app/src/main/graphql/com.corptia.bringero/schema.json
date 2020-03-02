@@ -2611,8 +2611,20 @@
               "deprecationReason": null
             },
             {
+              "name": "displayPriority",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "Rate",
-              "description": "ServiceRating: Rate\nPreparationRating: Rate",
+              "description": "",
               "args": [],
               "type": {
                 "kind": "OBJECT",
@@ -3057,6 +3069,18 @@
               "type": {
                 "kind": "OBJECT",
                 "name": "StoreSingleResponse",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "CustomerRating",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Rate",
                 "ofType": null
               },
               "isDeprecated": false,
@@ -4077,6 +4101,18 @@
             },
             {
               "name": "CollectRating",
+              "description": "",
+              "args": [],
+              "type": {
+                "kind": "OBJECT",
+                "name": "Rate",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "DeliveryRating",
               "description": "",
               "args": [],
               "type": {
@@ -19324,6 +19360,16 @@
                 "ofType": null
               },
               "defaultValue": null
+            },
+            {
+              "name": "displayPriority",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -19395,6 +19441,12 @@
             },
             {
               "name": "isAvailable",
+              "description": "",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "displayPriority",
               "description": "",
               "isDeprecated": false,
               "deprecationReason": null
@@ -25102,9 +25154,13 @@
                   "name": "data",
                   "description": "",
                   "type": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "GeneralOptionInput",
-                    "ofType": null
+                    "kind": "NON_NULL",
+                    "name": null,
+                    "ofType": {
+                      "kind": "INPUT_OBJECT",
+                      "name": "SetOptionInput",
+                      "ofType": null
+                    }
                   },
                   "defaultValue": null
                 }
@@ -25152,7 +25208,7 @@
         },
         {
           "kind": "INPUT_OBJECT",
-          "name": "GeneralOptionInput",
+          "name": "SetOptionInput",
           "description": "",
           "fields": null,
           "inputFields": [
@@ -25160,9 +25216,13 @@
               "name": "name",
               "description": "",
               "type": {
-                "kind": "ENUM",
-                "name": "GeneralOptionNameEnum",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "GeneralOptionNameEnum",
+                  "ofType": null
+                }
               },
               "defaultValue": null
             },
@@ -25223,6 +25283,57 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            }
+          ],
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "INPUT_OBJECT",
+          "name": "GeneralOptionInput",
+          "description": "",
+          "fields": null,
+          "inputFields": [
+            {
+              "name": "name",
+              "description": "",
+              "type": {
+                "kind": "ENUM",
+                "name": "GeneralOptionNameEnum",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "label",
+              "description": "",
+              "type": {
+                "kind": "INPUT_OBJECT",
+                "name": "multilanguageInput",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "value",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "valueType",
+              "description": "",
+              "type": {
+                "kind": "ENUM",
+                "name": "GeneralOptionValueType",
                 "ofType": null
               },
               "defaultValue": null
@@ -29165,6 +29276,16 @@
                 "ofType": null
               },
               "defaultValue": "true"
+            },
+            {
+              "name": "displayPriority",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -29318,6 +29439,16 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Boolean",
+                "ofType": null
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "displayPriority",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               },
               "defaultValue": null
@@ -29767,6 +29898,16 @@
                 }
               },
               "defaultValue": null
+            },
+            {
+              "name": "displayPriority",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              },
+              "defaultValue": null
             }
           ],
           "interfaces": null,
@@ -29824,6 +29965,16 @@
                     "ofType": null
                   }
                 }
+              },
+              "defaultValue": null
+            },
+            {
+              "name": "displayPriority",
+              "description": "",
+              "type": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
               },
               "defaultValue": null
             }

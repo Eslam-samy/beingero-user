@@ -27,7 +27,7 @@ public class StoresPresenter {
 
         brandsView.showProgressBar();
 
-        StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.ISAVAILABLE).sortDirection(SortDirectionEnum.DESC).build();
+        StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.DISPLAYPRIORITY).sortDirection(SortDirectionEnum.DESC).build();
 
         MyApolloClient.getApollowClientAuthorization()
                 .query(GetStoresOfASingleCategoryQuery.builder()
