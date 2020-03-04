@@ -21,7 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.webview.WebViewActivity"></activity>
+        <activity android:name=".ui.Main.resetPassword.ResetPasswordStepTwo"></activity>
+        <activity android:name=".ui.webview.WebViewActivity" />
         <activity android:name=".ui.test.TestActivity" />
         <activity
             android:name=".ui.Main.signup.SignupActivity"
@@ -171,9 +172,7 @@
             <meta-data
                 android:name="com.google.firebase.messaging.default_notification_color"
                 android:resource="@color/colorAccent" />
-        </service> <!-- Declare this activity in your AndroidManfest.xml -->
-
-
+        </service>
     </application>
 
 </manifest>

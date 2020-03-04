@@ -33,6 +33,7 @@ import com.corptia.bringero.type.RoleEnum;
 import com.corptia.bringero.type.SignupInput;
 import com.corptia.bringero.ui.Main.MainActivity;
 import com.corptia.bringero.ui.Main.login.LoginActivity;
+import com.corptia.bringero.ui.Main.resetPassword.ResetPasswordStepTwo;
 import com.corptia.bringero.ui.Main.signup.SignupActivity;
 import com.corptia.bringero.ui.Main.signup.SignupFragment;
 import com.corptia.bringero.ui.home.HomeActivity;
@@ -101,7 +102,7 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
 
         Intent intent = getIntent();
 
-        if (intent != null ) {
+        if (intent != null) {
             phone = intent.getStringExtra(Constants.EXTRA_PHONE_NUMBER);
             password = intent.getStringExtra(Constants.EXTRA_PASSWORD);
         }
@@ -244,11 +245,11 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
                                                         public void run() {
 
 
-                                                            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(VerifyPhoneNumberActivity.this );
+                                                            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(VerifyPhoneNumberActivity.this);
 
-                                                            View view = LayoutInflater.from(VerifyPhoneNumberActivity.this).inflate(R.layout.layout_signup , null);
+                                                            View view = LayoutInflater.from(VerifyPhoneNumberActivity.this).inflate(R.layout.layout_signup, null);
 
-                                                            TextInputLayout input_firstName =  view.findViewById(R.id.input_firstName);
+                                                            TextInputLayout input_firstName = view.findViewById(R.id.input_firstName);
                                                             TextInputLayout input_lastName = view.findViewById(R.id.input_lastName);
 
                                                             builder.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
@@ -326,12 +327,11 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
                                                                             });
 
 
-
                                                                 }
                                                             });
 
                                                             builder.setView(view);
-                                                            androidx.appcompat.app.AlertDialog dialog =  builder.create();
+                                                            androidx.appcompat.app.AlertDialog dialog = builder.create();
                                                             dialog.setCancelable(false);
                                                             dialog.show();
 
@@ -339,93 +339,11 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
                                                     });
 
                                                 } else {
-
-                                                    ResetPasswordInput resetPasswordInput = ResetPasswordInput.builder().phone(phone)
-                                                            .confirmPassword(password)
-                                                            .newPassword(password).build();
-
-                                                    MyApolloClient.getApollowClientAuthorization(newToken)
-                                                            .mutate(ResetPasswordMutation.builder().data(resetPasswordInput).build()).enqueue(new ApolloCall.Callback<ResetPasswordMutation.Data>() {
-                                                        @Override
-                                                        public void onResponse(@NotNull Response<ResetPasswordMutation.Data> response) {
-
-                                                            if (response.data().UserMutation().resetPassword().status() == 200) {
-
-                                                                ResetPasswordMutation.Data1 userResponse = response.data().UserMutation().resetPassword().data();
-                                                                UserModel userModel = new UserModel();
-
-
-                                                                List<DeliveryAddresses> deliveryAddressesList = new ArrayList<>();
-                                                                for (ResetPasswordMutation.DeliveryAddress deliveryAddress : userResponse.deliveryAddresses()) {
-                                                                    DeliveryAddresses deliveryAddressesModel = new DeliveryAddresses();
-                                                                    deliveryAddressesModel.setId(deliveryAddress._id());
-                                                                    deliveryAddressesModel.setName(deliveryAddress.name());
-                                                                    deliveryAddressesModel.setRegion(deliveryAddress.region());
-                                                                    deliveryAddressesModel.setStreet(deliveryAddress.street());
-                                                                    deliveryAddressesModel.setBuilding(deliveryAddress.building());
-                                                                    deliveryAddressesModel.setFlatType(deliveryAddress.flatType().rawValue());
-                                                                    deliveryAddressesModel.setFloor(deliveryAddress.floor());
-                                                                    deliveryAddressesModel.setFlat(deliveryAddress.flat());
-                                                                    deliveryAddressesModel.setLocation(new LatLng(deliveryAddress.locationPoint().lat(), deliveryAddress.locationPoint().lng()));
-
-
-                                                                    deliveryAddressesList.add(deliveryAddressesModel);
-                                                                }
-
-                                                                userModel.setDeliveryAddressesList(deliveryAddressesList);
-
-
-                                                                userModel.setToken(newToken);
-                                                                userModel.setBirthDate(userResponse.birthDate());
-                                                                userModel.setGender(userResponse.gender());
-                                                                userModel.setAvatarName(userResponse.AvatarResponse().status() == 200 ?
-                                                                        userResponse.AvatarResponse().data().name() : null);
-                                                                userModel.setAvatarImageId(userResponse.avatarImageId());
-                                                                userModel.setLastName(userResponse.lastName());
-                                                                userModel.setFirstName(userResponse.firstName());
-                                                                userModel.setFullName(userResponse.fullName());
-                                                                userModel.setPhone(userResponse.phone());
-                                                                userModel.setLanguage(userResponse.language());
-
-
-                                                                CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
-                                                                if (userResponse.currentDeliveryAddress()!=null) {
-                                                                    currentDeliveryAddressModel.setId(userResponse.currentDeliveryAddress()._id());
-                                                                    currentDeliveryAddressModel.setBuilding(userResponse.currentDeliveryAddress().building());
-                                                                    currentDeliveryAddressModel.setFlatType(userResponse.currentDeliveryAddress().flatType().rawValue());
-                                                                    currentDeliveryAddressModel.setStreet(userResponse.currentDeliveryAddress().street());
-                                                                    currentDeliveryAddressModel.setName(userResponse.currentDeliveryAddress().name());
-                                                                    currentDeliveryAddressModel.setRegion(userResponse.currentDeliveryAddress().region());
-                                                                    currentDeliveryAddressModel.setFloor(userResponse.currentDeliveryAddress().floor());
-                                                                    currentDeliveryAddressModel.setFlat(userResponse.currentDeliveryAddress().flat());
-                                                                    currentDeliveryAddressModel.setLocation(new LatLng(userResponse.currentDeliveryAddress().locationPoint().lat(), userResponse.currentDeliveryAddress().locationPoint().lng()));
-                                                                }
-                                                                userModel.setCurrentDeliveryAddress(currentDeliveryAddressModel);
-
-                                                                Common.CURRENT_USER= userModel;
-
-                                                                Common.GetCartItemsCount(null);
-
-                                                                Toasty.success(VerifyPhoneNumberActivity.this  , "تم تغير كلمة السر بنجاح").show();
-                                                                Intent intent = new Intent(VerifyPhoneNumberActivity.this , LoginActivity.class);
-                                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                                //getActivity().finishAffinity();
-                                                                startActivity(intent);
-                                                                finish();
-
-                                                            }
-
-
-                                                        }
-
-                                                        @Override
-                                                        public void onFailure(@NotNull ApolloException e) {
-
-
-                                                        }
-                                                    });
-
-
+                                                    Intent intent = new Intent(VerifyPhoneNumberActivity.this, ResetPasswordStepTwo.class);
+                                                    intent.putExtra(Constants.EXTRA_PHONE_NUMBER, phone);
+                                                    intent.putExtra(Constants.EXTRA_NEW_TOKEN, newToken);
+                                                    startActivity(intent);
+                                                    finish();
                                                 }
 
 

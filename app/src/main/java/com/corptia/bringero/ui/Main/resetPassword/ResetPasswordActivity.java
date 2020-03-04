@@ -20,6 +20,7 @@ import com.corptia.bringero.graphql.PhoneExistsQuery;
 import com.corptia.bringero.type.LoginInput;
 import com.corptia.bringero.ui.Main.otp.VerifyPhoneNumberActivity;
 import com.corptia.bringero.ui.Main.signup.SignupActivity;
+import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.CustomLoading;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -33,10 +34,6 @@ public class ResetPasswordActivity extends BaseActivity {
 
     @BindView(R.id.input_phone_number)
     TextInputLayout input_phone_number;
-    @BindView(R.id.input_new_password)
-    TextInputLayout input_new_password;
-    @BindView(R.id.input_confirm_password)
-    TextInputLayout input_confirm_password;
     @BindView(R.id.btn_next)
     Button btn_next;
 
@@ -65,21 +62,12 @@ public class ResetPasswordActivity extends BaseActivity {
     }
 
     private void resetPassword() {
+        loading.showProgressBar(ResetPasswordActivity.this, false);
 
         String phone = input_phone_number.getEditText().getText().toString().trim();
-        String newPassword = input_new_password.getEditText().getText().toString().trim();
-        String newcnofirmPassword = input_confirm_password.getEditText().getText().toString().trim();
 
-        if (phone.isEmpty() || newPassword.isEmpty() || newcnofirmPassword.isEmpty()){
+        if (phone.isEmpty()){
             Toasty.info(this , "Fields are required").show();
-        }
-
-        else if (newPassword.length() < 8 || newcnofirmPassword.length()<8){
-            Toasty.info(this , "Less than 8 characters").show();
-        }
-
-        else if (!newPassword.equals(newcnofirmPassword)){
-            Toasty.info(this , "Password does not match").show();
         }
 
         else
@@ -88,7 +76,7 @@ public class ResetPasswordActivity extends BaseActivity {
 //            LoginInput loginInput = LoginInput.builder().phone(phone).password(newPassword)
 //            MyApolloClient.getApollowClient().mutate(LogInMutation.builder().loginData())
 
-            checkPhoneExists(phone , newPassword);
+            checkPhoneExists(phone);
 
         }
 
@@ -96,7 +84,7 @@ public class ResetPasswordActivity extends BaseActivity {
 
 
 
-    private void checkPhoneExists(String phone , String password) {
+    private void checkPhoneExists(String phone) {
 
         MyApolloClient.getApollowClient().query(PhoneExistsQuery.builder().phone(phone).build())
                 .enqueue(new ApolloCall.Callback<PhoneExistsQuery.Data>() {
@@ -114,7 +102,6 @@ public class ResetPasswordActivity extends BaseActivity {
 
                                     Intent intent = new Intent(ResetPasswordActivity.this , VerifyPhoneNumberActivity.class);
                                     intent.putExtra(Constants.EXTRA_PHONE_NUMBER,phone);
-                                    intent.putExtra(Constants.EXTRA_PASSWORD,password);
                                     startActivity(intent);
 
 //                                    input_phone_number.setErrorEnabled(true);
