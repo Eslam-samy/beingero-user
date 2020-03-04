@@ -28,6 +28,8 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.graphql.SingleOrderQuery;
+import com.corptia.bringero.model.EventBus.RatingOnDelivered;
+import com.corptia.bringero.model.EventBus.UpdateOrder;
 import com.corptia.bringero.model.UserModel;
 import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.ui.order.orderStoreDetail.OrderStoreDetailsActivity;
@@ -46,6 +48,9 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.Nullable;
 
 import butterknife.BindView;
@@ -116,8 +121,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
     String orderid, pilotId;
 
-
-    //Dialog
+    //Dialog Rating
     AlertDialog dialog;
     CircleImageView img_rate_store;
     RatingBar ratingBar;
@@ -157,7 +161,6 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
 //            txt_order_id.setText(new StringBuilder().append(getString(R.string.order_id)).append(" #").append(serialOrder));
 
-            detailsPresenter.getSingleOrder(orderid);
 
         }
 
@@ -366,10 +369,13 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                     img_delivering.setImageResource(R.drawable.tracking_status_delivering);
                     img_delivered.setImageResource(R.drawable.tracking_status_delivered);
                     layout_pilot.setVisibility(View.VISIBLE);
+                    btn_track_package.setVisibility(View.GONE);
 
                     if (deliveryOrderData.pilotDeliveryRating() != null) {
+
                         ratingPilot.setRating(deliveryOrderData.pilotDeliveryRating());
                         root_rating.setBackgroundColor(Color.TRANSPARENT);
+
                     } else {
 
 
@@ -497,7 +503,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         if (pilotData.PilotUserResponse().data().AvatarResponse().status() == 200)
             Picasso.get()
                     .load(Common.BASE_URL_IMAGE + pilotData.PilotUserResponse().data().AvatarResponse().data().name())
-                    .placeholder(R.drawable.ic_placeholder_store)
+                    .placeholder(R.drawable.ic_placeholder_profile)
                     .into(img_rate_store);
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
@@ -526,6 +532,35 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         dialog.show();
+
+    }
+
+    @Override
+    protected void onResume() {
+        detailsPresenter.getSingleOrder(orderid);
+        super.onResume();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void showDialogRatingOnDelivered(UpdateOrder ratingOnDelivered) {
+
+        if (ratingOnDelivered != null) {
+            detailsPresenter.getSingleOrder(ratingOnDelivered.orderId);
+        }
 
     }
 }

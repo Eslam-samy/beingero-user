@@ -8,16 +8,19 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.hardware.SensorEvent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -39,10 +42,11 @@ import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -56,9 +60,14 @@ import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.Remote.map.IGoogleAPI;
 import com.corptia.bringero.Remote.map.RetrofitClient;
 import com.corptia.bringero.base.BaseActivity;
+import com.corptia.bringero.graphql.DeliveryOneOrderQuery;
 import com.corptia.bringero.graphql.TripQuery;
+import com.corptia.bringero.model.EventBus.RatingOnDelivered;
 import com.corptia.bringero.type.DeliveryOrderStatus;
 import com.corptia.bringero.type.TrackingTripFilterInput;
+import com.corptia.bringero.ui.order.ordersDetails.OrdersPaidDetailsPresenter;
+import com.corptia.bringero.ui.order.ordersDetails.OrdersPaidDetailsView;
+import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.PicassoMarker;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
@@ -90,11 +99,12 @@ import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
 import com.google.maps.android.PolyUtil;
-import com.google.maps.android.SphericalUtil;
 import com.google.maps.model.DirectionsResult;
-import com.logicbeanzs.uberpolylineanimation.MapAnimator;
 import com.squareup.picasso.Picasso;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -105,6 +115,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.corptia.bringero.Common.Constants.MAPVIEW_BUNDLE_KEY;
@@ -112,7 +123,7 @@ import static com.corptia.bringero.Common.Constants.MAPVIEW_BUNDLE_KEY;
 public class TrackingActivity extends BaseActivity implements
         OnMapReadyCallback,
         GoogleMap.OnInfoWindowClickListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, OrdersPaidDetailsView {
 
     private static final String TAG = "MapsActivity";
 
@@ -209,6 +220,22 @@ public class TrackingActivity extends BaseActivity implements
     @BindView(R.id.img_moto)
     ImageView img_moto;
 
+    //Line
+    Polyline pathPilotToCustomer;
+
+
+    //Dialog Rating
+    AlertDialog dialog;
+    CircleImageView img_rate_store;
+    RatingBar ratingBar;
+    Button btn_submit;
+    CustomLoading loading;
+
+    //For Data Pilot
+    TripQuery.@Nullable PilotUserResponse dataPilot;
+
+    OrdersPaidDetailsPresenter detailsPresenter = new OrdersPaidDetailsPresenter(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -216,6 +243,7 @@ public class TrackingActivity extends BaseActivity implements
 
 //        toolbar.getBackground().setAlpha(0);
 
+        loading = new CustomLoading(this, true);
 
         iGoogleAPI = RetrofitClient.getInstance().create(IGoogleAPI.class);
         geoFire = new GeoFire(dbRef.child(getIntent().getStringExtra(Constants.EXTRA_PILOT_ID)));
@@ -428,7 +456,18 @@ public class TrackingActivity extends BaseActivity implements
                 latLngs.subList(0, i).clear();
 //                Log.d("HAZEM" , "SIZE After : " + latLngs.size());
 //                mMap.clear();
-                MapAnimator.getInstance().animateRoute(mMap, latLngs);
+
+                //Here Remove And Create Again
+//                MapAnimator.getInstance().animateRoute(mMap, latLngs);
+                if (pathPilotToCustomer!=null)
+                pathPilotToCustomer.remove();
+                PolylineOptions options = new PolylineOptions().width(5).color(Color.BLACK).geodesic(true);
+
+                for (LatLng newlatLng :latLngs){
+                    options.add(newlatLng);
+                }
+
+                pathPilotToCustomer  = mMap.addPolyline(options);
 
 
                 break;
@@ -606,12 +645,16 @@ public class TrackingActivity extends BaseActivity implements
     protected void onStart() {
         super.onStart();
         mMapView.onStart();
+        EventBus.getDefault().register(this);
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         mMapView.onStop();
+        EventBus.getDefault().unregister(this);
+
     }
 
     @Override
@@ -790,9 +833,9 @@ public class TrackingActivity extends BaseActivity implements
                 long elapsed = SystemClock.uptimeMillis() - start;
                 float t = interpolator.getInterpolation((float) elapsed / duration);
 
-                float rot = t * toRotation + (1 -t) * startRotation;
+                float rot = t * toRotation + (1 - t) * startRotation;
 
-                marker.setRotation(-rot > 180 ? rot/2 : rot);
+                marker.setRotation(-rot > 180 ? rot / 2 : rot);
                 if (t < 1.0) {
                     // Post again 16ms later.
                     handler.postDelayed(this, 16);
@@ -802,11 +845,11 @@ public class TrackingActivity extends BaseActivity implements
     }
 
     Bitmap mBitmap;
-    public void onSensorChanged( Marker marker, final float toRotation) {
+
+    public void onSensorChanged(Marker marker, final float toRotation) {
 
 
-        if (mBitmap!=null)
-        {
+        if (mBitmap != null) {
 
             Matrix mat = new Matrix();
             mat.postRotate(Math.round(toRotation));
@@ -817,8 +860,6 @@ public class TrackingActivity extends BaseActivity implements
 //        mMap.clear();
         // marker = mMap.addMarker(x);
     }
-
-
 
 
 //    public double calculateBearing(double lat1, double lng1, double lat2, double lng2) {
@@ -844,9 +885,10 @@ public class TrackingActivity extends BaseActivity implements
 
                         if (response.data().TrackingTripQuery().getOne().status() == 200) {
 
-                            TripQuery.@Nullable Data1 data = response.data().TrackingTripQuery().getOne().data();
-                            TripQuery.@Nullable PilotUserResponse dataPilot = response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().PilotUserResponse();
+                            orderId = response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().DeliveryOrderId();
 
+                            TripQuery.@Nullable Data1 data = response.data().TrackingTripQuery().getOne().data();
+                             dataPilot = response.data().TrackingTripQuery().getOne().data().DeliveryOrderResponse().DeliveryOrderResponseData().PilotUserResponse();
 
                             List<TripQuery.AvailableTrack> realTrack = data.availableTracks().get(data.availableTracks().size() - 1);
 
@@ -897,8 +939,25 @@ public class TrackingActivity extends BaseActivity implements
                                 @Override
                                 public void run() {
 
-                                    //Create Line
-                                    MapAnimator.getInstance().animateRoute(mMap, latLngs);
+                                    //Create Line With Animate
+                                    //MapAnimator.getInstance().animateRoute(mMap, latLngs);
+
+                                    PolylineOptions options = new PolylineOptions().width(5).color(Color.BLACK).geodesic(true);
+
+                                    for (LatLng latLng :latLngs){
+                                        options.add(latLng);
+                                    }
+
+                                    pathPilotToCustomer  = mMap.addPolyline(options);
+
+                                    // Style the polyline
+//                                    path.setWidth(10);
+//                                    path.setColor(Color.parseColor("#FF0000"));
+
+                                    // Position the map's camera
+//                                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLngs.get(0).latitude, latLngs.get(latLngs.size()-1).longitude), 16));
+
+
                                     zoomRoute(latLngs);
 
                                     if (dataPilot.status() == 200) {
@@ -916,8 +975,8 @@ public class TrackingActivity extends BaseActivity implements
                                         txt_pilot_name.setText(dataPilot.data().fullName());
 
                                         txt_pilot_rating.setText(new StringBuilder()
-                                                .append(dataPilot.data().CustomerRating().RateAvg()!=null ?
-                                                        Common.getDecimalNumber( dataPilot.data().CustomerRating().RateAvg() )
+                                                .append(dataPilot.data().PilotResponse().data().DeliveryRating().RateAvg() != null ?
+                                                        Common.getDecimalNumber(dataPilot.data().PilotResponse().data().DeliveryRating().RateAvg())
                                                         : 0));
 
 
@@ -1053,4 +1112,125 @@ public class TrackingActivity extends BaseActivity implements
 
     }
 
+
+    private void showDialogRating(String orderId , TripQuery.@Nullable Data2 pilotData) {
+
+        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_rating, null);
+
+        img_rate_store = dialogView.findViewById(R.id.img_store);
+        ratingBar = dialogView.findViewById(R.id.ratingBar);
+        btn_submit = dialogView.findViewById(R.id.btn_submit);
+
+        //Set Image Store
+        if (pilotData.AvatarResponse().status() == 200)
+            Picasso.get()
+                    .load(Common.BASE_URL_IMAGE + pilotData.AvatarResponse().data().name())
+                    .placeholder(R.drawable.ic_placeholder_profile)
+                    .into(img_rate_store);
+
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (ratingBar.getRating() != 0f) {
+
+                    detailsPresenter.pilotRating(orderId, (int) ratingBar.getRating());
+
+                } else {
+                    Toasty.warning(TrackingActivity.this, "Sorry Can't ratting by 0").show();
+                }
+
+            }
+        });
+
+
+        builder.setCancelable(true);
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+
+        //finally creating the alert dialog and displaying it
+        dialog = builder.create();
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+        dialog.show();
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
+
+    }
+
+    @Override
+    public void setSingleOrder(DeliveryOneOrderQuery.@Nullable DeliveryOrderData deliveryOrderData) {
+
+    }
+
+    @Override
+    public void onShowLoadingDialog() {
+        loading.showProgressBar(TrackingActivity.this, true);
+
+    }
+
+    @Override
+    public void onHideLoadingDialog() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loading.hideProgressBar();
+            }
+        });
+    }
+
+    @Override
+    public void onSuccessRating() {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                dialog.dismiss();
+                finish();
+
+            }
+        });
+    }
+
+    @Override
+    public void onFailedRating() {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void showErrorMessage(String Message) {
+
+    }
+
+    @Override
+    public void onSuccessMessage(String message) {
+
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void showDialogRatingOnDelivered(RatingOnDelivered ratingOnDelivered) {
+
+        if (ratingOnDelivered != null) {
+            showDialogRating(ratingOnDelivered.orderId,dataPilot.data());
+        }
+
+    }
 }

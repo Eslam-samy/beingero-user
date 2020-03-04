@@ -2,7 +2,6 @@
 <resources>
     <string name="app_name">برينجيرو</string>
     <string name="app_name_">برينجيرو</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="phone_number">رقم الموبايل</string>
     <string name="password">الرقم السري</string>
     <string name="login">تسجيل الدخول</string>
@@ -13,11 +12,8 @@
     <string name="verify_your_phone_number">تأكيد رقم الموبايل</string>
     <string name="enter_the_4_digit_pin_that_we_sent_to">ادخل كود التأكيد المرسل الي هاتفك:</string>
     <string name="verify">تأكيد</string>
-    <string name="title_activity_store_types">StoreTypesActivity</string>
     <string name="navigation_drawer_open">فتح خط التوجيه</string>
     <string name="navigation_drawer_close">غلق خط التوجيه</string>
-    <string name="nav_header_title">Bringero</string>
-    <string name="nav_header_subtitle">bringero@bringero.com</string>
     <string name="nav_header_desc">عنوان التوجيه</string>
     <string name="action_settings">الاعدادات</string>
     <string name="menu_home">الرئيسية</string>
@@ -79,7 +75,6 @@
     <string name="your_publishable_key">FLfD1OcSxlMeLaQI3VdkQB9fQmm9lDK_WPyyCG6lqcsE1ql8hVleTk3NLDw-52KUs8r2Z5MTDLV8qYaB7ZjQ3g</string>
     <string name="title_activity_maps">الخرائط</string>
     <string name="save_location">حفظ الموقع</string>
-    <string name="search_hint_location">عنوان التوصيل ___ </string>
     <string name="click_longer_to_set_the_place">اضغط مطولا لاختيار هذا الموقع</string>
     <string name="permission_denied">تم رفض طلب السماح</string>
     <string name="direction_not_found">لا توجد اتجاهات</string>
@@ -233,8 +228,8 @@
     <string name="house">منزل</string>
     <string name="office">مكتب</string>
     <string name="other">آخر</string>
-    <string name="please_allow_app_access_to_your_location_to_n_find_stores_near_you">Please allow app access to your location to   find stores near you.</string>
-    <string name="find_stores_n_near_your_location">Find stores   near your location!</string>
+    <string name="please_allow_app_access_to_your_location_to_n_find_stores_near_you">يرجى السماح للتطبيق بالدخول إلى موقعك للعثور على المتاجر القريبة منك.</string>
+    <string name="find_stores_n_near_your_location">ابحث عن متاجر بالقرب من موقعك!</string>
     <string name="kg">كجم</string>
     <string name="please_wait">من فضلك انتظر ....</string>
     <string name="coming_soon">قريبا</string>
@@ -249,10 +244,14 @@
     <string name="minute">دقائق</string>
     <string name="remove">الغاء</string>
     <string name="change">تغير</string>
-    <string name="coupon_code_is_required">Coupon code is required</string>
+    <string name="coupon_code_is_required">يجب اختيار كود الكوبون</string>
     <string name="you_have_run_out_of_this_coupon">استنفذت عدد مرات هذا الكوبون</string>
     <string name="product">منتج</string>
     <string name="store">متجر</string>
+    <string name="send">Send</string>
+    <string name="title_field_is_required">يجب ادخال عنوان الرساله</string>
+    <string name="message_field_is_required">يجب ادخال مضمون الرساله</string>
+    <string name="the_message_sent_successfully">تم إرسال الرسالة بنجاح</string>
 
 </resources>
 

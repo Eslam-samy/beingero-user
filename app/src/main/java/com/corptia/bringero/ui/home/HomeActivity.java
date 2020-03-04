@@ -31,6 +31,7 @@ import com.corptia.bringero.ui.home.notification.NotificationFragment;
 import com.corptia.bringero.ui.location.AllLocation.LocationsDeliveryActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationView;
+import com.corptia.bringero.ui.setting.contactUs.ContactUsActivity;
 import com.corptia.bringero.ui.setting.main.SettingActivity;
 import com.corptia.bringero.ui.home.cart.CartFragment;
 import com.corptia.bringero.ui.home.storetypes.StoreTypesFragment;
@@ -67,6 +68,8 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -309,6 +312,10 @@ public class HomeActivity extends BaseActivity implements
                 break;
             case R.id.nav_addresses:
                 intent = new Intent(this, LocationsDeliveryActivity.class);
+                break;
+
+            case R.id.nav_contact:
+                intent = new Intent(this, ContactUsActivity.class);
                 break;
 
                 case R.id.nav_terms_conditions:

@@ -1,0 +1,19 @@
+mutation MessageMutation($data: createMessage) {
+
+    MessageMutation{
+        create(data:$data){
+            status
+            message
+            errors{
+                code
+                path
+                message
+            }
+            data{
+                _id
+                userId
+                title
+            }
+        }
+    }
+}

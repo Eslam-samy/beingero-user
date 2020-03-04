@@ -19,6 +19,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.ui.Main.login.LoginActivity;
+import com.corptia.bringero.ui.setting.contactUs.ContactUsActivity;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
@@ -118,7 +119,8 @@ public class SettingFragment extends Fragment implements View.OnClickListener , 
 
                 break;
             case R.id.btn_contact_us:
-                navController.navigate(R.id.action_settingFragment2_to_contactUsFragment);
+                startActivity(new Intent(getActivity() , ContactUsActivity.class));
+//                navController.navigate(R.id.action_settingFragment2_to_contactUsFragment);
                 //HomeActivity.navController.navigate(R.id.action_nav_settings_to_contactUsFragment2);
                 break;
             case R.id.btn_language:

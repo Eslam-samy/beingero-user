@@ -14,7 +14,7 @@ query validateCoupon($filter: DeliveryCouponFilterInput ,$userId : ID! ){
                 maxUsers
                 maxUsagePerUser
 
-                dicountValue
+                discountValue
                 isActive
                 discountFixed
                 discountRatio
@@ -39,7 +39,7 @@ mutation confirmOrder($data: createBuyingOrder) {
                 serial
                 deliveryCost
                 discountFixed
-                dicountValue
+                discountValue
                 discountRatio
             }
         }

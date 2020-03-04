@@ -109,7 +109,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.HomeActivity"
-            android:label="@string/title_activity_store_types"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />

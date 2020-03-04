@@ -36,6 +36,8 @@ import androidx.work.WorkManager;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.model.EventBus.RatingOnDelivered;
+import com.corptia.bringero.model.EventBus.UpdateOrder;
 import com.corptia.bringero.model.NotificationCount;
 import com.corptia.bringero.ui.order.orderStoreDetail.OrderStoreDetailsActivity;
 import com.corptia.bringero.ui.order.ordersDetails.OrdersPaidDetailsActivity;
@@ -68,7 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     public static final String MODEL_NOT = "model_not";
 
-    String docId, notId;
+    String docId, notId , docStatus;
     String model;
 
     /**
@@ -82,10 +84,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String messageBody = "";
 
         String messageST = remoteMessage.getData().get("message");
+
+        Common.LOG("Message : " + messageST);
+
         notId = remoteMessage.getData().get("_id");
         docId = remoteMessage.getData().get("docId");
-
         model = remoteMessage.getData().get("model");
+        docStatus = remoteMessage.getData().get("docStatus");
 
         try {
 
@@ -106,6 +111,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         } catch (JSONException e) {
+            messageBody = remoteMessage.getData().get("message");
             e.printStackTrace();
         }
 
@@ -167,12 +173,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent;
         Intent newIntent;
 
+        Common.LOG("model:" + model + " ** docId:" + docId);
+
         if (model.equalsIgnoreCase("BuyingOrder")) {
             newIntent = new Intent(this, OrderStoreDetailsActivity.class);
-             newIntent.putExtra(Constants.BUYING_ORDER_ID , docId);
-        } else if (model.equalsIgnoreCase("DeliveryOrder")) {
+            newIntent.putExtra(Constants.BUYING_ORDER_ID, docId);
+        } else if (model.equalsIgnoreCase("DeliveryOrder") || model.equalsIgnoreCase(Constants.pilotAlmostHere)) {
             newIntent = new Intent(this, OrdersPaidDetailsActivity.class);
-            newIntent.putExtra(Constants.EXTRA_ORDER_ID , docId);
+            newIntent.putExtra(Constants.EXTRA_ORDER_ID, docId);
         } else
             newIntent = new Intent(this, SplashActivity.class);
 
@@ -219,6 +227,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         mNotificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+        if (docStatus!=null && docStatus.equalsIgnoreCase("Delivered"))
+            EventBus.getDefault().postSticky(new RatingOnDelivered(docId));
+
+        if (docStatus!=null && model.equalsIgnoreCase("DeliveryOrder") &&
+                (docStatus.equalsIgnoreCase("Delivered") ||
+                docStatus.equalsIgnoreCase("Prepared")  ||
+                docStatus.equalsIgnoreCase("Approved")  ||
+                docStatus.equalsIgnoreCase("Delivering") ))
+        EventBus.getDefault().postSticky(new UpdateOrder(docId));
 
         EventBus.getDefault().postSticky(new NotificationCount());
     }

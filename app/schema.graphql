@@ -234,9 +234,9 @@ type DeliveryCoupon implements IModelData {
     _id: ID!
     code: String!
     createdAt: Date
-    dicountValue: Float
     discountFixed: Boolean
     discountRatio: Float
+    discountValue: Float
     endDate: DateTime
     isActive: Boolean
     maxUsagePerUser: Int
@@ -295,9 +295,9 @@ type DeliveryOrder implements IModelData {
     customerRating: Int
     customerUserId: ID!
     deliveryCost: Float
-    dicountValue: Float
     discountFixed: Boolean
     discountRatio: Float
+    discountValue: Float
     pilotDeliveryRating: Int
     pilotId: ID
     serial: Int
@@ -610,6 +610,46 @@ type LocationStateSingleResponse implements ISingleResponse {
     warnings: [PathError]
 }
 
+type Message implements IModelData {
+    UserResponse: UserSingleResponse
+    _id: ID!
+    createdAt: Date
+    createdAtDateTime: DateTime
+    name: String
+    title: String
+    updatedAt: Date
+    userId: ID!
+    userType: MessageUserType!
+}
+
+type MessageMultipleResponse implements IQueryMultipleResponse {
+    data: [Message]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type MessageMutation {
+    create(data: createMessage): MessageSingleResponse
+    update(_id: ID, data: updateMessage): MessageSingleResponse
+    updateOne(data: updateMessage, filter: MessageFilterInput): MessageSingleResponse
+}
+
+type MessageQuery {
+    get(_id: ID): MessageSingleResponse
+    getAll(filter: MessageFilterInput, pagination: paginationInput, sorting: MessageSortingInput): MessageMultipleResponse
+    getOne(filter: MessageFilterInput): MessageSingleResponse
+}
+
+type MessageSingleResponse implements ISingleResponse {
+    data: Message
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
 type Mutation {
     BuyingOrderItemMutation: BuyingOrderItemMutation
     BuyingOrderMutation: BuyingOrderMutation
@@ -621,6 +661,7 @@ type Mutation {
     LocationCityMutation: LocationCityMutation
     LocationCountryMutation: LocationCountryMutation
     LocationStateMutation: LocationStateMutation
+    MessageMutation: MessageMutation
     NotificationMutation: NotificationMutation
     PilotMutation: PilotMutation
     PilotVehicleMutation: PilotVehicleMutation
@@ -1229,6 +1270,7 @@ type Query {
     LocationCityQuery: LocationCityQuery
     LocationCountryQuery: LocationCountryQuery
     LocationStateQuery: LocationStateQuery
+    MessageQuery: MessageQuery
     NotificationQuery: NotificationQuery
     PilotQuery: PilotQuery
     PilotVehicleQuery: PilotVehicleQuery
@@ -1828,7 +1870,17 @@ enum Gender {
 
 enum GeneralOptionNameEnum {
     DeliveryCost
+    Email
+    Facebook
+    Instagram
+    Linkedin
     MinDeliveryCost
+    Phone
+    PilotForm
+    StoreForm
+    Twitter
+    Whatsapp
+    Youtube
 }
 
 enum GeneralOptionValueType {
@@ -1913,6 +1965,26 @@ enum LocationStateSortByEnum {
     createdAt
     name
     updatedAt
+}
+
+enum MessageFilterByEnum {
+    _id
+    userId
+    userType
+}
+
+enum MessageSortByEnum {
+    _id
+    createdAt
+    updatedAt
+    userId
+    userType
+}
+
+enum MessageUserType {
+    Customer
+    Pilot
+    Store
 }
 
 enum NotificatioStatus {
@@ -2334,6 +2406,8 @@ input DeliveryCouponFilterInput {
     _id: ID
     code: String
     createdAt: Date
+    discountFixed: Boolean
+    isActive: Boolean
     updatedAt: Date
 }
 
@@ -2484,6 +2558,22 @@ input LocationStateFilterInput {
 
 input LocationStateSortingInput {
     sortBy: LocationStateSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input MessageFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    createdAt: Date
+    message: String
+    title: String
+    updatedAt: Date
+    userId: ID
+    userType: MessageUserType
+}
+
+input MessageSortingInput {
+    sortBy: MessageSortByEnum
     sortDirection: SortDirectionEnum
 }
 
@@ -2864,9 +2954,9 @@ input createCartItem {
 
 input createDeliveryCoupon {
     code: String!
-    dicountValue: Float
     discountFixed: Boolean
     discountRatio: Float
+    discountValue: Float
     endDate: Date
     isActive: Boolean
     maxUsagePerUser: Int
@@ -2907,6 +2997,13 @@ input createLocationCountry {
 input createLocationState {
     countryId: ID
     name: multilanguageInput
+}
+
+input createMessage {
+    message: String
+    title: String
+    userId: ID
+    userType: MessageUserType
 }
 
 input createNotificationInput {
@@ -3268,9 +3365,9 @@ input updateCartItem {
 
 input updateDeliveryCoupon {
     code: String
-    dicountValue: Float
     discountFixed: Boolean
     discountRatio: Float
+    discountValue: Float
     endDate: Date
     isActive: Boolean
     maxUsagePerUser: Int
@@ -3311,6 +3408,13 @@ input updateLocationCountry {
 input updateLocationState {
     countryId: ID
     name: multilanguageInput
+}
+
+input updateMessage {
+    message: String
+    title: String
+    userId: ID
+    userType: MessageUserType
 }
 
 input updateNotificationInput {

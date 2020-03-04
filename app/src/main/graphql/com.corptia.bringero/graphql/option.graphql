@@ -29,6 +29,7 @@ query GeneralOptionAllQuery{
     GeneralOptionQuery{
         getAll(filter:{
         }){
+            status
             data{
                 name
                 label
