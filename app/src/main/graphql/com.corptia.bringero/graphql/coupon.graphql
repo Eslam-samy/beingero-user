@@ -37,10 +37,10 @@ mutation confirmOrder($data: createBuyingOrder) {
                 _id
                 copounId
                 serial
-                deliveryCost
-                discountFixed
-                discountValue
-                discountRatio
+#                deliveryCost
+#                discountFixed
+#                discountValue
+#                discountRatio
             }
         }
     }

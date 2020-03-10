@@ -58,8 +58,8 @@
         android:textColor="@color/white"
         android:textSize="@dimen/low_xx_text_size"
         android:drawableStart="@drawable/star"
-        android:drawablePadding="5dp" />
-
+        android:drawablePadding="5dp"
+        android:visibility="gone"/>
 
 
     <TextView
@@ -71,7 +71,6 @@
         android:textColor="@color/white"
         android:fontFamily="@font/poppinsregular"
         android:textSize="@dimen/low_xx_text_size"
-        android:visibility="gone"
         />
 
 
