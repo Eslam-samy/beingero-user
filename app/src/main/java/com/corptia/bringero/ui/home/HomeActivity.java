@@ -50,6 +50,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -108,12 +110,12 @@ public class HomeActivity extends BaseActivity implements
     CustomLoading loading;
 
     //For Count Notification
-    View  notificationBadge;//notificationBadge
-    TextView  txt_notificationsBadge; // txt_notificationsBadge
+    View notificationBadge;//notificationBadge
+    TextView txt_notificationsBadge; // txt_notificationsBadge
     BottomNavigationMenuView menuView;
     BottomNavigationItemView itemViewNotification;
 
-    TextView txt_user_name,txt_user_phone ,txt_rating;
+    TextView txt_user_name, txt_user_phone, txt_rating;
     CircleImageView img_avatar;
 
     //For Get New Update
@@ -123,7 +125,7 @@ public class HomeActivity extends BaseActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Common.CURRENT_USER!=null)
+        if (Common.CURRENT_USER != null)
             LocaleHelper.setLocale(this, Common.CURRENT_USER.getLanguage().toLowerCase());
         setContentView(R.layout.activity_home);
 
@@ -170,11 +172,17 @@ public class HomeActivity extends BaseActivity implements
         txt_user_name.setText(Common.CURRENT_USER.getFullName());
         txt_user_phone.setText(Common.CURRENT_USER.getPhone());
         txt_rating.setText(new StringBuilder().append(Common.getDecimalNumber(Common.CURRENT_USER.getCustomerRating())));
+        if (Common.CURRENT_USER.getAvatarImageId() != null)
+            Picasso.get().load(Common.BASE_URL_IMAGE + Common.CURRENT_USER.getAvatarName())
+                    .placeholder(R.drawable.ic_placeholder_profile)
+                    .into(img_avatar);
 
-        if (Common.CURRENT_USER.getAvatarImageId()!=null)
-        Picasso.get().load(Common.BASE_URL_IMAGE + Common.CURRENT_USER.getAvatarName())
-                .placeholder(R.drawable.ic_placeholder_profile)
-                .into(img_avatar);
+//                    .resize(1, 1)
+//                    .noFade()
+//                    .memoryPolicy(MemoryPolicy.NO_CACHE )
+//                    .networkPolicy(NetworkPolicy.NO_CACHE)
+//            .error(R.drawable.ic_placeholder_profile)
+
 
         //Set CurrentLocation
         setCurrentLocation();
@@ -202,11 +210,11 @@ public class HomeActivity extends BaseActivity implements
                 String region = Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion();
                 String name = Common.CURRENT_USER.getCurrentDeliveryAddress().getName();
 
-                if (name!=null && region!=null)
-                txt_location.setText(new StringBuilder().append(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())
-                        .append(" (")
-                        .append(region.substring(0, 1).toUpperCase() + region.substring(1).toLowerCase())
-                        .append(")"));
+                if (name != null && region != null)
+                    txt_location.setText(new StringBuilder().append(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())
+                            .append(" (")
+                            .append(region.substring(0, 1).toUpperCase() + region.substring(1).toLowerCase())
+                            .append(")"));
 
             } else
                 txt_location.setText(getString(R.string.select_location));
@@ -304,7 +312,7 @@ public class HomeActivity extends BaseActivity implements
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
 
-        Intent intent =null;
+        Intent intent = null;
 
         switch (id) {
             case R.id.nav_settings:
@@ -318,30 +326,30 @@ public class HomeActivity extends BaseActivity implements
                 intent = new Intent(this, ContactUsActivity.class);
                 break;
 
-                case R.id.nav_terms_conditions:
-                    intent = new Intent(this, WebViewActivity.class);
-                    intent.putExtra(Constants.EXTRA_TERMS_CONDITIONS , "EXTRA_TERMS_CONDITIONS");
+            case R.id.nav_terms_conditions:
+                intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra(Constants.EXTRA_TERMS_CONDITIONS, "EXTRA_TERMS_CONDITIONS");
                 break;
 
             case R.id.nav_privacy_policy:
                 intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra(Constants.EXTRA_PRIVACY_POLICY , "EXTRA_PRIVACY_POLICY");
+                intent.putExtra(Constants.EXTRA_PRIVACY_POLICY, "EXTRA_PRIVACY_POLICY");
                 break;
 
             case R.id.nav_faq_support:
                 intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra(Constants.EXTRA_FAQ_SUPPORT , "EXTRA_FAQ_SUPPORT");
+                intent.putExtra(Constants.EXTRA_FAQ_SUPPORT, "EXTRA_FAQ_SUPPORT");
                 break;
 
-                default:
-                    drawer = findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
-                    return true;
+            default:
+                drawer = findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+                return true;
 
         }
 
         startActivity(intent);
-        overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
 
         drawer = findViewById(R.id.drawer_layout);
@@ -488,8 +496,9 @@ public class HomeActivity extends BaseActivity implements
                                     int count = data.pagination().totalDocs();
                                     if (count == 0) {
                                         notificationBadge.setVisibility(GONE);
-                                    } else {notificationBadge.setVisibility(VISIBLE);
-                                        txt_notificationsBadge.setText(""+ (count > 99 ? "99+" : count));
+                                    } else {
+                                        notificationBadge.setVisibility(VISIBLE);
+                                        txt_notificationsBadge.setText("" + (count > 99 ? "99+" : count));
                                     }
 
                                 }
@@ -527,7 +536,6 @@ public class HomeActivity extends BaseActivity implements
     }
 
 
-
     // ********************* This For Show Dialog Update To New Version *********************
     private void checkNewVersion() {
 
@@ -544,7 +552,7 @@ public class HomeActivity extends BaseActivity implements
 //                            mFirebaseRemoteConfig.activateFetched();
                             mFirebaseRemoteConfig.activate();
 
-                            Common.LAST_APP_VERSION  = mFirebaseRemoteConfig.getDouble(Constants.APP_VERSION);
+                            Common.LAST_APP_VERSION = mFirebaseRemoteConfig.getDouble(Constants.APP_VERSION);
 
                             if (Common.LAST_APP_VERSION > getCurrentVersionCode()) {
 

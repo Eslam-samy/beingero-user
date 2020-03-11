@@ -52,6 +52,15 @@ public class StoresPresenter {
 //                                storesView.setStoresOffline(response.data().StoreQuery().getAll().Stores());
 
                         }
+                        else if (response.data().StoreQuery().getAll().status() == 404)
+                        {
+
+                            if (!isAvailable)
+                                storesView.hideProgressBar();
+
+//                            if (isAvailable)
+                            storesView.setStores(response.data().StoreQuery().getAll().Stores());
+                        }
 
                     }
 

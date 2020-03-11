@@ -117,9 +117,9 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
     @BindView(R.id.radioGroupGender)
     RadioGroup radioGroupGender;
     @BindView(R.id.radioMail)
-    RadioButton radioMail;
+    RadioButton radioMale;
     @BindView(R.id.radioFemail)
-    RadioButton radioFemail;
+    RadioButton radioFemale;
 
     @BindView(R.id.btn_save)
     Button btn_save;
@@ -249,9 +249,9 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
         if (userData.getGender()!=null){
             Gender gender =userData.getGender();
             if (gender.rawValue().equalsIgnoreCase(Gender.MALE.rawValue()))
-                radioMail.setChecked(true);
+                radioMale.setChecked(true);
             else if (gender.rawValue().equalsIgnoreCase(Gender.FEMALE.rawValue()))
-                radioFemail.setChecked(true);
+                radioFemale.setChecked(true);
 
         }
 
@@ -287,12 +287,11 @@ public class EditProfileFragment extends Fragment implements ImageContract.View,
 
         Gender gender ;
 
-        if (radioMail.isChecked())
+        if (radioMale.isChecked())
             gender = Gender.MALE;
-        else  if (radioFemail.isChecked())
+        else if (radioFemale.isChecked())
             gender = Gender.FEMALE;
-        else
-            gender = Gender.$UNKNOWN;
+        else gender = null;
 
 
         if (!email.isEmpty()){
