@@ -133,6 +133,12 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders_paid_details);
 
+        if (Common.BASE_URL.isEmpty())
+        {
+            Common.BASE_URL = (String) PrefUtils.getFromPrefs(this , PrefKeys.FULL_BASE_URL , "");
+            Common.BASE_URL_IMAGE = (String) PrefUtils.getFromPrefs(this , PrefKeys.FULL_BASE_URL_IMAGE , "");
+        }
+
         if (Common.CURRENT_USER == null) {
             Common.CURRENT_USER = new UserModel();
             String token = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_TOKEN_API, "Null");

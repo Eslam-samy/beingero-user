@@ -173,7 +173,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent;
         Intent newIntent;
 
-        Common.LOG("model:" + model + " ** docId:" + docId);
+//        Common.LOG("model:" + model + " ** docId:" + docId);
 
         if (model.equalsIgnoreCase("BuyingOrder")) {
             newIntent = new Intent(this, OrderStoreDetailsActivity.class);

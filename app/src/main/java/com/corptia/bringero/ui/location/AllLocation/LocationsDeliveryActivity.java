@@ -68,7 +68,6 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
     LocationsDeliveryPresenter presenter = new LocationsDeliveryPresenter(this);
 
     AlertDialog dialog;
-    DeliveryAddresses item = null;
 
     CustomLoading loading;
 

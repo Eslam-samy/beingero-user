@@ -120,6 +120,13 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 //                            mFirebaseRemoteConfig.activateFetched();
                                 mFirebaseRemoteConfig.activate();
 
+                                Common.BASE_URL = mFirebaseRemoteConfig.getString(Constants.BASE_URL)+"graphql";
+                                Common.BASE_URL_IMAGE = mFirebaseRemoteConfig.getString(Constants.BASE_URL)+"images/";
+                                PrefUtils.saveToPrefs(SplashActivity.this , PrefKeys.FULL_BASE_URL , Common.BASE_URL);
+                                PrefUtils.saveToPrefs(SplashActivity.this , PrefKeys.FULL_BASE_URL_IMAGE , Common.BASE_URL_IMAGE);
+
+//                                Common.BASE_URL_IMAGE_UPLOAD = mFirebaseRemoteConfig.getString(Constants.BASE_URL)+"images/";
+
                                 boolean under_maintenance = mFirebaseRemoteConfig.getBoolean(Constants.UNDER_MAINTENANCE);
                                 boolean isComingSoon = mFirebaseRemoteConfig.getBoolean(Constants.IS_COMING_SOON);
 

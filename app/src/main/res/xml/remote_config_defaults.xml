@@ -29,5 +29,10 @@
         <value>30/12/1992</value>
     </entry>
 
+    <entry>
+        <key>base_url</key>
+        <value>http://bringero.site:8000/</value>
+    </entry>
+
 
 </defaultsMap>

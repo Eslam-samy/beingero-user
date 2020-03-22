@@ -61,5 +61,6 @@ public class Constants {
     public static final String TAG_COUPON_REMOVE = "TAG_COUPON_REMOVE";
     public static final String TAG_COUPON_CHANGE = "TAG_COUPON_CHANGE";
     public static final String EXTRA_NEW_TOKEN = "NEW_TOKEN";
+    public static final String BASE_URL = "base_url";
     public static String pilotAlmostHere= "PilotAlmostHere";
 }

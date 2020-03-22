@@ -38,7 +38,7 @@ public class NetworkClient {
                     .build();
 
             retrofit = new Retrofit.Builder()
-                    .baseUrl(Common.BASE_URL_IMAGE_UPLOAD)
+                    .baseUrl(Common.BASE_URL_IMAGE)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

@@ -83,10 +83,17 @@ public class OrderStoreDetailsActivity extends BaseActivity implements OrderStor
 
     SingleOrderQuery.@Nullable Data1 storeData;
     SingleOrderQuery.Get orderResponse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_store_details);
+
+        if (Common.BASE_URL.isEmpty())
+        {
+            Common.BASE_URL = (String) PrefUtils.getFromPrefs(this , PrefKeys.FULL_BASE_URL , "");
+            Common.BASE_URL_IMAGE = (String) PrefUtils.getFromPrefs(this , PrefKeys.FULL_BASE_URL_IMAGE , "");
+        }
 
         if (Common.CURRENT_USER == null)
         {
