@@ -253,6 +253,7 @@
     <string name="title_field_is_required">title field is required</string>
     <string name="message_field_is_required">message field is required</string>
     <string name="the_message_sent_successfully">The message sent successfully</string>
+    <string name="yes_allow">Yes,allow</string>
 
 </resources>
 

@@ -252,6 +252,7 @@
     <string name="title_field_is_required">يجب ادخال عنوان الرساله</string>
     <string name="message_field_is_required">يجب ادخال مضمون الرساله</string>
     <string name="the_message_sent_successfully">تم إرسال الرسالة بنجاح</string>
+    <string name="yes_allow">سماح</string>
 
 </resources>
 

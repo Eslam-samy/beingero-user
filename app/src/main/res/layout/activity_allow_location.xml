@@ -51,7 +51,7 @@
     <Button
         android:id="@+id/btn_allow"
         style="@style/ButtonNormalStyle"
-        android:text="Yes,allow"
+        android:text="@string/yes_allow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/btn_donot_allow"

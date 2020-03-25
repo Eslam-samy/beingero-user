@@ -27,6 +27,7 @@ import com.corptia.bringero.ui.Main.resetPassword.ResetPasswordActivity;
 import com.corptia.bringero.ui.Main.signup.SignupActivity;
 import com.corptia.bringero.ui.Main.suspend.SuspendActivity;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
+import com.corptia.bringero.ui.allowLocation.AllowLocationActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationActivity;
 import com.corptia.bringero.utils.button.ProgressButton;
 import com.corptia.bringero.utils.language.LocaleHelper;
@@ -218,28 +219,30 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
     @Override
     public void onSuccessLoginToMap() {
-        Dexter.withActivity(LoginActivity.this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
 
-                        saveLocalDataToPref();
+        saveLocalDataToPref();
+        startActivity(new Intent(LoginActivity.this, AllowLocationActivity.class));
+        isFirstTimeAddLocation = true;
+        finish();
 
-                        startActivity(new Intent(LoginActivity.this, MapsActivity.class));
-                        isFirstTimeAddLocation = true;
-                        finish();
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                        finish();
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                }).check();
+//        Dexter.withActivity(LoginActivity.this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+//                .withListener(new PermissionListener() {
+//                    @Override
+//                    public void onPermissionGranted(PermissionGrantedResponse response) {
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onPermissionDenied(PermissionDeniedResponse response) {
+//                        finish();
+//                    }
+//
+//                    @Override
+//                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+//                        token.continuePermissionRequest();
+//                    }
+//                }).check();
 
     }
 
