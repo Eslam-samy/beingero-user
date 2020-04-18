@@ -253,6 +253,8 @@
     <string name="you_have_run_out_of_this_coupon">استنفذت عدد مرات هذا الكوبون</string>
     <string name="product">منتج</string>
     <string name="store">متجر</string>
+    <string name="enable_location">تفعيل الموقع</string>
+    <string name="enableLocationReason">هذا التطبيق يحتاج لتفعيل خدمة الموقع. رجاء تفعيل هذه الخدمة.</string>
 
 </resources>
 

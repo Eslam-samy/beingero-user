@@ -254,6 +254,8 @@
     <string name="you_have_run_out_of_this_coupon">You have run out of this coupon</string>
     <string name="product">product</string>
     <string name="store">store</string>
+    <string name="enable_location">Enable location</string>
+    <string name="enableLocationReason">This app needs the Location permission, please accept to use location functionality</string>
 
 </resources>
 
