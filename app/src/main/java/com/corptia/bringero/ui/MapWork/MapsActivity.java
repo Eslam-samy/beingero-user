@@ -31,6 +31,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -131,6 +132,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     View btn_satellite;
     @BindView(R.id.btn_currentLocation)
     View btn_currentLocation;
+    @BindView(R.id.enableLocation)
+    Button enableLocation;
+    @BindView(R.id.enableLocationLO)
+    LinearLayout enableLocationLO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,12 +224,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
 
-                if (btn_satellite.getTag().equals("MAP_TYPE_NORMAL")){
+                if (btn_satellite.getTag().equals("MAP_TYPE_NORMAL")) {
                     mMap.setMapType(mMap.MAP_TYPE_SATELLITE);
                     btn_satellite.setTag("MAP_TYPE_SATELLITE");
-                }
-                else
-                {
+                } else {
                     mMap.setMapType(mMap.MAP_TYPE_NORMAL);
                     btn_satellite.setTag("MAP_TYPE_NORMAL");
                 }
@@ -236,16 +239,16 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             public void onClick(View view) {
 
                 float[] results = new float[1];
-                Location.distanceBetween(31.440350,31.683745,
-                        newLatitude,  newLongitude, results);
-                Log.d("HAZEM","HI : " + results[0]);
+                Location.distanceBetween(31.440350, 31.683745,
+                        newLatitude, newLongitude, results);
+                Log.d("HAZEM", "HI : " + results[0]);
 
-                double radiusInMeters = 7.0*1000.0; //1 KM = 1000 Meter
+                double radiusInMeters = 7.0 * 1000.0; //1 KM = 1000 Meter
 
-                if(results[0] > radiusInMeters ){
+                if (results[0] > radiusInMeters) {
 
-                    Log.d("HAZEM" , " Outside, distance from center " + getCompleteAddressString(newLatitude ,newLongitude ));
-                    Toasty.info(MapsActivity.this , "Out of bounds Damietta El-Gadeeda City").show();
+                    Log.d("HAZEM", " Outside, distance from center " + getCompleteAddressString(newLatitude, newLongitude));
+                    Toasty.info(MapsActivity.this, "Out of bounds Damietta El-Gadeeda City").show();
 
 //                    Toast.makeText(getBaseContext(),
 //                            "Outside, distance from center: " + results[0] + " radius: " + radiusInMeters,
@@ -255,14 +258,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
                     saveLocation();
 
-                    Log.d("HAZEM" , " Inside, distance from center " + getCompleteAddressString(newLatitude ,newLongitude ));
+                    Log.d("HAZEM", " Inside, distance from center " + getCompleteAddressString(newLatitude, newLongitude));
 
 //                    Toast.makeText(getBaseContext(),
 //                            "Inside, distance from center: " + results[0] + " radius: " + radiusInMeters ,
 //                            Toast.LENGTH_LONG).show();
 
                 }
-
 
 
             }
@@ -298,9 +300,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 Log.d("HAZEM", "getLatLng : " + place.getLatLng());
                 Log.d("HAZEM", "getLatLng : " + place.getId());
 
-                if (place.getLatLng()!=null)
-                {
-                    LatLng latLng = new LatLng(place.getLatLng().latitude,place.getLatLng().longitude);
+                if (place.getLatLng() != null) {
+                    LatLng latLng = new LatLng(place.getLatLng().latitude, place.getLatLng().longitude);
                     CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(latLng, 17);
                     mMap.animateCamera(yourLocation);
                 }
@@ -338,14 +339,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkLocationPermission();
-        } else {
-            if (mMap != null && isMapReady) {
-                mMap.setMyLocationEnabled(true);
-            }
-        }
-
         try {
             boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style));
             if (!success)
@@ -354,16 +347,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             Log.e("ERROR_MAP", "Resource not found " + e.getMessage());
         }
 
-        mMap = googleMap;
         isMapReady = true;
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.getUiSettings().setRotateGesturesEnabled(false);
-        mMap.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(false);
-        mMap.setMyLocationEnabled(true);
-        //First zoom
-        mMap.moveCamera(CameraUpdateFactory.zoomTo(17f));
-
-
+        mMap = googleMap;
         gestureDetector = new ScaleGestureDetector(MapsActivity.this, new ScaleGestureDetector.OnScaleGestureListener() {
             @Override
             public boolean onScale(ScaleGestureDetector detector) {
@@ -389,31 +374,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
             }
         });
-
-
-        if (currentLocation != null) {
-            latitude = currentLocation.getLatitude();
-            longitude = currentLocation.getLongitude();
-
-            if (getCompleteAddressString(latitude, longitude).indexOf("Unnamed") == -1) {
-                address = getCompleteAddressString(latitude, longitude);
-            } else {
-                address = getCompleteAddressString(latitude, longitude).substring(13);
-            }
-//                    if(getCompleteAddressString(latLng.latitude , latLng.longitude).contains("Unnamed"));
-
-            //address = getCompleteAddressString(latLng.latitude , latLng.longitude) ;
-
-            //Log.d("latLnglatLng","Address : "+getCompleteAddressString(latLng.latitude , latLng.longitude));
-            saveLocationBtn.setVisibility(View.VISIBLE);
-            // saveLocationBtn.setText(getString(R.string.save_location) + "\n" + address);
-            if (marker != null) {
-                marker.remove();
-            }
-
-        }
-
-//        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+        //        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
 //            @Override
 //            public boolean onMyLocationButtonClick() {
 //                latitude = currentLocation.getLatitude();
@@ -481,13 +442,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 //
 //        });
 
-        mMap.setOnCameraChangeListener(cameraPosition -> {
-
-            Log.d("HAZEM" , " Hello I am here " +cameraPosition.target.latitude + " ------ " +  cameraPosition.target.longitude);
-            newLatitude = cameraPosition.target.latitude;
-            newLongitude = cameraPosition.target.longitude;
-
-        });
 
 //        mMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
 //            @Override
@@ -506,84 +460,102 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 //
 //            }
 //        });
-
     }
 
 
     private void checkLocationPermission() {
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
+            enableLocationLO.setVisibility(View.VISIBLE);
+            saveLocationBtn.setVisibility(View.GONE);
 
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(this)
-                        .setTitle("Location Permission Needed")
-                        .setMessage("This app needs the Location permission, please accept to use location functionality")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(MapsActivity.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION);
-                            }
-                        })
-                        .create()
-                        .show();
-
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-            }
-        } else {
-            if (mMap != null && isMapReady) {
-                mMap.setMyLocationEnabled(true);
-            }
-
-            locationCallback = new LocationCallback() {
-
+            enableLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    if (locationResult.getLastLocation() != null) {
-                        currentLocation = locationResult.getLastLocation();
+                public void onClick(View v) {
+                    ActivityCompat.requestPermissions(MapsActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            MY_PERMISSIONS_REQUEST_LOCATION);
+                }
+            });
+        } else {
+            afterAccessLocation();
+        }
+    }
 
-                        double newlatitude;
-                        double newlongitude;
-                        if (getIntent().hasExtra("UPDATE")) {
+    private void afterAccessLocation() {
+        if (mMap != null && isMapReady) {
+            mMap.setMyLocationEnabled(true);
+        }
 
-                            newlatitude = getIntent().getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
-                            newlongitude = getIntent().getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
+        locationCallback = new LocationCallback() {
 
-                            Log.d("HAZEM", "newlatitude " + newlatitude);
-                            Log.d("HAZEM", "newlongitude " + newlongitude);
-                        } else {
-                            newlatitude = currentLocation.getLatitude();
-                            newlongitude = currentLocation.getLongitude();
-                        }
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult.getLastLocation() != null) {
+                    currentLocation = locationResult.getLastLocation();
+
+                    double newlatitude;
+                    double newlongitude;
+                    if (getIntent().hasExtra("UPDATE")) {
+
+                        newlatitude = getIntent().getDoubleExtra(Constants.EXTRA_LATITUDE, 0);
+                        newlongitude = getIntent().getDoubleExtra(Constants.EXTRA_LONGITUDE, 0);
+
+                        Log.d("HAZEM", "newlatitude " + newlatitude);
+                        Log.d("HAZEM", "newlongitude " + newlongitude);
+                    } else {
+                        newlatitude = currentLocation.getLatitude();
+                        newlongitude = currentLocation.getLongitude();
+                    }
 
 
-                        LatLng myLatLng = new LatLng(newlatitude, newlongitude);
-                        if (firstTime) {
-                            //zoom to my location
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
-                            //mMap.addMarker(new MarkerOptions().position(myLatLng));
-                            firstTime = false;
-                        }
+                    LatLng myLatLng = new LatLng(newlatitude, newlongitude);
+                    if (firstTime) {
+                        //zoom to my location
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLatLng));
+                        //mMap.addMarker(new MarkerOptions().position(myLatLng));
+                        firstTime = false;
                     }
                 }
-            };
+            }
+        };
 
-            mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationCallback, null);
+        mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationCallback, null);
+        enableLocationLO.setVisibility(View.GONE);
+        saveLocationBtn.setVisibility(View.VISIBLE);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        mMap.getUiSettings().setRotateGesturesEnabled(false);
+        mMap.getUiSettings().setScrollGesturesEnabledDuringRotateOrZoom(false);
+        mMap.setMyLocationEnabled(true);
+        //First zoom
+        mMap.moveCamera(CameraUpdateFactory.zoomTo(17f));
+        if (currentLocation != null) {
+            latitude = currentLocation.getLatitude();
+            longitude = currentLocation.getLongitude();
+
+            if (getCompleteAddressString(latitude, longitude).indexOf("Unnamed") == -1) {
+                address = getCompleteAddressString(latitude, longitude);
+            } else {
+                address = getCompleteAddressString(latitude, longitude).substring(13);
+            }
+//                    if(getCompleteAddressString(latLng.latitude , latLng.longitude).contains("Unnamed"));
+
+            //address = getCompleteAddressString(latLng.latitude , latLng.longitude) ;
+
+            //Log.d("latLnglatLng","Address : "+getCompleteAddressString(latLng.latitude , latLng.longitude));
+            saveLocationBtn.setVisibility(View.VISIBLE);
+            // saveLocationBtn.setText(getString(R.string.save_location) + "\n" + address);
+            if (marker != null) {
+                marker.remove();
+            }
 
         }
+        mMap.setOnCameraChangeListener(cameraPosition -> {
+            Log.d("HAZEM", " Hello I am here " + cameraPosition.target.latitude + " ------ " + cameraPosition.target.longitude);
+            newLatitude = cameraPosition.target.latitude;
+            newLongitude = cameraPosition.target.longitude;
+        });
     }
 
     @Override
@@ -599,12 +571,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-                        mMap.setMyLocationEnabled(true);
-                        if (mMap != null && isMapReady) {
-                            mMap.setMyLocationEnabled(true);
-                        }
+                        afterAccessLocation();
                     }
-
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
@@ -714,7 +682,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     @Override
     protected void onStop() {
         super.onStop();
-        mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
+        if (locationCallback != null)
+            mFusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
     }
 

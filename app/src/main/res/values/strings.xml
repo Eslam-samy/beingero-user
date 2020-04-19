@@ -2,6 +2,7 @@
 <resources>
     <string name="app_name">Bringero</string>
     <string name="app_name_">Bringero</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="phone_number">Phone Number</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
@@ -12,8 +13,11 @@
     <string name="verify_your_phone_number">Verify your Phone Number</string>
     <string name="enter_the_4_digit_pin_that_we_sent_to">Enter the 6 digit PIN that we sent to:</string>
     <string name="verify">Verify</string>
+    <string name="title_activity_store_types">StoreTypesActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Bringero</string>
+    <string name="nav_header_subtitle">bringero@bringero.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="menu_home">Home</string>
@@ -75,6 +79,7 @@
     <string name="your_publishable_key">FLfD1OcSxlMeLaQI3VdkQB9fQmm9lDK_WPyyCG6lqcsE1ql8hVleTk3NLDw-52KUs8r2Z5MTDLV8qYaB7ZjQ3g</string>
     <string name="title_activity_maps">Map</string>
     <string name="save_location">Save location</string>
+    <string name="search_hint_location">Delivery Address ___ </string>
     <string name="click_longer_to_set_the_place">Click longer to choose location</string>
     <string name="permission_denied">Permission denied</string>
     <string name="direction_not_found">Direction not found</string>
@@ -161,7 +166,7 @@
     <string name="save_failed">Save failed</string>
     <string name="recent_address">Recent Address</string>
     <string name="apply_location">Apply Location</string>
-    <string name="google_maps_api_key" translatable="false">AIzaSyCFLGLtMef9wqfYyy489n3S21jei9h2Vq0</string>
+    <string name="google_maps_api_key" translatable="false">AIzaSyBWquUi5NM0iXgCH4HWhz7rRYxRPTR19_E</string>
     <string name="stores">Stores</string>
     <string name="delivery_address">Delivery Address</string>
     <string name="subtotal">Subtotal</string>
@@ -249,11 +254,8 @@
     <string name="you_have_run_out_of_this_coupon">You have run out of this coupon</string>
     <string name="product">product</string>
     <string name="store">store</string>
-    <string name="send">Send</string>
-    <string name="title_field_is_required">title field is required</string>
-    <string name="message_field_is_required">message field is required</string>
-    <string name="the_message_sent_successfully">The message sent successfully</string>
-    <string name="yes_allow">Yes,allow</string>
+    <string name="enable_location">Enable location</string>
+    <string name="enableLocationReason">This app needs the Location permission, please accept to use location functionality</string>
 
 </resources>
 
