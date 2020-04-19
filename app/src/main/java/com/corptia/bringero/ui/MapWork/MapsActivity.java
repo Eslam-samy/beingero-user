@@ -3,6 +3,7 @@ package com.corptia.bringero.ui.MapWork;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.room.util.StringUtil;
@@ -135,7 +136,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     @BindView(R.id.enableLocation)
     Button enableLocation;
     @BindView(R.id.enableLocationLO)
-    LinearLayout enableLocationLO;
+    ConstraintLayout enableLocationLO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
