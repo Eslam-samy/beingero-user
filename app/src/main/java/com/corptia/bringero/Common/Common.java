@@ -54,7 +54,9 @@ public class Common {
 
     //        public static final String BASE_URL = "http://45.77.157.193:8000/graphql";
     public static String BASE_URL = "";
+    public static String TEST_URL = "";
     public static String BASE_URL_IMAGE = "";
+    public static String TEST_URL_IMAGE = "";
 //    public static  String BASE_URL_IMAGE_UPLOAD = "http://bringero.site:8000/images/";
 
     public static final double BASE_MAX_PRICE = 500.00;

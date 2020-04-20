@@ -1,10 +1,12 @@
 package com.corptia.bringero.ui.splash;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewPropertyAnimatorCompat;
 
@@ -120,10 +123,14 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 //                            mFirebaseRemoteConfig.activateFetched();
                                 mFirebaseRemoteConfig.activate();
 
-                                Common.BASE_URL = mFirebaseRemoteConfig.getString(Constants.BASE_URL)+"graphql";
-                                Common.BASE_URL_IMAGE = mFirebaseRemoteConfig.getString(Constants.BASE_URL)+"images/";
-                                PrefUtils.saveToPrefs(SplashActivity.this , PrefKeys.FULL_BASE_URL , Common.BASE_URL);
-                                PrefUtils.saveToPrefs(SplashActivity.this , PrefKeys.FULL_BASE_URL_IMAGE , Common.BASE_URL_IMAGE);
+                                Common.BASE_URL = mFirebaseRemoteConfig.getString(Constants.BASE_URL) + "graphql";
+                                Common.BASE_URL_IMAGE = mFirebaseRemoteConfig.getString(Constants.BASE_URL) + "images/";
+                                Common.TEST_URL = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "graphql";
+                                Common.TEST_URL_IMAGE = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "images/";
+                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_BASE_URL, Common.BASE_URL);
+                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_BASE_URL_IMAGE, Common.BASE_URL_IMAGE);
+                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_TEST_URL, Common.TEST_URL);
+                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_TEST_URL_IMAGE, Common.TEST_URL_IMAGE);
 
 //                                Common.BASE_URL_IMAGE_UPLOAD = mFirebaseRemoteConfig.getString(Constants.BASE_URL)+"images/";
 
@@ -173,7 +180,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
                                                 }
 
                                                 startActivity(intent);
-                                                overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+                                                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                                                 finish();
 
 //                                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -219,9 +226,17 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
             String phone = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_PHONE, "");
             String password = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_PASSWORD, "");
-
-            loginPresenter.onLogin(phone, password);
-
+            switch (phone) {
+                case "01003544497":
+                case "01000100041":
+                case "01000100042":
+                case "01000100043":
+                case "01029936932":
+                    showTestingDialogue(phone, password);
+                    break;
+                default:
+                    loginPresenter.onLogin(phone, password);
+            }
         } else {
 
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
@@ -231,6 +246,40 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
         }
 
 
+    }
+
+    private void showTestingDialogue(String phone, String password) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.are_you_testing));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                String holderUrl= Common.BASE_URL;
+                Common.BASE_URL = Common.TEST_URL;
+                Common.TEST_URL = holderUrl;
+                holderUrl = Common.BASE_URL_IMAGE;
+                Common.BASE_URL_IMAGE = Common.TEST_URL_IMAGE;
+                Common.TEST_URL_IMAGE   = holderUrl;
+                if (dialogInterface != null) {
+                    dialogInterface.dismiss();
+                }
+                loginPresenter.onLogin(phone, password);
+            }
+        });
+
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (dialogInterface != null) {
+                    dialogInterface.dismiss();
+                }
+                loginPresenter.onLogin(phone, password);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     @Override
@@ -261,7 +310,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
             LocaleHelper.setLocale(SplashActivity.this, Common.CURRENT_USER.getLanguage().toLowerCase());
 
-            PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.USER_TOKEN_API,Common.CURRENT_USER.getToken());
+            PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.USER_TOKEN_API, Common.CURRENT_USER.getToken());
 
             startActivity(new Intent(SplashActivity.this, SelectDeliveryLocationActivity.class));
 
@@ -279,9 +328,9 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
             @Override
             public void run() {
 
-                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.USER_TOKEN_API,Common.CURRENT_USER.getToken());
+                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.USER_TOKEN_API, Common.CURRENT_USER.getToken());
                 startActivity(new Intent(SplashActivity.this, AllowLocationActivity.class));
-                overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 isFirstTimeAddLocation = true;
                 finish();
 
@@ -303,7 +352,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
             public void run() {
 
                 startActivity(new Intent(SplashActivity.this, SuspendActivity.class));
-                overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 isFirstTimeAddLocation = true;
                 finish();
             }

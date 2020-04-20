@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -88,8 +89,20 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         loginPresenter = new LoginPresenter(this);
 
         btn_login.setOnClickListener(view1 -> {
+            String phone = input_phone_number.getEditText().getText().toString();
+            String password = input_password.getEditText().getText().toString();
 
-            loginPresenter.onLogin(input_phone_number.getEditText().getText().toString(), input_password.getEditText().getText().toString());
+            switch (phone) {
+                case "01003544497":
+                case "01000100041":
+                case "01000100042":
+                case "01000100043":
+                case "01029936932":
+                    showTestingDialogue(phone, password);
+                    break;
+                default:
+                    loginPresenter.onLogin(phone, password);
+            }
             //HomeActivity .navController .navigate(R.id.action_loginFragment_to_nav_home2);
         });
 
@@ -115,11 +128,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
             @Override
             public void onClick(View view) {
                 TextView lang = btn_changelanguage.findViewById(R.id.lang);
-                if (lang.getText().toString().equalsIgnoreCase("English")){
+                if (lang.getText().toString().equalsIgnoreCase("English")) {
                     setLocale("en");
-                }
-                else
-                {
+                } else {
                     setLocale("ar");
                 }
 
@@ -214,7 +225,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PHONE, input_phone_number.getEditText().getText().toString());
         PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PASSWORD, input_password.getEditText().getText().toString());
 
-        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_TOKEN_API,Common.CURRENT_USER.getToken());
+        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_TOKEN_API, Common.CURRENT_USER.getToken());
     }
 
     @Override
@@ -314,6 +325,39 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
     }
 
+    private void showTestingDialogue(String phone, String password) {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the positive and negative buttons on the dialog.
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setMessage(getString(R.string.are_you_testing));
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int which) {
+                String holderUrl = Common.BASE_URL;
+                Common.BASE_URL = Common.TEST_URL;
+                Common.TEST_URL = holderUrl;
+                holderUrl = Common.BASE_URL_IMAGE;
+                Common.BASE_URL_IMAGE = Common.TEST_URL_IMAGE;
+                Common.TEST_URL_IMAGE = holderUrl;
+                if (dialogInterface != null) {
+                    dialogInterface.dismiss();
+                }
+                loginPresenter.onLogin(phone, password);
+            }
+        });
+
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (dialogInterface != null) {
+                    dialogInterface.dismiss();
+                }
+                loginPresenter.onLogin(phone, password);
+            }
+        });
+        androidx.appcompat.app.AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
     private void goAppInGooglePlay(String appPackageName) {
 

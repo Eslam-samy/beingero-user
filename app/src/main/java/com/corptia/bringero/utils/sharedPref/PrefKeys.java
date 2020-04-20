@@ -16,4 +16,6 @@ public class PrefKeys {
     public static final String USER_TOKEN_API = "USER_TOKEN_API";
     public static final String FULL_BASE_URL = "FULL_BASE_URL";
     public static final String FULL_BASE_URL_IMAGE = "FULL_BASE_URL_IMAGE";
+    public static final String FULL_TEST_URL = "FULL_TEST_URL";
+    public static final String FULL_TEST_URL_IMAGE = "FULL_TEST_URL_IMAGE";
 }
