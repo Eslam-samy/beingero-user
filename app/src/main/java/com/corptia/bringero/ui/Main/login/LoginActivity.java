@@ -92,6 +92,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
             String phone = input_phone_number.getEditText().getText().toString();
             String password = input_password.getEditText().getText().toString();
 
+/*
             switch (phone) {
                 case "01003544497":
                 case "01000100041":
@@ -103,6 +104,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
                 default:
                     loginPresenter.onLogin(phone, password);
             }
+*/
+            loginPresenter.onLogin(phone, password);
             //HomeActivity .navController .navigate(R.id.action_loginFragment_to_nav_home2);
         });
 
