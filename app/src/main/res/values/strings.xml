@@ -256,6 +256,20 @@
     <string name="message_field_is_required">message field is required</string>
     <string name="the_message_sent_successfully">The message sent successfully</string>
     <string name="yes_allow">Yes,allow</string>
+    <string name="apply_coupon_code">Apply Coupon Code</string>
+    <string name="coupon_code">Coupon Code</string>
+    <string name="purchase_successful">Purchase Successful</string>
+    <string name="store_notified">The stores have been notified to prepare your order.A notification will be sent to you when the order status update.</string>
+    <string name="alright">Ok</string>
+    <string name="sorry_for_the_inconvenience">Sorry for the inconvenience</string>
+    <string name="please_contact_technical_support_to_find_out_the_cause_of_the_problem">Please contact technical support to find out the cause of the problem</string>
+    <string name="under_maintanence">Under Maintanence</string>
+    <string name="our_service_is_under_maintenance_we_will_continue_our_service_soon">Our service is under maintenance. We will continue our service soon.</string>
+    <string name="excuse_me">Excuse me !!</string>
+    <string name="the_store_is_closed_now_you_want_to_continue">The store is closed now, you want to continue ?</string>
+    <string name="how_was_your_order">How was your order ?</string>
+    <string name="your_feedback_will_help_us_to_improve">Your Feedback Will help Us To Improve</string>
+    <string name="submit_review">Submit Review</string>
 
 </resources>
 

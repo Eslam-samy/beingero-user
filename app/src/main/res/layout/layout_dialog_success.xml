@@ -157,7 +157,7 @@
                     android:textSize="18sp"
                     android:textColor="@android:color/primary_text_light"
                     android:layout_marginTop="55dp"
-                    android:text="Purchase Successful"/>
+                    android:text="@string/purchase_successful"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -168,11 +168,11 @@
                     android:layout_marginRight="32dp"
                     android:id="@+id/message"
                     android:gravity="center"
-                    android:text="The seller has been notified to ship your item and we will only release the payment after you have received it."
+                    android:text="@string/store_notified"
                     />
                 <Button
                     android:id="@+id/btn_ok"
-                    android:text="@string/ok"
+                    android:text="@string/alright"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginLeft="16dp"

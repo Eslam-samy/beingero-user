@@ -132,12 +132,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                     txt_time.setText(ago);
 
-                }
-                catch (Exception ex){
+                } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-
-
 
 
 //                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -163,12 +160,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
 //            txt_date_notification.setText(notification.createdAt().toString());
             txt_messages_notification.setText(notification.message());
-
-            String uriColor = "@color/" + notification.docStatus().toLowerCase();
+            String uriColor = "@color/blue1";
+            if (notification.docStatus() != null)
+                uriColor = "@color/" + notification.docStatus().toLowerCase();
             int colorResource = context.getResources().getIdentifier(uriColor, null, context.getPackageName());
             card_image_notification.setCardBackgroundColor(context.getResources().getColor(colorResource));
-
-            String uriImage = "@drawable/ic_notification_" + notification.docStatus().toLowerCase();
+            String uriImage = "@drawable/ic_notification_approved";
+            if (notification.docStatus() != null)
+                uriImage = "@drawable/ic_notification_" + notification.docStatus().toLowerCase();
 //            Common.LOG("Hi : " + uriImage);
             int imageResource = context.getResources().getIdentifier(uriImage, null, context.getPackageName());
 //            Drawable res = context.getResources().getDrawable(imageResource);
@@ -186,13 +185,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 @Override
                 public void onClick(View view) {
 
-                    if(clicked){
+                    if (clicked) {
                         return;
                     }
                     clicked = true;
-                    view.postDelayed(() -> clicked = false,500);
+                    view.postDelayed(() -> clicked = false, 500);
 
-                    clickListener.onClick(view , position);
+                    clickListener.onClick(view, position);
                 }
             });
 

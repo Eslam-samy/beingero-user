@@ -59,7 +59,7 @@
     <string name="contat_us">تواصل معنا</string>
     <string name="name">الاسم</string>
     <string name="message">الرسائل</string>
-    <string name="choose_language">اخيتر لغه</string>
+    <string name="choose_language">اختر لغه</string>
     <string name="notification">الاشعارات</string>
     <string name="my_cart">سلة الشراء</string>
     <string name="apply_voucher_code">تطبيق كود الخصم</string>
@@ -256,6 +256,20 @@
 
     <string name="enable_location">تفعيل الموقع</string>
     <string name="enableLocationReason">هذا التطبيق يحتاج لتفعيل خدمة الموقع. رجاء تفعيل هذه الخدمة.</string>
+    <string name="apply_coupon_code">تفعيل كوبون الخصم</string>
+    <string name="coupon_code">كود الكوبون</string>
+    <string name="purchase_successful">تم بنجاح</string>
+    <string name="store_notified">تم إعلام المتاجر لتجهيز طلبك.وسوف نقوم بإعلامك عند أى تعديل فى حالة الطلب!</string>
+    <string name="alright">حسنا</string>
+    <string name="sorry_for_the_inconvenience">نعتذر عن الازعاج</string>
+    <string name="please_contact_technical_support_to_find_out_the_cause_of_the_problem">رجاء التواصل مع الدعم الفنى لمعرفة وحل المشكلة.</string>
+    <string name="under_maintanence">فى الصيانة</string>
+    <string name="our_service_is_under_maintenance_we_will_continue_our_service_soon">حدماتنا تحضع للصيانة مؤقتا. وسيتم الاستمرار فى تقديم الخدمة قريبا.</string>
+    <string name="excuse_me">عذرا!!</string>
+    <string name="the_store_is_closed_now_you_want_to_continue">المتجر مغلق الان. هل تريد المتابعة؟</string>
+    <string name="how_was_your_order">كيف كان طلبك ؟</string>
+    <string name="your_feedback_will_help_us_to_improve">تقييمك سوف يساعدنا على تقديم خدمة أفضل !</string>
+    <string name="submit_review">إرسال التقييم</string>
 
 
 </resources>

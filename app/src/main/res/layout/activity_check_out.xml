@@ -69,7 +69,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="Apply Coupon Code"
+                        android:text="@string/apply_coupon_code"
                         android:fontFamily="@font/poppinsmedium"
                         android:textColor="@color/blueLight"
                         android:layout_marginTop="@dimen/medium_margin" />
@@ -79,7 +79,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Add"
+                        android:text="@string/add"
                         android:fontFamily="@font/poppinsmedium"
                         android:textColor="@color/blueLight"
                         android:layout_marginTop="@dimen/medium_margin"
@@ -103,7 +103,7 @@
                         style="@style/EditTextStyle"
                         android:background="@drawable/shadow_layout_input"
                         android:layout_marginStart="8dp"
-                        android:hint="Coupon Code"
+                        android:hint="@string/coupon_code"
                         android:paddingStart="@dimen/large_padding"
                         android:paddingTop="12dp"/>
 
