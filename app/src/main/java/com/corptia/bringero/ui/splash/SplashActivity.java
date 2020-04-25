@@ -125,14 +125,14 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
 
                                 Common.BASE_URL = mFirebaseRemoteConfig.getString(Constants.BASE_URL) + "graphql";
                                 Common.BASE_URL_IMAGE = mFirebaseRemoteConfig.getString(Constants.BASE_URL) + "images/";
-                                /*Common.TEST_URL = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "graphql";
-                                Common.TEST_URL_IMAGE = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "images/";*/
                                 PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_BASE_URL, Common.BASE_URL);
                                 PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_BASE_URL_IMAGE, Common.BASE_URL_IMAGE);
-/*
+
+                                /*Common.TEST_URL = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "graphql";
+                                Common.TEST_URL_IMAGE = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "images/";
                                 PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_TEST_URL, Common.TEST_URL);
-                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_TEST_URL_IMAGE, Common.TEST_URL_IMAGE);
-*/
+                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_TEST_URL_IMAGE, Common.TEST_URL_IMAGE);*/
+
 
 //                                Common.BASE_URL_IMAGE_UPLOAD = mFirebaseRemoteConfig.getString(Constants.BASE_URL)+"images/";
 

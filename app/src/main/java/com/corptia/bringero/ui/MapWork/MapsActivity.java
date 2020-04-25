@@ -281,6 +281,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         });
 
     }
+
     public void statusCheck() {
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -307,6 +308,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         final AlertDialog alert = builder.create();
         alert.show();
     }
+
     private void setupPlaceAutoComplete() {
 
         place_fragment = (AutocompleteSupportFragment)
@@ -360,7 +362,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 
     }
 
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -391,7 +392,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                     lastSpan = detector.getCurrentSpan();
                 } else if (detector.getEventTime() - lastZoomTime >= 50) {
                     lastZoomTime = detector.getEventTime();
-                    googleMap.animateCamera(CameraUpdateFactory.zoomBy(getZoomValue(detector.getCurrentSpan(), lastSpan)), 50, null);
+                    mMap.animateCamera(CameraUpdateFactory.zoomBy(getZoomValue(detector.getCurrentSpan(), lastSpan)), 50, null);
                     lastSpan = detector.getCurrentSpan();
                 }
                 return false;
@@ -495,8 +496,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
 //
 //            }
 //        });
+        checkLocationPermission();
     }
-
 
     private void checkLocationPermission() {
 
@@ -514,6 +515,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
                 }
             });
         } else {
+            enableLocationLO.setVisibility(View.GONE);
+            saveLocationBtn.setVisibility(View.VISIBLE);
             afterAccessLocation();
         }
     }
