@@ -146,7 +146,15 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         ButterKnife.bind(this);
         btn_satellite.setTag("MAP_TYPE_NORMAL");
 
-
+        saveLocationBtn.setVisibility(View.GONE);
+        enableLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityCompat.requestPermissions(MapsActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+        });
         //For AutoComplete
         initPlaces();
         setupPlaceAutoComplete();
@@ -176,6 +184,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         if (!getIntent().hasExtra("FACILITY")) {
             mLocationRequest.setInterval(5000);
         }
+        statusCheck();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         } else {
@@ -272,7 +281,32 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
         });
 
     }
+    public void statusCheck() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps();
+
+        }
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
     private void setupPlaceAutoComplete() {
 
         place_fragment = (AutocompleteSupportFragment)
@@ -487,7 +521,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
     private void afterAccessLocation() {
         if (mMap != null && isMapReady) {
             mMap.setMyLocationEnabled(true);
-        }
+
 
         locationCallback = new LocationCallback() {
 
@@ -557,6 +591,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback {
             newLatitude = cameraPosition.target.latitude;
             newLongitude = cameraPosition.target.longitude;
         });
+        }
     }
 
     @Override
