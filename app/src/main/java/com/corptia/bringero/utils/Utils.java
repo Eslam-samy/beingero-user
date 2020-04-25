@@ -24,7 +24,7 @@ public class Utils {
 
    public static String cutName(String name){
 
-       return name.length() >= 30 ? name.substring(0,30)+"..." : name ;
+       return name.length() >= 60 ? name.substring(0,57)+"..." : name ;
 
    }
 
