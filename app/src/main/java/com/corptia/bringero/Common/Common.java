@@ -30,6 +30,7 @@ import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.model.CartItemsModel;
 import com.corptia.bringero.model.CurrentDeliveryAddress;
+import com.corptia.bringero.model.MyCart;
 import com.corptia.bringero.model.UserModel;
 import com.corptia.bringero.type.CartItemFilterInput;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
@@ -60,10 +61,10 @@ public class Common {
 //    public static  String BASE_URL_IMAGE_UPLOAD = "http://bringero.site:8000/images/";
 
     public static final double BASE_MAX_PRICE = 500.00;
-    public static  double LAST_APP_VERSION ;
+    public static double LAST_APP_VERSION;
 
-    public static  String DELIVERY_COST ;
-    public static  String MINDELIVERY_COST ;
+    public static String DELIVERY_COST;
+    public static String MINDELIVERY_COST;
 
     public static Boolean IS_AVAILABLE_STORE = false;
 
@@ -82,6 +83,9 @@ public class Common {
     public static List<String> CART_ITEMS_ID = new ArrayList<>();
     public static double TOTAL_CART_PRICE = 0;
     public static int TOTAL_CART_AMOUNT = 0;
+
+    public static List<MyCart> myLocalCart = new ArrayList<>();
+    public static List<String> myLocalCartIds = new ArrayList<>();
 
     //For Change Langage For number
     //public static DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
@@ -227,7 +231,7 @@ public class Common {
 
                             for (GetCartItemsCountQuery.Data1 product : Items) {
 
-                                CART_ITEMS_MODELS.add(new CartItemsModel(product.cartProductId(), product.pricingProductId(), product.totalPrice(), product.amount() , product.PricingProductResponse().data().ProductResponse().data().isPackaged()));
+                                CART_ITEMS_MODELS.add(new CartItemsModel(product.cartProductId(), product.pricingProductId(), product.totalPrice(), product.amount(), product.PricingProductResponse().data().ProductResponse().data().isPackaged()));
                                 CART_ITEMS_ID.add(product.cartProductId());
 
                                 if (isFirstTimeGetCartCount) {
@@ -240,8 +244,6 @@ public class Common {
                             if (isFirstTimeGetCartCount) {
                                 TOTAL_CART_AMOUNT = CART_ITEMS_MODELS.size();
                             }
-
-
 
 
                             if (listener != null)
@@ -258,6 +260,7 @@ public class Common {
                             isFirstTimeGetCartCount = false;
 
                         }
+                        Log.i("TAG Moha price", "onResponse: cart total from server " + Common.TOTAL_CART_PRICE);
                     }
 
                     @Override
@@ -288,7 +291,6 @@ public class Common {
                                                                    int building, int floor, int flat) {
 
 
-
         CurrentDeliveryAddress currentDeliveryAddressModel = new CurrentDeliveryAddress();
 
         currentDeliveryAddressModel.setId(_id);
@@ -316,7 +318,7 @@ public class Common {
     }
 
     public static void LOG(String log) {
-        Log.d("HAZEM" , "Log : "+log);
+        Log.d("HAZEM", "Log : " + log);
     }
 
 }

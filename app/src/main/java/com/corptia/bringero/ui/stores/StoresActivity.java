@@ -34,13 +34,13 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
     @BindView(R.id.loading)
     LottieAnimationView loading;
 
-    StoresAdapter adapter ;
+    StoresAdapter adapter;
     List<StoreTypes> storeTypesList = new ArrayList<>();
 
     StoresPresenter storePresenter;
 
     //For Store Local Category Id
-    String categoryId = "" , storeTypeName;
+    String categoryId = "", storeTypeName;
 
     Handler handler = new Handler();
 
@@ -58,8 +58,7 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        if (intent!=null)
-        {
+        if (intent != null) {
             categoryId = intent.getStringExtra(Constants.EXTRA_CATEGOTY_ID);
             storeTypeName = intent.getStringExtra(Constants.EXTRA_STORE_TYPE_NAME);
         }
@@ -68,11 +67,11 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
 
 
         recycler_brands.setLayoutManager(new LinearLayoutManager(this));
-        recycler_brands.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(0,this)));
+        recycler_brands.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(0, this)));
 
         initActionBar();
 
-        storePresenter.getStores(categoryId , true);
+        storePresenter.getStores(categoryId, true);
 
     }
 
@@ -103,24 +102,22 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
             @Override
             public void run() {
 
-                countRespons+=1;
+                countRespons += 1;
                 Common.LOG(" Size Before " + storesList.size());
                 storesList.addAll(repositoryList);
                 Common.LOG(" Size After " + storesList.size());
 
-
-                if (countRespons == 2){
-                    adapter = new StoresAdapter(StoresActivity.this , storesList);
+                Common.LOG("" + countRespons);
+                if (countRespons == 2) {
+                    adapter = new StoresAdapter(StoresActivity.this, storesList);
                     recycler_brands.setAdapter(adapter);
-                }
-                else if (countRespons ==1){
-                    storePresenter.getStores(categoryId , false);
+                } else if (countRespons == 1) {
+                    storePresenter.getStores(categoryId, false);
                 }
 
 
             }
         });
-
 
 
     }
@@ -132,7 +129,7 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
             @Override
             public void run() {
 
-                adapter = new StoresAdapter(StoresActivity.this , repositoryList);
+                adapter = new StoresAdapter(StoresActivity.this, repositoryList);
                 recycler_brands.setAdapter(adapter);
 
             }
@@ -148,7 +145,6 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
 
     @Override
     public void showProgressBar() {
-
 
 
     }

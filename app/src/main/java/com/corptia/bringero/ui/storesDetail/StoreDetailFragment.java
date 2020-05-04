@@ -24,11 +24,15 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.Interface.AdapterOnProductClickListener;
 import com.corptia.bringero.Interface.CallbackListener;
+import com.corptia.bringero.Interface.IOnProductClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.CreateCartItemMutation;
+import com.corptia.bringero.graphql.StoreSearchQuery;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
+import com.corptia.bringero.model.MyCart;
 import com.corptia.bringero.type.CreateCartItem;
 import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.recyclerview.PaginationListener;
@@ -48,6 +52,7 @@ import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_ST
 
 public class StoreDetailFragment extends Fragment implements StoreDetailContract.StoreDetailView {
 
+    private static final String TAG = "TAG Moha price";
     //For Pagination
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
@@ -59,15 +64,15 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
     @BindView(R.id.root)
     ConstraintLayout root;
 
-    StoreDetailAdapter storeDetailAdapter;
+    NewStoreDetailAdapter storeDetailAdapter;
 
     Handler handler = new Handler();
 
     StoreDetailPresenter storeDetailPresenter;
 
-    GridLayoutManager gridLayoutManager ;
+    GridLayoutManager gridLayoutManager;
 
-    String typeId , storeId;
+    String typeId, storeId;
 
     //For Placeholder
     @BindView(R.id.layout_placeholder)
@@ -85,7 +90,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     @BindView(R.id.loading)
     LottieAnimationView loading;
-
 
 
     public StoreDetailFragment() {
@@ -139,7 +143,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             // set argument data to view
             typeId = getArguments().getString(Constants.EXTRA_PRODUCT_TYPE_ID);
             storeId = getArguments().getString(Constants.EXTRA_STORE_ID);
-            storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId , currentPage);
+            storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId, currentPage);
             //Here Get Products For This Type
 
         }
@@ -148,12 +152,15 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
         recycler_brands_detail.addOnScrollListener(new PaginationListener(gridLayoutManager) {
             @Override
             protected void loadMoreItems() {
+                for (MyCart myCartItem : Common.myLocalCart) {
+                    updateCartItem(myCartItem, false, null);
+                }
 
                 isLoading = true;
                 currentPage++;
                 if (currentPage <= totalPages) {
                     storeDetailAdapter.addLoading();
-                    storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId ,currentPage);
+                    storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId, currentPage);
                 } else {
                     isLastPage = true;
                 }
@@ -169,11 +176,8 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 return isLoading;
             }
         });
-
-
-        storeDetailAdapter = new StoreDetailAdapter(getActivity(), null);
+        storeDetailAdapter = new NewStoreDetailAdapter(getActivity(), null);
         recycler_brands_detail.setAdapter(storeDetailAdapter);
-
         return view;
     }
 
@@ -217,42 +221,193 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
             totalPages = product.pagination().totalPages();
             storeDetailAdapter.addItems(product.Products());
+            storeDetailAdapter.setListener((id, cartID, price, amount, inCart, isDecrease, txt_amount, btn_delete, bg_delete) -> {
+                if (!Common.myLocalCart.isEmpty())
+                    for (int i = Common.myLocalCart.size() - 1; i >= 0; i--) {
+                        MyCart myCartItem = Common.myLocalCart.get(i);
+                        if (!myCartItem.getProductId().equals(id)) {
+                            updateCartItem(myCartItem, i == Common.myLocalCart.size() - 1, loading);
+                            Common.myLocalCart.remove(myCartItem);
+                            Common.myLocalCartIds.remove(myCartItem.getProductId());
+                        }
+                    }
 
-            storeDetailAdapter.setListener((view, position,price , amount , isPackaged) -> {
+                if (!Common.myLocalCartIds.contains(id)) {
+                    Common.myLocalCartIds.add(id);
+                    MyCart myCartItem = new MyCart();
+                    myCartItem.setAmount(amount);
+                    myCartItem.setCartId(cartID);
+                    myCartItem.setInCart(inCart);
+                    myCartItem.setDecrease(isDecrease);
+                    myCartItem.setPrice(price);
+                    myCartItem.setProductId(id);
+                    Common.myLocalCart.add(myCartItem);
+                } else {
+                    for (MyCart myCartItem : Common.myLocalCart) {
+                        if (myCartItem.getProductId().equals(id)) {
+                            int index = Common.myLocalCart.indexOf(myCartItem);
+                            myCartItem.setAmount(amount);
+                            myCartItem.setDecrease(isDecrease);
+                            Common.myLocalCart.set(index, myCartItem);
+                        }
+                    }
+                }
 
-                double finalAmount = 0;
-                if (isPackaged)
-                    finalAmount = 1;
-                else
-                    finalAmount = amount;
+                if (amount > 0) {
+                    txt_amount.setVisibility(View.VISIBLE);
+                    btn_delete.setVisibility(View.VISIBLE);
+                    bg_delete.setVisibility(View.VISIBLE);
+                } else {
+                    txt_amount.setVisibility(View.INVISIBLE);
+                    btn_delete.setVisibility(View.INVISIBLE);
+                    bg_delete.setVisibility(View.INVISIBLE);
+                }
 
-//                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
-//                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
-//                    intent.putExtra(Constants.EXTRA_PRODUCT_ID , mProduct._id());
-//                    if (mProduct.Product().ImageResponse().data()!=null)
-//                    intent.putExtra(Constants.EXTRA_PRODUCT_IMAGE , mProduct.Product().ImageResponse().data().name());
-//                    startActivity(intent);
-
-                //Here Add To Cart
-                //Get Data Store
-
-                GetStoreProductsQuery.Product items = storeDetailAdapter.productsList.get(position);
-
-                double priceProduct ;
-                if (items.discountActive()!=null &&items.discountActive())
-                    priceProduct =(1- items.discountRatio()) * items.storePrice();
-                else
-                    priceProduct = items.storePrice();
-
-                EventBus.getDefault().postSticky(new CalculateCartEvent(true, price , amount));
-                addToCart(storeDetailAdapter.getSelectProduct(position)._id() , position , finalAmount);
-
-
+                if (!isDecrease) {
+                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, price, amount));
+                }
             });
+            /*storeDetailAdapter.setListener(new AdapterOnProductClickListener() {
+                @Override
+                public void onClickSearch(StoreSearchQuery.ProductQuery searchProduct, String cartID, double price, double amount, boolean inCart, boolean isDecrease, TextView txt_amount, View btn_delete, View bg_delete) {
+
+                }
+
+                @Override
+                public void onClickNoSearch(GetStoreProductsQuery.Product noSearchProduct, String cartID, double finalPrice1, double amount, boolean inCart, boolean isDecrease, TextView txt_amount, View btn_delete, View bg_delete) {
+                    if (Common.TOTAL_CART_PRICE <= 0) {
+                        Common.TOTAL_CART_PRICE = 0;
+                    }
+                    Boolean isPackaged = noSearchProduct.Product().isPackaged();
+                    double minSellingUnits = noSearchProduct.Product().minSellingUnits();
+                    double unitStep = noSearchProduct.Product().unitStep();
+                    if (!isPackaged) {
+                        double step, actualAmount = 0;
+                        if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
+                            step = minSellingUnits;
+                            actualAmount = minSellingUnits;
+                            inCart = false;
+                        } else {
+                            inCart = true;
+                            step = unitStep;
+                            actualAmount = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) + unitStep;
+                        }
+
+                        if (checkMaxPrice(finalPrice1 * step)) return;
+                        if (actualAmount < 100) {
+                            if (cartID.isEmpty()) {
+                                //I am product new
+                                Common.TOTAL_CART_AMOUNT += 1;
+                                cartID = "any";
+                            }
+                            Common.TOTAL_CART_PRICE += (finalPrice1 * step);
+                            txt_amount.setText(new StringBuilder().append(actualAmount).append(" ").append(getContext().getString(R.string.kg)));
+                            performClick(noSearchProduct._id(), cartID, finalPrice1 * step, actualAmount, inCart, isDecrease, txt_amount, btn_delete, bg_delete);
+
+                        }
+
+                        if (step != 1)
+                            txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                }
+                            });
+
+                    } else {
+                        if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
+                            inCart = false;
+                        } else {
+                            inCart = true;
+                        }
+                        if (checkMaxPrice(finalPrice1)) return;
+                        int count;
+                        count = Integer.parseInt(txt_amount.getText().toString().split(" ")[0]) + 1;
+                        if (count < 100) {
+                            if (cartID.isEmpty()) {
+                                //I am product new
+                                Common.TOTAL_CART_AMOUNT += 1;
+                                cartID = "any";
+                            }
+                            Common.TOTAL_CART_PRICE += finalPrice1;
+                            if (isPackaged) {
+                                Log.i(TAG, "onClick:2= " + count);
+                                txt_amount.setText(new StringBuilder().append(count).append(" ").append("X"));
+                            }
+                            performClick(noSearchProduct._id(), cartID, finalPrice1, count, inCart, isDecrease, txt_amount, btn_delete, bg_delete);
+                        }
+                        if (count != 1)
+                            txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                }
+                            });
+
+                    }
+                }
+            });*/
 
         });
 
     }
+/*
+
+    private boolean checkMaxPrice(double v) {
+        if (Common.TOTAL_CART_PRICE + (v) > Common.BASE_MAX_PRICE) {
+            Toasty.warning(getContext(), getActivity().getString(R.string.limit_max_cart)).show();
+            return true;
+        }
+        return false;
+    }
+
+    private void performClick(String id, String cartId, double price, double amount, boolean inCart, boolean isDecrease, View txt_amount, View btn_delete, View bg_delete) {
+        if (!Common.myLocalCart.isEmpty())
+            for (int i = Common.myLocalCart.size() - 1; i >= 0; i--) {
+                MyCart myCartItem = Common.myLocalCart.get(i);
+                if (!myCartItem.getProductId().equals(id)) {
+                    updateCartItem(myCartItem);
+                    Common.myLocalCart.remove(myCartItem);
+                    Common.myLocalCartIds.remove(myCartItem.getProductId());
+                }
+            }
+
+        if (!Common.myLocalCartIds.contains(id)) {
+            Common.myLocalCartIds.add(id);
+            MyCart myCartItem = new MyCart();
+            myCartItem.setAmount(amount);
+            myCartItem.setCartId(cartId);
+            myCartItem.setInCart(inCart);
+            myCartItem.setDecrease(isDecrease);
+            myCartItem.setPrice(price);
+            myCartItem.setProductId(id);
+            Common.myLocalCart.add(myCartItem);
+        } else {
+            for (MyCart myCartItem : Common.myLocalCart) {
+                if (myCartItem.getProductId().equals(id)) {
+                    int index = Common.myLocalCart.indexOf(myCartItem);
+                    myCartItem.setAmount(amount);
+                    myCartItem.setDecrease(isDecrease);
+                    Common.myLocalCart.set(index, myCartItem);
+                }
+            }
+        }
+
+        if (amount > 0) {
+            txt_amount.setVisibility(View.VISIBLE);
+            btn_delete.setVisibility(View.VISIBLE);
+            bg_delete.setVisibility(View.VISIBLE);
+        } else {
+            txt_amount.setVisibility(View.INVISIBLE);
+            btn_delete.setVisibility(View.INVISIBLE);
+            bg_delete.setVisibility(View.INVISIBLE);
+        }
+
+        if (!isDecrease) {
+            EventBus.getDefault().postSticky(new CalculateCartEvent(true, price, amount));
+        }
+    }
+*/
 
     @Override
     public void setPlaceholder() {
@@ -286,16 +441,70 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     }
 
+    @Override
+    public void onPause() {
+
+        sendToServer();
+        super.onPause();
+    }
+
+    private void sendToServer() {
+        if (!Common.myLocalCart.isEmpty()) {
+            loading.setVisibility(View.VISIBLE);
+        }
+        for (MyCart myCartItem : Common.myLocalCart) {
+            updateCartItem(myCartItem, Common.myLocalCart.indexOf(myCartItem) == Common.myLocalCart.size() - 1, loading);
+        }
+        Common.myLocalCart.clear();
+        Common.myLocalCartIds.clear();
+    }
+
+    private void updateCartItem(MyCart myCartItem, boolean isLast, View loading) {
+        if (!myCartItem.getInCart()) {
+            Log.i(TAG, "updateCartItem: 1");
+            if (myCartItem.getAmount() > 0) {
+                Log.i(TAG, "updateCartItem: 2");
+                addToCart(myCartItem.getProductId(), myCartItem.getAmount(), isLast);
+            }
+        } else {
+            Log.i(TAG, "updateCartItem: 3");
+            if (myCartItem.getAmount() > 1) {
+                Log.i(TAG, "updateCartItem: 4");
+
+                storeDetailAdapter.updateCartItems(myCartItem.getCartId(), myCartItem.getAmount(), myCartItem.getPrice(), isLast, loading);
+            } else {
+                Log.i(TAG, "updateCartItem: 5");
+                storeDetailAdapter.deleteCartItems(myCartItem.getCartId(), isLast, loading);
+            }
+        }
+        if (myCartItem.getDecrease()) {
+            if (myCartItem.getAmount() > 1) {
+                Log.i(TAG, "updateCartItem: 6");
+                storeDetailAdapter.updateCartItems(myCartItem.getCartId(), myCartItem.getAmount(), myCartItem.getPrice(), isLast, loading);
+            } else {
+                Log.i(TAG, "updateCartItem: 7");
+                storeDetailAdapter.deleteCartItems(myCartItem.getCartId(), isLast, loading);
+            }
+        }
+    }
 
     //TODO Here Make Refresh
     //notifyItemChanged(position); (have two adapter product and search)
-    public void addToCart(String pricingProductId , int position , double amount) {
+    public void addToCart(String id, double amount, boolean isLast) {
 
-        CreateCartItem item = CreateCartItem.builder().amount(amount).pricingProductId(pricingProductId).build();
+        CreateCartItem item = CreateCartItem.builder().amount(amount).pricingProductId(id).build();
         MyApolloClient.getApolloClient().mutate(CreateCartItemMutation.builder().data(item).build())
                 .enqueue(new ApolloCall.Callback<CreateCartItemMutation.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (isLast)
+                                    loading.setVisibility(View.VISIBLE);
+                            }
+                        });
+
 
                         CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
                         if (createResponse.status() == 200) {
@@ -330,7 +539,5 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                     }
                 });
     }
-
-
 
 }

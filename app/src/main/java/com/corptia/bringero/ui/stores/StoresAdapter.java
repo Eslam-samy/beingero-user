@@ -71,8 +71,8 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
 
 
                 if (storeTypes.isAvailable()){
-                    holder.itemView.setEnabled(false);
-
+                    /*holder.itemView.setEnabled(false);
+*/
                     Intent intentStore = new Intent(context , StoreDetailActivity.class);
                     intentStore.putExtra(Constants.EXTRA_STORE_ID , storeTypes._id());
                     intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID , storeTypes.adminUserId());
