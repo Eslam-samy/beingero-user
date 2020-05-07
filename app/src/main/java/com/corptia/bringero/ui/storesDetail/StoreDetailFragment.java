@@ -154,6 +154,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             protected void loadMoreItems() {
                 for (MyCart myCartItem : Common.myLocalCart) {
                     updateCartItem(myCartItem, false, null);
+
                 }
 
                 isLoading = true;
@@ -500,8 +501,8 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if (isLast)
-                                    loading.setVisibility(View.VISIBLE);
+//                                if (isLast)
+//                                    loading.setVisibility(View.VISIBLE);
                             }
                         });
 
