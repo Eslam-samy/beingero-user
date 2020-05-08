@@ -92,6 +92,8 @@ public class Common {
     public static DecimalFormat decimalFormatDiscount = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.US));
     public static NumberFormat formatter = decimalFormatDiscount;
     public static String CURRENT_IMIE;
+    public static boolean adapterIsLoading=false;
+    public static double totalPriceCart=0;
 
     public static int dpToPx(int dp, Context context) {
         if (context != null) {
@@ -216,7 +218,7 @@ public class Common {
                 .enqueue(new ApolloCall.Callback<GetCartItemsCountQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GetCartItemsCountQuery.Data> response) {
-
+double myPrice=0;
                         if (response.data().CartItemQuery().getAll().status() == 200) {
 
                             CART_ITEMS_MODELS = new ArrayList<>();
@@ -237,6 +239,8 @@ public class Common {
                                 if (isFirstTimeGetCartCount) {
 //                                    Common.LOG("Hello first");
                                     TOTAL_CART_PRICE += product.totalPrice();
+                                }else{
+                                    myPrice+=product.totalPrice();
                                 }
 
                             }
@@ -260,7 +264,8 @@ public class Common {
                             isFirstTimeGetCartCount = false;
 
                         }
-                        Log.i("TAG Moha price", "onResponse: cart total from server " + Common.TOTAL_CART_PRICE);
+                        Log.i("TAG Moha price", "onResponse: cart total from server " + myPrice);
+                        Log.i("TAG Moha price", "onResponse: cart total bottom " + Common.totalPriceCart);
                     }
 
                     @Override

@@ -85,7 +85,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     @BindView(R.id.layout_speed_cart)
     ConstraintLayout layout_speed_cart;
 
-    int actionBarHeight ;
+    int actionBarHeight;
     //Search
     public static final int EXTRA_REVEAL_CENTER_PADDING = 40;
 
@@ -97,9 +97,8 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
         ButterKnife.bind(this);
 
         TypedValue tv = new TypedValue();
-        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
-        {
-            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+        if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
 
 //        if (Common.CURRENT_USER.getLanguage().equalsIgnoreCase("ar")) {
@@ -289,9 +288,6 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void request(CalculateCartEvent event) {
         if (event != null) {
-
-            Log.d("HAZEM", "Here Bus");
-
             if (event.isSuccess()) {
 
 //                if (countOfCart > 0)
@@ -307,35 +303,30 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 //                Common.TOTAL_CART_AMOUNT +=event.getAmount();
 
                 countOfCart = Common.TOTAL_CART_AMOUNT;
+                Log.i("TAG Moha", " request:BEFORE "+totalPriceCart);
+                Log.i("TAG Moha", " request:MUCH "+event.getProductPrice());
                 totalPriceCart += event.getProductPrice();
+                Log.i("TAG Moha", " request:AFTER "+totalPriceCart);
 
                 isHaveCart = true;
                 layout_speed_cart.setVisibility(View.VISIBLE);
                 txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
-//                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
                 btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
-
-
+                Common.totalPriceCart=totalPriceCart;
                 if (totalPriceCart <= 0.0f) {
                     isHaveCart = false;
                     layout_speed_cart.setVisibility(View.GONE);
                 }
-
-//                RunAnimation();
-
-
             } else {
-
                 if (Common.TOTAL_CART_AMOUNT == 0) {
                     isHaveCart = false;
                     layout_speed_cart.setVisibility(View.GONE);
                 }
             }
 
-            if (isHaveCart){
+            if (isHaveCart) {
                 viewPager.setPadding(0, 0, 0, actionBarHeight);
-            }else
-            {
+            } else {
                 viewPager.setPadding(0, 0, 0, 0);
             }
 
@@ -362,10 +353,9 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
             btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
         }
 
-        if (isHaveCart){
+        if (isHaveCart) {
             viewPager.setPadding(0, 0, 0, actionBarHeight);
-        }else
-        {
+        } else {
             viewPager.setPadding(0, 0, 0, 0);
         }
         Common.LOG("actionBarHeight : " + actionBarHeight);

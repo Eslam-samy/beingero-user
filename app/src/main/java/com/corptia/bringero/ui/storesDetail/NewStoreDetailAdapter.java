@@ -77,7 +77,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
     String productName = "";
     String productImage = "";
     String productId = "";
-    boolean isLoading;
     //for cart
     double amount = 0;
 
@@ -254,7 +253,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
             }
             //Check Item in cart
             checkItemInCart(txt_amount, btn_delete, bg_delete, false);
-            //Continue populating
 
             //Here Set Data On Cart
             txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(price)).append(" ").append(context.getString(R.string.currency)));
@@ -263,20 +261,23 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
             txt_name_product.setText(Utils.cutName(productName));
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + productImage, image_product);
             //Click handling
-            if (listener != null && Common.IS_AVAILABLE_STORE) {
-                double finalPrice1 = price;
-                boolean finalIsPackaged = isPackaged;
-                if (!isLoading) {
+
+            if (!isLoaderVisible) {
+                itemView.setClickable(true);
+                btn_delete.setClickable(true);
+                if (listener != null && Common.IS_AVAILABLE_STORE) {
+                    double finalPrice1 = price;
+                    boolean finalIsPackaged = isPackaged;
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            Log.e(TAG, "onClick: HERE");
                             //rePopulateData
                             rePopulateData(position);
                             //Here Condition Limit Max Price
                             if (Common.TOTAL_CART_PRICE <= 0) {
                                 Common.TOTAL_CART_PRICE = 0;
                             }
-                            Log.i(TAG, "onClick: 1");
                             if (!isPackaged) {
                                 double step, actualAmount = 0;
                                 if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
@@ -297,7 +298,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                     }
                                     Common.TOTAL_CART_PRICE += (finalPrice1 * step);
                                     if (!finalIsPackaged) {
-                                        Log.i(TAG, "onClick:1= " + actualAmount);
                                         txt_amount.setText(new StringBuilder().append(actualAmount).append(" ").append(context.getString(R.string.kg)));
                                     }
                                     continueClickFromOutSide(step, actualAmount, position, finalPrice1 * step, false);
@@ -306,15 +306,12 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                 animateTheAmount(step);
 
                             } else {
-                                Log.i(TAG, "onClick: 2");
 
                                 if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
                                     inCart = false;
-                                    Log.i(TAG, "onClick: 3");
 
                                 } else {
                                     inCart = true;
-                                    Log.i(TAG, "onClick: 4");
 
                                 }
                                 if (checkMaxPrice(finalPrice1)) return;
@@ -326,11 +323,9 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                         Common.TOTAL_CART_AMOUNT += 1;
                                         cartProductId = "any";
                                     }
-                                    Log.i(TAG, "onClick: 5");
                                     Common.TOTAL_CART_PRICE += finalPrice1;
                                     continueClickFromOutSide(count, count, position, finalPrice1, false);
                                     if (finalIsPackaged) {
-                                        Log.i(TAG, "onClick:2= " + count);
                                         txt_amount.setText(new StringBuilder().append(count).append(" ").append("X"));
                                     }
                                 }
@@ -338,169 +333,76 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                             }
                         }
                     });
-                }
-            }
+                    double finalPrice = price;
+                    String finalProductId = productId;
+                    btn_delete.setOnClickListener(view -> {
+                        if (Common.myLocalCartIds.contains(productId)) {
+                            if (isPackaged) {
+                                double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - 1;
+                                if (amountNow > 0) {
+                                    inCart = true;
 
-            //TODO Will move this  from here
-            double finalPrice = price;
-            String finalProductId = productId;
-            if (!isLoading)
-            btn_delete.setOnClickListener(view -> {
-                if (Common.myLocalCartIds.contains(productId)) {
-                    if (isPackaged) {
-                        double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - 1;
-                        if (amountNow > 0) {
-                            inCart = true;
-                            Log.i(TAG, "onClick:11= " + amountNow);
-                            txt_amount.setText(new StringBuilder().append(((int) amountNow)).append(" ").append("X"));
-                            txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                    txt_amount.setText(new StringBuilder().append(((int) amountNow)).append(" ").append("X"));
+                                    txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                        }
+                                    });
+                                    inCart = true;
+                                    Common.TOTAL_CART_AMOUNT -= 1;
+                                    Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+                                    continueClickFromOutSide(1, amountNow, position, finalPrice, true);
+                                    Log.i(TAG, "onBind: here 1");
+                                    updateBottomSheet(-finalPrice, amount);
+                                } else if (amountNow <= 0) {
+                                    inCart = false;
+                                    txt_amount.setVisibility(View.INVISIBLE);
+                                    btn_delete.setVisibility(View.INVISIBLE);
+                                    bg_delete.setVisibility(View.INVISIBLE);
+                                    txt_amount.setText("0 ");
+                                    amountNow = 0;
+                                    continueClickFromOutSide(1, 0, position, finalPrice, true);
+                                    Log.i(TAG, "onBind: here 2");
+                                    updateBottomSheet(-finalPrice, amount);
                                 }
-                            });
-                            inCart = true;
-                            Common.TOTAL_CART_AMOUNT -= 1;
-                            Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
-                            continueClickFromOutSide(1, amountNow, position, finalPrice, true);
-                            Log.i("TAG Moha price", "request: 8 " + finalPrice);
-                            EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice, amount));
-                        } else if (amountNow <= 0) {
-                            inCart = false;
-                            Log.i(INVISIBLE_TAG, "request: 5 ");
-                            txt_amount.setVisibility(View.INVISIBLE);
-                            btn_delete.setVisibility(View.INVISIBLE);
-                            bg_delete.setVisibility(View.INVISIBLE);
-                            Log.i(TAG, "onClick:12= " + amountNow);
-                            txt_amount.setText("0 ");
-                            amountNow = 0;
-                            continueClickFromOutSide(1, 0, position, finalPrice, true);
-                            Log.i("TAG Moha price", "request: 8 " + finalPrice);
-                            EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice, amount));
-                        }
-                    } else {
-                        Log.i("TAG Moha price", "onBind: HERE");
-                        double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - unitStep;
-                        if (amountNow >= minSellingUnits) {
-                            inCart = true;
-                            Log.i(TAG, "onClick:13= " + amountNow);
-                            txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.kg)));
-
-                            txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                                }
-                            });
-                            Common.TOTAL_CART_AMOUNT -= 1;
-                            Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
-                            continueClickFromOutSide(1, amountNow, position, finalPrice * unitStep, true);
-                            Log.i("TAG Moha price", "request: 9 " + finalPrice * unitStep);
-                            EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice * unitStep, amount));
-                        } else {
-                            inCart = false;
-                            Log.i(INVISIBLE_TAG, "request: 6 ");
-
-                            txt_amount.setVisibility(View.INVISIBLE);
-                            btn_delete.setVisibility(View.INVISIBLE);
-                            bg_delete.setVisibility(View.INVISIBLE);
-                            Log.i(TAG, "onClick:14= " + amountNow);
-                            txt_amount.setText("0 ");
-                            amountNow = 0;
-                            continueClickFromOutSide(1, 0, position, finalPrice * minSellingUnits, true);
-                            Log.i("TAG Moha price", "request: 10 " + finalPrice * minSellingUnits);
-                            EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice * minSellingUnits, amount));
-                        }
-                    }
-                } else {
-                    if (!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)) {
-                        if (isPackaged) {
-
-                            double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - 1;
-                            if (amountNow > 0) {
-                                Log.i(TAG, "onClick:3= " + amountNow);
-                                txt_amount.setText(new StringBuilder().append(((int) amountNow)).append(" ").append("X"));
-                                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                                    }
-                                });
-
-                                Common.TOTAL_CART_AMOUNT -= 1;
-                                Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - finalPrice;
-                                inCart = true;
-
-                                continueClickFromOutSide(1, amountNow, position, finalPrice, true);
-                                Log.i("TAG Moha price", "request: 1 " + finalPrice);
-
-                                EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice, amount));
-
-                            } else if (amountNow <= 0) {
-                                inCart = false;
-
-                                Log.i(INVISIBLE_TAG, "request: 1 ");
-                                txt_amount.setVisibility(View.INVISIBLE);
-                                btn_delete.setVisibility(View.INVISIBLE);
-                                bg_delete.setVisibility(View.INVISIBLE);
-
-                                Log.i(TAG, "onClick:4= " + amountNow);
-                                txt_amount.setText("0 ");
-                                amountNow = 0;
-                                continueClickFromOutSide(1, 0, position, finalPrice, true);
-                                Log.i("TAG Moha price", "request: 2 " + finalPrice);
-                                EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice, amount));
-
-                            }
-
-                        } else {
-
-                            double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - unitStep;
-
-                            if (amountNow >= minSellingUnits) {
-
-                                Log.i(TAG, "onClick:5= " + amountNow);
-                                txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.kg)));
-
-                                animateTheAmount(unitStep);
-                                inCart = true;
-                                Common.TOTAL_CART_AMOUNT -= 1;
-                                Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
-                                continueClickFromOutSide(1, amountNow, position, finalPrice * unitStep, true);
-                                Log.i("TAG Moha price", "request: 3 " + finalPrice * unitStep);
-
-                                EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice * unitStep, amount));
-
                             } else {
-                                inCart = false;
-                                Log.i(INVISIBLE_TAG, "request: 2 ");
-                                txt_amount.setVisibility(View.INVISIBLE);
-                                btn_delete.setVisibility(View.INVISIBLE);
-                                bg_delete.setVisibility(View.INVISIBLE);
+                                double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - unitStep;
+                                if (amountNow >= minSellingUnits) {
+                                    inCart = true;
+                                    txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.kg)));
 
-                                Log.i(TAG, "onClick:6= " + amountNow);
-                                txt_amount.setText("0 ");
-                                amountNow = 0;
-                                continueClickFromOutSide(1, 0, position, finalPrice * minSellingUnits, true);
-                                Log.i("TAG Moha price", "request: 4 " + finalPrice * minSellingUnits);
-                                EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice * minSellingUnits, amount));
+                                    txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                        }
+                                    });
+                                    Common.TOTAL_CART_AMOUNT -= 1;
+                                    Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+                                    continueClickFromOutSide(1, amountNow, position, finalPrice * unitStep, true);
+                                    Log.i(TAG, "onBind: here 3");
+                                    updateBottomSheet(-finalPrice * unitStep, amount);
+                                } else {
+                                    inCart = false;
+
+                                    txt_amount.setVisibility(View.INVISIBLE);
+                                    btn_delete.setVisibility(View.INVISIBLE);
+                                    bg_delete.setVisibility(View.INVISIBLE);
+                                    txt_amount.setText("0 ");
+                                    amountNow = 0;
+                                    continueClickFromOutSide(1, 0, position, finalPrice * minSellingUnits, true);
+                                    Log.i(TAG, "onBind: here 4");
+                                    updateBottomSheet(-finalPrice * minSellingUnits, amount);
+                                }
                             }
-                        }
-                    } else {
-                        //This My Cart
-                        for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
-                            if (item.getPricingProductId().equalsIgnoreCase(finalProductId)) {
+                        } else {
+                            if (!cartProductId.isEmpty() && Common.CART_ITEMS_ID.contains(cartProductId)) {
                                 if (isPackaged) {
 
-                                    cartProductId = item.getCartProductId();
-
                                     double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - 1;
-
                                     if (amountNow > 0) {
-                                        inCart = true;
-                                        Log.i(TAG, "onClick:7= " + amountNow);
                                         txt_amount.setText(new StringBuilder().append(((int) amountNow)).append(" ").append("X"));
-
                                         txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                             @Override
                                             public void run() {
@@ -508,78 +410,153 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                             }
                                         });
 
+                                        Common.TOTAL_CART_AMOUNT -= 1;
+                                        Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - finalPrice;
                                         inCart = true;
 
-                                        Common.TOTAL_CART_AMOUNT -= 1;
-                                        Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
                                         continueClickFromOutSide(1, amountNow, position, finalPrice, true);
-                                        Log.i("TAG Moha price", "request: 5 " + finalPrice);
 
-                                        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice, amount));
+                                        Log.i(TAG, "onBind: here 5");
+                                        updateBottomSheet(-finalPrice, amount);
 
                                     } else if (amountNow <= 0) {
                                         inCart = false;
-                                        Log.i(INVISIBLE_TAG, "request: 3 ");
 
                                         txt_amount.setVisibility(View.INVISIBLE);
                                         btn_delete.setVisibility(View.INVISIBLE);
                                         bg_delete.setVisibility(View.INVISIBLE);
 
-                                        Log.i(TAG, "onClick:8= " + amountNow);
                                         txt_amount.setText("0 ");
                                         amountNow = 0;
                                         continueClickFromOutSide(1, 0, position, finalPrice, true);
-                                        Log.i("TAG Moha price", "request: 6 " + finalPrice);
-                                        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice, amount));
+                                        Log.i(TAG, "onBind: here 6");
+                                        updateBottomSheet(-finalPrice, amount);
+
                                     }
 
-
-                                    break;
-
                                 } else {
-                                    cartProductId = item.getCartProductId();
-                                    Log.d("HAZEM", "cartProductId 2 : " + cartProductId + " -- " + item.getCartProductId());
 
                                     double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - unitStep;
 
                                     if (amountNow >= minSellingUnits) {
-                                        inCart = true;
-                                        Log.i(TAG, "onClick:9= " + amountNow);
+
                                         txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.kg)));
 
-                                        txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-                                            }
-                                        });
+                                        animateTheAmount(unitStep);
+                                        inCart = true;
                                         Common.TOTAL_CART_AMOUNT -= 1;
                                         Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
                                         continueClickFromOutSide(1, amountNow, position, finalPrice * unitStep, true);
-                                        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice * unitStep, amount));
+
+                                        Log.i(TAG, "onBind: here 7");
+                                        updateBottomSheet(-finalPrice * unitStep, amount);
+
                                     } else {
                                         inCart = false;
-                                        Log.i(INVISIBLE_TAG, "request: 4 ");
                                         txt_amount.setVisibility(View.INVISIBLE);
                                         btn_delete.setVisibility(View.INVISIBLE);
                                         bg_delete.setVisibility(View.INVISIBLE);
-                                        Log.i(TAG, "onClick:10= " + amountNow);
+
                                         txt_amount.setText("0 ");
                                         amountNow = 0;
                                         continueClickFromOutSide(1, 0, position, finalPrice * minSellingUnits, true);
-                                        Log.i("TAG Moha price", "request: 7 " + finalPrice * minSellingUnits);
-                                        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -finalPrice * minSellingUnits, amount));
+                                        Log.i(TAG, "onBind: here 8");
+                                        updateBottomSheet(-finalPrice * minSellingUnits, amount);
                                     }
+                                }
+                            } else {
+                                //This My Cart
+                                for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
+                                    if (item.getPricingProductId().equalsIgnoreCase(finalProductId)) {
+                                        if (isPackaged) {
 
-                                    break;
+                                            cartProductId = item.getCartProductId();
 
+                                            double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - 1;
+
+                                            if (amountNow > 0) {
+                                                inCart = true;
+                                                txt_amount.setText(new StringBuilder().append(((int) amountNow)).append(" ").append("X"));
+
+                                                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                                    }
+                                                });
+
+                                                inCart = true;
+
+                                                Common.TOTAL_CART_AMOUNT -= 1;
+                                                Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+                                                continueClickFromOutSide(1, amountNow, position, finalPrice, true);
+
+                                                Log.i(TAG, "onBind: here 9");
+                                                updateBottomSheet(-finalPrice, amount);
+
+                                            } else if (amountNow <= 0) {
+                                                inCart = false;
+
+                                                txt_amount.setVisibility(View.INVISIBLE);
+                                                btn_delete.setVisibility(View.INVISIBLE);
+                                                bg_delete.setVisibility(View.INVISIBLE);
+
+                                                txt_amount.setText("0 ");
+                                                amountNow = 0;
+                                                continueClickFromOutSide(1, 0, position, finalPrice, true);
+                                                Log.i(TAG, "onBind: here 10");
+                                                updateBottomSheet(-finalPrice, amount);
+                                            }
+
+
+                                            break;
+
+                                        } else {
+                                            cartProductId = item.getCartProductId();
+                                            Log.d("HAZEM", "cartProductId 2 : " + cartProductId + " -- " + item.getCartProductId());
+
+                                            double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - unitStep;
+
+                                            if (amountNow >= minSellingUnits) {
+                                                inCart = true;
+                                                txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.kg)));
+
+                                                txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
+                                                    }
+                                                });
+                                                Common.TOTAL_CART_AMOUNT -= 1;
+                                                Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+                                                continueClickFromOutSide(1, amountNow, position, finalPrice * unitStep, true);
+                                                Log.i(TAG, "onBind: here 11");
+                                                updateBottomSheet(-finalPrice * unitStep, amount);
+                                            } else {
+                                                inCart = false;
+                                                txt_amount.setVisibility(View.INVISIBLE);
+                                                btn_delete.setVisibility(View.INVISIBLE);
+                                                bg_delete.setVisibility(View.INVISIBLE);
+                                                txt_amount.setText("0 ");
+                                                amountNow = 0;
+                                                continueClickFromOutSide(1, 0, position, finalPrice * minSellingUnits, true);
+                                                Log.i(TAG, "onBind: here 12");
+                                                updateBottomSheet(-finalPrice * minSellingUnits, amount);
+                                            }
+
+                                            break;
+
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
+                    });
                 }
-            });
-
+            } else {
+                itemView.setClickable(false);
+                btn_delete.setClickable(false);
+            }
         }
 
         private void animateTheAmount(double step) {
@@ -593,7 +570,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         }
 
         private void continueClickFromOutSide(double step, double actualAmount, int position, double price, boolean isDecrease) {
-            Log.i(TAG, "onClick: 6");
+
             listener.onClick(productId, cartProductId, price, actualAmount, inCart, isDecrease, txt_amount, btn_delete, bg_delete);
         }
 
@@ -674,21 +651,24 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         }
     }
 
+    private void updateBottomSheet(double v, double amount) {
+        if (amount > 0)
+            EventBus.getDefault().postSticky(new CalculateCartEvent(true, v, amount));
+    }
+
     Boolean inCart = false;
 
     public void checkItemInCart(TextView txt_amount, View btn_delete, View bg_delete, boolean update) {
         for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
-            if (item.getPricingProductId().equalsIgnoreCase(productId)) {
+            if (item != null) if (item.getPricingProductId().equalsIgnoreCase(productId)) {
                 inCart = true;
 
                 if (!update) {
-                    Log.i(TAG, "onClick: check 1");
 
                     txt_amount.setVisibility(View.VISIBLE);
                     btn_delete.setVisibility(View.VISIBLE);
                     bg_delete.setVisibility(View.VISIBLE);
                     amount = item.getAmount();
-                    Log.i(TAG, "onClick:15= " + amount);
                     if (item.isPackaged())
                         txt_amount.setText(new StringBuilder().append(((int) (amount))).append(" ").append("X"));
                     else
@@ -700,12 +680,24 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
             } else {
                 if (!update) {
-                    Log.i(INVISIBLE_TAG, "request: 7 ");
                     txt_amount.setVisibility(View.GONE);
                     btn_delete.setVisibility(View.GONE);
                     bg_delete.setVisibility(View.GONE);
                 }
                 inCart = false;
+            }
+        }
+        if (!Common.myLocalCartIds.isEmpty()) {
+            if (Common.myLocalCartIds.contains(productId)) {
+                for (MyCart myCartItem : Common.myLocalCart) {
+                    if (myCartItem.getProductId().equals(productId)) {
+                        amount = myCartItem.getAmount();
+                        if (isPackaged)
+                            txt_amount.setText(new StringBuilder().append(((int) (amount))).append(" ").append("X"));
+                        else
+                            txt_amount.setText(new StringBuilder().append(amount).append(" ").append(context.getString(R.string.kg)));
+                    }
+                }
             }
         }
     }
@@ -728,9 +720,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
     }
 
     public void addLoading() {
-        isLoading = true;
-        Common.myLocalCart.clear();
-        Common.myLocalCartIds.clear();
         isLoaderVisible = true;
         productsList.add(null);
         notifyItemInserted(productsList.size() - 1);
@@ -764,7 +753,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     public void removeLoading() {
         isLoaderVisible = false;
-        isLoading =false;
         int position = productsList.size() - 1;
         GetStoreProductsQuery.Product item = getItem(position);
         if (item == null) {
@@ -786,14 +774,12 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
     }
 
     public void addLoadingSearch() {
-        isLoading = true;
         isLoaderVisible = true;
         productsListSearch.add(null);
         notifyItemInserted(productsListSearch.size() - 1);
     }
 
     public void removeLoadingSearch() {
-        isLoading=false;
         isLoaderVisible = false;
         int position = productsListSearch.size() - 1;
         StoreSearchQuery.ProductQuery item = getItemSearch(position);
@@ -839,7 +825,9 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
     }
 
 
-    public void updateCartItems(String id, double amount, double price, boolean isLast, View loading) {
+    public void updateCartItems(MyCart myCartItem) {
+        String id = myCartItem.getCartId();
+        double amount = myCartItem.getAmount();
 
         UpdateCartItem updateAmount = UpdateCartItem.builder().amount(amount).build();
         UpdateCartItemMutation updateCartItemMutation = UpdateCartItemMutation.builder().id(id).data(updateAmount).build();
@@ -850,19 +838,12 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                     @Override
                     public void onResponse(@NotNull Response<UpdateCartItemMutation.Data> response) {
                         if (response.data().CartItemMutation().update().status() == 200) {
-                            if (isLast)
-                                if (context instanceof StoreDetailActivity) {
-                                    StoreDetailActivity activity = (StoreDetailActivity) context;
-                                    activity.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (loading != null) {
-                                                loading.setVisibility(View.GONE);
-                                            }
 
-                                        }
-                                    });
-                                }
+                            myCartItem.setInCartAmount(response.data().CartItemMutation().update().data().amount());
+                            myCartItem.setAmount(response.data().CartItemMutation().update().data().amount());
+                            myCartItem.setCartId(response.data().CartItemMutation().update().data()._id());
+                            myCartItem.setInCart(true);
+
                             Common.GetCartItemsCount(new CallbackListener() {
                                 @Override
                                 public void OnSuccessCallback() {
@@ -883,7 +864,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                 }
                             });
                         } else {
-
                         }
 
                     }
@@ -895,7 +875,8 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                 });
     }
 
-    public void deleteCartItems(String id, boolean isLast, View loading) {
+    public void deleteCartItems(MyCart myCartItem) {
+        String id = myCartItem.getCartId();
         RemoveCartItemMutation removeCartItemMutation = RemoveCartItemMutation.builder()._id(id).build();
 
         MyApolloClient.getApollowClientAuthorization()
@@ -906,19 +887,21 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
 
                         if (response.data().CartItemMutation().remove().status() == 200) {
-                            if (isLast)
-                                if (context instanceof StoreDetailActivity) {
-                                    StoreDetailActivity activity = (StoreDetailActivity) context;
-                                    activity.runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (loading != null) {
-                                                loading.setVisibility(View.GONE);
-                                            }
-
-                                        }
-                                    });
+                            myCartItem.setInCart(false);
+                            myCartItem.setCartId(null);
+                            myCartItem.setAmount(0.0);
+                            myCartItem.setInCartAmount(0.0);
+                            if (Common.myLocalCartIds.contains(myCartItem.getProductId())) {
+                                Common.myLocalCartIds.remove(myCartItem.getProductId());
+                                for (int i = Common.myLocalCart.size() - 1; i >= 0; i--) {
+                                    MyCart myCart = Common.myLocalCart.get(i);
+                                    if (myCart.getProductId().equals(myCartItem.getProductId())) {
+                                        Common.myLocalCart.remove(myCart);
+                                        break;
+                                    }
                                 }
+
+                            }
                             Common.GetCartItemsCount(null);
                         }
 
@@ -929,7 +912,8 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
                     }
                 });
-        EventBus.getDefault().postSticky(new CalculateCartEvent(true, -price, -1));
+        Log.i(TAG, "onBind: here 13");
+        updateBottomSheet(-price, -1);
     }
 
 }

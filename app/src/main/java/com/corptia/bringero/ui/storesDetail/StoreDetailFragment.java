@@ -153,8 +153,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             @Override
             protected void loadMoreItems() {
                 for (MyCart myCartItem : Common.myLocalCart) {
-                    updateCartItem(myCartItem, false, null);
-
+                    updateCartItem(myCartItem);
                 }
 
                 isLoading = true;
@@ -223,37 +222,49 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
             totalPages = product.pagination().totalPages();
             storeDetailAdapter.addItems(product.Products());
             storeDetailAdapter.setListener((id, cartID, price, amount, inCart, isDecrease, txt_amount, btn_delete, bg_delete) -> {
-                if (!Common.myLocalCart.isEmpty())
+                /*if (!Common.myLocalCart.isEmpty())
                     for (int i = Common.myLocalCart.size() - 1; i >= 0; i--) {
                         MyCart myCartItem = Common.myLocalCart.get(i);
                         if (!myCartItem.getProductId().equals(id)) {
+                            Log.i(TAG, "loadMoreItems: UPDATE 2");
                             updateCartItem(myCartItem, i == Common.myLocalCart.size() - 1, loading);
-                            Common.myLocalCart.remove(myCartItem);
-                            Common.myLocalCartIds.remove(myCartItem.getProductId());
+                        }
+                    }*/
+
+                if (!isDecrease) {
+                    if (!Common.myLocalCartIds.contains(id)) {
+                        Common.myLocalCartIds.add(id);
+                        MyCart myCartItem = new MyCart();
+                        myCartItem.setAmount(amount);
+                        myCartItem.setCartId(cartID);
+                        myCartItem.setInCart(inCart);
+                        myCartItem.setDecrease(isDecrease);
+                        myCartItem.setPrice(price);
+                        myCartItem.setProductId(id);
+                        Common.myLocalCart.add(myCartItem);
+                        Log.i(TAG, "setProduct: here 1");
+                    } else {
+                        for (MyCart myCartItem : Common.myLocalCart) {
+                            if (myCartItem.getProductId().equals(id)) {
+                                int index = Common.myLocalCart.indexOf(myCartItem);
+                                myCartItem.setAmount(amount);
+                                myCartItem.setDecrease(isDecrease);
+                                Common.myLocalCart.set(index, myCartItem);
+                                Log.i(TAG, "setProduct: here 2");
+                            }
                         }
                     }
-
-                if (!Common.myLocalCartIds.contains(id)) {
-                    Common.myLocalCartIds.add(id);
+                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, price, amount));
+                } else {
                     MyCart myCartItem = new MyCart();
                     myCartItem.setAmount(amount);
                     myCartItem.setCartId(cartID);
-                    myCartItem.setInCart(inCart);
-                    myCartItem.setDecrease(isDecrease);
+                    myCartItem.setInCart(true);
+                    myCartItem.setDecrease(true);
                     myCartItem.setPrice(price);
                     myCartItem.setProductId(id);
-                    Common.myLocalCart.add(myCartItem);
-                } else {
-                    for (MyCart myCartItem : Common.myLocalCart) {
-                        if (myCartItem.getProductId().equals(id)) {
-                            int index = Common.myLocalCart.indexOf(myCartItem);
-                            myCartItem.setAmount(amount);
-                            myCartItem.setDecrease(isDecrease);
-                            Common.myLocalCart.set(index, myCartItem);
-                        }
-                    }
+                    updateCartItem(myCartItem);
                 }
-
                 if (amount > 0) {
                     txt_amount.setVisibility(View.VISIBLE);
                     btn_delete.setVisibility(View.VISIBLE);
@@ -262,10 +273,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                     txt_amount.setVisibility(View.INVISIBLE);
                     btn_delete.setVisibility(View.INVISIBLE);
                     bg_delete.setVisibility(View.INVISIBLE);
-                }
-
-                if (!isDecrease) {
-                    EventBus.getDefault().postSticky(new CalculateCartEvent(true, price, amount));
                 }
             });
             /*storeDetailAdapter.setListener(new AdapterOnProductClickListener() {
@@ -444,72 +451,54 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
     @Override
     public void onPause() {
-
         sendToServer();
+        Common.myLocalCart.clear();
+        Common.myLocalCartIds.clear();
         super.onPause();
     }
 
     private void sendToServer() {
-        if (!Common.myLocalCart.isEmpty()) {
-            loading.setVisibility(View.VISIBLE);
-        }
         for (MyCart myCartItem : Common.myLocalCart) {
-            updateCartItem(myCartItem, Common.myLocalCart.indexOf(myCartItem) == Common.myLocalCart.size() - 1, loading);
+            updateCartItem(myCartItem);
         }
-        Common.myLocalCart.clear();
-        Common.myLocalCartIds.clear();
+
     }
 
-    private void updateCartItem(MyCart myCartItem, boolean isLast, View loading) {
+    private void updateCartItem(MyCart myCartItem) {
         if (!myCartItem.getInCart()) {
-            Log.i(TAG, "updateCartItem: 1");
             if (myCartItem.getAmount() > 0) {
-                Log.i(TAG, "updateCartItem: 2");
-                addToCart(myCartItem.getProductId(), myCartItem.getAmount(), isLast);
+                addToCart(myCartItem);
             }
         } else {
-            Log.i(TAG, "updateCartItem: 3");
             if (myCartItem.getAmount() > 1) {
-                Log.i(TAG, "updateCartItem: 4");
-
-                storeDetailAdapter.updateCartItems(myCartItem.getCartId(), myCartItem.getAmount(), myCartItem.getPrice(), isLast, loading);
+                storeDetailAdapter.updateCartItems(myCartItem);
             } else {
-                Log.i(TAG, "updateCartItem: 5");
-                storeDetailAdapter.deleteCartItems(myCartItem.getCartId(), isLast, loading);
+                storeDetailAdapter.deleteCartItems(myCartItem);
             }
         }
         if (myCartItem.getDecrease()) {
             if (myCartItem.getAmount() > 1) {
-                Log.i(TAG, "updateCartItem: 6");
-                storeDetailAdapter.updateCartItems(myCartItem.getCartId(), myCartItem.getAmount(), myCartItem.getPrice(), isLast, loading);
+                storeDetailAdapter.updateCartItems(myCartItem);
             } else {
-                Log.i(TAG, "updateCartItem: 7");
-                storeDetailAdapter.deleteCartItems(myCartItem.getCartId(), isLast, loading);
+                storeDetailAdapter.deleteCartItems(myCartItem);
             }
         }
     }
 
     //TODO Here Make Refresh
     //notifyItemChanged(position); (have two adapter product and search)
-    public void addToCart(String id, double amount, boolean isLast) {
-
+    public void addToCart(MyCart myCartItem) {
+        String id = myCartItem.getProductId();
+        double amount = myCartItem.getAmount();
         CreateCartItem item = CreateCartItem.builder().amount(amount).pricingProductId(id).build();
         MyApolloClient.getApolloClient().mutate(CreateCartItemMutation.builder().data(item).build())
                 .enqueue(new ApolloCall.Callback<CreateCartItemMutation.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-//                                if (isLast)
-//                                    loading.setVisibility(View.VISIBLE);
-                            }
-                        });
-
-
                         CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
                         if (createResponse.status() == 200) {
-
+                            myCartItem.setInCart(true);
+                            myCartItem.setCartId(createResponse.data()._id());
                             Common.GetCartItemsCount(new CallbackListener() {
                                 @Override
                                 public void OnSuccessCallback() {
