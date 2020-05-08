@@ -303,10 +303,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
 //                Common.TOTAL_CART_AMOUNT +=event.getAmount();
 
                 countOfCart = Common.TOTAL_CART_AMOUNT;
-                Log.i("TAG Moha", " request:BEFORE "+totalPriceCart);
-                Log.i("TAG Moha", " request:MUCH "+event.getProductPrice());
                 totalPriceCart += event.getProductPrice();
-                Log.i("TAG Moha", " request:AFTER "+totalPriceCart);
 
                 isHaveCart = true;
                 layout_speed_cart.setVisibility(View.VISIBLE);
@@ -338,11 +335,11 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     public void getSpeedCart() {
 
 
-        if (Common.TOTAL_CART_AMOUNT == 0) {
+        if (Common.TOTAL_CART_AMOUNT <= 0) {
+            Common.TOTAL_CART_AMOUNT = 0;
             isHaveCart = false;
             layout_speed_cart.setVisibility(View.GONE);
         } else {
-
             isHaveCart = true;
             layout_speed_cart.setVisibility(View.VISIBLE);
             totalPriceCart = Common.TOTAL_CART_PRICE;

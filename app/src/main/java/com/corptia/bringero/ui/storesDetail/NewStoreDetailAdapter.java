@@ -11,13 +11,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.airbnb.lottie.LottieAnimationView;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Interface.AdapterIOnProductClickListener;
 import com.corptia.bringero.Interface.CallbackListener;
-import com.corptia.bringero.Interface.IOnProductClickListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseViewHolder;
@@ -52,21 +51,17 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     private boolean isLoaderVisible = false;
     private String TAG = "TAG Moha price adapter ";
-    private String INVISIBLE_TAG = "TAG Moha price invisible ";
-
 
     Context context;
     List<GetStoreProductsQuery.Product> productsList = new ArrayList<>();
     List<StoreSearchQuery.ProductQuery> productsListSearch = new ArrayList<>();
 
-    IOnProductClickListener listener;
+    AdapterIOnProductClickListener listener;
 
 
     boolean isSearch;
 
     //Var
-    StoreSearchQuery.ProductQuery productSearch;
-    GetStoreProductsQuery.Product product;
 
     String cartProductId = "";
     double price = 0;
@@ -91,11 +86,11 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         this.context = context;
         if (products != null)
             this.productsListSearch = new ArrayList<>(products);
-
+        Common.adapterIsLoading = false;
         this.isSearch = true;
     }
 
-    public void setListener(IOnProductClickListener listener) {
+    public void setListener(AdapterIOnProductClickListener listener) {
         this.listener = listener;
     }
 
@@ -104,6 +99,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         if (productsList != null)
             this.productsList = new ArrayList<>(productsList);
         isSearch = false;
+        Common.adapterIsLoading = false;
     }
 
     @NonNull
@@ -176,10 +172,18 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
             super.onBind(position);
             cartProductId = "";
             //Populating item data
+
             if (!isSearch) {
+                final GetStoreProductsQuery.Product product = productsList.get(position);
+                continueBinding(position, product, null, productId = product._id());
+            } else {
+                final StoreSearchQuery.ProductQuery productSearch = productsListSearch.get(position);
+                continueBinding(position, null, productSearch, productSearch._id());
+            }
+        }
 
-                product = productsList.get(position);
-
+        private void continueBinding(int position, GetStoreProductsQuery.Product product, StoreSearchQuery.ProductQuery productSearch, final String productId) {
+            if (!isSearch) {
                 price = product.storePrice();
                 oldPrice = product.storePrice();
 
@@ -201,7 +205,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                 }
 
                 productName = product.Product().name();
-                productId = product._id();
                 isPackaged = product.Product().isPackaged();
 
                 if (product.Product().ImageResponse().status() == 200)
@@ -214,8 +217,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                 }
 
             } else {
-
-                productSearch = productsListSearch.get(position);
 
                 if (productSearch != null) {
 
@@ -238,11 +239,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                         txt_old_price.setVisibility(View.GONE);
 
                         price = productSearch.storePrice();
-
                     }
-
-                    productId = productSearch._id();
-
                     productName = productSearch.Product().name();
                     isPackaged = productSearch.Product().isPackaged();
 
@@ -262,7 +259,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + productImage, image_product);
             //Click handling
 
-            if (!isLoaderVisible) {
+            if (!Common.adapterIsLoading) {
                 itemView.setClickable(true);
                 btn_delete.setClickable(true);
                 if (listener != null && Common.IS_AVAILABLE_STORE) {
@@ -271,9 +268,8 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Log.e(TAG, "onClick: HERE");
                             //rePopulateData
-                            rePopulateData(position);
+                            rePopulateData(position, product, productSearch);
                             //Here Condition Limit Max Price
                             if (Common.TOTAL_CART_PRICE <= 0) {
                                 Common.TOTAL_CART_PRICE = 0;
@@ -300,21 +296,20 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                     if (!finalIsPackaged) {
                                         txt_amount.setText(new StringBuilder().append(actualAmount).append(" ").append(context.getString(R.string.kg)));
                                     }
-                                    continueClickFromOutSide(step, actualAmount, position, finalPrice1 * step, false);
+                                    continueClickFromOutSide(actualAmount, finalPrice1 * step, false, product, productSearch);
                                 }
 
                                 animateTheAmount(step);
 
                             } else {
-
                                 if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
                                     inCart = false;
-
                                 } else {
                                     inCart = true;
-
                                 }
+                                Log.i(TAG, "onClick: here");
                                 if (checkMaxPrice(finalPrice1)) return;
+                                Log.i(TAG, "onClick: here after");
                                 int count;
                                 count = Integer.parseInt(txt_amount.getText().toString().split(" ")[0]) + 1;
                                 if (count < 100) {
@@ -324,7 +319,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                         cartProductId = "any";
                                     }
                                     Common.TOTAL_CART_PRICE += finalPrice1;
-                                    continueClickFromOutSide(count, count, position, finalPrice1, false);
+                                    continueClickFromOutSide(count, finalPrice1, false, product, productSearch);
                                     if (finalIsPackaged) {
                                         txt_amount.setText(new StringBuilder().append(count).append(" ").append("X"));
                                     }
@@ -334,14 +329,19 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                         }
                     });
                     double finalPrice = price;
-                    String finalProductId = productId;
                     btn_delete.setOnClickListener(view -> {
                         if (Common.myLocalCartIds.contains(productId)) {
+                            MyCart myCartItem = new MyCart();
+                            for (MyCart myCart : Common.myLocalCart) {
+                                if (myCart.getProductId().equals(productId)) {
+                                    myCartItem = myCart;
+                                    break;
+                                }
+                            }
+                            isPackaged = myCartItem.getPackaged();
                             if (isPackaged) {
-                                double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - 1;
+                                double amountNow = myCartItem.getAmount() - 1;
                                 if (amountNow > 0) {
-                                    inCart = true;
-
                                     txt_amount.setText(new StringBuilder().append(((int) amountNow)).append(" ").append("X"));
                                     txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                         @Override
@@ -349,29 +349,23 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                             txt_amount.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
                                         }
                                     });
-                                    inCart = true;
+
                                     Common.TOTAL_CART_AMOUNT -= 1;
                                     Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
-                                    continueClickFromOutSide(1, amountNow, position, finalPrice, true);
-                                    Log.i(TAG, "onBind: here 1");
-                                    updateBottomSheet(-finalPrice, amount);
+                                    continueClickFromOutSide(amountNow, finalPrice, true, product, productSearch);
+                                    updateBottomSheet(-finalPrice, amountNow);
                                 } else if (amountNow <= 0) {
-                                    inCart = false;
-                                    txt_amount.setVisibility(View.INVISIBLE);
-                                    btn_delete.setVisibility(View.INVISIBLE);
-                                    bg_delete.setVisibility(View.INVISIBLE);
                                     txt_amount.setText("0 ");
-                                    amountNow = 0;
-                                    continueClickFromOutSide(1, 0, position, finalPrice, true);
-                                    Log.i(TAG, "onBind: here 2");
-                                    updateBottomSheet(-finalPrice, amount);
+                                    Common.TOTAL_CART_AMOUNT -= 1;
+                                    Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+
+                                    continueClickFromOutSide(0, finalPrice, true, product, productSearch);
+                                    updateBottomSheet(-finalPrice, 1);
                                 }
                             } else {
                                 double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - unitStep;
                                 if (amountNow >= minSellingUnits) {
-                                    inCart = true;
                                     txt_amount.setText(new StringBuilder().append(amountNow).append(" ").append(context.getString(R.string.kg)));
-
                                     txt_amount.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
                                         @Override
                                         public void run() {
@@ -380,20 +374,15 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                     });
                                     Common.TOTAL_CART_AMOUNT -= 1;
                                     Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
-                                    continueClickFromOutSide(1, amountNow, position, finalPrice * unitStep, true);
-                                    Log.i(TAG, "onBind: here 3");
-                                    updateBottomSheet(-finalPrice * unitStep, amount);
+                                    continueClickFromOutSide(amountNow, finalPrice * unitStep, true, product, productSearch);
+                                    updateBottomSheet(-finalPrice * unitStep, amountNow);
                                 } else {
-                                    inCart = false;
-
-                                    txt_amount.setVisibility(View.INVISIBLE);
-                                    btn_delete.setVisibility(View.INVISIBLE);
-                                    bg_delete.setVisibility(View.INVISIBLE);
                                     txt_amount.setText("0 ");
-                                    amountNow = 0;
-                                    continueClickFromOutSide(1, 0, position, finalPrice * minSellingUnits, true);
-                                    Log.i(TAG, "onBind: here 4");
-                                    updateBottomSheet(-finalPrice * minSellingUnits, amount);
+                                    Common.TOTAL_CART_AMOUNT -= 1;
+                                    Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+
+                                    continueClickFromOutSide(0, finalPrice * minSellingUnits, true, product, productSearch);
+                                    updateBottomSheet(-finalPrice * minSellingUnits, 1);
                                 }
                             }
                         } else {
@@ -414,10 +403,9 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                         Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - finalPrice;
                                         inCart = true;
 
-                                        continueClickFromOutSide(1, amountNow, position, finalPrice, true);
+                                        continueClickFromOutSide(amountNow, finalPrice, true, product, productSearch);
 
-                                        Log.i(TAG, "onBind: here 5");
-                                        updateBottomSheet(-finalPrice, amount);
+                                        updateBottomSheet(-finalPrice, amountNow);
 
                                     } else if (amountNow <= 0) {
                                         inCart = false;
@@ -428,9 +416,11 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
                                         txt_amount.setText("0 ");
                                         amountNow = 0;
-                                        continueClickFromOutSide(1, 0, position, finalPrice, true);
-                                        Log.i(TAG, "onBind: here 6");
-                                        updateBottomSheet(-finalPrice, amount);
+                                        Common.TOTAL_CART_AMOUNT -= 1;
+                                        Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - finalPrice;
+
+                                        continueClickFromOutSide(0, finalPrice, true, product, productSearch);
+                                        updateBottomSheet(-finalPrice, 1);
 
                                     }
 
@@ -446,10 +436,9 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                         inCart = true;
                                         Common.TOTAL_CART_AMOUNT -= 1;
                                         Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
-                                        continueClickFromOutSide(1, amountNow, position, finalPrice * unitStep, true);
+                                        continueClickFromOutSide(amountNow, finalPrice * unitStep, true, product, productSearch);
 
-                                        Log.i(TAG, "onBind: here 7");
-                                        updateBottomSheet(-finalPrice * unitStep, amount);
+                                        updateBottomSheet(-finalPrice * unitStep, amountNow);
 
                                     } else {
                                         inCart = false;
@@ -459,15 +448,16 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
                                         txt_amount.setText("0 ");
                                         amountNow = 0;
-                                        continueClickFromOutSide(1, 0, position, finalPrice * minSellingUnits, true);
-                                        Log.i(TAG, "onBind: here 8");
-                                        updateBottomSheet(-finalPrice * minSellingUnits, amount);
+                                        Common.TOTAL_CART_AMOUNT -= 1;
+                                        Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+                                        continueClickFromOutSide(0, finalPrice * minSellingUnits, true, product, productSearch);
+                                        updateBottomSheet(-finalPrice * minSellingUnits, 1);
                                     }
                                 }
                             } else {
                                 //This My Cart
                                 for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
-                                    if (item.getPricingProductId().equalsIgnoreCase(finalProductId)) {
+                                    if (item.getPricingProductId().equalsIgnoreCase(productId)) {
                                         if (isPackaged) {
 
                                             cartProductId = item.getCartProductId();
@@ -489,10 +479,9 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
                                                 Common.TOTAL_CART_AMOUNT -= 1;
                                                 Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
-                                                continueClickFromOutSide(1, amountNow, position, finalPrice, true);
+                                                continueClickFromOutSide(amountNow, finalPrice, true, product, productSearch);
 
-                                                Log.i(TAG, "onBind: here 9");
-                                                updateBottomSheet(-finalPrice, amount);
+                                                updateBottomSheet(-finalPrice, amountNow);
 
                                             } else if (amountNow <= 0) {
                                                 inCart = false;
@@ -503,9 +492,10 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
                                                 txt_amount.setText("0 ");
                                                 amountNow = 0;
-                                                continueClickFromOutSide(1, 0, position, finalPrice, true);
-                                                Log.i(TAG, "onBind: here 10");
-                                                updateBottomSheet(-finalPrice, amount);
+                                                Common.TOTAL_CART_AMOUNT -= 1;
+                                                Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+                                                continueClickFromOutSide(0, finalPrice, true, product, productSearch);
+                                                updateBottomSheet(-finalPrice, 1);
                                             }
 
 
@@ -513,7 +503,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
                                         } else {
                                             cartProductId = item.getCartProductId();
-                                            Log.d("HAZEM", "cartProductId 2 : " + cartProductId + " -- " + item.getCartProductId());
 
                                             double amountNow = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) - unitStep;
 
@@ -529,9 +518,8 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                                 });
                                                 Common.TOTAL_CART_AMOUNT -= 1;
                                                 Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
-                                                continueClickFromOutSide(1, amountNow, position, finalPrice * unitStep, true);
-                                                Log.i(TAG, "onBind: here 11");
-                                                updateBottomSheet(-finalPrice * unitStep, amount);
+                                                continueClickFromOutSide(amountNow, finalPrice * unitStep, true, product, productSearch);
+                                                updateBottomSheet(-finalPrice * unitStep, amountNow);
                                             } else {
                                                 inCart = false;
                                                 txt_amount.setVisibility(View.INVISIBLE);
@@ -539,9 +527,10 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                                 bg_delete.setVisibility(View.INVISIBLE);
                                                 txt_amount.setText("0 ");
                                                 amountNow = 0;
-                                                continueClickFromOutSide(1, 0, position, finalPrice * minSellingUnits, true);
-                                                Log.i(TAG, "onBind: here 12");
-                                                updateBottomSheet(-finalPrice * minSellingUnits, amount);
+                                                Common.TOTAL_CART_AMOUNT -= 1;
+                                                Common.TOTAL_CART_PRICE = Common.TOTAL_CART_PRICE - price;
+                                                continueClickFromOutSide(0, finalPrice * minSellingUnits, true, product, productSearch);
+                                                updateBottomSheet(-finalPrice * minSellingUnits, 1);
                                             }
 
                                             break;
@@ -569,9 +558,28 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                 });
         }
 
-        private void continueClickFromOutSide(double step, double actualAmount, int position, double price, boolean isDecrease) {
+        private void continueClickFromOutSide(double actualAmount, double price, boolean isDecrease, GetStoreProductsQuery.Product product, StoreSearchQuery.ProductQuery productSearch) {
+            Boolean inCart = false;
+            String cartId = "";
+            for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
+                if (item != null) if (item.getPricingProductId().equalsIgnoreCase(product._id())) {
+                    inCart = true;
+                    cartId = item.getCartProductId();
 
-            listener.onClick(productId, cartProductId, price, actualAmount, inCart, isDecrease, txt_amount, btn_delete, bg_delete);
+                    if (!isSearch)
+                        listener.onClickNoSearch(product, cartId, actualAmount, price, inCart, isDecrease, txt_amount, btn_delete, bg_delete);
+                    else
+                        listener.onClickSearch(productSearch, cartId, actualAmount, price, inCart, isDecrease, txt_amount, btn_delete, bg_delete);
+                    break;
+                }
+            }
+            if (!inCart) {
+                if (!isSearch)
+                    listener.onClickNoSearch(product, cartId, actualAmount, price, inCart, isDecrease, txt_amount, btn_delete, bg_delete);
+                else
+                    listener.onClickSearch(productSearch, cartId, actualAmount, price, inCart, isDecrease, txt_amount, btn_delete, bg_delete);
+
+            }
         }
 
         private boolean checkMaxPrice(double v) {
@@ -582,7 +590,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
             return false;
         }
 
-        private void rePopulateData(int position) {
+        private void rePopulateData(int position, GetStoreProductsQuery.Product product, StoreSearchQuery.ProductQuery productSearch) {
             if (!isSearch) {
                 product = productsList.get(position);
                 price = product.storePrice();
@@ -651,9 +659,9 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         }
     }
 
-    private void updateBottomSheet(double v, double amount) {
+    private void updateBottomSheet(double price, double amount) {
         if (amount > 0)
-            EventBus.getDefault().postSticky(new CalculateCartEvent(true, v, amount));
+            EventBus.getDefault().postSticky(new CalculateCartEvent(true, price, amount));
     }
 
     Boolean inCart = false;
@@ -691,6 +699,10 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
             if (Common.myLocalCartIds.contains(productId)) {
                 for (MyCart myCartItem : Common.myLocalCart) {
                     if (myCartItem.getProductId().equals(productId)) {
+                        txt_amount.setVisibility(View.VISIBLE);
+                        btn_delete.setVisibility(View.VISIBLE);
+                        bg_delete.setVisibility(View.VISIBLE);
+
                         amount = myCartItem.getAmount();
                         if (isPackaged)
                             txt_amount.setText(new StringBuilder().append(((int) (amount))).append(" ").append("X"));
@@ -702,17 +714,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         }
     }
 
-    public GetStoreProductsQuery.Product getSelectProduct(int position) {
-        return productsList.get(position);
-    }
-
-    public void removeSelectProduct(int position) {
-        productsList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, productsList.size());
-
-    }
-
     //------------------------------------
     public void addItems(List<GetStoreProductsQuery.Product> productsList) {
         this.productsList.addAll(productsList);
@@ -721,38 +722,15 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     public void addLoading() {
         isLoaderVisible = true;
+        Common.adapterIsLoading = true;
         productsList.add(null);
         notifyItemInserted(productsList.size() - 1);
     }
 
-    public void addToCart(String id, double amount) {
-
-        CreateCartItem item = CreateCartItem.builder().amount(amount).pricingProductId(id).build();
-        MyApolloClient.getApolloClient().mutate(CreateCartItemMutation.builder().data(item).build())
-                .enqueue(new ApolloCall.Callback<CreateCartItemMutation.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {
-
-                        CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
-                        if (createResponse.status() == 200) {
-
-                            Common.GetCartItemsCount(null);
-
-
-                        } else {
-
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                    }
-                });
-    }
 
     public void removeLoading() {
         isLoaderVisible = false;
+        Common.adapterIsLoading = false;
         int position = productsList.size() - 1;
         GetStoreProductsQuery.Product item = getItem(position);
         if (item == null) {
@@ -775,12 +753,14 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     public void addLoadingSearch() {
         isLoaderVisible = true;
+        Common.adapterIsLoading = true;
         productsListSearch.add(null);
         notifyItemInserted(productsListSearch.size() - 1);
     }
 
     public void removeLoadingSearch() {
         isLoaderVisible = false;
+        Common.adapterIsLoading = false;
         int position = productsListSearch.size() - 1;
         StoreSearchQuery.ProductQuery item = getItemSearch(position);
         if (item == null) {
@@ -799,7 +779,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
             this.productsListSearch.clear();
     }
 
-    //------------------------------------
+//------------------------------------
 
     public class ProgressHolder extends BaseViewHolder {
         ProgressHolder(View itemView) {
@@ -810,6 +790,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         @Override
         protected void clear() {
         }
+
     }
 
     @Override
@@ -877,6 +858,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     public void deleteCartItems(MyCart myCartItem) {
         String id = myCartItem.getCartId();
+        Double amount = myCartItem.getAmount();
         RemoveCartItemMutation removeCartItemMutation = RemoveCartItemMutation.builder()._id(id).build();
 
         MyApolloClient.getApollowClientAuthorization()
@@ -885,12 +867,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                     @Override
                     public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
 
-
                         if (response.data().CartItemMutation().remove().status() == 200) {
-                            myCartItem.setInCart(false);
-                            myCartItem.setCartId(null);
-                            myCartItem.setAmount(0.0);
-                            myCartItem.setInCartAmount(0.0);
                             if (Common.myLocalCartIds.contains(myCartItem.getProductId())) {
                                 Common.myLocalCartIds.remove(myCartItem.getProductId());
                                 for (int i = Common.myLocalCart.size() - 1; i >= 0; i--) {
@@ -902,7 +879,20 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                 }
 
                             }
-                            Common.GetCartItemsCount(null);
+                            Common.GetCartItemsCount(new CallbackListener() {
+                                @Override
+                                public void OnSuccessCallback() {
+                                    myCartItem.setInCart(false);
+                                    myCartItem.setCartId(null);
+                                    myCartItem.setAmount(0.0);
+                                    myCartItem.setInCartAmount(0.0);
+                                }
+
+                                @Override
+                                public void OnFailedCallback() {
+
+                                }
+                            });
                         }
 
                     }
@@ -912,8 +902,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
                     }
                 });
-        Log.i(TAG, "onBind: here 13");
-        updateBottomSheet(-price, -1);
+        updateBottomSheet(-price * amount, amount);
     }
 
 }

@@ -3,10 +3,27 @@ package com.corptia.bringero.model;
 public class MyCart {
 
     String productId, cartId;
-    Double price, amount, inCartAmount;
-    Boolean inCart,isDecrease;
+    Double price, amount, inCartAmount, minAmount;
+    Boolean inCart, isDecrease, isPackaged;
 
-    public MyCart() { }
+    public MyCart() {
+    }
+
+    public Double getMinAmount() {
+        return minAmount;
+    }
+
+    public void setMinAmount(Double minAmount) {
+        this.minAmount = minAmount;
+    }
+
+    public Boolean getPackaged() {
+        return isPackaged;
+    }
+
+    public void setPackaged(Boolean packaged) {
+        isPackaged = packaged;
+    }
 
     public MyCart(String productId, String cartId, Double price, Double amount, Double inCartAmount, Boolean inCart, Boolean isDecrease) {
         this.productId = productId;

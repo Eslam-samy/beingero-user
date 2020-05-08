@@ -27,11 +27,13 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.Interface.AdapterIOnProductClickListener;
 import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.graphql.CreateCartItemMutation;
+import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.StoreSearchQuery;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
 import com.corptia.bringero.model.MyCart;
@@ -261,6 +263,7 @@ public class SearchProductsActivity extends BaseActivity {
 
             @Override
             public boolean isLastPage() {
+                Log.i("TAG Moha search", "isLastPage: " + isLastPage);
                 return isLastPage;
             }
 
@@ -350,61 +353,86 @@ public class SearchProductsActivity extends BaseActivity {
 
                                     totalPages = response.data().PricingProductQuery().getStoreProducts().pagination().totalPages();
                                     storeDetailAdapter.addItemsSearch(data.ProductQuery());
+                                    storeDetailAdapter.setListener(new AdapterIOnProductClickListener() {
+                                        @Override
+                                        public void onClickNoSearch(GetStoreProductsQuery.Product product, String cartID, double amount, double price, boolean inCart, boolean isDecrease, View txt_amount, View btn_delete, View bg_delete) {
+                                        }
 
-                                    storeDetailAdapter.setListener((id, cartID, price, amount, inCart, isDecrease, txt_amount, btn_delete, bg_delete) -> {
-                /*if (!Common.myLocalCart.isEmpty())
-                    for (int i = Common.myLocalCart.size() - 1; i >= 0; i--) {
-                        MyCart myCartItem = Common.myLocalCart.get(i);
-                        if (!myCartItem.getProductId().equals(id)) {
-                            Log.i(TAG, "loadMoreItems: UPDATE 2");
-                            updateCartItem(myCartItem, i == Common.myLocalCart.size() - 1, loading);
-                        }
-                    }*/
-
-                                        if (!isDecrease) {
-                                            if (!Common.myLocalCartIds.contains(id)) {
-                                                Common.myLocalCartIds.add(id);
-                                                MyCart myCartItem = new MyCart();
-                                                myCartItem.setAmount(amount);
-                                                myCartItem.setCartId(cartID);
-                                                myCartItem.setInCart(inCart);
-                                                myCartItem.setDecrease(isDecrease);
-                                                myCartItem.setPrice(price);
-                                                myCartItem.setProductId(id);
-                                                Common.myLocalCart.add(myCartItem);
-                                            } else {
-                                                for (MyCart myCartItem : Common.myLocalCart) {
-                                                    if (myCartItem.getProductId().equals(id)) {
-                                                        int index = Common.myLocalCart.indexOf(myCartItem);
-                                                        myCartItem.setAmount(amount);
-                                                        myCartItem.setDecrease(isDecrease);
-                                                        Common.myLocalCart.set(index, myCartItem);
+                                        @Override
+                                        public void onClickSearch(StoreSearchQuery.ProductQuery product, String cartID, double amount, double price, boolean inCart, boolean isDecrease, View txt_amount, View btn_delete, View bg_delete) {
+                                            String id = product._id();
+                                            Boolean isPackaged = product.Product().isPackaged();
+                                            Double minAmount = product.Product().minSellingUnits();
+       /*                                     if (!Common.myLocalCart.isEmpty())
+                                                for (int i = Common.myLocalCart.size() - 1; i >= 0; i--) {
+                                                    MyCart myCartItem = Common.myLocalCart.get(i);
+                                                    if (!myCartItem.getProductId().equals(id)) {
+                                                        Log.i(TAG, "loadMoreItems: UPDATE 2");
+                                                        updateCartItem(myCartItem, i == Common.myLocalCart.size() - 1, loading);
+                                                    }
+                                                }*/
+                                            if (!isDecrease) {
+                                                if (!Common.myLocalCartIds.contains(id)) {
+                                                    Common.myLocalCartIds.add(id);
+                                                    MyCart myCartItem = new MyCart();
+                                                    myCartItem.setAmount(amount);
+                                                    myCartItem.setCartId(cartID);
+                                                    myCartItem.setInCart(inCart);
+                                                    myCartItem.setDecrease(isDecrease);
+                                                    myCartItem.setPrice(price);
+                                                    myCartItem.setPackaged(isPackaged);
+                                                    myCartItem.setMinAmount(minAmount);
+                                                    myCartItem.setProductId(id);
+                                                    Common.myLocalCart.add(myCartItem);
+                                                } else {
+                                                    for (MyCart myCartItem : Common.myLocalCart) {
+                                                        if (myCartItem.getProductId().equals(id)) {
+                                                            int index = Common.myLocalCart.indexOf(myCartItem);
+                                                            myCartItem.setAmount(amount);
+                                                            myCartItem.setDecrease(isDecrease);
+                                                            Common.myLocalCart.set(index, myCartItem);
+                                                        }
                                                     }
                                                 }
+                                                EventBus.getDefault().postSticky(new CalculateCartEvent(true, price, amount));
+                                            } else {
+                                                MyCart myCartItem = new MyCart();
+                                                if (!Common.myLocalCartIds.contains(id)) {
+                                                    Common.myLocalCartIds.add(id);
+                                                    myCartItem.setAmount(amount);
+                                                    myCartItem.setCartId(cartID);
+                                                    myCartItem.setInCart(true);
+                                                    myCartItem.setDecrease(true);
+                                                    myCartItem.setPrice(price);
+                                                    myCartItem.setProductId(id);
+                                                    myCartItem.setPackaged(isPackaged);
+                                                    myCartItem.setMinAmount(minAmount);
+                                                    Common.myLocalCart.add(myCartItem);
+                                                } else {
+                                                    for (MyCart myCart : Common.myLocalCart) {
+                                                        if (myCart.getProductId().equals(id)) {
+                                                            int index = Common.myLocalCart.indexOf(myCart);
+                                                            myCart.setAmount(amount);
+                                                            myCart.setDecrease(true);
+                                                            //Common.myLocalCart.set(index, myCart);
+                                                            myCartItem = myCart;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                //updateCartItem(myCartItem);
                                             }
-                                            EventBus.getDefault().postSticky(new CalculateCartEvent(true, price, amount));
-                                        } else {
-                                            MyCart myCartItem = new MyCart();
-                                            myCartItem.setAmount(amount);
-                                            myCartItem.setCartId(cartID);
-                                            myCartItem.setInCart(true);
-                                            myCartItem.setDecrease(true);
-                                            myCartItem.setPrice(price);
-                                            myCartItem.setProductId(id);
-                                            updateCartItem(myCartItem);
-                                        }
-                                        if (amount > 0) {
-                                            txt_amount.setVisibility(View.VISIBLE);
-                                            btn_delete.setVisibility(View.VISIBLE);
-                                            bg_delete.setVisibility(View.VISIBLE);
-                                        } else {
-                                            txt_amount.setVisibility(View.INVISIBLE);
-                                            btn_delete.setVisibility(View.INVISIBLE);
-                                            bg_delete.setVisibility(View.INVISIBLE);
+                                            if (amount > 0) {
+                                                txt_amount.setVisibility(View.VISIBLE);
+                                                btn_delete.setVisibility(View.VISIBLE);
+                                                bg_delete.setVisibility(View.VISIBLE);
+                                            } else {
+                                                txt_amount.setVisibility(View.INVISIBLE);
+                                                btn_delete.setVisibility(View.INVISIBLE);
+                                                bg_delete.setVisibility(View.INVISIBLE);
+                                            }
                                         }
                                     });
-
-
                                 } else {
                                     layout_placeholder.setVisibility(View.VISIBLE);
                                 }
@@ -668,13 +696,13 @@ public class SearchProductsActivity extends BaseActivity {
                 storeDetailAdapter.deleteCartItems(myCartItem);
             }
         }
-        if (myCartItem.getDecrease()) {
+        /*if (myCartItem.getDecrease()) {
             if (myCartItem.getAmount() > 1) {
                 storeDetailAdapter.updateCartItems(myCartItem);
             } else {
                 storeDetailAdapter.deleteCartItems(myCartItem);
             }
-        }
+        }*/
     }
 
     //TODO Here Make Refresh

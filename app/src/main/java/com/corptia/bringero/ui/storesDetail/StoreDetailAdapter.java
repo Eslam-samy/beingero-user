@@ -311,7 +311,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 if (!finalIsPackaged) {
                                     txt_amount.setText(new StringBuilder().append(actualAmount).append(" ").append(context.getString(R.string.kg)));
                                 }
-                                    listener.onClick(productId, cartProductId, finalPrice1 * step, actualAmount, inCart,false, txt_amount, btn_delete, bg_delete);
+                                    //listener.onClick(productId, cartProductId, finalPrice1 * step, actualAmount, inCart,false, txt_amount, btn_delete, bg_delete);
 
                             }
 
@@ -353,7 +353,7 @@ public class StoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                                 btn_delete.setVisibility(View.VISIBLE);
                                 bg_delete.setVisibility(View.VISIBLE);
 
-                                    listener.onClick(productId, cartProductId, finalPrice1 , count, inCart,false, txt_amount, btn_delete, bg_delete);
+                                    //listener.onClick(productId, cartProductId, finalPrice1 , count, inCart,false, txt_amount, btn_delete, bg_delete);
 
 
                                 if (finalIsPackaged) {
