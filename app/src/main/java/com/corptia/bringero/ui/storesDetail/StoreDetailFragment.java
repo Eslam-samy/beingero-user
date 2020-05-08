@@ -301,8 +301,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 public void onClickSearch(StoreSearchQuery.ProductQuery product, String cartID, double amount, double price, boolean inCart, boolean isDecrease, View txt_amount, View btn_delete, View bg_delete) {
                 }
             });
-
-
         });
 
     }
@@ -367,13 +365,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 storeDetailAdapter.deleteCartItems(myCartItem);
             }
         }
-        /*if (myCartItem.getDecrease()) {
-            if (myCartItem.getAmount() > 1) {
-                storeDetailAdapter.updateCartItems(myCartItem);
-            } else {
-                storeDetailAdapter.deleteCartItems(myCartItem);
-            }
-        }*/
     }
 
     //TODO Here Make Refresh

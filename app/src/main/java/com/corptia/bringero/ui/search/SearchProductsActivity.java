@@ -43,6 +43,7 @@ import com.corptia.bringero.type.SEARCH_Input;
 import com.corptia.bringero.type.StoreGalleryFilter;
 import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.ui.storesDetail.NewStoreDetailAdapter;
+import com.corptia.bringero.ui.storesDetail.StoreDetailActivity;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.recyclerview.PaginationListener;
 import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
@@ -204,6 +205,7 @@ public class SearchProductsActivity extends BaseActivity {
         img_clean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                isLastPage=false;
                 edt_search.setText("");
                 layout_placeholder.setVisibility(View.VISIBLE);
                 recycler_product.setVisibility(View.GONE);
@@ -277,21 +279,6 @@ public class SearchProductsActivity extends BaseActivity {
         storeDetailAdapter = new NewStoreDetailAdapter(SearchProductsActivity.this, null, true);
         recycler_product.setAdapter(storeDetailAdapter);
 
-//        adapter.setListener((view, position,price) -> {
-//
-////                    Intent intent = new Intent(getActivity() , ProductDetailActivity.class);
-////                    GetStoreProductsQuery.Product mProduct =  storeDetailAdapter.getSelectProduct(position);
-////                    intent.putExtra(Constants.EXTRA_PRODUCT_ID , mProduct._id());
-////                    if (mProduct.Product().ImageResponse().data()!=null)
-////                    intent.putExtra(Constants.EXTRA_PRODUCT_IMAGE , mProduct.Product().ImageResponse().data().name());
-////                    startActivity(intent);
-//
-//            //Here Add To Cart
-//
-//            Log.d("HAZEM" , "From Activity : " +position);
-//
-//        });
-
         initPlaceHolderSearch();
 
         getSpeedCart();
@@ -363,14 +350,13 @@ public class SearchProductsActivity extends BaseActivity {
                                             String id = product._id();
                                             Boolean isPackaged = product.Product().isPackaged();
                                             Double minAmount = product.Product().minSellingUnits();
-       /*                                     if (!Common.myLocalCart.isEmpty())
+                                            if (!Common.myLocalCart.isEmpty())
                                                 for (int i = Common.myLocalCart.size() - 1; i >= 0; i--) {
                                                     MyCart myCartItem = Common.myLocalCart.get(i);
                                                     if (!myCartItem.getProductId().equals(id)) {
-                                                        Log.i(TAG, "loadMoreItems: UPDATE 2");
-                                                        updateCartItem(myCartItem, i == Common.myLocalCart.size() - 1, loading);
+                                                        updateCartItem(myCartItem);
                                                     }
-                                                }*/
+                                                }
                                             if (!isDecrease) {
                                                 if (!Common.myLocalCartIds.contains(id)) {
                                                     Common.myLocalCartIds.add(id);
@@ -411,16 +397,13 @@ public class SearchProductsActivity extends BaseActivity {
                                                 } else {
                                                     for (MyCart myCart : Common.myLocalCart) {
                                                         if (myCart.getProductId().equals(id)) {
-                                                            int index = Common.myLocalCart.indexOf(myCart);
                                                             myCart.setAmount(amount);
                                                             myCart.setDecrease(true);
-                                                            //Common.myLocalCart.set(index, myCart);
                                                             myCartItem = myCart;
                                                             break;
                                                         }
                                                     }
                                                 }
-                                                //updateCartItem(myCartItem);
                                             }
                                             if (amount > 0) {
                                                 txt_amount.setVisibility(View.VISIBLE);
@@ -433,6 +416,7 @@ public class SearchProductsActivity extends BaseActivity {
                                             }
                                         }
                                     });
+
                                 } else {
                                     layout_placeholder.setVisibility(View.VISIBLE);
                                 }
@@ -524,6 +508,24 @@ public class SearchProductsActivity extends BaseActivity {
     }
 
 
+    public void getSpeedCart() {
+        if (Common.TOTAL_CART_AMOUNT <= 0) {
+            Common.TOTAL_CART_AMOUNT = 0;
+            isHaveCart = false;
+            layout_speed_cart.setVisibility(View.GONE);
+        } else {
+            isHaveCart = true;
+            layout_speed_cart.setVisibility(View.VISIBLE);
+            totalPriceCart = Common.TOTAL_CART_PRICE;
+            countOfCart = Common.TOTAL_CART_AMOUNT;
+
+            txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
+//            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
+            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
+        }
+        layout_speed_cart.setOnClickListener(view -> gotoCart());
+    }
+
     void gotoCart() {
         try {
             Intent intent = new Intent(SearchProductsActivity.this, HomeActivity.class);
@@ -536,74 +538,29 @@ public class SearchProductsActivity extends BaseActivity {
         }
     }
 
-    public void getSpeedCart() {
-
-
-        if (Common.TOTAL_CART_AMOUNT == 0) {
-            isHaveCart = false;
-            layout_speed_cart.setVisibility(View.GONE);
-        } else {
-            isHaveCart = true;
-            layout_speed_cart.setVisibility(View.VISIBLE);
-            totalPriceCart = Common.TOTAL_CART_PRICE;
-            countOfCart = Common.TOTAL_CART_AMOUNT;
-
-            txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
-            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
-        }
-
-        layout_speed_cart.setOnClickListener(view -> gotoCart());
-
-    }
-
-
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void request(CalculateCartEvent event) {
         if (event != null) {
-
             if (event.isSuccess()) {
-
-//                if (countOfCart > 0)
-//                    txt_countOfCart.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            txt_countOfCart.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-//                        }
-//                    });
-
-
-//                Common.TOTAL_CART_PRICE +=event.getProductPrice();
-//                Common.TOTAL_CART_AMOUNT +=event.getAmount();
-
-                countOfCart += event.getAmount();
+                countOfCart = Common.TOTAL_CART_AMOUNT;
                 totalPriceCart += event.getProductPrice();
 
                 isHaveCart = true;
                 layout_speed_cart.setVisibility(View.VISIBLE);
                 txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
-
-                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
-
+                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
+                Common.totalPriceCart=totalPriceCart;
                 if (totalPriceCart <= 0.0f) {
                     isHaveCart = false;
                     layout_speed_cart.setVisibility(View.GONE);
                 }
-
-
-//                RunAnimation();
-
-
             } else {
-
                 if (Common.TOTAL_CART_AMOUNT == 0) {
                     isHaveCart = false;
                     layout_speed_cart.setVisibility(View.GONE);
                 }
             }
-
         }
-
-
     }
 
 
@@ -630,50 +587,11 @@ public class SearchProductsActivity extends BaseActivity {
     }
 
 
-    public void addToCart(String pricingProductId, int position, double amount) {
-
-        CreateCartItem item = CreateCartItem.builder().amount(amount).pricingProductId(pricingProductId).build();
-        MyApolloClient.getApollowClientAuthorization().mutate(CreateCartItemMutation.builder().data(item).build())
-                .enqueue(new ApolloCall.Callback<CreateCartItemMutation.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<CreateCartItemMutation.Data> response) {
-
-                        CreateCartItemMutation.Create createResponse = response.data().CartItemMutation().create();
-                        if (createResponse.status() == 200) {
-
-                            Common.GetCartItemsCount(new CallbackListener() {
-                                @Override
-                                public void OnSuccessCallback() {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-//                                            adapter.notifyItemChanged(position);
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void OnFailedCallback() {
-
-                                }
-                            });
-
-                        } else {
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-
-                    }
-                });
-    }
-
     @Override
     public void onPause() {
-
         sendToServer();
+        Common.myLocalCart.clear();
+        Common.myLocalCartIds.clear();
         super.onPause();
     }
 
@@ -690,19 +608,12 @@ public class SearchProductsActivity extends BaseActivity {
                 addToCart(myCartItem);
             }
         } else {
-            if (myCartItem.getAmount() > 1) {
+            if (myCartItem.getAmount() > 0) {
                 storeDetailAdapter.updateCartItems(myCartItem);
             } else {
                 storeDetailAdapter.deleteCartItems(myCartItem);
             }
         }
-        /*if (myCartItem.getDecrease()) {
-            if (myCartItem.getAmount() > 1) {
-                storeDetailAdapter.updateCartItems(myCartItem);
-            } else {
-                storeDetailAdapter.deleteCartItems(myCartItem);
-            }
-        }*/
     }
 
     //TODO Here Make Refresh
@@ -720,7 +631,10 @@ public class SearchProductsActivity extends BaseActivity {
                             myCartItem.setInCart(true);
                             myCartItem.setCartId(createResponse.data()._id());
                             Common.GetCartItemsCount(null);
+                        } else {
+
                         }
+
                     }
 
                     @Override

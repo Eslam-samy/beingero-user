@@ -46,6 +46,7 @@ import es.dmoral.toasty.Toasty;
 
 import static com.corptia.bringero.Common.Constants.VIEW_TYPE_ITEM;
 import static com.corptia.bringero.Common.Constants.VIEW_TYPE_LOADING;
+import static com.corptia.bringero.Common.Constants.pilotAlmostHere;
 
 public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
@@ -171,14 +172,12 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         public void onBind(int position) {
             super.onBind(position);
             cartProductId = "";
-            //Populating item data
-
             if (!isSearch) {
                 final GetStoreProductsQuery.Product product = productsList.get(position);
                 continueBinding(position, product, null, productId = product._id());
             } else {
                 final StoreSearchQuery.ProductQuery productSearch = productsListSearch.get(position);
-                continueBinding(position, null, productSearch, productSearch._id());
+                continueBinding(position, null, productSearch, productId = productSearch._id());
             }
         }
 
@@ -217,39 +216,40 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                 }
 
             } else {
+                price = productSearch.storePrice();
+                oldPrice = productSearch.storePrice();
 
-                if (productSearch != null) {
+                //Product Have Discount
+                if (productSearch.discountActive() != null && productSearch.discountActive()) {
 
-                    oldPrice = productSearch.storePrice();
+                    txt_discount.setVisibility(View.VISIBLE);
+                    txt_old_price.setVisibility(View.VISIBLE);
 
-                    //Product Have Discount Search
-                    if (productSearch.discountActive() != null && productSearch.discountActive()) {
+                    discountActive = productSearch.discountActive();
+                    discountRatio = productSearch.discountRatio();
 
-                        txt_discount.setVisibility(View.VISIBLE);
-                        txt_old_price.setVisibility(View.VISIBLE);
+                    price = (1 - discountRatio) * oldPrice;
 
-                        discountActive = productSearch.discountActive();
-                        discountRatio = productSearch.discountRatio();
+                } else {
 
-                        price = (1 - discountRatio) * oldPrice;
-
-                    } else {
-
-                        txt_discount.setVisibility(View.GONE);
-                        txt_old_price.setVisibility(View.GONE);
-
-                        price = productSearch.storePrice();
-                    }
-                    productName = productSearch.Product().name();
-                    isPackaged = productSearch.Product().isPackaged();
-
-                    if (productSearch.Product().ImageResponse().status() == 200)
-                        productImage = productSearch.Product().ImageResponse().data().name();
-
+                    txt_discount.setVisibility(View.GONE);
+                    txt_old_price.setVisibility(View.GONE);
                 }
+
+                productName = productSearch.Product().name();
+                isPackaged = productSearch.Product().isPackaged();
+
+                if (productSearch.Product().ImageResponse().status() == 200)
+                    productImage = productSearch.Product().ImageResponse().data().name();
+
+                if (!isPackaged) {
+                    unitStep = productSearch.Product().unitStep();
+                    minSellingUnits = productSearch.Product().minSellingUnits();
+                }
+
             }
             //Check Item in cart
-            checkItemInCart(txt_amount, btn_delete, bg_delete, false);
+            checkItemInCart(txt_amount, btn_delete, bg_delete, false, product, productSearch);
 
             //Here Set Data On Cart
             txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(price)).append(" ").append(context.getString(R.string.currency)));
@@ -307,9 +307,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                 } else {
                                     inCart = true;
                                 }
-                                Log.i(TAG, "onClick: here");
                                 if (checkMaxPrice(finalPrice1)) return;
-                                Log.i(TAG, "onClick: here after");
                                 int count;
                                 count = Integer.parseInt(txt_amount.getText().toString().split(" ")[0]) + 1;
                                 if (count < 100) {
@@ -561,8 +559,15 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         private void continueClickFromOutSide(double actualAmount, double price, boolean isDecrease, GetStoreProductsQuery.Product product, StoreSearchQuery.ProductQuery productSearch) {
             Boolean inCart = false;
             String cartId = "";
+            String productId = "";
+            if (!isSearch) {
+                productId = product._id();
+            } else {
+                productId = productSearch._id();
+
+            }
             for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
-                if (item != null) if (item.getPricingProductId().equalsIgnoreCase(product._id())) {
+                if (item != null) if (item.getPricingProductId().equalsIgnoreCase(productId)) {
                     inCart = true;
                     cartId = item.getCartProductId();
 
@@ -650,9 +655,8 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                     if (productSearch.Product().ImageResponse().status() == 200)
                         productImage = productSearch.Product().ImageResponse().data().name();
                     if (!isPackaged) {
-                        unitStep = product.Product().unitStep();
-                        minSellingUnits = product.Product().minSellingUnits();
-
+                        unitStep = productSearch.Product().unitStep();
+                        minSellingUnits = productSearch.Product().minSellingUnits();
                     }
                 }
             }
@@ -666,13 +670,19 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     Boolean inCart = false;
 
-    public void checkItemInCart(TextView txt_amount, View btn_delete, View bg_delete, boolean update) {
+    public void checkItemInCart(TextView txt_amount, View btn_delete, View bg_delete, boolean update, GetStoreProductsQuery.Product product, StoreSearchQuery.ProductQuery productSearch) {
+        String productId = "";
+
+        if (!isSearch) {
+            productId = product._id();
+        } else {
+            productId = productSearch._id();
+        }
+
         for (CartItemsModel item : Common.CART_ITEMS_MODELS) {
             if (item != null) if (item.getPricingProductId().equalsIgnoreCase(productId)) {
                 inCart = true;
-
                 if (!update) {
-
                     txt_amount.setVisibility(View.VISIBLE);
                     btn_delete.setVisibility(View.VISIBLE);
                     bg_delete.setVisibility(View.VISIBLE);
@@ -708,10 +718,18 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                             txt_amount.setText(new StringBuilder().append(((int) (amount))).append(" ").append("X"));
                         else
                             txt_amount.setText(new StringBuilder().append(amount).append(" ").append(context.getString(R.string.kg)));
+                        if (isSearch)
+                            if (amount == 0) {
+                                txt_amount.setVisibility(View.INVISIBLE);
+                                btn_delete.setVisibility(View.INVISIBLE);
+                                bg_delete.setVisibility(View.INVISIBLE);
+                            }
+                        break;
                     }
                 }
             }
         }
+
     }
 
     //------------------------------------

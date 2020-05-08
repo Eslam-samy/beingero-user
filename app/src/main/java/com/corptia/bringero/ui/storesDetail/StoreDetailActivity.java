@@ -289,22 +289,8 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     public void request(CalculateCartEvent event) {
         if (event != null) {
             if (event.isSuccess()) {
-
-//                if (countOfCart > 0)
-//                    txt_countOfCart.animate().scaleX(1).scaleY(1).setDuration(100).withEndAction(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            txt_countOfCart.animate().scaleX(0.9f).scaleY(0.9f).setDuration(100);
-//                        }
-//                    });
-
-
-//                Common.TOTAL_CART_PRICE +=event.getProductPrice();
-//                Common.TOTAL_CART_AMOUNT +=event.getAmount();
-
                 countOfCart = Common.TOTAL_CART_AMOUNT;
                 totalPriceCart += event.getProductPrice();
-
                 isHaveCart = true;
                 layout_speed_cart.setVisibility(View.VISIBLE);
                 txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
