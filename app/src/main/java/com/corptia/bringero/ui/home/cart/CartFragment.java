@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.apollographql.apollo.ApolloCall;
@@ -23,10 +24,13 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GeneralOptionAllQuery;
 import com.corptia.bringero.graphql.GeneralOptionQuery;
+import com.corptia.bringero.graphql.RemoveCartItemMutation;
+import com.corptia.bringero.model.MyCart;
 import com.corptia.bringero.type.GeneralOptionFilter;
 import com.corptia.bringero.type.GeneralOptionNameEnum;
 import com.corptia.bringero.utils.CustomLoading;
@@ -146,6 +150,21 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
             //stickyRecyclerView.setDataSource(myCartData);
             cartAdapter = new CartAdapter(getActivity(), myCartData.storeData(), true);
+            cartAdapter.setRemoveAllStoreItemsListener(new CartAdapter.RemoveAllStoreItemsListener() {
+                @Override
+                public void removeAllStoreProducts(List<MyCartQuery.Item> storeItems, int position, Double totalPrice,List<MyCartQuery.StoreDatum> myCartList) {
+                    CustomLoading customLoading = new CustomLoading(getContext(), true);
+                    customLoading.showProgressBar(getContext(), false);
+
+                    for (MyCartQuery.Item item : storeItems) {
+
+                        Boolean isLast = storeItems.indexOf(item) == storeItems.size() - 1;
+                        String cartId = item._id();
+                        deleteCartItems(cartId, position, isLast, totalPrice, customLoading, myCartList);
+                    }
+                }
+            });
+
             recycler_cart.setAdapter(cartAdapter);
 
 
@@ -186,12 +205,10 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                                                         isAvailableStores.add(stores.Store().isAvailable());
 
-                                                        if (stores.Store().orderMinPrice()!=null)
-                                                        {
-                                                            if (stores.TotalPrice()  < stores.Store().orderMinPrice())
-                                                            {
+                                                        if (stores.Store().orderMinPrice() != null) {
+                                                            if (stores.TotalPrice() < stores.Store().orderMinPrice()) {
                                                                 loadingDialog.hideProgressBar();
-                                                                Toasty.info(getActivity() , new StringBuilder().append(" طلبك من المتجر ").append(stores.Store().name()).append(" لا يتعدي الحد المسموح لاتمام عملية الشراء ")).show();
+                                                                Toasty.info(getActivity(), new StringBuilder().append(" طلبك من المتجر ").append(stores.Store().name()).append(" لا يتعدي الحد المسموح لاتمام عملية الشراء ")).show();
 //                                                                break;
                                                                 return;
                                                             }
@@ -268,6 +285,43 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
 
         });
+    }
+
+    public void deleteCartItems(String cartId, int position, Boolean isLast, double totalStorePrice, CustomLoading customLoading, List<MyCartQuery.StoreDatum> myCartList) {
+        RemoveCartItemMutation removeCartItemMutation = RemoveCartItemMutation.builder()._id(cartId).build();
+
+        MyApolloClient.getApollowClientAuthorization()
+                .mutate(removeCartItemMutation)
+                .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
+                    @Override
+                    public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
+
+                        if (response.data().CartItemMutation().remove().status() == 200) {
+
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (isLast) {
+                                        cartAdapter.notifyItemRemoved(position);
+                                        Toast.makeText(getContext(), "Items Deleted !", Toast.LENGTH_SHORT).show();
+                                        EventBus.getDefault().postSticky(new CalculatePriceEvent(true, cartId, -0, -totalStorePrice));
+                                        myCartList.remove(position);
+                                        cartAdapter.notifyItemRemoved(position);
+                                        cartAdapter.notifyItemRangeChanged(position, myCartList.size());
+                                        customLoading.hideProgressBar();
+                                    }
+                                }
+                            });
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(@NotNull ApolloException e) {
+
+                    }
+                });
     }
 
     private void getCost(MyCartQuery.MyCart myCart) {

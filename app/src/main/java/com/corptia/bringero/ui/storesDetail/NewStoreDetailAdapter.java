@@ -87,7 +87,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         this.context = context;
         if (products != null)
             this.productsListSearch = new ArrayList<>(products);
-        Common.adapterIsLoading = false;
         this.isSearch = true;
     }
 
@@ -100,7 +99,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         if (productsList != null)
             this.productsList = new ArrayList<>(productsList);
         isSearch = false;
-        Common.adapterIsLoading = false;
     }
 
     @NonNull
@@ -259,15 +257,13 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + productImage, image_product);
             //Click handling
 
-            if (!Common.adapterIsLoading) {
-                itemView.setClickable(true);
-                btn_delete.setClickable(true);
-                if (listener != null && Common.IS_AVAILABLE_STORE) {
-                    double finalPrice1 = price;
-                    boolean finalIsPackaged = isPackaged;
-                    itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
+            if (listener != null && Common.IS_AVAILABLE_STORE) {
+                double finalPrice1 = price;
+                boolean finalIsPackaged = isPackaged;
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (!Common.adapterIsLoading) {
                             //rePopulateData
                             rePopulateData(position, product, productSearch);
                             //Here Condition Limit Max Price
@@ -325,9 +321,11 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                 animateTheAmount(count);
                             }
                         }
-                    });
-                    double finalPrice = price;
-                    btn_delete.setOnClickListener(view -> {
+                    }
+                });
+                double finalPrice = price;
+                btn_delete.setOnClickListener(view -> {
+                    if (!Common.adapterIsLoading) {
                         if (Common.myLocalCartIds.contains(productId)) {
                             MyCart myCartItem = new MyCart();
                             for (MyCart myCart : Common.myLocalCart) {
@@ -538,12 +536,10 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                 }
                             }
                         }
-                    });
-                }
-            } else {
-                itemView.setClickable(false);
-                btn_delete.setClickable(false);
+                    }
+                });
             }
+
         }
 
         private void animateTheAmount(double step) {
@@ -740,7 +736,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     public void addLoading() {
         isLoaderVisible = true;
-        Common.adapterIsLoading = true;
         productsList.add(null);
         notifyItemInserted(productsList.size() - 1);
     }
@@ -748,7 +743,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     public void removeLoading() {
         isLoaderVisible = false;
-        Common.adapterIsLoading = false;
         int position = productsList.size() - 1;
         GetStoreProductsQuery.Product item = getItem(position);
         if (item == null) {
@@ -771,14 +765,12 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     public void addLoadingSearch() {
         isLoaderVisible = true;
-        Common.adapterIsLoading = true;
         productsListSearch.add(null);
         notifyItemInserted(productsListSearch.size() - 1);
     }
 
     public void removeLoadingSearch() {
         isLoaderVisible = false;
-        Common.adapterIsLoading = false;
         int position = productsListSearch.size() - 1;
         StoreSearchQuery.ProductQuery item = getItemSearch(position);
         if (item == null) {

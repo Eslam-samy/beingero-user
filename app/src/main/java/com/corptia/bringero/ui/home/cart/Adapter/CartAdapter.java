@@ -43,8 +43,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     Handler handler;
     CallBackUpdateCartItemsListener callBackUpdateCartItemsListener;
 
-
-
     public void setCallBackUpdateCartItemsListener(CallBackUpdateCartItemsListener callBackUpdateCartItemsListener) {
         this.callBackUpdateCartItemsListener = callBackUpdateCartItemsListener;
     }
@@ -54,7 +52,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         this.myCartList = new ArrayList<>(cartModels);
         this.isCart = isCart;
         handler = new Handler();
-
     }
 
     @NonNull
@@ -78,10 +75,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             public void onClickAdapter(int positionItems) {
                 itemList.remove(positionItems);
 
-                Log.d("HAZEM" , "DELETE FROM List " + position + " DATA " + cartModel.Store().name());
-
-                if (itemList.size() == 0)
-                {
+                if (itemList.size() == 0) {
 
                     myCartList.remove(position);
                     notifyItemRemoved(position);
@@ -169,12 +163,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             });
         }
 
+        holder.img_delete_store_products.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(removeAllStoreItemsListener!=null){
+                    removeAllStoreItemsListener.removeAllStoreProducts(myCartList.get(position).Items(),position,myCartList.get(position).TotalPrice(),myCartList);
+                }
+            }
+        });
         if (isCart) {
 
-            if (cartModel.Store().isAvailable()){
+            if (cartModel.Store().isAvailable()) {
                 holder.img_lock.setVisibility(View.GONE);
-            }
-            else holder.img_lock.setVisibility(View.VISIBLE);
+            } else holder.img_lock.setVisibility(View.VISIBLE);
 
 
             holder.layout_store_cart.setOnClickListener(view -> {
@@ -183,8 +184,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 Common.IS_AVAILABLE_STORE = store.isAvailable();
 
 
-                if (store.isAvailable())
-                {
+                if (store.isAvailable()) {
                     Intent intentStore = new Intent(context, StoreDetailActivity.class);
                     intentStore.putExtra(Constants.EXTRA_STORE_ID, store._id());
                     intentStore.putExtra(Constants.EXTRA_ADMIN_USER_ID, store.adminUserId());
@@ -196,16 +196,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
 
                     context.startActivity(intentStore);
-                }
-                else
-                {
+                } else {
 
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-                    View layout_alert = LayoutInflater.from(context).inflate(R.layout.layout_dialog_alert , null);
+                    View layout_alert = LayoutInflater.from(context).inflate(R.layout.layout_dialog_alert, null);
 
                     Button btn_ok = layout_alert.findViewById(R.id.btn_ok);
                     Button btn_continue = layout_alert.findViewById(R.id.btn_continue);
-
 
 
                     alertDialog.setView(layout_alert);
@@ -263,6 +260,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 //        TextView txt_total_price;
 
         ConstraintLayout layout_store_cart;
+        ImageView img_delete_store_products;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -270,18 +268,30 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
             ButterKnife.bind(this, itemView);
 
-            if (isCart)
-            {layout_store_cart = itemView.findViewById(R.id.layout_store_cart);
-                img_lock = itemView.findViewById(R.id.img_lock);}
+            if (isCart) {
+                {
 
+
+                    layout_store_cart = itemView.findViewById(R.id.layout_store_cart);
+                    img_delete_store_products = itemView.findViewById(R.id.img_delete_store_products);
+                    img_lock = itemView.findViewById(R.id.img_lock);
+                }
+            }
         }
     }
 
     public interface CallBackUpdateCartItemsListener {
         void callBack(String itemId, int amount);
     }
+    public interface RemoveAllStoreItemsListener {
+        void removeAllStoreProducts(List<MyCartQuery.Item> storeItems, int position,Double totalPrice,List<MyCartQuery.StoreDatum> cartList);
+    }
 
+    RemoveAllStoreItemsListener removeAllStoreItemsListener;
 
+    public void setRemoveAllStoreItemsListener(RemoveAllStoreItemsListener removeAllStoreItemsListener) {
+        this.removeAllStoreItemsListener = removeAllStoreItemsListener;
+    }
     //------------------- OnClickListener ---------------
 
 //    View.OnClickListener onClickListenerOk = new View.OnClickListener() {
