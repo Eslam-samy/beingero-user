@@ -163,7 +163,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
             });
         }
 
-        holder.img_delete_store_products.setOnClickListener(new View.OnClickListener() {
+        if (isCart)        holder.img_delete_store_products.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(removeAllStoreItemsListener!=null){
@@ -270,8 +270,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
             if (isCart) {
                 {
-
-
                     layout_store_cart = itemView.findViewById(R.id.layout_store_cart);
                     img_delete_store_products = itemView.findViewById(R.id.img_delete_store_products);
                     img_lock = itemView.findViewById(R.id.img_lock);

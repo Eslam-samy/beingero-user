@@ -249,7 +249,6 @@ public class SearchProductsActivity extends BaseActivity {
         recycler_product.addOnScrollListener(new PaginationListener(gridLayoutManager) {
             @Override
             protected void loadMoreItems() {
-                Common.adapterIsLoading = true;
                 for (MyCart myCartItem : Common.myLocalCart) {
                     updateCartItem(myCartItem);
                 }
@@ -257,6 +256,7 @@ public class SearchProductsActivity extends BaseActivity {
                 isLoading = true;
                 currentPage++;
                 if (currentPage <= totalPages) {
+                    Common.adapterIsLoading = true;
                     storeDetailAdapter.addLoadingSearch();
                     performSearch();
                 } else {
@@ -325,7 +325,7 @@ public class SearchProductsActivity extends BaseActivity {
                             public void run() {
 
                                 loading.setVisibility(View.GONE);
-
+                                Common.adapterIsLoading = false;
 
                                 if (data.status() == 200) {
 
@@ -333,7 +333,6 @@ public class SearchProductsActivity extends BaseActivity {
 
 
                                     if (isLoading) {
-                                        Common.adapterIsLoading = false;
                                         storeDetailAdapter.removeLoadingSearch();
                                         isLoading = false;
                                     }

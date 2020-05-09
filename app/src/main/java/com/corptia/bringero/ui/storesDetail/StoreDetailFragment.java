@@ -153,7 +153,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
         recycler_brands_detail.addOnScrollListener(new PaginationListener(gridLayoutManager) {
             @Override
             protected void loadMoreItems() {
-                Common.adapterIsLoading = true;
 
                 for (MyCart myCartItem : Common.myLocalCart) {
                     updateCartItem(myCartItem);
@@ -162,6 +161,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 isLoading = true;
                 currentPage++;
                 if (currentPage <= totalPages) {
+                    Common.adapterIsLoading = true;
                     storeDetailAdapter.addLoading();
                     storeDetailPresenter.getProductStore(Common.CURRENT_STORE._id(), typeId, currentPage);
                 } else {
@@ -218,7 +218,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
         handler.post(() -> {
 
             if (isLoading) {
-                Common.adapterIsLoading = false;
                 storeDetailAdapter.removeLoading();
                 isLoading = false;
             }

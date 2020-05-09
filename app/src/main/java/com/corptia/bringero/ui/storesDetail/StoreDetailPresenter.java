@@ -3,6 +3,7 @@ package com.corptia.bringero.ui.storesDetail;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GetNotPricedByQuery;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
@@ -45,7 +46,7 @@ public class StoreDetailPresenter {
                         GetStoreProductsQuery.GetStoreProducts getStoreProducts = response.data().PricingProductQuery().getStoreProducts();
 
                         view.hideProgressBar();
-
+                        Common.adapterIsLoading=false;
                         if (getStoreProducts.status() == 200) {
                             view.setProduct(getStoreProducts);
                         } else {
