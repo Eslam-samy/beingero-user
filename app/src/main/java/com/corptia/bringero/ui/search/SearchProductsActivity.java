@@ -205,7 +205,7 @@ public class SearchProductsActivity extends BaseActivity {
         img_clean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isLastPage=false;
+                isLastPage = false;
                 edt_search.setText("");
                 layout_placeholder.setVisibility(View.VISIBLE);
                 recycler_product.setVisibility(View.GONE);
@@ -249,6 +249,7 @@ public class SearchProductsActivity extends BaseActivity {
         recycler_product.addOnScrollListener(new PaginationListener(gridLayoutManager) {
             @Override
             protected void loadMoreItems() {
+                Common.adapterIsLoading = true;
                 for (MyCart myCartItem : Common.myLocalCart) {
                     updateCartItem(myCartItem);
                 }
@@ -332,6 +333,7 @@ public class SearchProductsActivity extends BaseActivity {
 
 
                                     if (isLoading) {
+                                        Common.adapterIsLoading = false;
                                         storeDetailAdapter.removeLoadingSearch();
                                         isLoading = false;
                                     }
@@ -549,7 +551,7 @@ public class SearchProductsActivity extends BaseActivity {
                 layout_speed_cart.setVisibility(View.VISIBLE);
                 txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
                 btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
-                Common.totalPriceCart=totalPriceCart;
+                Common.totalPriceCart = totalPriceCart;
                 if (totalPriceCart <= 0.0f) {
                     isHaveCart = false;
                     layout_speed_cart.setVisibility(View.GONE);
