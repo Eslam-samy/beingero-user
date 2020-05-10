@@ -16,11 +16,10 @@
 
         <ImageView
             android:id="@+id/image_storetype"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_placeholder_product"
-            android:layout_marginBottom="@dimen/medium_margin"/>
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitEnd"
+            android:src="@drawable/ic_placeholder_product"/>
 
         <TextView
             android:id="@+id/txt_name_storetype"
@@ -30,10 +29,7 @@
             tools:text="Market"
             android:textColor="@color/black"
             android:textSize="@dimen/medium_text_size"
-            android:fontFamily="@font/poppinsregular"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:fontFamily="@font/poppinsregular" />
 
         <TextView
             android:id="@+id/txt_count_storetype"
