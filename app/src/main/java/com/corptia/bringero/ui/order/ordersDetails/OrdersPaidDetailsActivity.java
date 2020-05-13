@@ -8,13 +8,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -122,7 +126,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     String orderid, pilotId;
 
     //Dialog Rating
-    AlertDialog dialog;
+     Dialog dialog;
     CircleImageView img_rate_store;
     RatingBar ratingBar;
     Button btn_submit;
@@ -384,7 +388,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
                     } else {
 
-
+                        Log.d("DDD", "run: first Show");
                         showDialogRating(deliveryOrderData);
 
                         root_rating.setOnClickListener(new View.OnClickListener() {
@@ -393,6 +397,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
                                 if (ratingPilot.getRating() == 0f) {
                                     showDialogRating(deliveryOrderData);
+                                    Log.d("DDD", "onClick: show");
                                 }
                             }
                         });
@@ -443,10 +448,11 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
-                dialog.dismiss();
+                Log.d("DDD", "run: dismiss");
                 ratingPilot.setRating(ratingBar.getRating());
                 root_rating.setBackgroundColor(Color.TRANSPARENT);
+                dialog.dismiss();
+                onResume();
 
             }
         });
@@ -498,13 +504,16 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
     private void showDialogRating(DeliveryOneOrderQuery.DeliveryOrderData pilotData) {
 
-        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_rating, null);
+//        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
+         dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.layout_dialog_rating);
+//        View dialogView = LayoutInflater.from(this).inflate(R.layout.layout_dialog_rating, null);
 
-        img_rate_store = dialogView.findViewById(R.id.img_store);
-        ratingBar = dialogView.findViewById(R.id.ratingBar);
-        btn_submit = dialogView.findViewById(R.id.btn_submit);
-
+        img_rate_store = dialog.findViewById(R.id.img_store);
+        ratingBar = dialog.findViewById(R.id.ratingBar);
+        btn_submit = dialog.findViewById(R.id.btn_submit);
         //Set Image Store
         if (pilotData.PilotUserResponse().data().AvatarResponse().status() == 200)
             Picasso.get()
@@ -515,29 +524,29 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (ratingBar.getRating() != 0f) {
-
                     detailsPresenter.pilotRating(pilotData._id(), (int) ratingBar.getRating());
-
                 } else {
                     Toasty.warning(OrdersPaidDetailsActivity.this, "Sorry Can't ratting by 0").show();
                 }
-
             }
         });
-
-
-        builder.setCancelable(true);
+            dialog.setCancelable(true);
+//        builder.setCancelable(true);
         //setting the view of the builder to our custom view that we already inflated
-        builder.setView(dialogView);
-
+//        builder.setView(dialogView);
 
         //finally creating the alert dialog and displaying it
-        dialog = builder.create();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        dialog = builder.create();
+//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         dialog.show();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                finish();
+            }
+        });
 
     }
 
