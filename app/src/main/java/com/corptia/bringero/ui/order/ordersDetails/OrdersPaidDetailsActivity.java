@@ -451,9 +451,6 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                 Log.d("DDD", "run: dismiss");
                 ratingPilot.setRating(ratingBar.getRating());
                 root_rating.setBackgroundColor(Color.TRANSPARENT);
-                dialog.dismiss();
-                onResume();
-
             }
         });
     }
