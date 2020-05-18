@@ -714,7 +714,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                             txt_amount.setText(new StringBuilder().append(((int) (amount))).append(" ").append("X"));
                         else
                             txt_amount.setText(new StringBuilder().append(amount).append(" ").append(context.getString(R.string.kg)));
-                        if (isSearch)
+
                             if (amount == 0) {
                                 txt_amount.setVisibility(View.INVISIBLE);
                                 btn_delete.setVisibility(View.INVISIBLE);

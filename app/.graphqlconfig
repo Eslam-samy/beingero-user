@@ -4,7 +4,7 @@
   "extensions": {
     "endpoints": {
       "Default GraphQL Endpoint": {
-        "url": "http://bringero.site:8000/graphql",
+        "url": "http://bringero.xyz:8000/graphql",
         "headers": {
           "user-agent": "JS GraphQL"
         },

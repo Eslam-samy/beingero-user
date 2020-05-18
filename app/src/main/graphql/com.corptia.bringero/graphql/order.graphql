@@ -54,7 +54,7 @@ query deliveryOrders($filter: DeliveryOrderFilterInput!
                             data {
                                 _id
                                 name
-                                CityReponse {
+                                CityResponse {
                                     data {
                                         _id
                                         name
@@ -271,7 +271,7 @@ query deliveryOneOrder($_id: ID) {
 #                                        name
 #                                    }
 #                                }
-#                                CityReponse {
+#                                CityResponse {
 #                                    data {
 #                                        _id
 #                                        name

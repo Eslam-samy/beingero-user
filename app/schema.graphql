@@ -49,6 +49,7 @@ type BuyingOrder implements IModelData {
     customerUserId: ID!
     deliveryOrderId: ID!
     orderMaxPreparingMinutes: Int
+    paymentStatus: BuyingOrderPaymentStatus
     pilotCollectRating: Int
     serial: Int
     status: BuyingOrderStatus
@@ -280,7 +281,7 @@ type DeliveryCouponSingleResponse implements ISingleResponse {
 
 type DeliveryOrder implements IModelData {
     BuyingOrderResponse: BuyingOrderMultipleResponse
-    CustomerUserReponse: UserSingleResponse
+    CustomerUserResponse: UserSingleResponse
     ItemsCount: Int
     PilotUserResponse: UserSingleResponse
     StoresCount: Int
@@ -298,6 +299,7 @@ type DeliveryOrder implements IModelData {
     discountFixed: Boolean
     discountRatio: Float
     discountValue: Float
+    paymentStatus: DeliveryOrderPaymentStatus
     pilotDeliveryRating: Int
     pilotId: ID
     serial: Int
@@ -421,6 +423,7 @@ type ImageCollectionMultipleResponse implements IQueryMultipleResponse {
 }
 
 """
+
 End nested Array Operations
 Mutation Definetion
 """
@@ -431,6 +434,7 @@ type ImageCollectionMutation {
 }
 
 """
+
 end Query Response
 Query Definition
 """
@@ -458,6 +462,7 @@ type ImageMultipleResponse implements IQueryMultipleResponse {
 }
 
 """
+
 end Query Response
 Query Definition
 """
@@ -664,6 +669,7 @@ type Mutation {
     MessageMutation: MessageMutation
     NotificationMutation: NotificationMutation
     PilotMutation: PilotMutation
+    PilotOutcomeOrderMutation: PilotOutcomeOrderMutation
     PilotVehicleMutation: PilotVehicleMutation
     PricingProductMutation: PricingProductMutation
     ProductBrandMutation: ProductBrandMutation
@@ -673,6 +679,7 @@ type Mutation {
     ProductMutation: ProductMutation
     ProductTypeMutation: ProductTypeMutation
     ProductUnitMutation: ProductUnitMutation
+    StoreCashOrderMutation: StoreCashOrderMutation
     StoreMutation: StoreMutation
     StoreTracksMutation: StoreTracksMutation
     StoreTypeMutation: StoreTypeMutation
@@ -680,7 +687,7 @@ type Mutation {
     TrackingTripMutation: TrackingTripMutation
     UnitTypeMutation: UnitTypeMutation
     UserMutation: UserMutation
-    notifyUser(notification: createNotificationInput!, userId: ID!): NotificationSingleResponse
+    notifyUser(creatNotification: Boolean, notification: createNotificationInput!, userId: ID!): NotificationSingleResponse
     testPublish(str: String): String!
 }
 
@@ -789,6 +796,47 @@ type PilotMutation {
     create(data: createPilot): PilotSingleResponse
     update(_id: ID, data: updatePilot): PilotSingleResponse
     updateOne(data: updatePilot, filter: PilotFilterInput): PilotSingleResponse
+}
+
+type PilotOutcomeOrder implements IModelData {
+    DeliveryOrders: [DeliveryOrder]
+    DeliveryOrdersResponse: DeliveryOrderMultipleResponse
+    _id: ID!
+    createdAt: Date
+    deliveryOrderIds: [ID!]!
+    paidAmount: Float
+    pilotUserId: ID!
+    serial: Int!
+    totalBuyingCost: Float
+    totalDeliveryCost: Float
+    updatedAt: Date
+}
+
+type PilotOutcomeOrderMultipleResponse implements IQueryMultipleResponse {
+    data: [PilotOutcomeOrder]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type PilotOutcomeOrderMutation {
+    create(data: createPilotOutcomeOrder!): PilotOutcomeOrderSingleResponse
+    update(_id: ID!, data: updatePilotOutcomeOrder): PilotOutcomeOrderSingleResponse
+}
+
+type PilotOutcomeOrderQuery {
+    get(_id: ID): PilotOutcomeOrderSingleResponse
+    getAll(filter: PilotOutcomeOrderFilterInput!, pagination: paginationInput, sorting: PilotOutcomeOrderSortingInput): PilotOutcomeOrderMultipleResponse
+    getOne(filter: PilotOutcomeOrderFilterInput): PilotOutcomeOrderSingleResponse
+}
+
+type PilotOutcomeOrderSingleResponse implements ISingleResponse {
+    data: PilotOutcomeOrder
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
 }
 
 type PilotQuery {
@@ -987,6 +1035,7 @@ type ProductCategory implements IModelData {
     ChildrenResponse: ProductCategoryMultipleResponse
     ImageResponse: ImageSingleResponse
     ParentResponse: ProductCategorySingleResponse
+    ProductType: ProductTypeSingleResponse
     _id: ID!
     createdAt: Date
     description: String
@@ -995,6 +1044,7 @@ type ProductCategory implements IModelData {
     multiLangs(fields: [ProductCategoryMultiLangsFieldsEnum!] = [name, description]): ProductCategoryMultiLangs
     name: String
     parentId: ID
+    productTypeId: ID
     updatedAt: Date
 }
 
@@ -1272,6 +1322,7 @@ type Query {
     LocationStateQuery: LocationStateQuery
     MessageQuery: MessageQuery
     NotificationQuery: NotificationQuery
+    PilotOutcomeOrderQuery: PilotOutcomeOrderQuery
     PilotQuery: PilotQuery
     PilotVehicleQuery: PilotVehicleQuery
     PricingProductQuery: PricingProductQuery
@@ -1282,6 +1333,7 @@ type Query {
     ProductQuery: ProductQuery
     ProductTypeQuery: ProductTypeQuery
     ProductUnitQuery: ProductUnitQuery
+    StoreCashOrderQuery: StoreCashOrderQuery
     StoreQuery: StoreQuery
     StoreTracksQuery: StoreTracksQuery
     StoreTypeQuery: StoreTypeQuery
@@ -1299,11 +1351,12 @@ type Rate {
 
 type Store implements IModelData {
     AdminUserResponse: UserSingleResponse
-    CityReponse: LocationCitySingleResponse
+    CityResponse: LocationCitySingleResponse
     ImageResponse: ImageSingleResponse
     PricingProducts(filter: PricingProductFilterInput, pagination: paginationInput, sorting: PricingProductSortingInput): PricingProductMultipleResponse
     ProductTypesResponse: ProductTypeMultipleResponse
     Rate: StoreRate
+    StoreTypeResponse: StoreTypeSingleResponse
     _id: ID!
     adminUserId: ID
     cityId: ID
@@ -1319,6 +1372,7 @@ type Store implements IModelData {
     orderMinPrice: Float
     phones: [String]
     productTypeIds: [ID]
+    status: StoreStatus
     storeTypeId: ID
     updatedAt: Date
 }
@@ -1360,6 +1414,46 @@ type StoreCartItemGroup {
     ItemsCount: Int
     Store: Store
     TotalPrice: Float
+}
+
+type StoreCashOrder implements IModelData {
+    BuyingOrders: [BuyingOrder]
+    BuyingOrdersResponse: BuyingOrderMultipleResponse
+    _id: ID!
+    buyingOrderIds: [ID!]!
+    createdAt: Date
+    paidAmount: Float
+    serial: Int
+    storeId: ID!
+    totalBuyingCost: Float
+    updatedAt: Date
+}
+
+type StoreCashOrderMultipleResponse implements IQueryMultipleResponse {
+    data: [StoreCashOrder]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type StoreCashOrderMutation {
+    create(data: createStoreCashOrder!): StoreCashOrderSingleResponse
+    update(_id: ID!, data: updateStoreCashOrder): StoreCashOrderSingleResponse
+}
+
+type StoreCashOrderQuery {
+    get(_id: ID): StoreCashOrderSingleResponse
+    getAll(filter: StoreCashOrderFilterInput!, pagination: paginationInput, sorting: StoreCashOrderSortingInput): StoreCashOrderMultipleResponse
+    getOne(filter: StoreCashOrderFilterInput): StoreCashOrderSingleResponse
+}
+
+type StoreCashOrderSingleResponse implements ISingleResponse {
+    data: StoreCashOrder
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
 }
 
 type StoreMultiLangs {
@@ -1549,6 +1643,7 @@ type TestModelMultipleResponse implements IQueryMultipleResponse {
 }
 
 """
+
 End nested Array Operations
 Mutation Definetion
 """
@@ -1559,6 +1654,7 @@ type TestModelMutation {
 }
 
 """
+
 end Query Response
 Query Definition
 """
@@ -1721,7 +1817,7 @@ type UserMutation {
     logoutAll(device: userDeviceInput!): UserSingleResponse
     resetPassword(data: resetPasswordInput): userTokenResponse
     signup(data: signupInput): userTokenResponse
-    update(_id: ID!, data: updateUser): UserSingleResponse
+    update(_id: ID, data: updateUser): UserSingleResponse
     updateInfo(data: userInfo): userTokenResponse
     validateFireBaseToken(phone: String!, token: String!): userTokenResponse
 }
@@ -1794,6 +1890,13 @@ enum BuyingOrderItemSortByEnum {
     createdAt
 }
 
+enum BuyingOrderPaymentStatus {
+    CustomerPaid
+    NotPaid
+    PilotPaid
+    StoreReceived
+}
+
 enum BuyingOrderSortByEnum {
     _id
     amount
@@ -1839,6 +1942,13 @@ enum DeliveryCouponSortByEnum {
     createdAt
     name
     updatedAt
+}
+
+enum DeliveryOrderPaymentStatus {
+    AllStoresReceived
+    CustomerPaid
+    NotPaid
+    PilotPaid
 }
 
 enum DeliveryOrderSortByEnum {
@@ -2016,6 +2126,12 @@ enum PhysicalTypeEnum {
     weight
 }
 
+enum PilotOutcomeOrderSortByEnum {
+    _id
+    createdAt
+    serial
+}
+
 enum PilotSortByEnum {
     _id
     createdAt
@@ -2160,6 +2276,12 @@ enum SortDirectionEnum {
     DESC
 }
 
+enum StoreCashOrderSortByEnum {
+    _id
+    createdAt
+    serial
+}
+
 enum StoreFilterByEnum {
     _id
     name
@@ -2176,7 +2298,14 @@ enum StoreSortByEnum {
     displayPriority
     isAvailable
     name
+    status
     updatedAt
+}
+
+enum StoreStatus {
+    Active
+    Pending
+    Suspended
 }
 
 enum StoreTracksSortByEnum {
@@ -2307,6 +2436,7 @@ input BuyingOrderFilterInput {
     _id: ID
     createdAt: Date
     customerUserId: ID
+    paymentStatus: BuyingOrderPaymentStatus
     serial: Int
     status: BuyingOrderStatus
     storeId: ID
@@ -2423,6 +2553,7 @@ input DeliveryCouponSortingInput {
 }
 
 input DeliveryOrderFilterArray {
+    _id: [ID]
     status: [DeliveryOrderStatus]
 }
 
@@ -2432,6 +2563,7 @@ input DeliveryOrderFilterInput {
     copounId: ID
     createdAt: Date
     customerUserId: ID
+    paymentStatus: DeliveryOrderPaymentStatus
     pilotId: ID
     serial: Int
     status: DeliveryOrderStatus
@@ -2617,6 +2749,18 @@ input PilotFilterInput {
     vehicleId: ID
 }
 
+input PilotOutcomeOrderFilterInput {
+    _id: ID
+    deliveryOrderIds: ID
+    pilotUserId: ID
+    serial: Int
+}
+
+input PilotOutcomeOrderSortingInput {
+    sortBy: PilotOutcomeOrderSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
 input PilotSortingInput {
     sortBy: PilotSortByEnum
     sortDirection: SortDirectionEnum
@@ -2695,6 +2839,7 @@ input ProductCategoryFilterInput {
     arrayFilters: ProductCategoryArrayfilters
     createdAt: Date
     name: String
+    productTypeId: ID
     updatedAt: Date
 }
 
@@ -2816,6 +2961,18 @@ input SetOptionInput {
     valueType: GeneralOptionValueType
 }
 
+input StoreCashOrderFilterInput {
+    _id: ID
+    buyingOrderIds: ID
+    serial: Int
+    storeId: ID
+}
+
+input StoreCashOrderSortingInput {
+    sortBy: StoreCashOrderSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
 input StoreFilterInput {
     SEARCH: SEARCH_Input
     _id: ID
@@ -2826,6 +2983,7 @@ input StoreFilterInput {
     isAvailable: Boolean
     name: String
     productTypeIds: [ID]
+    status: StoreStatus
     storeTypeId: ID
 }
 
@@ -2935,6 +3093,7 @@ input changePasswordInput {
 input createBuyingOrder {
     couponCode: String
     """
+
     from user cart : create order
     get userId from token
     """
@@ -2968,6 +3127,7 @@ input createDeliveryCoupon {
 
 input createDeliveryOrder {
     """
+
     from user cart : create order
     get userId from token
     """
@@ -2975,6 +3135,7 @@ input createDeliveryOrder {
 }
 
 """
+
 Mutation Inputs:
 Create Mutation Input
 """
@@ -3023,6 +3184,12 @@ input createPilot {
     isDeliveryAvailable: Boolean
     userId: ID!
     vehicleId: ID
+}
+
+input createPilotOutcomeOrder {
+    deliveryOrderIds: [ID!]!
+    paidAmount: Float!
+    pilotUserId: ID!
 }
 
 input createPilotVehicle {
@@ -3082,6 +3249,7 @@ input createProductCategory {
     imageId: ID
     name: multilanguageInput
     parentId: ID
+    productTypeId: ID
 }
 
 input createProductForm {
@@ -3123,7 +3291,13 @@ input createStore {
     orderMaxPreparingMinutes: Int
     orderMinPrice: Float
     phones: [String]
+    status: StoreStatus = Active
     storeTypeId: ID
+}
+
+input createStoreCashOrder {
+    buyingOrderIds: [ID!]!
+    storeId: ID!
 }
 
 input createStoreTracks {
@@ -3142,6 +3316,7 @@ input createStoreType {
 }
 
 """
+
 Mutation Inputs:
 Create Mutation Input
 """
@@ -3261,10 +3436,13 @@ input sortingInput {
 }
 
 input storeGalleryFilter {
+    brandId: ID
+    categoryId: ID
     discountActive: Boolean
     isAvailable: Boolean
     productName: String
     typeId: ID
+    unitId: ID
 }
 
 input storeTrackArray {
@@ -3430,6 +3608,12 @@ input updatePilot {
     vehicleId: ID
 }
 
+input updatePilotOutcomeOrder {
+    deliveryOrderIds: [ID]
+    paidAmount: Float
+    pilotUserId: ID
+}
+
 input updatePilotVehicle {
     licenceImageId: ID
     licenceSerial: String
@@ -3487,6 +3671,7 @@ input updateProductCategory {
     imageId: ID
     name: multilanguageInput
     parentId: ID
+    productTypeId: ID
 }
 
 input updateProductForm {
@@ -3529,7 +3714,14 @@ input updateStore {
     orderMaxPreparingMinutes: Int
     orderMinPrice: Float
     phones: [String]
+    productTypeIds: [ID]
+    status: StoreStatus
     storeTypeId: ID
+}
+
+input updateStoreCashOrder {
+    buyingOrderIds: [ID]
+    storeId: ID
 }
 
 input updateStoreTracks {
@@ -3584,7 +3776,7 @@ input updateUnitType {
 }
 
 input updateUser {
-    _id: ID!
+    _id: ID
     email: Email
     firstName: String
     lastName: String
