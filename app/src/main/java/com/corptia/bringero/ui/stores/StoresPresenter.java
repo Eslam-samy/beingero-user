@@ -11,6 +11,7 @@ import com.corptia.bringero.type.SortDirectionEnum;
 import com.corptia.bringero.type.StoreFilterInput;
 import com.corptia.bringero.type.StoreSortByEnum;
 import com.corptia.bringero.type.StoreSortingInput;
+import com.corptia.bringero.type.StoreStatus;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +30,7 @@ public class StoresPresenter {
         storesView.showProgressBar();
 
         StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.DISPLAYPRIORITY).sortDirection(SortDirectionEnum.DESC).build();
-        StoreFilterInput filterInput = StoreFilterInput.builder().storeTypeId(typeId).isAvailable(isAvailable).build();
+        StoreFilterInput filterInput = StoreFilterInput.builder().storeTypeId(typeId).status(StoreStatus.ACTIVE).isAvailable(isAvailable).build();
 
         MyApolloClient.getApollowClientAuthorization()
                 .query(GetStoresOfASingleCategoryQuery.builder()
