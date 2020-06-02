@@ -93,4 +93,6 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
 
 
     }
+
+
 }

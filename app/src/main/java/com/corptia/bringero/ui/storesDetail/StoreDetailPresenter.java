@@ -31,9 +31,15 @@ public class StoreDetailPresenter {
 
     public void getProductStore(String storeId, String typeId, int currentPage) {
 
-        StoreGalleryFilter storeGalleryFilter = StoreGalleryFilter.builder()
+            StoreGalleryFilter storeGalleryFilter;
+            if (typeId.equals("0")){
+              storeGalleryFilter=  StoreGalleryFilter.builder()
+                        .discountActive(true)
+                        .isAvailable(true).build();
+            }else {
+            storeGalleryFilter = StoreGalleryFilter.builder()
                 .typeId(typeId)
-                .isAvailable(true).build();
+                .isAvailable(true).build();}
 
         PaginationInput paginationInput = PaginationInput.builder().limit(PAGE_SIZE).page(currentPage).build();
 
@@ -47,11 +53,14 @@ public class StoreDetailPresenter {
 
                         view.hideProgressBar();
                         Common.adapterIsLoading=false;
-                        if (getStoreProducts.status() == 200) {
-                            view.setProduct(getStoreProducts);
-                        } else {
+                        if (getStoreProducts!=null) {
+                            if (getStoreProducts.status() == 200) {
+                                view.setProduct(getStoreProducts);
+                            } else {
+                                view.setPlaceholder();
+                            }
+                        }else
                             view.setPlaceholder();
-                        }
                     }
 
                     @Override

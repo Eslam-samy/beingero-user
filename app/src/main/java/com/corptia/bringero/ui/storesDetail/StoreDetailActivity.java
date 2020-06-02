@@ -43,6 +43,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -147,6 +148,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     private void getSingleStore() {
 
         StoreFilterInput storeFilterInput = StoreFilterInput.builder().adminUserId(adminUserId).build();
+
         MyApolloClient.getApollowClientAuthorization().query(SingleStoreQuery.builder().filter(storeFilterInput).build())
                 .enqueue(new ApolloCall.Callback<SingleStoreQuery.Data>() {
                     @Override
@@ -160,9 +162,15 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
                                 Common.CURRENT_STORE = responseData.CurrentStore().get(0);
 
 
+                                List<SingleStoreQuery.Data1> typesList = Common.CURRENT_STORE.ProductTypesStore().data();
+                                typesList = new ArrayList<>();
+                                typesList.add(new SingleStoreQuery.Data1("Offres","0",getString(R.string.offers), null));
+//                                for ()
+                                typesList.addAll(Common.CURRENT_STORE.ProductTypesStore().data());
+
                                 ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
                                         getSupportFragmentManager(),
-                                        Common.CURRENT_STORE.ProductTypesStore().data());
+                                        typesList);
 
                                 viewPager.setAdapter(adapter);
                                 tabLayout.setupWithViewPager(viewPager);

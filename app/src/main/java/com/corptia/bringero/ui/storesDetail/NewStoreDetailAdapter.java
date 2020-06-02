@@ -282,7 +282,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                     actualAmount = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) + unitStep;
                                 }
                                 if (checkMaxPrice(finalPrice1 * step)) return;
-                                if (actualAmount < 100) {
+                                if (actualAmount < 10) {
                                     if (cartProductId.isEmpty()) {
                                         //I am product new
                                         Common.TOTAL_CART_AMOUNT += 1;
@@ -306,7 +306,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                                 if (checkMaxPrice(finalPrice1)) return;
                                 int count;
                                 count = Integer.parseInt(txt_amount.getText().toString().split(" ")[0]) + 1;
-                                if (count < 100) {
+                                if (count < 10) {
                                     if (cartProductId.isEmpty()) {
                                         //I am product new
                                         Common.TOTAL_CART_AMOUNT += 1;
