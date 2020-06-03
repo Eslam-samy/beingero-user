@@ -284,10 +284,12 @@ type DeliveryOrder implements IModelData {
     CustomerUserResponse: UserSingleResponse
     ItemsCount: Int
     PilotUserResponse: UserSingleResponse
+    RegionResponse: LocationRegionSingleResponse
     StoresCount: Int
     SubTotal: Float
     TripResponse: TrackingTripSingleResponse
     _id: ID!
+    adCost: Float
     copounId: ID
     createdAt: Date
     createdAtDateTime: DateTime
@@ -302,6 +304,7 @@ type DeliveryOrder implements IModelData {
     paymentStatus: DeliveryOrderPaymentStatus
     pilotDeliveryRating: Int
     pilotId: ID
+    regionId: ID
     serial: Int
     status: DeliveryOrderStatus!
     updatedAt: Date
@@ -489,8 +492,11 @@ type ImageThumbnail {
 }
 
 type LocationCity implements IModelData {
+    RegionMultiResponse: LocationRegionMultipleResponse
     StateResponse: LocationStateSingleResponse
     _id: ID!
+    adCost: Float
+    advCost: Float
     createdAt: Date
     multiLangs(fields: [LocationCityMultiLangsFieldsEnum!]): LocationCityMultiLangs
     name: String
@@ -566,6 +572,49 @@ type LocationCountryQuery {
 
 type LocationCountrySingleResponse implements ISingleResponse {
     data: LocationCountry
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
+}
+
+type LocationRegion implements IModelData {
+    CityResponse: LocationCitySingleResponse
+    _id: ID!
+    adCost: Float
+    cityId: ID
+    createdAt: Date
+    multiLangs(fields: [LocationRegionMultiLangsFieldsEnum!]): LocationRegionMultiLangs
+    name: String
+    updatedAt: Date
+}
+
+type LocationRegionMultiLangs {
+    name: multiLanguageField
+}
+
+type LocationRegionMultipleResponse implements IQueryMultipleResponse {
+    data: [LocationRegion]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type LocationRegionMutation {
+    create(data: createLocationRegion): LocationRegionSingleResponse
+    update(_id: ID, data: updateLocationRegion): LocationRegionSingleResponse
+    updateOne(data: updateLocationRegion, filter: LocationRegionFilterInput): LocationRegionSingleResponse
+}
+
+type LocationRegionQuery {
+    get(_id: ID): LocationRegionSingleResponse
+    getAll(filter: LocationRegionFilterInput, pagination: paginationInput, sorting: LocationRegionSortingInput): LocationRegionMultipleResponse
+    getOne(filter: LocationRegionFilterInput): LocationRegionSingleResponse
+}
+
+type LocationRegionSingleResponse implements ISingleResponse {
+    data: LocationRegion
     errors: [PathError]
     message: String
     status: Int
@@ -665,6 +714,7 @@ type Mutation {
     ImageCollectionMutation: ImageCollectionMutation
     LocationCityMutation: LocationCityMutation
     LocationCountryMutation: LocationCountryMutation
+    LocationRegionMutation: LocationRegionMutation
     LocationStateMutation: LocationStateMutation
     MessageMutation: MessageMutation
     NotificationMutation: NotificationMutation
@@ -1209,6 +1259,7 @@ type ProductType implements IModelData {
     _id: ID!
     createdAt: Date
     description: String
+    displayPriority: Int
     icon: Icon
     imageId: ID
     multiLangs(fields: [ProductTypeMultiLangsFieldsEnum!] = [name, description]): ProductTypeMultiLangs
@@ -1319,6 +1370,7 @@ type Query {
     ImageQuery: ImageQuery
     LocationCityQuery: LocationCityQuery
     LocationCountryQuery: LocationCountryQuery
+    LocationRegionQuery: LocationRegionQuery
     LocationStateQuery: LocationStateQuery
     MessageQuery: MessageQuery
     NotificationQuery: NotificationQuery
@@ -1365,6 +1417,7 @@ type Store implements IModelData {
     displayPriority: Int
     imageId: ID
     isAvailable: Boolean
+    isOffer: Boolean
     locationPoint: PointCooridinates
     multiLangs(fields: [StoreMultiLangsFieldsEnum!] = [name, description]): StoreMultiLangs
     name: String
@@ -1979,11 +2032,14 @@ enum Gender {
 }
 
 enum GeneralOptionNameEnum {
+    AdCost
     DeliveryCost
     Email
     Facebook
     Instagram
     Linkedin
+    MaxAdCostStoreCount
+    MinCouponStoreCount
     MinDeliveryCost
     Phone
     PilotForm
@@ -2037,6 +2093,8 @@ enum LocationCityMultiLangsFieldsEnum {
 
 enum LocationCitySortByEnum {
     _id
+    adCost
+    advCost
     createdAt
     name
     stateId
@@ -2054,6 +2112,25 @@ enum LocationCountryMultiLangsFieldsEnum {
 
 enum LocationCountrySortByEnum {
     _id
+    createdAt
+    name
+    updatedAt
+}
+
+enum LocationRegionFilterByEnum {
+    _id
+    cityId
+    name
+}
+
+enum LocationRegionMultiLangsFieldsEnum {
+    name
+}
+
+enum LocationRegionSortByEnum {
+    _id
+    adCost
+    cityId
     createdAt
     name
     updatedAt
@@ -2251,6 +2328,7 @@ enum ProductTypeMultiLangsFieldsEnum {
 enum ProductTypeSortByEnum {
     _id
     createdAt
+    displayPriority
     name
     updatedAt
 }
@@ -2297,6 +2375,7 @@ enum StoreSortByEnum {
     createdAt
     displayPriority
     isAvailable
+    isOffer
     name
     status
     updatedAt
@@ -2654,6 +2733,8 @@ input LineCooridinatesInput {
 input LocationCityFilterInput {
     SEARCH: SEARCH_Input
     _id: ID
+    adCost: Float
+    advCost: Float
     createdAt: Date
     name: String
     stateId: ID
@@ -2676,6 +2757,21 @@ input LocationCountryFilterInput {
 
 input LocationCountrySortingInput {
     sortBy: LocationCountrySortByEnum
+    sortDirection: SortDirectionEnum
+}
+
+input LocationRegionFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    adCost: Float
+    cityId: ID
+    createdAt: Date
+    name: String
+    updatedAt: Date
+}
+
+input LocationRegionSortingInput {
+    sortBy: LocationRegionSortByEnum
     sortDirection: SortDirectionEnum
 }
 
@@ -2922,6 +3018,7 @@ input ProductTypeFilterInput {
     _id: ID
     arrayFilters: ProductTypeArrayfilters
     createdAt: Date
+    displayPriority: Int
     name: String
     updatedAt: Date
 }
@@ -2981,6 +3078,7 @@ input StoreFilterInput {
     description: String
     displayPriority: Int
     isAvailable: Boolean
+    isOffer: Boolean
     name: String
     productTypeIds: [ID]
     status: StoreStatus
@@ -3146,12 +3244,20 @@ input createImageCollection {
 }
 
 input createLocationCity {
+    adCost: Float
+    advCost: Float
     name: multilanguageInput
     stateId: ID
 }
 
 input createLocationCountry {
     countryCode: String
+    name: multilanguageInput
+}
+
+input createLocationRegion {
+    adCost: Float
+    cityId: ID
     name: multilanguageInput
 }
 
@@ -3267,6 +3373,7 @@ input createProductManufacturer {
 
 input createProductType {
     description: multilanguageInput
+    displayPriority: Int
     icon: IconInput
     imageId: ID
     name: multilanguageInput
@@ -3286,6 +3393,7 @@ input createStore {
     displayPriority: Int
     imageId: ID
     isAvailable: Boolean = true
+    isOffer: Boolean = false
     locationPoint: PointCooridinatesInput
     name: multilanguageInput
     orderMaxPreparingMinutes: Int
@@ -3556,8 +3664,10 @@ input updateDeliveryCoupon {
 }
 
 input updateDeliveryOrder {
+    adCost: Float
     deliveryCost: Float
     pilotId: ID
+    regionId: ID
     status: DeliveryOrderStatus
 }
 
@@ -3574,12 +3684,20 @@ input updateImageCollection {
 }
 
 input updateLocationCity {
+    adCost: Float
+    advCost: Float
     name: multilanguageInput
     stateId: ID
 }
 
 input updateLocationCountry {
     countryCode: String
+    name: multilanguageInput
+}
+
+input updateLocationRegion {
+    adCost: Float
+    cityId: ID
     name: multilanguageInput
 }
 
@@ -3690,6 +3808,7 @@ input updateProductManufacturer {
 
 input updateProductType {
     description: multilanguageInput
+    displayPriority: Int
     icon: IconInput
     imageId: ID
     name: multilanguageInput
@@ -3709,6 +3828,7 @@ input updateStore {
     displayPriority: Int
     imageId: ID
     isAvailable: Boolean
+    isOffer: Boolean
     locationPoint: PointCooridinatesInput
     name: multilanguageInput
     orderMaxPreparingMinutes: Int
