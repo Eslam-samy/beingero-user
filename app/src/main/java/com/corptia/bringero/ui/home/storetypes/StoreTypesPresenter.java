@@ -5,8 +5,12 @@ import android.os.Handler;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.GetStoresOfASingleCategoryQuery;
 import com.corptia.bringero.graphql.StoreTypesQuery;
+import com.corptia.bringero.type.StoreFilterInput;
+import com.corptia.bringero.type.StoreStatus;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,7 +20,7 @@ import java.util.List;
 
 public class StoreTypesPresenter {
 
-
+    int offersStores = 0;
     StoreTypesContract.StoreTypesView storeTypesView;
     Handler handler = new Handler();
 
@@ -24,45 +28,74 @@ public class StoreTypesPresenter {
         this.storeTypesView = storeTypesView;
     }
 
-    void getStoreTypes() {
+    void getStoreTypes(String offers) {
 
         storeTypesView.showProgressBar();
+
         //Set Data
         //storeTypesList.add(new StoreTypes(R.drawable.img1, "data"));
+        StoreFilterInput filterInput = StoreFilterInput.builder().isOffer(true).status(StoreStatus.ACTIVE).isAvailable(true).build();
 
-        MyApolloClient.getApollowClientAuthorization().query(StoreTypesQuery.builder().build())
-                .enqueue(new ApolloCall.Callback<StoreTypesQuery.Data>() {
+        MyApolloClient.getApollowClientAuthorization()
+                .query(GetStoresOfASingleCategoryQuery.builder()
+
+                        .filter(filterInput)
+                        .build())
+                .enqueue(new ApolloCall.Callback<GetStoresOfASingleCategoryQuery.Data>() {
                     @Override
-                    public void onResponse(@NotNull Response<StoreTypesQuery.Data> response) {
+                    public void onResponse(@NotNull Response<GetStoresOfASingleCategoryQuery.Data> offersResponse) {
 
-                        StoreTypesQuery.@Nullable GetAllStoresCount allStores = response.data().StoreTypeQuery().getAllStoresCount();
-                        storeTypesView.hideProgressBar();
+                        MyApolloClient.getApollowClientAuthorization().query(StoreTypesQuery.builder().build())
+                                .enqueue(new ApolloCall.Callback<StoreTypesQuery.Data>() {
+                                    @Override
+                                    public void onResponse(@NotNull Response<StoreTypesQuery.Data> response) {
 
-                        if (allStores.status() == 200) {
+                                        if (offersResponse.data().StoreQuery().getAll().status() == 200) {
 
-                            handler.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    @Nullable List<StoreTypesQuery.StoreCategory> storeCategoryList = new ArrayList<>();
-                                            storeCategoryList.add(new StoreTypesQuery.StoreCategory("Offers" , "" ,
-                                                    new StoreTypesQuery.StoreType("","","Special Offers",null),0));
-                                            storeCategoryList.addAll(allStores.StoreCategory());
+                                            offersStores = offersResponse.data().StoreQuery().getAll().Stores().size();
 
-                                    storeTypesView.setStoreTypes(storeCategoryList);
-                                    storeTypesView.hideProgressBar();
-                                }
-                            });
+                                        }
+                                        StoreTypesQuery.@Nullable GetAllStoresCount allStores = response.data().StoreTypeQuery().getAllStoresCount();
+                                        storeTypesView.hideProgressBar();
+
+                                        if (allStores.status() == 200) {
+
+                                            handler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    @Nullable List<StoreTypesQuery.StoreCategory> storeCategoryList = new ArrayList<>();
+                                                    storeCategoryList.add(new StoreTypesQuery.StoreCategory("Offers" , "" ,
+                                                            new StoreTypesQuery.StoreType("","",offers,null),offersStores));
+                                                    storeCategoryList.addAll(allStores.StoreCategory());
+
+                                                    storeTypesView.setStoreTypes(storeCategoryList);
+                                                    storeTypesView.hideProgressBar();
+                                                }
+                                            });
 
 
-                        }
+                                        }
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(@NotNull ApolloException e) {
+                                        storeTypesView.hideProgressBar();
+                                    }
+                                });
+
+
 
                     }
 
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
-                        storeTypesView.hideProgressBar();
+
                     }
                 });
+
+
+
 //                .enqueue(new ApolloCall.Callback<GetAllCategoriesQuery.Data>() {
 //                    @Override
 //                    public void onResponse(@NotNull Response<GetAllCategoriesQuery.Data> response) {

@@ -17,6 +17,7 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.StoreTypesQuery;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.ui.stores.StoresActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +52,10 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
         if (storeTypes.StoreType().ImageResponse() !=null) {
             if (storeTypes.StoreType().ImageResponse().data() != null)
                 PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.StoreType().ImageResponse().data().name(), holder.image_storetype);
+        }else if (storeTypes.StoreType()._id().isEmpty()) {
+            Picasso.get().load(R.drawable.specialoffers).into(holder.image_storetype);
+            holder.txt_name_storetype.setText(R.string.special_offer);
+
         }
 //        if ( storeTypes.ImageResponse().data()!=null)
 //            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_storetype);
@@ -62,15 +67,16 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
 
         holder.itemView.setEnabled(true);
 
-        holder.itemView.setOnClickListener(view -> {
-            holder.itemView.setEnabled(false);
-            Intent intent = new Intent(context , StoresActivity.class);
-            intent.putExtra(Constants.EXTRA_CATEGOTY_ID , storeTypes.StoreType()._id());
-            intent.putExtra(Constants.EXTRA_STORE_TYPE_NAME , storeTypes.StoreType().name());
-            intent.putExtra(Constants.EXTRA_STORE_OFFER , storeTypes.StoreType()._id().isEmpty());
-            context.startActivity(intent);
-        });
-
+                holder.itemView.setOnClickListener(view -> {
+                    if (storeTypes.storeCount()> 0) {
+                    holder.itemView.setEnabled(false);
+                    Intent intent = new Intent(context, StoresActivity.class);
+                    intent.putExtra(Constants.EXTRA_CATEGOTY_ID, storeTypes.StoreType()._id());
+                    intent.putExtra(Constants.EXTRA_STORE_TYPE_NAME, storeTypes.StoreType().name());
+                    intent.putExtra(Constants.EXTRA_STORE_OFFER, storeTypes.StoreType()._id().isEmpty());
+                    context.startActivity(intent);
+                    }
+                });
 
     }
 

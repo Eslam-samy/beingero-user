@@ -272,6 +272,9 @@
     <string name="submit_review">Submit Review</string>
     <string name="are_you_testing">Are you testing app?</string>
     <string name="offers">Offers</string>
+    <string name="special_offers">Special Offers</string>
+    <string name="special_offer">special offers</string>
+    <string name="offer">Offers</string>
 
 </resources>
 

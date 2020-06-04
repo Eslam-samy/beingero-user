@@ -57,7 +57,7 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
         layoutAnimationController = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_item_from_left);
 
         storeTypesPresenter = new StoreTypesPresenter(this);
-        storeTypesPresenter.getStoreTypes();
+        storeTypesPresenter.getStoreTypes(getString(R.string.special_offers));
 
         return root;
     }

@@ -272,6 +272,9 @@
     <string name="submit_review">إرسال التقييم</string>
     <string name="are_you_testing">Are you testing app?</string>
     <string name="offers">العروض</string>
+    <string name="special_offers">عروض خاصة</string>
+    <string name="special_offer">عروض خاصة </string>
+    <string name="offer">Offers</string>
 
 
 </resources>

@@ -30,8 +30,11 @@ public class StoresPresenter {
         storesView.showProgressBar();
 
         StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.DISPLAYPRIORITY).sortDirection(SortDirectionEnum.DESC).build();
-        StoreFilterInput  filterInput = StoreFilterInput.builder().isOffer(isOffer).storeTypeId(typeId).status(StoreStatus.ACTIVE).isAvailable(isAvailable).build();
-
+        StoreFilterInput  filterInput;
+        if (isOffer) {
+            filterInput = StoreFilterInput.builder().isOffer(isOffer).status(StoreStatus.ACTIVE).isAvailable(isAvailable).build();
+        }else
+            filterInput = StoreFilterInput.builder().storeTypeId(typeId).status(StoreStatus.ACTIVE).isAvailable(isAvailable).build();
         MyApolloClient.getApollowClientAuthorization()
                 .query(GetStoresOfASingleCategoryQuery.builder()
                         .sorting(sortingInput)
