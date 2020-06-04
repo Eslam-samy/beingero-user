@@ -36,7 +36,7 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
 
     StoresAdapter adapter;
     List<StoreTypes> storeTypesList = new ArrayList<>();
-
+    Boolean isOffer;
     StoresPresenter storePresenter;
 
     //For Store Local Category Id
@@ -61,6 +61,7 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
         if (intent != null) {
             categoryId = intent.getStringExtra(Constants.EXTRA_CATEGOTY_ID);
             storeTypeName = intent.getStringExtra(Constants.EXTRA_STORE_TYPE_NAME);
+            isOffer = intent.getBooleanExtra(Constants.EXTRA_STORE_OFFER,false);
         }
 
         storePresenter = new StoresPresenter(this);
@@ -71,7 +72,7 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
 
         initActionBar();
 
-        storePresenter.getStores(categoryId, true);
+        storePresenter.getStores(categoryId, true , isOffer);
 
     }
 
@@ -112,7 +113,7 @@ public class StoresActivity extends BaseActivity implements StoresContract.Store
                     adapter = new StoresAdapter(StoresActivity.this, storesList);
                     recycler_brands.setAdapter(adapter);
                 } else if (countRespons == 1) {
-                    storePresenter.getStores(categoryId, false);
+                    storePresenter.getStores(categoryId, false , isOffer);
                 }
 
 

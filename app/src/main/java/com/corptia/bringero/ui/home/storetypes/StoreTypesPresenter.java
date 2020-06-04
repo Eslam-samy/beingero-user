@@ -11,6 +11,7 @@ import com.corptia.bringero.graphql.StoreTypesQuery;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StoreTypesPresenter {
@@ -42,7 +43,11 @@ public class StoreTypesPresenter {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    @Nullable List<StoreTypesQuery.StoreCategory> storeCategoryList = allStores.StoreCategory();
+                                    @Nullable List<StoreTypesQuery.StoreCategory> storeCategoryList = new ArrayList<>();
+                                            storeCategoryList.add(new StoreTypesQuery.StoreCategory("Offers" , "" ,
+                                                    new StoreTypesQuery.StoreType("","","Special Offers",null),0));
+                                            storeCategoryList.addAll(allStores.StoreCategory());
+
                                     storeTypesView.setStoreTypes(storeCategoryList);
                                     storeTypesView.hideProgressBar();
                                 }

@@ -48,9 +48,10 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
         //Picasso.get().load(storeTypes.g())
          //       .into(holder.image_storetype);
 
-        if (storeTypes.StoreType().ImageResponse().data()!=null)
-        PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.StoreType().ImageResponse().data().name() , holder.image_storetype);
-
+        if (storeTypes.StoreType().ImageResponse() !=null) {
+            if (storeTypes.StoreType().ImageResponse().data() != null)
+                PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.StoreType().ImageResponse().data().name(), holder.image_storetype);
+        }
 //        if ( storeTypes.ImageResponse().data()!=null)
 //            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_storetype);
 //        else
@@ -66,6 +67,7 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
             Intent intent = new Intent(context , StoresActivity.class);
             intent.putExtra(Constants.EXTRA_CATEGOTY_ID , storeTypes.StoreType()._id());
             intent.putExtra(Constants.EXTRA_STORE_TYPE_NAME , storeTypes.StoreType().name());
+            intent.putExtra(Constants.EXTRA_STORE_OFFER , storeTypes.StoreType()._id().isEmpty());
             context.startActivity(intent);
         });
 
