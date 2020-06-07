@@ -114,7 +114,7 @@ public class HomeActivity extends BaseActivity implements
     TextView txt_notificationsBadge; // txt_notificationsBadge
     BottomNavigationMenuView menuView;
     BottomNavigationItemView itemViewNotification;
-
+    boolean isOffer;
     TextView txt_user_name, txt_user_phone, txt_rating;
     CircleImageView img_avatar;
 
@@ -143,7 +143,13 @@ public class HomeActivity extends BaseActivity implements
         menuView = (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
         itemViewNotification = (BottomNavigationItemView) menuView.getChildAt(3);
 
-
+        if (getIntent() !=null){
+            isOffer = getIntent().getBooleanExtra(Constants.EXTRA_STORE_OFFER,false);
+            StoreTypesFragment fragment = new StoreTypesFragment();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(Constants.EXTRA_STORE_OFFER,isOffer);
+            fragment.setArguments(bundle);
+        }
         if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_SPEED_CART)) {
             bottomNavigationView.setSelectedItemId(R.id.nav_cart);
         } else

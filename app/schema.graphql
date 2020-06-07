@@ -717,6 +717,7 @@ type Mutation {
     LocationRegionMutation: LocationRegionMutation
     LocationStateMutation: LocationStateMutation
     MessageMutation: MessageMutation
+    NotificationAdminMutation: NotificationAdminMutation
     NotificationMutation: NotificationMutation
     PilotMutation: PilotMutation
     PilotOutcomeOrderMutation: PilotOutcomeOrderMutation
@@ -754,6 +755,53 @@ type Notification implements IModelData {
     status: NotificatioStatus
     updatedAt: Date
     userId: ID
+}
+
+type NotificationAdmin implements IModelData {
+    CityResponse: LocationCitySingleResponse
+    _id: ID!
+    cityId: ID
+    createdAt: Date
+    message: String
+    multiLangs(fields: [NotificationAdminMultiLangsFieldsEnum!] = [name, message]): NotificationAdminMultiLangs
+    name: String
+    notifiedCount: Float
+    updatedAt: Date
+    userIds: [ID]
+    userType: NotificationAdmintype
+}
+
+type NotificationAdminMultiLangs {
+    message: multiLanguageField
+    name: multiLanguageField
+}
+
+type NotificationAdminMultipleResponse implements IQueryMultipleResponse {
+    data: [NotificationAdmin]
+    errors: [PathError]
+    message: String
+    pagination: Pagination
+    status: Int
+}
+
+type NotificationAdminMutation {
+    create(data: createNotificationAdmin): NotificationAdminSingleResponse
+    update(_id: ID, data: updateNotificationAdmin): NotificationAdminSingleResponse
+    updateOne(data: updateNotificationAdmin, filter: NotificationAdminFilterInput): NotificationAdminSingleResponse
+}
+
+type NotificationAdminQuery {
+    get(_id: ID): NotificationAdminSingleResponse
+    getAll(filter: NotificationAdminFilterInput, pagination: paginationInput, sorting: NotificationAdminSortingInput): NotificationAdminMultipleResponse
+    getOne(filter: NotificationAdminFilterInput): NotificationAdminSingleResponse
+}
+
+type NotificationAdminSingleResponse implements ISingleResponse {
+    data: NotificationAdmin
+    errors: [PathError]
+    message: String
+    status: Int
+    warnings: [PathError]
 }
 
 type NotificationMultipleResponse implements IQueryMultipleResponse {
@@ -1373,6 +1421,7 @@ type Query {
     LocationRegionQuery: LocationRegionQuery
     LocationStateQuery: LocationStateQuery
     MessageQuery: MessageQuery
+    NotificationAdminQuery: NotificationAdminQuery
     NotificationQuery: NotificationQuery
     PilotOutcomeOrderQuery: PilotOutcomeOrderQuery
     PilotQuery: PilotQuery
@@ -2041,6 +2090,7 @@ enum GeneralOptionNameEnum {
     MaxAdCostStoreCount
     MinCouponStoreCount
     MinDeliveryCost
+    OfferImage
     Phone
     PilotForm
     StoreForm
@@ -2179,6 +2229,37 @@ enum NotificatioStatus {
     Deleted
     Read
     Unread
+}
+
+enum NotificationAdminFilterByEnum {
+    _id
+    cityId
+    name
+    notifiedCount
+    userType
+}
+
+enum NotificationAdminMultiLangsFieldsEnum {
+    message
+    name
+}
+
+enum NotificationAdminSortByEnum {
+    _id
+    cityId
+    createdAt
+    name
+    notifiedCount
+    updatedAt
+    userType
+}
+
+enum NotificationAdmintype {
+    All
+    Customer
+    Pilot
+    StoreAdmin
+    SystemAdmin
 }
 
 enum NotificationSortByEnum {
@@ -2805,6 +2886,23 @@ input MessageSortingInput {
     sortDirection: SortDirectionEnum
 }
 
+input NotificationAdminFilterInput {
+    SEARCH: SEARCH_Input
+    _id: ID
+    cityId: ID
+    createdAt: Date
+    message: String
+    name: String
+    notifiedCount: Float
+    updatedAt: Date
+    userType: NotificationAdmintype
+}
+
+input NotificationAdminSortingInput {
+    sortBy: NotificationAdminSortByEnum
+    sortDirection: SortDirectionEnum
+}
+
 input NotificationFilterArray {
     _id: [ID!]
 }
@@ -3273,6 +3371,15 @@ input createMessage {
     userType: MessageUserType
 }
 
+input createNotificationAdmin {
+    cityId: ID
+    message: multilanguageInput
+    name: multilanguageInput
+    notifiedCount: Float
+    userIds: [ID]
+    userType: NotificationAdmintype
+}
+
 input createNotificationInput {
     actionType: String
     display: String
@@ -3711,6 +3818,15 @@ input updateMessage {
     title: String
     userId: ID
     userType: MessageUserType
+}
+
+input updateNotificationAdmin {
+    cityId: ID
+    message: multilanguageInput
+    name: multilanguageInput
+    notifiedCount: Float
+    userIds: [ID]
+    userType: NotificationAdmintype
 }
 
 input updateNotificationInput {

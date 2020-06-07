@@ -65,6 +65,9 @@ public class Common {
 
     public static String DELIVERY_COST;
     public static String MINDELIVERY_COST;
+    public static String MAX_AD_COST_STORE;
+    public static String MIN_COUPON_STORE;
+    public static int STORE_COUNT;
 
     public static Boolean IS_AVAILABLE_STORE = false;
 

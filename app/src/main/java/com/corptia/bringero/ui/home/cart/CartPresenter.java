@@ -3,6 +3,7 @@ package com.corptia.bringero.ui.home.cart;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.graphql.UpdateCartItemMutation;
@@ -25,6 +26,7 @@ public class CartPresenter {
                     @Override
                     public void onResponse(@NotNull Response<MyCartQuery.Data> response) {
                         MyCartQuery.MyCart myCart = response.data().CartItemQuery().myCart();
+                        Common.STORE_COUNT = myCart.StoresCount();
                         view.hideProgressBar();
                         if (myCart.status() == 200) {
                             view.setMyCart(myCart);

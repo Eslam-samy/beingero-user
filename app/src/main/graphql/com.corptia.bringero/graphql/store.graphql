@@ -5,6 +5,7 @@ query getStoresOfASingleCategory($filter: StoreFilterInput,$paginate:paginationI
             message
             pagination {
                 hasNextPage
+                totalDocs
                 nextPage
                 page
             }
@@ -22,6 +23,8 @@ query getStoresOfASingleCategory($filter: StoreFilterInput,$paginate:paginationI
                 storeTypeId
                 adminUserId
                 isAvailable
+                isOffer
+                status
 
                 Rate{
                     Service {

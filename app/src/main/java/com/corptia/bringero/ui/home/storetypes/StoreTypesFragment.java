@@ -1,5 +1,6 @@
 package com.corptia.bringero.ui.home.storetypes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.corptia.bringero.Common.Common;
+import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.StoreTypesQuery;
 import com.corptia.bringero.utils.recyclerview.decoration.GridSpacingItemDecoration;
@@ -32,11 +34,11 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
     @BindView(R.id.recycler_store)
     RecyclerView recycler_store;
 
+    Boolean isOffer;
     @BindView(R.id.loading)
     LottieAnimationView loading;
 
     //private StoreTypesViewModel storeTypesViewModel;
-
     //Data
     StoreTypesAdapter adapter;
     StoreTypesPresenter storeTypesPresenter;
@@ -55,7 +57,9 @@ public class StoreTypesFragment extends Fragment implements StoreTypesContract.S
         ButterKnife.bind(this, root);
 
         layoutAnimationController = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_item_from_left);
-
+        if (getArguments() != null){
+            isOffer = getArguments().getBoolean(Constants.EXTRA_STORE_OFFER,false);
+        }
         storeTypesPresenter = new StoreTypesPresenter(this);
         storeTypesPresenter.getStoreTypes(getString(R.string.special_offers));
 

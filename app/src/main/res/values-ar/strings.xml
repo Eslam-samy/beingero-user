@@ -275,6 +275,7 @@
     <string name="special_offers">عروض خاصة</string>
     <string name="special_offer">عروض خاصة </string>
     <string name="offer">Offers</string>
+    <string name="No_Offers_available">لا توجد عروض</string>
 
 
 </resources>

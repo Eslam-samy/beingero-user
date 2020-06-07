@@ -13,6 +13,7 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,6 +79,8 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
     EditText edt_coupon_code;
     @BindView(R.id.layout_coupon)
     LinearLayout layout_coupon;
+    @BindView(R.id.add_coupon_layout)
+    LinearLayout add_coupon_layout;
 
     CheckOutPresenter checkOutPresenter = new CheckOutPresenter(this);
 
@@ -147,56 +150,78 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
             image_correct.setVisibility(View.GONE);
             txt_title_name_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
             txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
-
             txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
-            txt_delivery_fees_new.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
 
-            txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
-            total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
+            Log.d("DDD", "onCreate: store size and max" + Common.STORE_COUNT + "cart: " + Common.CURRENT_CART.size() + "max : " + Common.MAX_AD_COST_STORE);
+            if (Common.CURRENT_CART.size() <= Integer.parseInt(Common.MAX_AD_COST_STORE)){
+                txt_delivery_fees_new.setText(new StringBuilder().append(10).append(" ").append("-").append(" ").append(15).append(" ").append(getString(R.string.currency)));
+                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 10)) .append(" ")
+                        .append("-").append(" ").append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+                total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 10)) .append(" ")
+                        .append("-").append(" ").append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 15)).append(" ").append(getString(R.string.currency)));
 
+            }else {
+
+                txt_delivery_fees_new.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
+                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
+                total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
+            }
         }
 
 
         //------------- For Coupon ----------
-        btn_control_coupon.setTag(Constants.TAG_COUPON_ADD);
-        btn_control_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                if (btn_control_coupon.getTag().equals(Constants.TAG_COUPON_ADD)) {
-                    layout_coupon.setVisibility(View.VISIBLE);
-                    btn_control_coupon.setText(getString(R.string.remove));
-                    btn_control_coupon.setTag(Constants.TAG_COUPON_REMOVE);
+        if (Common.CURRENT_CART.size() >= Integer.parseInt(Common.MIN_COUPON_STORE)) {
 
-                    edt_coupon_code.setText("");
-                    edt_coupon_code.setEnabled(true);
-                } else if (btn_control_coupon.getTag().equals(Constants.TAG_COUPON_REMOVE)) {
+            add_coupon_layout.setVisibility(View.VISIBLE);
+            btn_control_coupon.setTag(Constants.TAG_COUPON_ADD);
+            btn_control_coupon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                    layout_coupon.setVisibility(View.GONE);
-                    btn_control_coupon.setText(getString(R.string.add));
-                    btn_control_coupon.setTag(Constants.TAG_COUPON_ADD);
+                    if (btn_control_coupon.getTag().equals(Constants.TAG_COUPON_ADD)) {
+                        layout_coupon.setVisibility(View.VISIBLE);
+                        btn_control_coupon.setText(getString(R.string.remove));
+                        btn_control_coupon.setTag(Constants.TAG_COUPON_REMOVE);
 
-                    txt_delivery_fees_new.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
-                    txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
-                    total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
+                        edt_coupon_code.setText("");
+                        edt_coupon_code.setEnabled(true);
+                    } else if (btn_control_coupon.getTag().equals(Constants.TAG_COUPON_REMOVE)) {
 
-                    edt_coupon_code.setText("");
+                        layout_coupon.setVisibility(View.GONE);
+                        btn_control_coupon.setText(getString(R.string.add));
+                        btn_control_coupon.setTag(Constants.TAG_COUPON_ADD);
+                        if (Common.CURRENT_CART.size() <= Integer.parseInt(Common.MAX_AD_COST_STORE)) {
+                            txt_delivery_fees_new.setText(new StringBuilder().append(10).append(" ").append("-").append(" ").append(15).append(" ").append(getString(R.string.currency)));
+                            txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 10)).append(" ")
+                                    .append("-").append(" ").append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+                            total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 10)).append(" ")
+                                    .append("-").append(" ").append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 15)).append(" ").append(getString(R.string.currency)));
 
-                    txt_delivery_fees_old.setVisibility(View.INVISIBLE);
+                        } else {
+                            txt_delivery_fees_new.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
+                            txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
+                            total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
+                        }
+                        edt_coupon_code.setText("");
 
-                } else if (btn_control_coupon.getTag().equals(Constants.TAG_COUPON_CHANGE)) {
-                    layout_coupon.setEnabled(true);
+                        txt_delivery_fees_old.setVisibility(View.INVISIBLE);
 
-                    btn_control_coupon.setTag(Constants.TAG_COUPON_REMOVE);
-                    btn_control_coupon.setText(getString(R.string.remove));
-                    btn_add_coupon.setVisibility(View.VISIBLE);
+                    } else if (btn_control_coupon.getTag().equals(Constants.TAG_COUPON_CHANGE)) {
+                        layout_coupon.setEnabled(true);
 
-                    edt_coupon_code.setEnabled(true);
+                        btn_control_coupon.setTag(Constants.TAG_COUPON_REMOVE);
+                        btn_control_coupon.setText(getString(R.string.remove));
+                        btn_add_coupon.setVisibility(View.VISIBLE);
 
+                        edt_coupon_code.setEnabled(true);
+
+                    }
                 }
-            }
-        });
-
+            });
+        }else {
+            add_coupon_layout.setVisibility(View.GONE);
+        }
         btn_add_coupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
