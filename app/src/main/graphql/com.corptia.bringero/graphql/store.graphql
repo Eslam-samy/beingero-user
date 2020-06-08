@@ -68,7 +68,7 @@ query singleStoreHeader($storeId: ID) {
 }
 
 
-query singleStore($filter: StoreFilterInput) {
+query singleStore($filter: StoreFilterInput  ) {
     StoreQuery {
         getAll(filter : $filter , sorting: {sortBy: displayPriority})  {
             status
