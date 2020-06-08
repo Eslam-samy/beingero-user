@@ -369,6 +369,14 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                                 Common.MINDELIVERY_COST = option.value();
                             }
+                            else if (option.name().rawValue().equalsIgnoreCase(GeneralOptionNameEnum.MAXADCOSTSTORECOUNT.rawValue())) {
+
+                                Common.MAX_AD_COST_STORE = option.value();
+
+                            } else if (option.name().rawValue().equalsIgnoreCase(GeneralOptionNameEnum.MINCOUPONSTORECOUNT.rawValue())) {
+
+                                Common.MIN_COUPON_STORE = option.value();
+                            }
                         }
 
 

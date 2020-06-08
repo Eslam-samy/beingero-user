@@ -32,6 +32,7 @@ query deliveryOrders($filter: DeliveryOrderFilterInput!
                 ItemsCount
                 SubTotal
                 deliveryCost
+                adCost
 
                 BuyingOrderResponse {
                     status

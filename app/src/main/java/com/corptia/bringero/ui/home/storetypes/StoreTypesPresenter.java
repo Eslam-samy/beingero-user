@@ -34,7 +34,9 @@ public class StoreTypesPresenter {
 
         //Set Data
         //storeTypesList.add(new StoreTypes(R.drawable.img1, "data"));
-        StoreFilterInput filterInput = StoreFilterInput.builder().isOffer(true).status(StoreStatus.ACTIVE).isAvailable(true).build();
+        StoreFilterInput
+
+            filterInput = StoreFilterInput.builder().isOffer(true).status(StoreStatus.ACTIVE).build();
 
         MyApolloClient.getApollowClientAuthorization()
                 .query(GetStoresOfASingleCategoryQuery.builder()
@@ -52,7 +54,7 @@ public class StoreTypesPresenter {
 
                                         if (offersResponse.data().StoreQuery().getAll().status() == 200) {
 
-                                            offersStores = offersResponse.data().StoreQuery().getAll().Stores().size();
+                                            offersStores = offersResponse.data().StoreQuery().getAll().pagination().totalDocs();
 
                                         }
                                         StoreTypesQuery.@Nullable GetAllStoresCount allStores = response.data().StoreTypeQuery().getAllStoresCount();

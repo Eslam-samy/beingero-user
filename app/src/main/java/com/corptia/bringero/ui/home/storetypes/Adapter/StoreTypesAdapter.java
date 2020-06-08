@@ -2,6 +2,7 @@ package com.corptia.bringero.ui.home.storetypes.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.graphql.StoreTypesQuery;
+import com.corptia.bringero.ui.home.storetypes.StoreTypesFragment;
 import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.ui.stores.StoresActivity;
 import com.squareup.picasso.Picasso;
@@ -61,7 +63,9 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
 //            PicassoUtils.setImage(Common.BASE_URL_IMAGE + storeTypes.ImageResponse().data().name() , holder.image_storetype);
 //        else
 //            PicassoUtils.setImage( holder.image_storetype);
-
+        if (storeTypes.storeCount() == 0 && storeTypes.StoreType()._id().isEmpty()){
+            holder.txt_count_storetype.setText(context.getString(R.string.No_Offers_available));
+        }
         holder.txt_name_storetype.setText(storeTypes.StoreType().name());
         holder.txt_count_storetype.setText(new StringBuilder().append(storeTypes.storeCount()).append(" ").append(storeTypes.storeCount() == 1 ? context.getString(R.string.store) : context.getString(R.string.stores)));
 
@@ -74,6 +78,7 @@ public class StoreTypesAdapter extends RecyclerView.Adapter<StoreTypesAdapter.Vi
                     intent.putExtra(Constants.EXTRA_CATEGOTY_ID, storeTypes.StoreType()._id());
                     intent.putExtra(Constants.EXTRA_STORE_TYPE_NAME, storeTypes.StoreType().name());
                     intent.putExtra(Constants.EXTRA_STORE_OFFER, storeTypes.StoreType()._id().isEmpty());
+
                     context.startActivity(intent);
                     }
                 });

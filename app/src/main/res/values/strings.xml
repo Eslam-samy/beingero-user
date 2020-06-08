@@ -275,6 +275,7 @@
     <string name="special_offers">Special Offers</string>
     <string name="special_offer">special offers</string>
     <string name="offer">Offers</string>
+    <string name="No_Offers_available" />
 
 </resources>
 

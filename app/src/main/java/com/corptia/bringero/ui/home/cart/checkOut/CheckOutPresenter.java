@@ -74,7 +74,6 @@ public class CheckOutPresenter {
 
 
                         if (response.data().BuyingOrderMutation().create().status() == 200){
-
                             String orderId = response.data().BuyingOrderMutation().create().data()._id();
                             int serial = response.data().BuyingOrderMutation().create().data().serial();
                             view.onSuccessCreateOrder(orderId, serial);

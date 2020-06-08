@@ -26,6 +26,9 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.SpeedCartQuery;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
+import com.corptia.bringero.type.SortDirectionEnum;
+import com.corptia.bringero.type.StoreSortByEnum;
+import com.corptia.bringero.type.StoreSortingInput;
 import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.ui.search.SearchProductsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -148,6 +151,7 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     private void getSingleStore() {
 
         StoreFilterInput storeFilterInput = StoreFilterInput.builder().adminUserId(adminUserId).build();
+        StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.DISPLAYPRIORITY).sortDirection(SortDirectionEnum.DESC).build();
 
         MyApolloClient.getApollowClientAuthorization().query(SingleStoreQuery.builder().filter(storeFilterInput).build())
                 .enqueue(new ApolloCall.Callback<SingleStoreQuery.Data>() {

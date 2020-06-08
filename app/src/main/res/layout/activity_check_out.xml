@@ -58,10 +58,12 @@
 
 
                 <LinearLayout
+                    android:id="@+id/add_coupon_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3"
+                    android:visibility="gone"
                     android:layout_marginStart="@dimen/app_margin"
                     android:layout_marginEnd="@dimen/app_margin">
 
@@ -92,32 +94,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:weightSum="3"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    android:weightSum="3">
 
                     <EditText
                         android:id="@+id/edt_coupon_code"
+                        style="@style/EditTextStyle"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        style="@style/EditTextStyle"
-                        android:background="@drawable/shadow_layout_input"
                         android:layout_marginStart="8dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/shadow_layout_input"
                         android:hint="@string/coupon_code"
                         android:paddingStart="@dimen/large_padding"
-                        android:paddingTop="12dp"/>
+                        android:paddingTop="12dp" />
 
 
                     <Button
                         android:id="@+id/btn_add_coupon"
                         style="@style/ButtonNormalStyle"
                         android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="0dp"
-                        android:layout_marginBottom="0dp"
                         android:layout_marginEnd="@dimen/app_margin"
-                        android:text="@string/add"/>
+                        android:layout_marginBottom="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/add" />
 
 
                 </LinearLayout>
