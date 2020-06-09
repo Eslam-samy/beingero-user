@@ -347,10 +347,9 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                     txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
                 }
 
-
                 txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(deliveryOrderData.SubTotal())).append(" ").append(getString(R.string.currency)));
-                txt_delivery_fees.setText(new StringBuilder().append(deliveryOrderData.deliveryCost()).append(" ").append(getString(R.string.currency)));
-                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(deliveryOrderData.SubTotal() + deliveryOrderData.deliveryCost())).append(" ").append(getString(R.string.currency)));
+                txt_delivery_fees.setText(new StringBuilder().append((deliveryOrderData.deliveryCost()) + deliveryOrderData.adCost()).append(" ").append(getString(R.string.currency)));
+                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(deliveryOrderData.SubTotal() + ((deliveryOrderData.deliveryCost()) + deliveryOrderData.adCost()))).append(" ").append(getString(R.string.currency)));
 
 //                total_price.setText(new StringBuilder().append(20 + 500.00).append(" ").append(getString(R.string.currency)));
 

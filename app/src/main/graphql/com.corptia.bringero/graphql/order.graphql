@@ -116,7 +116,7 @@ query deliveryOneOrder($_id: ID) {
                 status
                 deliveryCost
                 SubTotal
-
+                adCost
                 pilotDeliveryRating
 
                 BuyingOrderResponse {

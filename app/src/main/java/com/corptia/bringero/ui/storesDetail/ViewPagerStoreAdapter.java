@@ -8,15 +8,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.corptia.bringero.Common.Constants;
+import com.corptia.bringero.graphql.ProductsTypeQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
 
 import java.util.List;
 
 public class ViewPagerStoreAdapter extends FragmentPagerAdapter {
 
-    private List<SingleStoreQuery.Data1> productsTypes;
+    private List<ProductsTypeQuery.Data1> productsTypes;
 
-    public ViewPagerStoreAdapter(FragmentManager fm, List<SingleStoreQuery.Data1> productsTypes) {
+    public ViewPagerStoreAdapter(FragmentManager fm, List<ProductsTypeQuery.Data1> productsTypes) {
         super(fm);
         this.productsTypes = productsTypes;
     }

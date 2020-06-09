@@ -27,6 +27,7 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.GetCartItemsCountQuery;
 import com.corptia.bringero.graphql.MyCartQuery;
+import com.corptia.bringero.graphql.ProductsTypeQuery;
 import com.corptia.bringero.graphql.SingleStoreQuery;
 import com.corptia.bringero.model.CartItemsModel;
 import com.corptia.bringero.model.CurrentDeliveryAddress;
@@ -77,6 +78,7 @@ public class Common {
     public static UserModel CURRENT_USER;
 
     public static SingleStoreQuery.CurrentStore CURRENT_STORE;
+    public static List<ProductsTypeQuery.Data1> CURRENT_PRODUCTS_TYPE;
 
     public static boolean isUpdateCurrentLocation;
     public static boolean isFirstTimeAddLocation = false;

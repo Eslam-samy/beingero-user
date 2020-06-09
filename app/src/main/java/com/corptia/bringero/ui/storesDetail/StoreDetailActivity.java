@@ -24,6 +24,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.graphql.ProductsTypeQuery;
 import com.corptia.bringero.graphql.SpeedCartQuery;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
 import com.corptia.bringero.type.SortDirectionEnum;
@@ -151,7 +152,6 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
     private void getSingleStore() {
 
         StoreFilterInput storeFilterInput = StoreFilterInput.builder().adminUserId(adminUserId).build();
-        StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.DISPLAYPRIORITY).sortDirection(SortDirectionEnum.DESC).build();
 
         MyApolloClient.getApollowClientAuthorization().query(SingleStoreQuery.builder().filter(storeFilterInput).build())
                 .enqueue(new ApolloCall.Callback<SingleStoreQuery.Data>() {
@@ -161,24 +161,49 @@ public class StoreDetailActivity extends BaseActivity implements StoreDetailCont
                         SingleStoreQuery.GetAll responseData = response.data().StoreQuery().getAll();
 
                         runOnUiThread(() -> {
-
                             if (responseData.status() == 200) {
                                 Common.CURRENT_STORE = responseData.CurrentStore().get(0);
 
+                                List<String> typeIds = new ArrayList<>();
+                                for (int i = 0; i< Common.CURRENT_STORE.ProductTypesStore().data().size() ; i++) {
+                                typeIds.add(Common.CURRENT_STORE.ProductTypesStore().data().get(i)._id());
+                            }
 
-                                List<SingleStoreQuery.Data1> typesList = Common.CURRENT_STORE.ProductTypesStore().data();
-                                typesList = new ArrayList<>();
-                                typesList.add(new SingleStoreQuery.Data1("Offres","0",getString(R.string.offers), null));
+
+
+                            MyApolloClient.getApollowClientAuthorization().query(ProductsTypeQuery.builder().typesIds(typeIds).build())
+                                    .enqueue(new ApolloCall.Callback<ProductsTypeQuery.Data>() {
+                                        @Override
+                                        public void onResponse(@NotNull Response<ProductsTypeQuery.Data> response) {
+
+                                            ProductsTypeQuery.GetAll productsResponse = response.data().ProductTypeQuery().getAll();
+                                            runOnUiThread(() -> {
+
+                                                if (productsResponse.status() == 200){
+                                                    Common.CURRENT_PRODUCTS_TYPE = productsResponse.data();
+                                                    List<ProductsTypeQuery.Data1> typesList;
+                                                    typesList = new ArrayList<>();
+                                                    typesList.add(new ProductsTypeQuery.Data1("Offres","0",getString(R.string.offers), null));
 //                                for ()
-                                typesList.addAll(Common.CURRENT_STORE.ProductTypesStore().data());
+                                                    typesList.addAll(productsResponse.data());
 
-                                ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
-                                        getSupportFragmentManager(),
-                                        typesList);
+                                                    ViewPagerStoreAdapter adapter = new ViewPagerStoreAdapter(
+                                                            getSupportFragmentManager(),
+                                                            typesList);
 
-                                viewPager.setAdapter(adapter);
-                                tabLayout.setupWithViewPager(viewPager);
-                                viewPager.setCurrentItem(0, true);
+                                                    viewPager.setAdapter(adapter);
+                                                    tabLayout.setupWithViewPager(viewPager);
+                                                    viewPager.setCurrentItem(0, true);
+                                                }
+                                            });
+                                        }
+
+                                        @Override
+                                        public void onFailure(@NotNull ApolloException e) {
+
+                                        }
+                                    });
+
 //                                adapter.notifyDataSetChanged();
 
                             } else {

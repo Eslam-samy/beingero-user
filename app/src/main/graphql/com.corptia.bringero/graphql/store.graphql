@@ -69,13 +69,15 @@ query singleStoreHeader($storeId: ID) {
 
 
 query singleStore($filter: StoreFilterInput  ) {
+
     StoreQuery {
-        getAll(filter : $filter , sorting: {sortBy: displayPriority})  {
+        getAll(filter : $filter , sorting: {sortBy: displayPriority sortDirection: ASC})  {
             status
             message
             CurrentStore:data{
                 _id
                 name
+
                 ProductTypesStore:ProductTypesResponse{
                     status
                     message
@@ -93,3 +95,25 @@ query singleStore($filter: StoreFilterInput  ) {
         }
     }
 }
+
+
+query productsType($typesIds: [ID])
+{  ProductTypeQuery {
+    getAll(
+        filter: { IN: { _id: $typesIds } }
+        sorting: { sortBy: displayPriority sortDirection: DESC }
+    )
+{
+    status
+    message
+    data {
+        _id
+        name
+        ImageResponse {
+            data {
+                name
+            }
+        }
+    }
+}
+}}
