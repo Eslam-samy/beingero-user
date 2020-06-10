@@ -115,17 +115,21 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 String uri = "@drawable/background_order_" + orderDatum.status().rawValue().toLowerCase();
                 int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
                 Drawable res = context.getResources().getDrawable(imageResource);
+                if (imageResource != 0 && stringResource != 0) {
+                    txt_status.setText("" + context.getResources().getString(stringResource));
+                    txt_status.setBackground(res);
 
-                txt_status.setText(""+context.getResources().getString(stringResource));
-                txt_status.setBackground(res);
-
-                txt_date_order.setText(orderDatum.createdAt().toString());
-                txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
+                    txt_date_order.setText(orderDatum.createdAt().toString());
+                    txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
 
 
-                double totalPrice = orderDatum.SubTotal()+ orderDatum.deliveryCost();
-                txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(context.getString(R.string.currency)));
-
+                    double totalPrice = orderDatum.SubTotal() + orderDatum.deliveryCost();
+                    txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(context.getString(R.string.currency)));
+                }else{
+                    txt_status.setText(orderDatum.status().rawValue().toLowerCase());
+                    txt_date_order.setText(orderDatum.createdAt().toString());
+                    txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
+                }
 
 //
 //

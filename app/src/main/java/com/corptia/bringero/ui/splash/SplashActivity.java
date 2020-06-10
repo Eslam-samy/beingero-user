@@ -128,10 +128,10 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
                                 PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_BASE_URL, Common.BASE_URL);
                                 PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_BASE_URL_IMAGE, Common.BASE_URL_IMAGE);
 
-                                Common.TEST_URL = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "graphql";
-                                Common.TEST_URL_IMAGE = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "images/";
-                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_TEST_URL, Common.TEST_URL);
-                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_TEST_URL_IMAGE, Common.TEST_URL_IMAGE);
+//                                Common.TEST_URL = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "graphql";
+//                                Common.TEST_URL_IMAGE = mFirebaseRemoteConfig.getString(Constants.TEST_URL) + "images/";
+//                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_TEST_URL, Common.TEST_URL);
+//                                PrefUtils.saveToPrefs(SplashActivity.this, PrefKeys.FULL_TEST_URL_IMAGE, Common.TEST_URL_IMAGE);
 
 
 //                                Common.BASE_URL_IMAGE_UPLOAD = mFirebaseRemoteConfig.getString(Constants.BASE_URL)+"images/";
@@ -229,19 +229,19 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
             String phone = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_PHONE, "");
             String password = (String) PrefUtils.getFromPrefs(this, PrefKeys.USER_PASSWORD, "");
 
-            switch (phone) {
-                case "01003544497":
-                case "01000100041":
-                case "01000100042":
-                case "01000100043":
-                case "01029936932":
-                    showTestingDialogue(phone, password);
-                    break;
-                default:
-                    loginPresenter.onLogin(phone, password);
-            }
+//            switch (phone) {
+//                case "01003544497":
+//                case "01000100041":
+//                case "01000100042":
+//                case "01000100043":
+//                case "01029936932":
+//                    showTestingDialogue(phone, password);
+//                    break;
+//                default:
+//                    loginPresenter.onLogin(phone, password);
+//            }
 
-//            loginPresenter.onLogin(phone, password);
+            loginPresenter.onLogin(phone, password);
 
         } else {
 

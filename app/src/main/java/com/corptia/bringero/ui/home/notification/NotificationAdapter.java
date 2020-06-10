@@ -1,6 +1,8 @@
 package com.corptia.bringero.ui.home.notification;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -161,18 +163,29 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 //            txt_date_notification.setText(notification.createdAt().toString());
             txt_messages_notification.setText(notification.message());
             String uriColor = "@color/blue1";
+            String uriColor2 = "@color/blue1";
+
             if (notification.docStatus() != null)
                 uriColor = "@color/" + notification.docStatus().toLowerCase();
             int colorResource = context.getResources().getIdentifier(uriColor, null, context.getPackageName());
-            card_image_notification.setCardBackgroundColor(context.getResources().getColor(colorResource));
+            if (colorResource != 0){
+                card_image_notification.setCardBackgroundColor(context.getResources().getColor(colorResource));
+            }else{
+                card_image_notification.setCardBackgroundColor(context.getResources().getColor(R.color.blue1));
+            }
             String uriImage = "@drawable/ic_notification_approved";
+
             if (notification.docStatus() != null)
                 uriImage = "@drawable/ic_notification_" + notification.docStatus().toLowerCase();
 //            Common.LOG("Hi : " + uriImage);
             int imageResource = context.getResources().getIdentifier(uriImage, null, context.getPackageName());
 //            Drawable res = context.getResources().getDrawable(imageResource);
+            if (imageResource != 0){
+                image_notification.setImageResource(imageResource);
 
-            image_notification.setImageResource(imageResource);
+            }else {
+                image_notification.setImageResource(R.drawable.ic_logo_white);
+            }
 
             //For Resolved Status To Arabic
 //            String uriString = "@string/order_status_" + notification.docStatus().toLowerCase();
