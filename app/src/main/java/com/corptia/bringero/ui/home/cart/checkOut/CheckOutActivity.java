@@ -155,10 +155,10 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
             Log.d("DDD", "onCreate: store size and max" + Common.STORE_COUNT + "cart: " + Common.CURRENT_CART.size() + "max : " + Common.MAX_AD_COST_STORE);
             if (Common.CURRENT_CART.size() <= Integer.parseInt(Common.MAX_AD_COST_STORE)){
                 txt_delivery_fees_new.setText(new StringBuilder().append(10).append(" ").append("-").append(" ").append(15).append(" ").append(getString(R.string.currency)));
-                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 10)) .append(" ")
-                        .append("-").append(" ").append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 15)).append(" ").append(getString(R.string.currency)));
-                total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 10)) .append(" ")
-                        .append("-").append(" ").append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)) .append(" ")
+                        .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+                total_price.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)) .append(" ")
+                        .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
 
             }else {
 
@@ -193,10 +193,10 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
                         btn_control_coupon.setTag(Constants.TAG_COUPON_ADD);
                         if (Common.CURRENT_CART.size() <= Integer.parseInt(Common.MAX_AD_COST_STORE)) {
                             txt_delivery_fees_new.setText(new StringBuilder().append(10).append(" ").append("-").append(" ").append(15).append(" ").append(getString(R.string.currency)));
-                            txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 10)).append(" ")
-                                    .append("-").append(" ").append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 15)).append(" ").append(getString(R.string.currency)));
-                            total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 10)).append(" ")
-                                    .append("-").append(" ").append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+                            txt_total.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)).append(" ")
+                                    .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+                            total_price.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)).append(" ")
+                                    .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
 
                         } else {
                             txt_delivery_fees_new.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
