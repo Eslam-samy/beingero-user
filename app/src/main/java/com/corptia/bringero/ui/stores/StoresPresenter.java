@@ -29,7 +29,7 @@ public class StoresPresenter {
 
         storesView.showProgressBar();
 
-        StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.DISPLAYPRIORITY).sortDirection(SortDirectionEnum.DESC).build();
+        StoreSortingInput sortingInput = StoreSortingInput.builder().sortBy(StoreSortByEnum.DISPLAYPRIORITY ).sortDirection(SortDirectionEnum.ASC).build();
         StoreFilterInput  filterInput;
         if (isOffer) {
             filterInput = StoreFilterInput.builder().isOffer(isOffer).status(StoreStatus.ACTIVE).isAvailable(isAvailable).build();

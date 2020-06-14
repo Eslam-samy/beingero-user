@@ -157,8 +157,8 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
                 txt_delivery_fees_new.setText(new StringBuilder().append(10).append(" ").append("-").append(" ").append(15).append(" ").append(getString(R.string.currency)));
                 txt_total.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)) .append(" ")
                         .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
-                total_price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice + 10)) .append(" ")
-                        .append("-").append(" ").append(Common.getDecimalNumber(totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+                total_price.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)) .append(" ")
+                        .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
 
             }else {
 
@@ -194,7 +194,7 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
                         if (Common.CURRENT_CART.size() <= Integer.parseInt(Common.MAX_AD_COST_STORE)) {
                             txt_delivery_fees_new.setText(new StringBuilder().append(10).append(" ").append("-").append(" ").append(15).append(" ").append(getString(R.string.currency)));
                             txt_total.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)).append(" ")
-                                    .append("-").append(" ").append(Common.getDecimalNumber(  totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+                                    .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
                             total_price.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)).append(" ")
                                     .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
 
