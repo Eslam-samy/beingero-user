@@ -118,6 +118,8 @@ query deliveryOneOrder($_id: ID) {
                 SubTotal
                 adCost
                 pilotDeliveryRating
+                regionId
+                StoresCount
 
                 BuyingOrderResponse {
                     status

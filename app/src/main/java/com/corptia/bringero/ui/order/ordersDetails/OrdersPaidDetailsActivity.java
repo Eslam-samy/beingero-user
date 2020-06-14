@@ -126,7 +126,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     String orderid, pilotId;
 
     //Dialog Rating
-     Dialog dialog;
+    Dialog dialog;
     CircleImageView img_rate_store;
     RatingBar ratingBar;
     Button btn_submit;
@@ -137,10 +137,9 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_orders_paid_details);
 
-        if (Common.BASE_URL.isEmpty())
-        {
-            Common.BASE_URL = (String) PrefUtils.getFromPrefs(this , PrefKeys.FULL_BASE_URL , "");
-            Common.BASE_URL_IMAGE = (String) PrefUtils.getFromPrefs(this , PrefKeys.FULL_BASE_URL_IMAGE , "");
+        if (Common.BASE_URL.isEmpty()) {
+            Common.BASE_URL = (String) PrefUtils.getFromPrefs(this, PrefKeys.FULL_BASE_URL, "");
+            Common.BASE_URL_IMAGE = (String) PrefUtils.getFromPrefs(this, PrefKeys.FULL_BASE_URL_IMAGE, "");
         }
 
         if (Common.CURRENT_USER == null) {
@@ -347,9 +346,23 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                     txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
                 }
 
-                txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(deliveryOrderData.SubTotal())).append(" ").append(getString(R.string.currency)));
-                txt_delivery_fees.setText(new StringBuilder().append((deliveryOrderData.deliveryCost()) + deliveryOrderData.adCost()).append(" ").append(getString(R.string.currency)));
-                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(deliveryOrderData.SubTotal() + ((deliveryOrderData.deliveryCost()) + deliveryOrderData.adCost()))).append(" ").append(getString(R.string.currency)));
+                final Double subTotal = deliveryOrderData.SubTotal();
+                double deliveryFeeTotal = deliveryOrderData.deliveryCost() + deliveryOrderData.adCost();
+                double totalPrice = subTotal + deliveryFeeTotal;
+                txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(subTotal)).append(" ").append(getString(R.string.currency)));
+                txt_delivery_fees.setText(new StringBuilder().append(deliveryFeeTotal).append(" ").append(getString(R.string.currency)));
+                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
+
+                if (deliveryOrderData.StoresCount() <= Integer.parseInt(Common.MAX_AD_COST_STORE))
+                    if (deliveryOrderData.regionId() == null) {
+
+                        txt_delivery_fees.setText(new StringBuilder().append(Common.getDecimalNumber(10)).append(" ")
+                                .append("-").append(" ").append(Common.getDecimalNumber(15)).append(" ").append(getString(R.string.currency)));
+
+                        txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice - deliveryFeeTotal + 10)).append(" ")
+                                .append("-").append(" ").append(Common.getDecimalNumber(totalPrice - deliveryFeeTotal + 15)).append(" ").append(getString(R.string.currency)));
+                    }
+
 
 //                total_price.setText(new StringBuilder().append(20 + 500.00).append(" ").append(getString(R.string.currency)));
 
@@ -448,6 +461,10 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
             @Override
             public void run() {
                 Log.d("DDD", "run: dismiss");
+                if (dialog != null)
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
                 ratingPilot.setRating(ratingBar.getRating());
                 root_rating.setBackgroundColor(Color.TRANSPARENT);
             }
@@ -501,7 +518,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
     private void showDialogRating(DeliveryOneOrderQuery.DeliveryOrderData pilotData) {
 
 //        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(this);
-         dialog = new Dialog(this);
+        dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.layout_dialog_rating);
@@ -527,7 +544,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                 }
             }
         });
-            dialog.setCancelable(true);
+        dialog.setCancelable(true);
 //        builder.setCancelable(true);
         //setting the view of the builder to our custom view that we already inflated
 //        builder.setView(dialogView);
@@ -543,7 +560,6 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                 finish();
             }
         });
-
     }
 
     @Override
