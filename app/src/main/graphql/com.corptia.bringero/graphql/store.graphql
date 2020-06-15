@@ -101,7 +101,7 @@ query productsType($typesIds: [ID])
 {  ProductTypeQuery {
     getAll(
         filter: { IN: { _id: $typesIds } }
-        sorting: { sortBy: displayPriority sortDirection: DESC }
+        sorting: { sortBy: displayPriority sortDirection: ASC }
     )
 {
     status
