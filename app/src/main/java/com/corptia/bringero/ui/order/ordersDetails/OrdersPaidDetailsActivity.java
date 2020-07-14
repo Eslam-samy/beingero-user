@@ -349,10 +349,15 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
                 final Double subTotal = deliveryOrderData.SubTotal();
                 double deliveryFeeTotal = deliveryOrderData.deliveryCost() + deliveryOrderData.adCost();
                 double totalPrice = subTotal + deliveryFeeTotal;
+                Log.d("HHHH", "run: here");
                 txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(subTotal)).append(" ").append(getString(R.string.currency)));
                 txt_delivery_fees.setText(new StringBuilder().append(deliveryFeeTotal).append(" ").append(getString(R.string.currency)));
                 txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
-
+                if(deliveryOrderData.status().rawValue().equalsIgnoreCase(DeliveryOrderStatus.DELIVERED.rawValue())) {
+                    txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(subTotal)).append(" ").append(getString(R.string.currency)));
+                    txt_delivery_fees.setText(new StringBuilder().append(deliveryFeeTotal).append(" ").append(getString(R.string.currency)));
+                    txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
+                }else{
                 if (deliveryOrderData.StoresCount() <= Integer.parseInt(Common.MAX_AD_COST_STORE))
                     if (deliveryOrderData.regionId() == null) {
 
@@ -361,7 +366,7 @@ public class OrdersPaidDetailsActivity extends BaseActivity implements OrdersPai
 
                         txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice - deliveryFeeTotal + 10)).append(" ")
                                 .append("-").append(" ").append(Common.getDecimalNumber(totalPrice - deliveryFeeTotal + 15)).append(" ").append(getString(R.string.currency)));
-                    }
+                    }}
 
 
 //                total_price.setText(new StringBuilder().append(20 + 500.00).append(" ").append(getString(R.string.currency)));
