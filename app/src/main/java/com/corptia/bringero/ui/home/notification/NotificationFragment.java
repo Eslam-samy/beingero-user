@@ -137,9 +137,8 @@ public class NotificationFragment extends Fragment implements NotificationView {
             adapter.setClickListener(new IOnRecyclerViewClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-
                     NotificationQuery.NotificationDatum notification = adapter.getItem(position);
-                    Intent intent=null;
+                    Intent intent = null;
 //                    Common.LOG("status : " + notification.status().rawValue());
 //                    Common.LOG("docStatus : " + notification.docStatus());
 //                    Common.LOG("model : " + notification.model());
@@ -147,16 +146,15 @@ public class NotificationFragment extends Fragment implements NotificationView {
 //                    Common.LOG("docId : " + notification.docId());
 //                    Common.LOG("userId : " + notification.userId());
 
-                    if (notification.model().equalsIgnoreCase("BuyingOrder")){
-
+                    if (notification.model().equalsIgnoreCase("BuyingOrder")) {
                         intent = new Intent(getActivity(), OrderStoreDetailsActivity.class);
-                        intent.putExtra(Constants.BUYING_ORDER_ID , notification.docId());
-
-                    } else if (notification.model().equalsIgnoreCase("DeliveryOrder")){
+                        intent.putExtra(Constants.BUYING_ORDER_ID, notification.docId());
+                    } else if (notification.model().equalsIgnoreCase("DeliveryOrder")) {
                         intent = new Intent(getActivity(), OrdersPaidDetailsActivity.class);
-                        intent.putExtra(Constants.EXTRA_ORDER_ID , notification.docId());
+                        intent.putExtra(Constants.EXTRA_ORDER_ID, notification.docId());
                     }
-                    startActivity(intent);
+                    if (intent != null)
+                        startActivity(intent);
                 }
             });
         });

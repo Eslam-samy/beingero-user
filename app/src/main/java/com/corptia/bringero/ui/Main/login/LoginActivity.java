@@ -262,70 +262,41 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
 
     @Override
     public void onErrorRole(String role) {
-
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                //Now we need an AlertDialog.Builder object
-                //setting the view of the builder to our custom view that we already inflated
-
-
-                //finally creating the alert dialog and displaying it
-
-
-                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(LoginActivity.this);
-                //then we will inflate the custom alert dialog xml that we created
-                View dialogView = LayoutInflater.from(LoginActivity.this).inflate(R.layout.layout_dialog_alarm, null);
-                builder.setView(dialogView);
+        runOnUiThread(() -> {
+            //Now we need an AlertDialog.Builder object
+            //setting the view of the builder to our custom view that we already inflated
+            //finally creating the alert dialog and displaying i
+            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(LoginActivity.this);
+            //then we will inflate the custom alert dialog xml that we created
+            View dialogView = LayoutInflater.from(LoginActivity.this).inflate(R.layout.layout_dialog_alarm, null);
+            builder.setView(dialogView);
 
 //                img_done = dialogView.findViewById(R.id.img_done);
-                Button btn_ok = dialogView.findViewById(R.id.btn_ok);
+            Button btn_ok = dialogView.findViewById(R.id.btn_ok);
+            androidx.appcompat.app.AlertDialog dialog = builder.create();
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            btn_ok.setOnClickListener(view -> {
+                if (role.equalsIgnoreCase(RoleEnum.PILOT.rawValue())) {
+                    goAppInGooglePlay(Constants.PACKAGE_NAME_PILOT);
+                } else if (role.equalsIgnoreCase(RoleEnum.STOREADMIN.rawValue())) {
+                    goAppInGooglePlay(Constants.PACKAGE_NAME_STOREADMIN);
+                }
+                dialog.dismiss();
+            });
 
+            dialog.show();
 
-                androidx.appcompat.app.AlertDialog dialog = builder.create();
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-
-                btn_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        if (role.equalsIgnoreCase(RoleEnum.PILOT.rawValue())) {
-
-                            goAppInGooglePlay(Constants.PACKAGE_NAME_PILOT);
-
-                        } else if (role.equalsIgnoreCase(RoleEnum.STOREADMIN.rawValue())) {
-                            goAppInGooglePlay(Constants.PACKAGE_NAME_STOREADMIN);
-                        }
-
-                        dialog.dismiss();
-                    }
-                });
-
-                dialog.show();
-
-            }
         });
-
-
     }
 
     @Override
     public void OnSuspendedCallback() {
-
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(LoginActivity.this, SuspendActivity.class));
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                isFirstTimeAddLocation = true;
-                finish();
-            }
+        runOnUiThread(() -> {
+            startActivity(new Intent(LoginActivity.this, SuspendActivity.class));
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            isFirstTimeAddLocation = true;
+            finish();
         });
-
     }
 
     private void showTestingDialogue(String phone, String password) {
@@ -348,24 +319,18 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
                 loginPresenter.onLogin(phone, password);
             }
         });
-
-        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (dialogInterface != null) {
-                    dialogInterface.dismiss();
-                }
-                loginPresenter.onLogin(phone, password);
+        builder.setNegativeButton(getString(R.string.no), (dialogInterface, i) -> {
+            if (dialogInterface != null) {
+                dialogInterface.dismiss();
             }
+            loginPresenter.onLogin(phone, password);
         });
         androidx.appcompat.app.AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
     private void goAppInGooglePlay(String appPackageName) {
-
         Intent intent = getPackageManager().getLaunchIntentForPackage(appPackageName);
-
         if (intent == null) {
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
@@ -374,14 +339,11 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
             }
         } else {
             startActivity(intent);
-
         }
-
     }
 
 
     public void setLocale(String lang) {
-
 //        Locale myLocale = new Locale(lang);
 //        Resources res = getResources();
 //        DisplayMetrics dm = res.getDisplayMetrics();
@@ -404,7 +366,6 @@ startActivity(refresh);*/
 //        res.updateConfiguration(conf, dm);
 
         Common.LOG("My Lang " + lang);
-
         Locale myLocale = new Locale(lang);
         Resources res = getResources();
         DisplayMetrics dm = res.getDisplayMetrics();
