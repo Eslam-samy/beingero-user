@@ -2,10 +2,12 @@ package com.corptia.bringero.ui.Main.otp;
 
 import androidx.annotation.NonNull;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,25 +73,24 @@ import es.dmoral.toasty.Toasty;
 public class VerifyPhoneNumberActivity extends BaseActivity {
 
     private static final String TAG = "TryCustomToken";
+    private static int time = 60;
+
     @BindView(R.id.pinView)
     PinView pinView;
     @BindView(R.id.btn_verify)
     Button btn_verify;
     @BindView(R.id.txt_lab_message)
     TextView txt_lab_message;
-
     AlertDialog dialog;
-
     FirebaseAuth auth;
     String verification_code;
-
-
     String phone, password;
-
     @BindView(R.id.countDown)
     CircularTimerView countDown;
     @BindView(R.id.btn_resend)
     Button btn_resend;
+    @BindView(R.id.resend)
+    Button resend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -240,102 +241,99 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
                                                 //For Rest
                                                 if (getIntent().hasExtra(Constants.EXTRA_SIGNUP)) {
 
-                                                    runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
+                                                    runOnUiThread(() -> {
 
 
-                                                            androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(VerifyPhoneNumberActivity.this);
+                                                        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(VerifyPhoneNumberActivity.this);
 
-                                                            View view = LayoutInflater.from(VerifyPhoneNumberActivity.this).inflate(R.layout.layout_signup, null);
+                                                        View view = LayoutInflater.from(VerifyPhoneNumberActivity.this).inflate(R.layout.layout_signup, null);
 
-                                                            TextInputLayout input_firstName = view.findViewById(R.id.input_firstName);
-                                                            TextInputLayout input_lastName = view.findViewById(R.id.input_lastName);
+                                                        TextInputLayout input_firstName = view.findViewById(R.id.input_firstName);
+                                                        TextInputLayout input_lastName = view.findViewById(R.id.input_lastName);
 
-                                                            builder.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                        builder.setPositiveButton("SUBMIT", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
 
 
-                                                                    SignupInput signupInput = SignupInput.builder()
-                                                                            .password(SignupActivity.password)
-                                                                            .phone(SignupActivity.phone)
-                                                                            .firstName(input_firstName.getEditText().getText().toString())
-                                                                            .lastName(input_lastName.getEditText().getText().toString())
-                                                                            .roleName(RoleEnum.CUSTOMER).build();
+                                                                SignupInput signupInput = SignupInput.builder()
+                                                                        .password(SignupActivity.password)
+                                                                        .phone(SignupActivity.phone)
+                                                                        .firstName(input_firstName.getEditText().getText().toString())
+                                                                        .lastName(input_lastName.getEditText().getText().toString())
+                                                                        .roleName(RoleEnum.CUSTOMER).build();
 
-                                                                    MyApolloClient.getApollowClientAuthorization(
-                                                                            response1.data()
-                                                                                    .UserMutation()
-                                                                                    .validateFireBaseToken()
-                                                                                    .token())
-                                                                            .mutate(SignUpSecondStepMutation.builder().data(signupInput).build())
-                                                                            .enqueue(new ApolloCall.Callback<SignUpSecondStepMutation.Data>() {
-                                                                                @Override
-                                                                                public void onResponse(@NotNull Response<SignUpSecondStepMutation.Data> response) {
+                                                                MyApolloClient.getApollowClientAuthorization(
+                                                                        response1.data()
+                                                                                .UserMutation()
+                                                                                .validateFireBaseToken()
+                                                                                .token())
+                                                                        .mutate(SignUpSecondStepMutation.builder().data(signupInput).build())
+                                                                        .enqueue(new ApolloCall.Callback<SignUpSecondStepMutation.Data>() {
+                                                                            @Override
+                                                                            public void onResponse(@NotNull Response<SignUpSecondStepMutation.Data> response) {
 
-                                                                                    if (response.data().UserMutation().signup().status() == 200) {
-                                                                                        runOnUiThread(new Runnable() {
-                                                                                            @Override
-                                                                                            public void run() {
+                                                                                if (response.data().UserMutation().signup().status() == 200) {
+                                                                                    runOnUiThread(new Runnable() {
+                                                                                        @Override
+                                                                                        public void run() {
 //                                                                                Toast.makeText(VerifyPhoneNumberActivity.this, "Welcome " + SignupFragment.firstName
 //                                                                                                + " "
 //                                                                                                + SignupFragment.lastName
 //                                                                                        , Toast.LENGTH_SHORT).show();
-                                                                                                dialog.dismiss();
+                                                                                            dialog.dismiss();
 
-                                                                                                startActivity(new Intent(VerifyPhoneNumberActivity.this, LoginActivity.class));
-                                                                                                finish();
-                                                                                                SignupActivity.firstName = null;
-                                                                                                SignupActivity.lastName = null;
-                                                                                                SignupActivity.password = null;
+                                                                                            startActivity(new Intent(VerifyPhoneNumberActivity.this, LoginActivity.class));
+                                                                                            finish();
+                                                                                            SignupActivity.firstName = null;
+                                                                                            SignupActivity.lastName = null;
+                                                                                            SignupActivity.password = null;
 
-                                                                                            }
-                                                                                        });
+                                                                                        }
+                                                                                    });
 
-                                                                                    } else {
-                                                                                        runOnUiThread(new Runnable() {
-                                                                                            @Override
-                                                                                            public void run() {
-                                                                                                dialog.dismiss();
-                                                                                                Toasty.error(VerifyPhoneNumberActivity.this, response1.data()
-                                                                                                        .UserMutation()
-                                                                                                        .validateFireBaseToken()
-                                                                                                        .message())
-                                                                                                        .show();
-
-                                                                                            }
-                                                                                        });
-                                                                                        startActivity(new Intent(VerifyPhoneNumberActivity.this, LoginActivity.class));
-                                                                                        finish();
-                                                                                        SignupActivity.firstName = null;
-                                                                                        SignupActivity.lastName = null;
-                                                                                        SignupActivity.password = null;
-                                                                                    }
-                                                                                }
-
-                                                                                @Override
-                                                                                public void onFailure(@NotNull ApolloException e) {
+                                                                                } else {
                                                                                     runOnUiThread(new Runnable() {
                                                                                         @Override
                                                                                         public void run() {
                                                                                             dialog.dismiss();
-                                                                                            Toasty.error(VerifyPhoneNumberActivity.this, "Failed to sign up!").show();
+                                                                                            Toasty.error(VerifyPhoneNumberActivity.this, response1.data()
+                                                                                                    .UserMutation()
+                                                                                                    .validateFireBaseToken()
+                                                                                                    .message())
+                                                                                                    .show();
+
                                                                                         }
                                                                                     });
+                                                                                    startActivity(new Intent(VerifyPhoneNumberActivity.this, LoginActivity.class));
+                                                                                    finish();
+                                                                                    SignupActivity.firstName = null;
+                                                                                    SignupActivity.lastName = null;
+                                                                                    SignupActivity.password = null;
                                                                                 }
-                                                                            });
+                                                                            }
+
+                                                                            @Override
+                                                                            public void onFailure(@NotNull ApolloException e) {
+                                                                                runOnUiThread(new Runnable() {
+                                                                                    @Override
+                                                                                    public void run() {
+                                                                                        dialog.dismiss();
+                                                                                        Toasty.error(VerifyPhoneNumberActivity.this, "Failed to sign up!").show();
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        });
 
 
-                                                                }
-                                                            });
+                                                            }
+                                                        });
 
-                                                            builder.setView(view);
-                                                            androidx.appcompat.app.AlertDialog dialog = builder.create();
-                                                            dialog.setCancelable(false);
-                                                            dialog.show();
+                                                        builder.setView(view);
+                                                        androidx.appcompat.app.AlertDialog dialog = builder.create();
+                                                        dialog.setCancelable(false);
+                                                        dialog.show();
 
-                                                        }
                                                     });
 
                                                 } else {
@@ -415,4 +413,35 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
         } else
             dialog.dismiss();
     }
+
+    @SuppressLint("SetTextI18n")
+    private void startTimer() {
+        time = 60;
+        resend.setEnabled(false);
+        resend.setText(getString(R.string.send_new_code) + " (0:" + checkDigit(time) + ")");
+        new CountDownTimer(61000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                try {
+                    resend.setText(getString(R.string.send_new_code) + " (0:" + checkDigit(time) + ")");
+                    time--;
+                } catch (Exception ignored) {
+                }
+            }
+
+            public void onFinish() {
+                try {
+                    resend.setText(getString(R.string.resend_code));
+                    resend.setEnabled(true);
+                } catch (Exception ignored) {
+                }
+            }
+
+        }.start();
+    }
+
+    private String checkDigit(int number) {
+        return number <= 9 ? "0" + number : String.valueOf(number);
+    }
+
 }

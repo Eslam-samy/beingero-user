@@ -1,15 +1,13 @@
-package com.corptia.bringero.ui.setting.main;
+package com.corptia.bringero.ui.home.setting.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
-import com.corptia.bringero.ui.home.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,10 +42,8 @@ public class SettingActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        switch (item.getItemId()){
-            case  android.R.id.home:
-                onBackPressed();
-                break;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
         }
 
         return true;

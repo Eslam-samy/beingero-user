@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.contactUs;
+package com.corptia.bringero.ui.home.setting.contactUs;
 
 import com.corptia.bringero.base.BaseView;
 import com.corptia.bringero.graphql.GeneralOptionAllQuery;

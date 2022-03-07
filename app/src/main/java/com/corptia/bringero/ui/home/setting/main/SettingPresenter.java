@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.main;
+package com.corptia.bringero.ui.home.setting.main;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;

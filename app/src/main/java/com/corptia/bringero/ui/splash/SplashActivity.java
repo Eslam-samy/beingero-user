@@ -66,13 +66,8 @@ import static com.corptia.bringero.Common.Common.isFirstTimeAddLocation;
 
 public class SplashActivity extends BaseActivity implements LoginContract.LoginView {
 
-    public static final int STARTUP_DELAY = 300;
-    public static final int ANIM_ITEM_DURATION = 1000;
-    public static final int ITEM_DELAY = 300;
 
     private boolean animationStarted = false;
-
-    ShimmerFrameLayout container;
 
     LoginPresenter loginPresenter = new LoginPresenter(this);
 
@@ -97,9 +92,6 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
                 Settings.Secure.ANDROID_ID);
 
         initRemoteConfig();
-
-        container = findViewById(R.id.shimmer_view_container1);
-        container.startShimmer();
 
 
         img_logo = findViewById(R.id.img_logo);
@@ -291,7 +283,6 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        container.stopShimmer();
     }
 
     @Override
@@ -375,8 +366,6 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
         }
 
         //animate();
-
-        container.startAnimation(AnimationUtils.loadAnimation(this, R.anim.fade_in));
 
 
         super.onWindowFocusChanged(hasFocus);

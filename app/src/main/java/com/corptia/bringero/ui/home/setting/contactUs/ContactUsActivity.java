@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.contactUs;
+package com.corptia.bringero.ui.home.setting.contactUs;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +21,6 @@ import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.CustomLoading;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;

@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.changePassword;
+package com.corptia.bringero.ui.home.setting.changePassword;
 
 
 import android.content.Intent;

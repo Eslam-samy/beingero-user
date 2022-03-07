@@ -3,9 +3,42 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-xxhdpi/ic_show_password.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-xxhdpi/password_selector.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_nav_cart.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_nav_home.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_nav_orders.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_person.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/main_button_gradient.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/my_shadow.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/nav_cart.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout-ar/activity_login.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_add_new_location.xml" value="0.49074074074074076" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_allow_location.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_edit_profile.xml" value="0.5" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_home.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_locations.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_locations_delivery.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_login.xml" value="0.5305555555555556" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_maps.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_reset_password.xml" value="0.5" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_reset_password_step_two.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_select_delivery_location.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_setting.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_signup.xml" value="0.3302083333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_splash.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_verify_phone_number.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/app_bar_home.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/content_home.xml" value="0.5482051282051282" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/dummy.xml" value="0.5" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_cart.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_setting.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_progress_button.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_toolbar_white.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/main_app_header.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/menu/activity_home_drawer.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/menu/bottom_nav_menu.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/menu/menu_home.xml" value="0.5567708333333333" />
       </map>
     </option>
   </component>

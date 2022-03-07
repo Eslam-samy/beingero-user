@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.language;
+package com.corptia.bringero.ui.home.setting.language;
 
 
 import android.app.AlertDialog;
@@ -8,38 +8,28 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.Common.Common;
-import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.graphql.UpdateUserInfoMutation;
 import com.corptia.bringero.model.Language;
 import com.corptia.bringero.type.UserInfo;
-import com.corptia.bringero.ui.Main.MainActivity;
 import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.language.LocaleHelper;
-import com.corptia.bringero.utils.sharedPref.PrefKeys;
-import com.corptia.bringero.utils.sharedPref.PrefUtils;
 
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

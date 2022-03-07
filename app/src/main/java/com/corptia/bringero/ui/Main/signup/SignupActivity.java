@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.apollographql.apollo.ApolloCall;
@@ -29,7 +30,7 @@ import es.dmoral.toasty.Toasty;
 public class SignupActivity extends BaseActivity {
 
     @BindView(R.id.input_phone_number)
-    TextInputLayout input_phone_number;
+    EditText input_phone_number;
     @BindView(R.id.input_password)
     TextInputLayout input_password;
     @BindView(R.id.input_confirm_password)
@@ -42,43 +43,29 @@ public class SignupActivity extends BaseActivity {
     @BindView(R.id.btn_signup)
     Button btn_signup;
 
-    CustomLoading loading ;
+    CustomLoading loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        loading = new CustomLoading(this , false);
+        loading = new CustomLoading(this, false);
         ButterKnife.bind(this);
 
+        txt_signIn.setOnClickListener(view -> finish());
+        btn_signup.setOnClickListener(view -> {
+            phone = input_phone_number.getText().toString().trim();
+            password = input_password.getEditText().getText().toString();
+            confirm_password = input_confirm_password.getEditText().getText().toString();
 
-        txt_signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+            if (validateData()) {
+                loading.showProgressBar(SignupActivity.this, false);
+                checkPhoneExists(phone);
 
-        btn_signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                phone = input_phone_number.getEditText().getText().toString().trim();
-                password = input_password.getEditText().getText().toString();
-                confirm_password = input_confirm_password.getEditText().getText().toString();
-
-                if (validateData()) {
-
-
-                    loading.showProgressBar(SignupActivity.this , false);
-
-                    checkPhoneExists(phone);
-
-
-                }
 
             }
+
         });
 
     }
@@ -90,34 +77,28 @@ public class SignupActivity extends BaseActivity {
                     @Override
                     public void onResponse(@NotNull Response<PhoneExistsQuery.Data> response) {
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+                        runOnUiThread(() -> {
 
-                                loading.hideProgressBar();
+                            loading.hideProgressBar();
 
 
-                                if (response.data().UserQuery().phoneExists()){
+                            if (response.data().UserQuery().phoneExists()) {
 
-                                    Toasty.error(SignupActivity.this ,"This phone number is already registered").show();
+                                Toasty.error(SignupActivity.this, "This phone number is already registered").show();
 //                                    input_phone_number.setErrorEnabled(true);
 //                                    input_phone_number.setError("");
-                                }
-                                else
-                                {
-                                    Intent intent = new Intent(SignupActivity.this, VerifyPhoneNumberActivity.class);
+                            } else {
+                                Intent intent = new Intent(SignupActivity.this, VerifyPhoneNumberActivity.class);
 
-                                    intent.putExtra(Constants.EXTRA_PASSWORD, password);
-                                    intent.putExtra(Constants.EXTRA_PHONE_NUMBER, phone);
-                                    intent.putExtra(Constants.EXTRA_SIGNUP, "EXTRA_SIGNUP");
+                                intent.putExtra(Constants.EXTRA_PASSWORD, password);
+                                intent.putExtra(Constants.EXTRA_PHONE_NUMBER, phone);
+                                intent.putExtra(Constants.EXTRA_SIGNUP, "EXTRA_SIGNUP");
 
-                                    startActivity(intent);
+                                startActivity(intent);
 
-                                    finish();
-                                }
+                                finish();
                             }
                         });
-
 
 
                     }
@@ -125,12 +106,7 @@ public class SignupActivity extends BaseActivity {
                     @Override
                     public void onFailure(@NotNull ApolloException e) {
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                loading.hideProgressBar();
-                            }
-                        });
+                        runOnUiThread(() -> loading.hideProgressBar());
 
                     }
                 });

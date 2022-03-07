@@ -9,7 +9,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
-<!--        <item name="android:windowBackground">@color/backgroundSplash</item>-->
+        <!--        <item name="android:windowBackground">@color/backgroundSplash</item>-->
 
     </style>
 
@@ -54,48 +54,58 @@
     </style>
 
     <!-- Old -->
-<!--    &lt;!&ndash; EditText &ndash;&gt;-->
-<!--    <style name="EditTextStyle">-->
-<!--        <item name="android:textColor">@color/black</item>-->
-<!--        <item name="android:textSize">12sp</item>-->
-<!--        <item name="android:layout_width">match_parent</item>-->
-<!--        <item name="android:layout_height">wrap_content</item>-->
-<!--        <item name="android:paddingStart">32dp</item>-->
-<!--        <item name="android:paddingEnd">32dp</item>-->
-<!--&lt;!&ndash;        <item name="android:background">@drawable/shadow_edittext</item>&ndash;&gt;-->
-<!--        <item name="android:background">@drawable/shadow_layout_input</item>-->
-<!--        <item name="android:fontFamily">@font/poppinsmedium</item>-->
-<!--    </style>-->
+    <!--    &lt;!&ndash; EditText &ndash;&gt;-->
+    <!--    <style name="EditTextStyle">-->
+    <!--        <item name="android:textColor">@color/black</item>-->
+    <!--        <item name="android:textSize">12sp</item>-->
+    <!--        <item name="android:layout_width">match_parent</item>-->
+    <!--        <item name="android:layout_height">wrap_content</item>-->
+    <!--        <item name="android:paddingStart">32dp</item>-->
+    <!--        <item name="android:paddingEnd">32dp</item>-->
+    <!--&lt;!&ndash;        <item name="android:background">@drawable/shadow_edittext</item>&ndash;&gt;-->
+    <!--        <item name="android:background">@drawable/shadow_layout_input</item>-->
+    <!--        <item name="android:fontFamily">@font/poppinsmedium</item>-->
+    <!--    </style>-->
 
-<!--    &lt;!&ndash;   TextInputLayout      &ndash;&gt;-->
-<!--    <style name="TextInputLayoutStyle">-->
-<!--        <item name="android:layout_width">match_parent</item>-->
-<!--        <item name="android:layout_height">wrap_content</item>-->
-<!--&lt;!&ndash;        <item name="android:layout_marginStart">14dp</item>&ndash;&gt;-->
-<!--&lt;!&ndash;        <item name="android:layout_marginEnd">14dp</item>&ndash;&gt;-->
-<!--        <item name="android:layout_marginTop">0dp</item>-->
-<!--        <item name="android:textSize">14sp</item>-->
-<!--        <item name="hintAnimationEnabled">true</item>-->
-<!--        <item name="hintEnabled">true</item>-->
+    <!--    &lt;!&ndash;   TextInputLayout      &ndash;&gt;-->
+    <!--    <style name="TextInputLayoutStyle">-->
+    <!--        <item name="android:layout_width">match_parent</item>-->
+    <!--        <item name="android:layout_height">wrap_content</item>-->
+    <!--&lt;!&ndash;        <item name="android:layout_marginStart">14dp</item>&ndash;&gt;-->
+    <!--&lt;!&ndash;        <item name="android:layout_marginEnd">14dp</item>&ndash;&gt;-->
+    <!--        <item name="android:layout_marginTop">0dp</item>-->
+    <!--        <item name="android:textSize">14sp</item>-->
+    <!--        <item name="hintAnimationEnabled">true</item>-->
+    <!--        <item name="hintEnabled">true</item>-->
 
-<!--        &lt;!&ndash; <item firstName="android:translationY">-10dp</item> &ndash;&gt;-->
-<!--    </style>-->
+    <!--        &lt;!&ndash; <item firstName="android:translationY">-10dp</item> &ndash;&gt;-->
+    <!--    </style>-->
 
     <!-- New -->
     <!-- EditText -->
     <style name="EditTextStyle">
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:layout_marginBottom">5dp</item>
         <item name="android:paddingBottom">14dp</item>
         <item name="android:paddingTop">2dp</item>
-        <!--        <item name="android:background">@drawable/shadow_edittext</item>-->
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:fontFamily">@font/poppinsmedium</item>
+        <item name="android:fontFamily">@font/poppinsregular</item>
         <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
+    <style name="EditTextStyleMod">
+
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:fontFamily">@font/poppinsregular</item>
         <item name="android:textAlignment">viewStart</item>
     </style>
 
@@ -105,7 +115,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="hintTextAppearance">@style/HintTextStyle</item>
-<!--        <item name="android:paddingTop">5dp</item>-->
+        <!--        <item name="android:paddingTop">5dp</item>-->
 
     </style>
 
@@ -124,12 +134,12 @@
         <item name="android:layout_marginEnd">@dimen/app_margin</item>
         <item name="android:layout_marginTop">14dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">50sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:background">@drawable/round_main_button</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/poppinsmedium</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:fontFamily">@font/poppinsregular</item>
 
     </style>
 
@@ -171,7 +181,7 @@
         <item name="android:gravity">start|center</item>
         <item name="android:textSize">@dimen/medium_margin</item>
         <item name="android:drawableEnd">@drawable/ic_arrow_ltr</item>
-<!--        <item name="android:drawableEnd">@drawable/ic_arrow_back</item>-->
+        <!--        <item name="android:drawableEnd">@drawable/ic_arrow_back</item>-->
         <item name="android:paddingStart">@dimen/app_low_padding</item>
         <item name="android:paddingEnd">@dimen/app_low_padding</item>
         <item name="android:layout_marginTop">5dp</item>
@@ -253,16 +263,14 @@
 
     <!-- For BottomSheet -->
 
-<!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
-<!--        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>-->
-<!--    </style>-->
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+    <!--    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <!--        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>-->
+    <!--    </style>-->
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
 
-    <style name="AppModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/round_up_bottom_sheet</item>
     </style>
 
@@ -317,34 +325,34 @@
     </style>
 
     <!-- MaterialSearchViewStyle -->
-<!--    <style name="MaterialSearchViewStyle">-->
-<!--        &lt;!&ndash; Background for the search bar&ndash;&gt;-->
-<!--        <item name="searchBackground">@color/white</item>-->
+    <!--    <style name="MaterialSearchViewStyle">-->
+    <!--        &lt;!&ndash; Background for the search bar&ndash;&gt;-->
+    <!--        <item name="searchBackground">@color/white</item>-->
 
-<!--        &lt;!&ndash; Change voice icon&ndash;&gt;-->
-<!--        <item name="searchVoiceIcon">@drawable/ic_voice_search</item>-->
+    <!--        &lt;!&ndash; Change voice icon&ndash;&gt;-->
+    <!--        <item name="searchVoiceIcon">@drawable/ic_voice_search</item>-->
 
-<!--        &lt;!&ndash; Change clear text icon&ndash;&gt;-->
-<!--        <item name="searchCloseIcon">@drawable/ic_close</item>-->
+    <!--        &lt;!&ndash; Change clear text icon&ndash;&gt;-->
+    <!--        <item name="searchCloseIcon">@drawable/ic_close</item>-->
 
-<!--        &lt;!&ndash; Change up icon&ndash;&gt;-->
-<!--        <item name="searchBackIcon">@drawable/ic_arrow_back</item>-->
+    <!--        &lt;!&ndash; Change up icon&ndash;&gt;-->
+    <!--        <item name="searchBackIcon">@drawable/ic_arrow_back</item>-->
 
-<!--        &lt;!&ndash; Change icon for the suggestions&ndash;&gt;-->
-<!--        <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>-->
+    <!--        &lt;!&ndash; Change icon for the suggestions&ndash;&gt;-->
+    <!--        <item name="searchSuggestionIcon">@drawable/ic_suggestion</item>-->
 
-<!--        &lt;!&ndash; Change background for the suggestions list view&ndash;&gt;-->
-<!--        <item name="searchSuggestionBackground">@android:color/white</item>-->
+    <!--        &lt;!&ndash; Change background for the suggestions list view&ndash;&gt;-->
+    <!--        <item name="searchSuggestionBackground">@android:color/white</item>-->
 
-<!--        &lt;!&ndash; Change text color for edit text. This will also be the color of the cursor&ndash;&gt;-->
-<!--        <item name="android:textColor">@color/black</item>-->
+    <!--        &lt;!&ndash; Change text color for edit text. This will also be the color of the cursor&ndash;&gt;-->
+    <!--        <item name="android:textColor">@color/black</item>-->
 
-<!--        &lt;!&ndash; Change hint text color for edit text&ndash;&gt;-->
-<!--        <item name="android:textColorHint">@color/theme_secondary_text_inverted</item>-->
+    <!--        &lt;!&ndash; Change hint text color for edit text&ndash;&gt;-->
+    <!--        <item name="android:textColorHint">@color/theme_secondary_text_inverted</item>-->
 
-<!--        &lt;!&ndash; Hint for edit text&ndash;&gt;-->
-<!--        <item name="android:hint">@string/search_hint</item>-->
-<!--    </style>-->
+    <!--        &lt;!&ndash; Hint for edit text&ndash;&gt;-->
+    <!--        <item name="android:hint">@string/search_hint</item>-->
+    <!--    </style>-->
 
     <!-- that 's new Style For Input EditText -->
 

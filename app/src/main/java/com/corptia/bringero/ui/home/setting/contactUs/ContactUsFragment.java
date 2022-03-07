@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.contactUs;
+package com.corptia.bringero.ui.home.setting.contactUs;
 
 
 import android.os.Bundle;

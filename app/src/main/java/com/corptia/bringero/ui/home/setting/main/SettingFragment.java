@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.main;
+package com.corptia.bringero.ui.home.setting.main;
 
 
 import android.content.Intent;
@@ -16,15 +16,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.corptia.bringero.Common.Common;
-import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
 import com.corptia.bringero.ui.Main.login.LoginActivity;
-import com.corptia.bringero.ui.setting.contactUs.ContactUsActivity;
+import com.corptia.bringero.ui.home.setting.contactUs.ContactUsActivity;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.corptia.bringero.utils.sharedPref.PrefKeys;
 import com.corptia.bringero.utils.sharedPref.PrefUtils;
-import com.corptia.bringero.ui.Main.MainActivity;
 import com.corptia.bringero.ui.location.AllLocation.LocationsDeliveryActivity;
 
 import butterknife.BindView;
@@ -69,7 +67,7 @@ public class SettingFragment extends Fragment implements View.OnClickListener , 
 
         loading = new CustomLoading(getActivity(), true);
 
-        navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
         btn_edit_profile.setOnClickListener(this);
         btn_address.setOnClickListener(this);
@@ -149,19 +147,16 @@ public class SettingFragment extends Fragment implements View.OnClickListener , 
     @Override
     public void OnSuccessLogOut() {
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
+        handler.post(() -> {
 
-                //Toasty.warning(getActivity() , "LogOut").show();
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                PrefUtils.saveToPrefs(getActivity() , PrefKeys.USER_LOGIN,false);
-                //getActivity().finishAffinity();
-                LocaleHelper.setLocale(getActivity(), "en");
-                startActivity(intent);
+            //Toasty.warning(getActivity() , "LogOut").show();
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            PrefUtils.saveToPrefs(getActivity() , PrefKeys.USER_LOGIN,false);
+            //getActivity().finishAffinity();
+            LocaleHelper.setLocale(getActivity(), "en");
+            startActivity(intent);
 
-            }
         });
 
     }

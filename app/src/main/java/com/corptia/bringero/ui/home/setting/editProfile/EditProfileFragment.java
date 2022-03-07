@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.editProfile;
+package com.corptia.bringero.ui.home.setting.editProfile;
 
 
 import android.Manifest;
@@ -34,7 +34,6 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.corptia.bringero.BuildConfig;
 import com.corptia.bringero.Common.Common;
-import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.Remote.Retrofit.Image.UploadImageResponse;
@@ -47,7 +46,6 @@ import com.corptia.bringero.type.UserInfo;
 import com.corptia.bringero.ui.home.HomeActivity;
 import com.corptia.bringero.utils.ImageUpload.ImageContract;
 import com.corptia.bringero.utils.ImageUpload.ImagePresenter;
-import com.corptia.bringero.utils.PicassoUtils;
 import com.google.android.gms.common.util.IOUtils;
 import com.google.android.material.textfield.TextInputLayout;
 import com.karumi.dexter.Dexter;
@@ -67,8 +65,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Month;
-import java.time.Year;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

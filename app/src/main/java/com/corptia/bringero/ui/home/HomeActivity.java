@@ -26,19 +26,18 @@ import com.corptia.bringero.graphql.NotificationCountUnreadQuery;
 import com.corptia.bringero.graphql.UpdateNotificationMutation;
 import com.corptia.bringero.model.NotificationCount;
 import com.corptia.bringero.type.NotificationFilterInput;
-import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.home.notification.NotificationFragment;
+import com.corptia.bringero.ui.home.setting.main.SettingFragment;
 import com.corptia.bringero.ui.location.AllLocation.LocationsDeliveryActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationView;
-import com.corptia.bringero.ui.setting.contactUs.ContactUsActivity;
-import com.corptia.bringero.ui.setting.main.SettingActivity;
+import com.corptia.bringero.ui.home.setting.contactUs.ContactUsActivity;
+import com.corptia.bringero.ui.home.setting.main.SettingActivity;
 import com.corptia.bringero.ui.home.cart.CartFragment;
 import com.corptia.bringero.ui.home.storetypes.StoreTypesFragment;
 import com.corptia.bringero.ui.home.order.OrderFragment;
 import com.corptia.bringero.ui.webview.WebViewActivity;
 import com.corptia.bringero.utils.CustomLoading;
-import com.corptia.bringero.utils.PicassoUtils;
 import com.corptia.bringero.utils.language.LocaleHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,15 +49,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,8 +66,6 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -143,11 +137,11 @@ public class HomeActivity extends BaseActivity implements
         menuView = (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
         itemViewNotification = (BottomNavigationItemView) menuView.getChildAt(3);
 
-        if (getIntent() !=null){
-            isOffer = getIntent().getBooleanExtra(Constants.EXTRA_STORE_OFFER,false);
+        if (getIntent() != null) {
+            isOffer = getIntent().getBooleanExtra(Constants.EXTRA_STORE_OFFER, false);
             StoreTypesFragment fragment = new StoreTypesFragment();
             Bundle bundle = new Bundle();
-            bundle.putBoolean(Constants.EXTRA_STORE_OFFER,isOffer);
+            bundle.putBoolean(Constants.EXTRA_STORE_OFFER, isOffer);
             fragment.setArguments(bundle);
         }
         if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_SPEED_CART)) {
@@ -260,11 +254,19 @@ public class HomeActivity extends BaseActivity implements
 
                 }
                 break;
-
             case R.id.nav_cart:
                 if (!(selectedFragment instanceof CartFragment)) {
                     selectedFragment = new CartFragment();
                     getSupportActionBar().setTitle(R.string.cart);
+                    txt_location.setVisibility(View.GONE);
+//                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
+//                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
+                }
+                break;
+            case R.id.nav_settings:
+                if (!(selectedFragment instanceof SettingFragment)) {
+                    selectedFragment = new SettingFragment();
+                    getSupportActionBar().setTitle(R.string.setting);
                     txt_location.setVisibility(View.GONE);
 //                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
 //                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);

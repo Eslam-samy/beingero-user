@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.editProfile;
+package com.corptia.bringero.ui.home.setting.editProfile;
 
 import androidx.appcompat.widget.Toolbar;
 

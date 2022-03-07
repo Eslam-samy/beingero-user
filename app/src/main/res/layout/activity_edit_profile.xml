@@ -4,29 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.setting.editProfile.EditProfileActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".ui.home.setting.editProfile.EditProfileActivity">
 
 
-
-    <include
-        layout="@layout/layout_toolbar_white" />
+    <include layout="@layout/layout_toolbar_white" />
 
     <TextView
         android:id="@+id/txt_lab_setting"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/edit_profile"
         style="@style/TextHeaderSetting"
-        app:layout_constraintTop_toBottomOf="@+id/bar"/>
+        android:text="@string/edit_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bar" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/txt_lab_setting"
-        app:layout_constraintBottom_toTopOf="@+id/btn_save"
         android:layout_marginTop="@dimen/app_margin"
         android:layout_marginBottom="@dimen/medium_margin"
-        >
+        app:layout_constraintBottom_toTopOf="@+id/btn_save"
+        app:layout_constraintTop_toBottomOf="@+id/txt_lab_setting">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -35,18 +32,17 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_email"
                 style="@style/TextInputLayoutStyle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:translationY="0dp"
-                >
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
                     style="@style/EditTextStyle"
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Hazem@yahoo.com"
 
                     />
@@ -55,101 +51,92 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_firstName"
                 style="@style/TextInputLayoutStyle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:translationY="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/input_email"
-                >
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_email">
 
                 <EditText
                     style="@style/EditTextStyle"
                     android:hint="@string/firstName"
                     android:inputType="text"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:text="Hazem"
-                    />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Hazem" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_lastName"
                 style="@style/TextInputLayoutStyle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:translationY="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/input_firstName"
-                >
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_firstName">
 
                 <EditText
                     style="@style/EditTextStyle"
                     android:hint="@string/lastName"
                     android:inputType="text"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    tools:text="Elnahas"
-                    />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Elnahas" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_birthDate"
                 style="@style/TextInputLayoutStyle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:translationY="0dp"
-                app:layout_constraintTop_toBottomOf="@+id/input_lastName"
-                >
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/input_lastName">
 
                 <EditText
                     style="@style/EditTextStyle"
+                    android:drawableEnd="@drawable/ic_calendar"
+                    android:enabled="false"
                     android:hint="@string/date_of_birth_optional"
                     android:inputType="date"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
                     android:text="@string/select_date"
-                    android:enabled="false"
-                    android:drawableEnd="@drawable/ic_calendar"
-                    />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
-
             <TextView
                 android:id="@+id/txt_hint_radio_gender"
+                style="@style/HintTextStyle"
                 android:text="@string/gender_optional"
                 app:layout_constraintStart_toStartOf="@+id/input_birthDate"
-                app:layout_constraintTop_toBottomOf="@+id/input_birthDate"
-                style="@style/HintTextStyle"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/input_birthDate" />
 
             <RadioGroup
                 android:id="@+id/radioGroupGender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/txt_hint_radio_gender"
-                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="@dimen/app_margin"
                 android:layout_marginTop="@dimen/low_margin"
-                >
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_hint_radio_gender">
+
                 <RadioButton
                     android:id="@+id/radioMail"
+                    style="@style/MyRadioButtonStyle"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/mail"
-                    android:paddingStart="4dp"
-                    style="@style/MyRadioButtonStyle"
                     android:fontFamily="@font/poppinsmedium"
-                    />
+                    android:paddingStart="4dp"
+                    android:text="@string/mail" />
 
                 <RadioButton
                     android:id="@+id/radioFemail"
+                    style="@style/MyRadioButtonStyle"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/femail"
-                    android:paddingStart="4dp"
-                    style="@style/MyRadioButtonStyle"
                     android:fontFamily="@font/poppinsmedium"
+                    android:paddingStart="4dp"
+                    android:text="@string/femail"
 
                     />
             </RadioGroup>
@@ -158,78 +145,76 @@
                 android:id="@+id/view_center"
                 android:layout_width="match_parent"
                 android:layout_height="0.1dp"
-                android:background="@color/colorIcons"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroupGender"
-                android:layout_marginTop="@dimen/medium_margin"
                 android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginEnd="@dimen/app_margin"/>
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/app_margin"
+                android:background="@color/colorIcons"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroupGender" />
 
             <TextView
                 android:id="@+id/txt_lab_receive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/receive_updates_of_offers_npromotions_and_discount"
-                android:textSize="18sp"
-                android:textColor="@color/black"
-                app:layout_constraintTop_toBottomOf="@+id/view_center"
                 android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginEnd="@dimen/app_margin"
                 android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/app_margin"
                 android:fontFamily="@font/poppinssemibold"
-                />
+                android:text="@string/receive_updates_of_offers_npromotions_and_discount"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintTop_toBottomOf="@+id/view_center" />
 
             <TextView
                 android:id="@+id/txt_lab_sms_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sms_notification"
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_receive"
                 android:layout_marginStart="@dimen/app_margin"
                 android:layout_marginTop="@dimen/large_margin"
-                android:fontFamily="@font/poppinsregular"/>
+                android:fontFamily="@font/poppinsregular"
+                android:text="@string/sms_notification"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_lab_receive" />
 
             <Switch
                 android:id="@+id/switch_sms_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/app_margin"
-                app:layout_constraintTop_toTopOf="@+id/txt_lab_sms_notification"
-                app:layout_constraintBottom_toBottomOf="@+id/txt_lab_sms_notification"
+                android:thumb="@drawable/selector_switch_thumb"
                 android:track="@drawable/selector_switch_track"
-                android:thumb="@drawable/selector_switch_thumb"/>
+                app:layout_constraintBottom_toBottomOf="@+id/txt_lab_sms_notification"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txt_lab_sms_notification" />
 
 
             <TextView
                 android:id="@+id/txt_lab_newsletter_subscription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/newsletter_subscription"
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_sms_notification"
                 android:layout_marginStart="@dimen/app_margin"
                 android:layout_marginTop="@dimen/medium_margin"
-                android:fontFamily="@font/poppinsregular"/>
+                android:fontFamily="@font/poppinsregular"
+                android:text="@string/newsletter_subscription"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_lab_sms_notification" />
 
             <Switch
                 android:id="@+id/switch_newsletter_subscription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/app_margin"
-                app:layout_constraintTop_toTopOf="@+id/txt_lab_newsletter_subscription"
-                app:layout_constraintBottom_toBottomOf="@+id/txt_lab_newsletter_subscription"
+                android:thumb="@drawable/selector_switch_thumb"
                 android:track="@drawable/selector_switch_track"
-                android:thumb="@drawable/selector_switch_thumb"/>
+                app:layout_constraintBottom_toBottomOf="@+id/txt_lab_newsletter_subscription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txt_lab_newsletter_subscription" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
     </ScrollView>
@@ -237,13 +222,12 @@
 
     <Button
         android:id="@+id/btn_save"
+        style="@style/ButtonNormalStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ButtonNormalStyle"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/app_margin"
-        />
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

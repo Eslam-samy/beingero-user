@@ -85,19 +85,19 @@
             android:name=".ui.Main.resetPassword.ResetPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.setting.language.LanguageActivity"
+            android:name=".ui.home.setting.language.LanguageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.setting.contactUs.ContactUsActivity"
+            android:name=".ui.home.setting.contactUs.ContactUsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.setting.changePassword.ChangePasswordActivity"
+            android:name=".ui.home.setting.changePassword.ChangePasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.setting.editProfile.EditProfileActivity"
+            android:name=".ui.home.setting.editProfile.EditProfileActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.setting.main.SettingActivity"
+            android:name=".ui.home.setting.main.SettingActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.productDetail.ProductDetailActivity"

@@ -6,36 +6,64 @@
     android:layout_height="match_parent"
     tools:context=".ui.Main.otp.VerifyPhoneNumberActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".05" />
 
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        app:layout_constraintTop_toTopOf="parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".03" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".97" />
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/main_app_header"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="@dimen/app_margin"
-        android:src="@mipmap/ic_launcher"
-        android:layout_marginTop="@dimen/app_margin"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/txt_lab_verify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/logo"
-        app:layout_constraintStart_toStartOf="@+id/logo"
+        android:layout_marginTop="20dp"
         android:text="@string/verify_your_phone_number"
         android:textColor="@color/black"
-        android:layout_marginTop="@dimen/large_margin"/>
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/include" />
 
     <TextView
         android:id="@+id/txt_lab_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/txt_lab_verify"
-        app:layout_constraintStart_toStartOf="@+id/logo"
+        android:layout_marginTop="5dp"
         android:text="@string/enter_the_4_digit_pin_that_we_sent_to"
-        android:textColor="@color/black"
-        android:layout_marginTop="@dimen/large_margin"/>
+        android:textColor="#757575"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/txt_lab_verify" />
 
 
     <com.chaos.view.PinView
@@ -43,62 +71,72 @@
         style="@style/PinWidget.PinView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:inputType="number"
-        android:textSize="18sp"
-        app:itemCount="6"
-        app:itemHeight="48dp"
-        app:itemRadius="10dp"
-        app:cursorColor="@color/colorPrimary"
-        app:viewType="rectangle"
-        app:layout_constraintTop_toBottomOf="@+id/txt_lab_message"
-        app:layout_constraintStart_toStartOf="@+id/logo"
-        android:layout_marginTop="@dimen/large_margin"
-        app:lineColor="@drawable/selector_pinview_linecolor"
         android:state_selected="true"
-        />
+        android:textSize="18sp"
+        app:cursorColor="@color/colorPrimary"
+        app:itemCount="6"
+        app:itemHeight="50sp"
+        app:itemRadius="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/txt_lab_message"
+        app:lineColor="@drawable/selector_pinview_linecolor"
+        app:viewType="rectangle" />
+
+    <TextView
+        android:id="@+id/resend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/resend"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/pinView" />
 
     <Button
         android:id="@+id/btn_verify"
+        style="@style/ButtonNormalStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ButtonNormalStyle"
         android:layout_marginBottom="@dimen/app_margin"
         android:text="@string/verify"
-        app:layout_constraintBottom_toTopOf="@+id/btn_resend"/>
+        app:layout_constraintBottom_toTopOf="@+id/btn_resend" />
 
     <Button
         android:id="@+id/btn_resend"
+        style="@style/ButtonNormalStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/ButtonNormalStyle"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="@dimen/app_margin"
         android:text="@string/resend"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
     <com.uzairiqbal.circulartimerview.CircularTimerView
         android:id="@+id/countDown"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:progressColor="@color/colorAccent"
         app:backgroundColor="@color/colorPrimary"
-        app:progressBackgroundColor="#eee"
         app:backgroundWidth="1"
         app:isClockwise="true"
-        app:textSize="12sp"
-        app:prefix=""
-        app:suffix=" sec"
-        app:progressText="5"
-        app:maxValue="100"
-        app:startingPoint="bottom"
-        app:progressTextColor="#eee"
-        app:layout_constraintStart_toStartOf="@+id/btn_resend"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_resend"
         app:layout_constraintEnd_toEndOf="@+id/btn_resend"
+        app:layout_constraintStart_toStartOf="@+id/btn_resend"
         app:layout_constraintTop_toTopOf="@+id/btn_resend"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_resend" />
-
-
+        app:maxValue="100"
+        app:prefix=""
+        app:progressBackgroundColor="#eee"
+        app:progressColor="@color/colorAccent"
+        app:progressText="5"
+        app:progressTextColor="#eee"
+        app:startingPoint="bottom"
+        app:suffix=" sec"
+        app:textSize="12sp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

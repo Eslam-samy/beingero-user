@@ -1,4 +1,4 @@
-package com.corptia.bringero.ui.setting.contactUs;
+package com.corptia.bringero.ui.home.setting.contactUs;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -12,8 +12,6 @@ import com.corptia.bringero.type.MessageUserType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class ContactusPresenter {
 

@@ -15,6 +15,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,9 +57,9 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
     @BindView(R.id.btn_login)
     View btn_login;
     @BindView(R.id.input_phone_number)
-    TextInputLayout input_phone_number;
+    EditText input_phone_number;
     @BindView(R.id.input_password)
-    TextInputLayout input_password;
+    EditText input_password;
     @BindView(R.id.txt_forgot_password)
     TextView txt_forgot_password;
     @BindView(R.id.txt_signUp)
@@ -89,8 +90,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         loginPresenter = new LoginPresenter(this);
 
         btn_login.setOnClickListener(view1 -> {
-            String phone = input_phone_number.getEditText().getText().toString();
-            String password = input_password.getEditText().getText().toString();
+            String phone = input_phone_number.getText().toString();
+            String password = input_password.getText().toString();
 
 /*
             switch (phone) {
@@ -225,9 +226,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         LocaleHelper.setLocale(LoginActivity.this, Common.CURRENT_USER.getLanguage().toLowerCase());
 
         PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_LOGIN, true);
-        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PHONE, input_phone_number.getEditText().getText().toString());
-        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PASSWORD, input_password.getEditText().getText().toString());
-
+        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PHONE, input_phone_number.getText().toString());
+        PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_PASSWORD, input_password.getText().toString());
         PrefUtils.saveToPrefs(LoginActivity.this, PrefKeys.USER_TOKEN_API, Common.CURRENT_USER.getToken());
     }
 
@@ -238,25 +238,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.LoginVi
         startActivity(new Intent(LoginActivity.this, AllowLocationActivity.class));
         isFirstTimeAddLocation = true;
         finish();
-
-//        Dexter.withActivity(LoginActivity.this).withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-//                .withListener(new PermissionListener() {
-//                    @Override
-//                    public void onPermissionGranted(PermissionGrantedResponse response) {
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onPermissionDenied(PermissionDeniedResponse response) {
-//                        finish();
-//                    }
-//
-//                    @Override
-//                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
-//                        token.continuePermissionRequest();
-//                    }
-//                }).check();
 
     }
 
