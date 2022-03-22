@@ -5,10 +5,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.api.CustomTypeAdapter;
+import com.apollographql.apollo.api.CustomTypeValue;
 import com.apollographql.apollo.cache.http.ApolloHttpCache;
 import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore;
-import com.apollographql.apollo.response.CustomTypeAdapter;
-import com.apollographql.apollo.response.CustomTypeValue;
+
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.type.CustomType;
 

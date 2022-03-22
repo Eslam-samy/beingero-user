@@ -37,11 +37,6 @@ import com.corptia.bringero.ui.Main.MainActivity;
 import com.corptia.bringero.ui.Main.login.LoginActivity;
 import com.corptia.bringero.ui.Main.resetPassword.ResetPasswordStepTwo;
 import com.corptia.bringero.ui.Main.signup.SignupActivity;
-import com.corptia.bringero.ui.Main.signup.SignupFragment;
-import com.corptia.bringero.ui.home.HomeActivity;
-import com.corptia.bringero.utils.sharedPref.PrefKeys;
-import com.corptia.bringero.utils.sharedPref.PrefUtils;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,9 +50,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.uzairiqbal.circulartimerview.CircularTimerListener;
-import com.uzairiqbal.circulartimerview.CircularTimerView;
-import com.uzairiqbal.circulartimerview.TimeFormatEnum;
+
 
 import org.jetbrains.annotations.NotNull;
 
@@ -85,12 +78,8 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
     FirebaseAuth auth;
     String verification_code;
     String phone, password;
-    @BindView(R.id.countDown)
-    CircularTimerView countDown;
-    @BindView(R.id.btn_resend)
-    Button btn_resend;
     @BindView(R.id.resend)
-    Button resend;
+    TextView resend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,44 +113,13 @@ public class VerifyPhoneNumberActivity extends BaseActivity {
         });
 
 
-        // To Initialize Timer
-        countDown.setCircularTimerListener(new CircularTimerListener() {
-            @Override
-            public String updateDataOnTick(long remainingTimeInMs) {
-                return String.valueOf((int) Math.ceil((remainingTimeInMs / 1000.f)));
-            }
+        resend.setOnClickListener((View.OnClickListener) view -> {
 
-            @Override
-            public void onTimerFinished() {
-                countDown.setPrefix("");
-                countDown.setSuffix("");
-//                countDown.setText("FINISHED THANKS!");
-                countDown.setVisibility(View.INVISIBLE);
-                btn_resend.setVisibility(View.VISIBLE);
+            startTimer();
 
-            }
-        }, 60, TimeFormatEnum.SECONDS, 10);
-
-
-// To start timer
-
-        countDown.setProgress(0);
-        countDown.startTimer();
-
-
-        btn_resend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                countDown.setProgress(0);
-                countDown.startTimer();
-                countDown.setVisibility(View.VISIBLE);
-                btn_resend.setVisibility(View.INVISIBLE);
-
-                sent();
-            }
+            sent();
         });
-
+        startTimer();
     }
 
 

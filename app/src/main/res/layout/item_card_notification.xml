@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="115dp"
+    android:layout_height="82dp"
     android:background="@drawable/shadow_order">
 
 
@@ -12,21 +12,20 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="@dimen/large_margin"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:cardBackgroundColor="@color/delivering"
         app:cardCornerRadius="8dp"
-        app:cardBackgroundColor="@color/delivering">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
             android:id="@+id/image_notification"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_notification_delivering"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:padding="2dp"
-            />
+            android:src="@drawable/ic_notification_delivering" />
 
     </androidx.cardview.widget.CardView>
 
@@ -34,15 +33,16 @@
     <TextView
         android:id="@+id/txt_messages_notification"
         style="@style/TextCardDefaultStyle"
+        android:layout_width="0dp"
+        android:layout_marginEnd="6dp"
         android:fontFamily="@font/poppinsmedium"
         android:text="2 unread messages from Xiaomi"
         android:textSize="@dimen/normal_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/card_image_notification"
         app:layout_constraintEnd_toStartOf="@+id/txt_time"
         app:layout_constraintStart_toEndOf="@+id/card_image_notification"
         app:layout_constraintTop_toTopOf="@+id/card_image_notification"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:layout_width="0dp"
-        android:layout_marginEnd="6dp"/>
+        app:layout_constraintVertical_chainStyle="packed" />
 
 
     <TextView
@@ -62,11 +62,11 @@
         android:id="@+id/txt_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/card_image_notification"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="2 min"
         android:layout_marginEnd="@dimen/large_margin"
+        android:text="2 min"
         android:textSize="@dimen/low_xx_text_size"
-        />
+        app:layout_constraintBottom_toBottomOf="@+id/txt_messages_notification"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/card_image_notification" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

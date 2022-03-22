@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="170dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/shadow_storetype">
@@ -16,9 +16,9 @@
 
         <ImageView
             android:id="@+id/image_storetype"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:scaleType="fitEnd"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:scaleType="fitXY"
             android:src="@drawable/ic_placeholder_product"/>
 
         <TextView
@@ -29,7 +29,7 @@
             tools:text="Market"
             android:textColor="@color/black"
             android:textSize="@dimen/medium_text_size"
-            android:fontFamily="@font/poppinsregular" />
+            android:fontFamily="@font/poppinsmedium" />
 
         <TextView
             android:id="@+id/txt_count_storetype"
@@ -38,7 +38,6 @@
             android:gravity="center"
             android:text="15  Stores"
             android:textColor="@color/count_store"
-            android:textStyle="bold"
             android:textSize="@dimen/normal_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

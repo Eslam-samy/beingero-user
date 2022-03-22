@@ -3,40 +3,139 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-hdpi/_5_rect_gray.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-ldpi/_6_gray_rect.xml" value="0.3315" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-mdpi/_10_white_rect.xml" value="0.3065" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-mdpi/_10_white_rect_with_border.xml" value="0.3065" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-mdpi/ic_down_arrow.xml" value="0.317" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-mdpi/ic_green_curser.xml" value="0.317" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-mdpi/ic_menu_icon.xml" value="0.317" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-xxhdpi/ic_show_password.xml" value="0.5729166666666666" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable-xxhdpi/password_selector.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/_10_gray_rect.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/_5_rect_pink_with_opacity.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/_6_gradient_rect.xml" value="0.4275" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/background_order_assignedtopilot.xml" value="0.4275" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/background_order_delivered.xml" value="0.4275" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/background_order_delivering.xml" value="0.4275" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/background_order_ordersrequested.xml" value="0.4275" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/background_order_storesprepared.xml" value="0.4275" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/background_order_storesreplied.xml" value="0.4275" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/dashed_rect.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_arabic.xml" value="0.4135" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_cart_x.xml" value="0.4135" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_combined_shape.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_decrease.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_drop_down_icon.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_group_addresses.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_group_password.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_group_profile.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_icon_right.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_increase.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_increase_click.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_logo_bringero.xml" value="0.4275" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_logout_icon.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_mail.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_mic.xml" value="0.4275" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_min.xml" value="0.5641025641025641" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_nav_cart.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_nav_contact.xml" value="0.306" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_nav_home.xml" value="0.5729166666666666" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_nav_orders.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_notification_header_icon.xml" value="0.5641025641025641" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_person.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_placeholder_profile.xml" value="0.3463541666666667" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_trash.xml" value="0.3065" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/ic_unchecked_group.xml" value="0.306" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/main_button_gradient.xml" value="0.5641025641025641" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/my_shadow.xml" value="0.5729166666666666" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/nav_cart.xml" value="0.5729166666666666" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/oval_red.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/round_count_product.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/round_up_bottom_sheet.xml" value="0.306" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/selector_cart_decrease.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/selector_cart_increase.xml" value="0.5641025641025641" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/drawable/tab_color_selector.xml" value="0.5641025641025641" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout-ar/activity_login.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout-ar/item_sub_category.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_add_new_location.xml" value="0.49074074074074076" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_allow_location.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_change_password.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_check_out.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_contact_us.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_edit_profile.xml" value="0.5" />
-        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_home.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_home.xml" value="0.4477726574500768" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_home_modefied.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_language.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_locations.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_locations_delivery.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_login.xml" value="0.5305555555555556" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_maps.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_my_orders.xml" value="0.33" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_notification.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_order_store_details.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_orders_paid_details.xml" value="0.45703292005130397" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_reset_password.xml" value="0.5" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_reset_password_step_two.xml" value="0.5567708333333333" />
-        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_select_delivery_location.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_search_products.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_select_delivery_location.xml" value="0.41672240802675586" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_setting.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_signup.xml" value="0.3302083333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_single_store.xml" value="0.3925925925925926" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_splash.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_store_detail.xml" value="0.33" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_stores.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/activity_verify_phone_number.xml" value="0.5567708333333333" />
-        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/app_bar_home.xml" value="0.5567708333333333" />
-        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/content_home.xml" value="0.5482051282051282" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/app_bar_home.xml" value="0.33" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/app_bar_main.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/componant_speed_cart.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/content_home.xml" value="0.33" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/custom_app_bar.xml" value="0.5482051282051282" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/dummy.xml" value="0.5" />
-        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_cart.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_brand_detail.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_cart.xml" value="0.33" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_categories.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_change_password.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_check_out.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_edit_profile.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_home_header.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_language.xml" value="0.5427083333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_notification.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_order.xml" value="0.45703292005130397" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_setting.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_settings.xml" value="0.5" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_store_types.xml" value="0.33" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/fragment_stores.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_cart_header.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_cart_header_check_out.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_cart_items_check_out.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_cart_shop.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_cart_shop_discount.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_location.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_notification.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_order.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_product.xml" value="0.5" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_stores.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_card_storetype.xml" value="0.48020833333333335" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_cart_delivery_location.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_cart_modefied.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_custom_category.xml" value="0.5" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/item_home_category.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_cart_modefied.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_dialog_alarm.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_dialog_alert.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_dialog_success.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_loading_list_item.xml" value="0.45703292005130397" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_placeholder.xml" value="0.5427083333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_progress_button.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_search.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_select_delivery_location.xml" value="0.45703292005130397" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/layout_toolbar_white.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/main_app_header.xml" value="0.5567708333333333" />
-        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/menu/activity_home_drawer.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/nav_header_home.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/spinner_list.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/layout/spinner_text.xml" value="0.5567708333333333" />
+        <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/menu/activity_home_drawer.xml" value="0.5" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/menu/bottom_nav_menu.xml" value="0.5567708333333333" />
         <entry key="..\:/eslam/projects/corptia/bringerooo/app/src/main/res/menu/menu_home.xml" value="0.5567708333333333" />
       </map>

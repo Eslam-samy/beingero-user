@@ -2,6 +2,7 @@ package com.corptia.bringero.ui.location.AllLocation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.IOnRecyclerViewClickListener;
 import com.corptia.bringero.R;
+import com.corptia.bringero.databinding.ActivityLocationsDeliveryBinding;
 import com.corptia.bringero.model.DeliveryAddresses;
 import com.corptia.bringero.type.FlatType;
 import com.corptia.bringero.ui.home.HomeActivity;
@@ -48,23 +50,9 @@ import es.dmoral.toasty.Toasty;
 
 public class LocationsDeliveryActivity extends BaseActivity implements LocationsDeliveryView {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.recycler_location)
-    RecyclerView recycler_location;
-    @BindView(R.id.btn_add)
-    TextView btn_add;
 
+    ActivityLocationsDeliveryBinding binding;
     LocationAdapter adapter;
-
-    @BindView(R.id.root)
-    LinearLayout root;
-
-    Snackbar snackbar;
-    int position = 0;
-
-    boolean isClickUndo;
-
     LocationsDeliveryPresenter presenter = new LocationsDeliveryPresenter(this);
 
     AlertDialog dialog;
@@ -74,27 +62,20 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_locations_delivery);
-
-        ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getString(R.string.location));
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_locations_delivery);
 
         dialog = new SpotsDialog.Builder().setCancelable(false).setContext(this).build();
 
-        btn_add.setOnClickListener(new View.OnClickListener() {
+        binding.btnAddAddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addNewAddress();
             }
         });
 
-        recycler_location.setLayoutManager(new LinearLayoutManager(this));
-        recycler_location.setHasFixedSize(true);
-        recycler_location.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(5, this)));
+        binding.recyclerLocation.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerLocation.setHasFixedSize(true);
+        binding.recyclerLocation.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(5, this)));
 
         loading = new CustomLoading(this, true);
 
@@ -111,7 +92,7 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
         adapter = new LocationAdapter(this, Common.CURRENT_USER.getDeliveryAddressesList());
 
 
-        recycler_location.setAdapter(adapter);
+        binding.recyclerLocation.setAdapter(adapter);
 
         adapter.setClickListener((view, position) -> {
 
@@ -304,7 +285,7 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
     }
 
 
-    void addNewAddress(){
+    void addNewAddress() {
 
         Dexter.withActivity(LocationsDeliveryActivity.this)
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -312,8 +293,8 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
 
-                        Intent intent = new Intent(LocationsDeliveryActivity.this , MapsActivity.class);
-                        intent.putExtra(Constants.EXTRA_IS_UPDATE_CURRENT_LOCATION  , false);
+                        Intent intent = new Intent(LocationsDeliveryActivity.this, MapsActivity.class);
+                        intent.putExtra(Constants.EXTRA_IS_UPDATE_CURRENT_LOCATION, false);
                         Common.isUpdateCurrentLocation = false;
                         startActivity(intent);
                     }
@@ -321,7 +302,7 @@ public class LocationsDeliveryActivity extends BaseActivity implements Locations
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
 
-                        Toasty.error(LocationsDeliveryActivity.this , "Permission Denied").show();
+                        Toasty.error(LocationsDeliveryActivity.this, "Permission Denied").show();
 
                     }
 

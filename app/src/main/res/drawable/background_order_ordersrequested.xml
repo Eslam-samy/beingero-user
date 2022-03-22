@@ -2,8 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <corners
-        android:radius="4dp"/>
+        android:radius="3dp"/>
     <solid
-        android:color="@color/ordersrequested"/>
+        android:color="#1AF9C80E"/>
 
 </shape>

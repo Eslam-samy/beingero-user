@@ -51,8 +51,6 @@ import es.dmoral.toasty.Toasty;
 
 public class AddNewLocationActivity extends BaseActivity implements SelectDeliveryLocationView, OnMapReadyCallback {
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
     @BindView(R.id.input_region)
     TextInputLayout input_region;
     @BindView(R.id.input_address_name)
@@ -264,19 +262,12 @@ public class AddNewLocationActivity extends BaseActivity implements SelectDelive
 
         fillSpinnerFlatType();
 
-        //Toolbar
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
 
         intent = getIntent();
         if (intent != null) {
 
             if (intent.hasExtra(Constants.EXTRA_UPDATE)) {
-
-                getSupportActionBar().setTitle(R.string.update_location);
-
                 _id_Address = intent.getStringExtra(Constants.EXTRA_ADDRESS_ID);
                 addressPosition = intent.getIntExtra(Constants.EXTRA_ADDRESS_POSITION , 0);
                 name = intent.getStringExtra(Constants.EXTRA_ADDRESS_NAME);

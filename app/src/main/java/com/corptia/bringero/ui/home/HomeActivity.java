@@ -1,5 +1,6 @@
 package com.corptia.bringero.ui.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import com.corptia.bringero.R;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -27,7 +29,7 @@ import com.corptia.bringero.graphql.UpdateNotificationMutation;
 import com.corptia.bringero.model.NotificationCount;
 import com.corptia.bringero.type.NotificationFilterInput;
 import com.corptia.bringero.ui.home.notification.NotificationFragment;
-import com.corptia.bringero.ui.home.setting.main.SettingFragment;
+import com.corptia.bringero.ui.home.settings.SettingsFragment;
 import com.corptia.bringero.ui.location.AllLocation.LocationsDeliveryActivity;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationPresenter;
 import com.corptia.bringero.ui.location.deliveryLocation.SelectDeliveryLocationView;
@@ -36,6 +38,7 @@ import com.corptia.bringero.ui.home.setting.main.SettingActivity;
 import com.corptia.bringero.ui.home.cart.CartFragment;
 import com.corptia.bringero.ui.home.storetypes.StoreTypesFragment;
 import com.corptia.bringero.ui.home.order.OrderFragment;
+import com.corptia.bringero.ui.setting.main.SettingFragment;
 import com.corptia.bringero.ui.webview.WebViewActivity;
 import com.corptia.bringero.utils.CustomLoading;
 import com.corptia.bringero.utils.language.LocaleHelper;
@@ -83,14 +86,14 @@ public class HomeActivity extends BaseActivity implements
     public Toolbar toolbar;
     @BindView(R.id.nav_bottomNavigationView)
     BottomNavigationView bottomNavigationView;
-
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
-
     Fragment selectedFragment = null;
+    @BindView(R.id.location_text)
+    TextView locationText;
+    @BindView(R.id.location_constraint)
+    ConstraintLayout locationConstraint;
 
-    @BindView(R.id.txt_location)
-    TextView txt_location;
     @BindView(R.id.appbar)
     AppBarLayout appbar;
 
@@ -115,6 +118,7 @@ public class HomeActivity extends BaseActivity implements
     //For Get New Update
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,9 +126,7 @@ public class HomeActivity extends BaseActivity implements
         if (Common.CURRENT_USER != null)
             LocaleHelper.setLocale(this, Common.CURRENT_USER.getLanguage().toLowerCase());
         setContentView(R.layout.activity_home);
-
         initRemoteConfig();
-
         ButterKnife.bind(this);
 
         initToolbar(toolbar);
@@ -151,12 +153,7 @@ public class HomeActivity extends BaseActivity implements
 
         iniBadgeNotification();
 
-        txt_location.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomSheetDialog = Common.showDialogSelectLocation(HomeActivity.this, bottomSheetDialog, presenter);
-            }
-        });
+        locationConstraint.setOnClickListener(view -> bottomSheetDialog = Common.showDialogSelectLocation(HomeActivity.this, bottomSheetDialog, presenter));
 
 
     }
@@ -211,13 +208,13 @@ public class HomeActivity extends BaseActivity implements
                 String name = Common.CURRENT_USER.getCurrentDeliveryAddress().getName();
 
                 if (name != null && region != null)
-                    txt_location.setText(new StringBuilder().append(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())
+                    locationText.setText(new StringBuilder().append(name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())
                             .append(" (")
                             .append(region.substring(0, 1).toUpperCase() + region.substring(1).toLowerCase())
                             .append(")"));
 
             } else
-                txt_location.setText(getString(R.string.select_location));
+                locationText.setText(getString(R.string.select_location));
         }
 
     }
@@ -242,7 +239,7 @@ public class HomeActivity extends BaseActivity implements
                 if (!(selectedFragment instanceof StoreTypesFragment)) {
                     selectedFragment = new StoreTypesFragment();
                     getSupportActionBar().setTitle(R.string.gallery);
-                    txt_location.setVisibility(View.VISIBLE);
+                    locationConstraint.setVisibility(View.VISIBLE);
                 }
                 break;
 
@@ -250,7 +247,7 @@ public class HomeActivity extends BaseActivity implements
                 if (!(selectedFragment instanceof OrderFragment)) {
                     selectedFragment = new OrderFragment();
                     getSupportActionBar().setTitle(R.string.orders);
-                    txt_location.setVisibility(View.GONE);
+                    locationConstraint.setVisibility(View.GONE);
 
                 }
                 break;
@@ -258,16 +255,16 @@ public class HomeActivity extends BaseActivity implements
                 if (!(selectedFragment instanceof CartFragment)) {
                     selectedFragment = new CartFragment();
                     getSupportActionBar().setTitle(R.string.cart);
-                    txt_location.setVisibility(View.GONE);
+                    locationConstraint.setVisibility(View.GONE);
 //                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
 //                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
                 }
                 break;
             case R.id.nav_settings:
                 if (!(selectedFragment instanceof SettingFragment)) {
-                    selectedFragment = new SettingFragment();
+                    selectedFragment = new SettingsFragment();
                     getSupportActionBar().setTitle(R.string.setting);
-                    txt_location.setVisibility(View.GONE);
+                    locationConstraint.setVisibility(View.GONE);
 //                    appbar.setBackgroundColor(getResources().getColor(R.color.white));
 //                    appbar.getContext().setTheme(R.style.AppBarLayoutTheme);
                 }
@@ -279,7 +276,7 @@ public class HomeActivity extends BaseActivity implements
 
                     getSupportActionBar().setTitle(R.string.notification);
 
-                    txt_location.setVisibility(View.GONE);
+                    locationConstraint.setVisibility(View.GONE);
                     notificationBadge.setVisibility(GONE);
 
                     updateNotification();
@@ -316,6 +313,7 @@ public class HomeActivity extends BaseActivity implements
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
@@ -329,25 +327,21 @@ public class HomeActivity extends BaseActivity implements
             case R.id.nav_addresses:
                 intent = new Intent(this, LocationsDeliveryActivity.class);
                 break;
-
             case R.id.nav_contact:
                 intent = new Intent(this, ContactUsActivity.class);
                 break;
-
             case R.id.nav_terms_conditions:
                 intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(Constants.EXTRA_TERMS_CONDITIONS, "EXTRA_TERMS_CONDITIONS");
                 break;
-
-            case R.id.nav_privacy_policy:
-                intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra(Constants.EXTRA_PRIVACY_POLICY, "EXTRA_PRIVACY_POLICY");
-                break;
-
-            case R.id.nav_faq_support:
-                intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra(Constants.EXTRA_FAQ_SUPPORT, "EXTRA_FAQ_SUPPORT");
-                break;
+//            case R.id.nav_privacy_policy:
+//                intent = new Intent(this, WebViewActivity.class);
+//                intent.putExtra(Constants.EXTRA_PRIVACY_POLICY, "EXTRA_PRIVACY_POLICY");
+//                break;
+//            case R.id.nav_faq_support:
+//                intent = new Intent(this, WebViewActivity.class);
+//                intent.putExtra(Constants.EXTRA_FAQ_SUPPORT, "EXTRA_FAQ_SUPPORT");
+//                break;
 
             default:
                 drawer = findViewById(R.id.drawer_layout);
@@ -470,8 +464,6 @@ public class HomeActivity extends BaseActivity implements
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -480,20 +472,14 @@ public class HomeActivity extends BaseActivity implements
 
         isFirstTimeGetCartCount = true;
         Common.GetCartItemsCount(null);
-
         checkNewVersion();
-
     }
-
-
     private void countNotificationUnread() {
-
         NotificationFilterInput filter = NotificationFilterInput.builder().status("Unread").build();
         MyApolloClient.getApollowClientAuthorization().query(NotificationCountUnreadQuery.builder().filter(filter).build())
                 .enqueue(new ApolloCall.Callback<NotificationCountUnreadQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<NotificationCountUnreadQuery.Data> response) {
-
                         NotificationCountUnreadQuery.@Nullable GetAll data = response.data().NotificationCountUnreadQuery().getAll();
                         if (data.status() == 200) {
                             runOnUiThread(new Runnable() {
@@ -644,4 +630,6 @@ public class HomeActivity extends BaseActivity implements
         }
 
     }
+
+
 }

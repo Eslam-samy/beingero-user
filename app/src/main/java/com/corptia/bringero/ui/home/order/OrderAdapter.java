@@ -80,8 +80,10 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
         @BindView(R.id.txt_date_order)
         TextView txt_date_order;
-        @BindView(R.id.txt_content_count)
-        TextView txt_content_count;
+        @BindView(R.id.txt_store)
+        TextView stores;
+        @BindView(R.id.txt_products)
+        TextView products;
         @BindView(R.id.txt_total_price)
         TextView txt_total_price;
         @BindView(R.id.txt_status)
@@ -111,6 +113,10 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
                 String uriString = "@string/order_status_" + orderDatum.status().rawValue().toLowerCase();
                 int stringResource = context.getResources().getIdentifier(uriString, null, context.getPackageName());
+                String uriColor = "@color/status_" + orderDatum.status().rawValue().toLowerCase();
+                int colorResource = context.getResources().getIdentifier(uriColor, null, context.getPackageName());
+                int color = context.getResources().getColor(colorResource);
+
 
                 String uri = "@drawable/background_order_" + orderDatum.status().rawValue().toLowerCase();
                 int imageResource = context.getResources().getIdentifier(uri, null, context.getPackageName());
@@ -118,14 +124,14 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 if (imageResource != 0 && stringResource != 0) {
                     txt_status.setText("" + context.getResources().getString(stringResource));
                     txt_status.setBackground(res);
-
+                    txt_status.setTextColor(color);
                     txt_date_order.setText(orderDatum.createdAt().toString());
                     txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
 
 
                     double totalPrice = orderDatum.SubTotal() + orderDatum.deliveryCost();
                     txt_total_price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(context.getString(R.string.currency)));
-                }else{
+                } else {
                     txt_status.setText(orderDatum.status().rawValue().toLowerCase());
                     txt_date_order.setText(orderDatum.createdAt().toString());
                     txt_order_id.setText(new StringBuilder(context.getString(R.string.order_id)).append(" #").append(orderDatum.serial()));
@@ -137,24 +143,23 @@ public class OrderAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
 //        holder.txt_total_price.setText(orderDatum.);
 
-                txt_content_count.setText(
+                stores.setText(
                         new StringBuilder().append(orderDatum.StoresCount())
                                 .append(" ")
-                                .append(orderDatum.ItemsCount()==1? context.getString(R.string.store) : context.getString(R.string.stores) )
-                                .append(" , ")
-                                .append(orderDatum.ItemsCount())
+                                .append(orderDatum.StoresCount() == 1 ? context.getString(R.string.store) : context.getString(R.string.stores))
+                );
+                products.setText(
+                        new StringBuilder().append(orderDatum.ItemsCount())
                                 .append(" ")
-                                .append(orderDatum.ItemsCount()==1? context.getString(R.string.product) : context.getString(R.string.products)));
-
-
+                                .append(orderDatum.ItemsCount() == 1 ? context.getString(R.string.product) : context.getString(R.string.products)));
                 if (clickListener != null)
                     itemView.setOnClickListener(view -> {
 
-                        if(clicked){
+                        if (clicked) {
                             return;
                         }
                         clicked = true;
-                        view.postDelayed(() -> clicked = false,500);
+                        view.postDelayed(() -> clicked = false, 500);
 
                         clickListener.onClick(view, position);
 

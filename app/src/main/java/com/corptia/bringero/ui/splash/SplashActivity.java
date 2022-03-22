@@ -107,9 +107,7 @@ public class SplashActivity extends BaseActivity implements LoginContract.LoginV
                     .addOnCompleteListener(this, new OnCompleteListener<Boolean>() {
                         @Override
                         public void onComplete(@NonNull Task<Boolean> task) {
-
                             if (task.isSuccessful()) {
-
 //                                boolean updated = task.getResult();
 
 //                            mFirebaseRemoteConfig.activateFetched();

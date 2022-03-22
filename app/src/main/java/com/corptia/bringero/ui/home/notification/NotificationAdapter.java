@@ -168,9 +168,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             if (notification.docStatus() != null)
                 uriColor = "@color/" + notification.docStatus().toLowerCase();
             int colorResource = context.getResources().getIdentifier(uriColor, null, context.getPackageName());
-            if (colorResource != 0){
+            if (colorResource != 0) {
                 card_image_notification.setCardBackgroundColor(context.getResources().getColor(colorResource));
-            }else{
+            } else {
                 card_image_notification.setCardBackgroundColor(context.getResources().getColor(R.color.blue1));
             }
             String uriImage = "@drawable/ic_notification_approved";
@@ -180,10 +180,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 //            Common.LOG("Hi : " + uriImage);
             int imageResource = context.getResources().getIdentifier(uriImage, null, context.getPackageName());
 //            Drawable res = context.getResources().getDrawable(imageResource);
-            if (imageResource != 0){
+            if (imageResource != 0) {
                 image_notification.setImageResource(imageResource);
 
-            }else {
+            } else {
                 image_notification.setImageResource(R.drawable.ic_logo_white);
             }
 
@@ -239,7 +239,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     }
 
-    NotificationQuery.NotificationDatum getItem(int position) {
+    public NotificationQuery.NotificationDatum getItem(int position) {
         return notificationList.get(position);
     }
 

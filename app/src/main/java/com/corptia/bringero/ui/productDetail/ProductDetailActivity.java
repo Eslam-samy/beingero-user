@@ -66,14 +66,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
         PicassoUtils.setImage(Common.BASE_URL_IMAGE + imageUrl, image_product);
 
 
-        btn_addToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                productDetailPresenter.addToCart(productId);
-
-            }
-        });
+        btn_addToCart.setOnClickListener(view -> productDetailPresenter.addToCart(productId));
 
     }
 
@@ -97,7 +90,6 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
 
     @Override
     public void setDataProduct(SingleProductQuery.Product data) {
-
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -126,9 +118,7 @@ public class ProductDetailActivity extends BaseActivity implements ProductDetail
 
     @Override
     public void showErrorMessage(String Message) {
-
         runOnUiThread(() -> Toast.makeText(ProductDetailActivity.this, "" + Message, Toast.LENGTH_SHORT).show());
-
     }
 
     @Override

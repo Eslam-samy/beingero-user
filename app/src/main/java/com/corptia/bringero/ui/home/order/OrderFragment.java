@@ -157,17 +157,9 @@ public class OrderFragment extends Fragment implements OrderView {
         adapterLastOrder = new OrderAdapter(getActivity(), null);
         recycler_last_orders.setAdapter(adapterLastOrder);
 
-        btn_start_shopping.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ((BottomNavigationView) getActivity()
-                        .findViewById(R.id.nav_bottomNavigationView))
-                        .setSelectedItemId(R.id.nav_home);
-
-
-            }
-        });
+        btn_start_shopping.setOnClickListener(view1 -> ((BottomNavigationView) getActivity()
+                .findViewById(R.id.nav_bottomNavigationView))
+                .setSelectedItemId(R.id.nav_home));
 
         return view;
     }
@@ -207,30 +199,27 @@ public class OrderFragment extends Fragment implements OrderView {
     @Override
     public void CurrentOrders(List<DeliveryOrdersQuery.DeliveryOrderDatum> deliveryOrderData) {
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
+        handler.post(() -> {
 
-                adapterCurrentOrder = new OrderAdapter(getActivity(), deliveryOrderData);
-                recycler_current_orders.setAdapter(adapterCurrentOrder);
+            adapterCurrentOrder = new OrderAdapter(getActivity(), deliveryOrderData);
+            recycler_current_orders.setAdapter(adapterCurrentOrder);
 
-                adapterCurrentOrder.setClickListener(new IOnRecyclerViewClickListener() {
-                    @Override
-                    public void onClick(View view, int position) {
+            adapterCurrentOrder.setClickListener(new IOnRecyclerViewClickListener() {
+                @Override
+                public void onClick(View view, int position) {
 
-                        Intent intent = new Intent(getActivity(), OrdersPaidDetailsActivity.class);
-                        String orderId = adapterCurrentOrder.getIdOrder(position);
-                        int serialOrder = adapterCurrentOrder.getSerialOrder(position);
-                        intent.putExtra(Constants.EXTRA_ORDER_ID, orderId);
-                        intent.putExtra(Constants.EXTRA_ORDER_SERIAL, serialOrder);
-                        intent.putExtra(Constants.EXTRA_ORDER_SERIAL, serialOrder);
-                        startActivity(intent);
+                    Intent intent = new Intent(getActivity(), OrdersPaidDetailsActivity.class);
+                    String orderId = adapterCurrentOrder.getIdOrder(position);
+                    int serialOrder = adapterCurrentOrder.getSerialOrder(position);
+                    intent.putExtra(Constants.EXTRA_ORDER_ID, orderId);
+                    intent.putExtra(Constants.EXTRA_ORDER_SERIAL, serialOrder);
+                    intent.putExtra(Constants.EXTRA_ORDER_SERIAL, serialOrder);
+                    startActivity(intent);
 
-                    }
-                });
+                }
+            });
 
-                txt_lab_current_order.setVisibility(View.VISIBLE);
-            }
+            txt_lab_current_order.setVisibility(View.VISIBLE);
         });
 
     }
@@ -265,12 +254,7 @@ public class OrderFragment extends Fragment implements OrderView {
 
     @Override
     public void hideProgressBar() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                loading.setVisibility(View.GONE);
-            }
-        });
+        handler.post(() -> loading.setVisibility(View.GONE));
     }
 
     @Override

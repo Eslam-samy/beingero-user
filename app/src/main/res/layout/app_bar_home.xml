@@ -1,100 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.home.HomeActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
+    </data>
 
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="match_parent"
+        tools:context=".ui.home.HomeActivity">
 
-        <RelativeLayout
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|center"
-            android:gravity="center_horizontal">
+            android:elevation="0dp"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:elevation="0dp">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-            <TextView
-                android:id="@+id/txt_location"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="@drawable/round_search"
-                android:textColor="@color/colorDarkGray"
-                android:drawableStart="@drawable/ic_location"
-                android:drawableEnd="@drawable/ic_arrow_down"
-                android:paddingEnd="@dimen/medium_padding"
-                android:paddingStart="@dimen/medium_padding"
-                tools:text="asdasdasddfgsdfgsdfg"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:gravity="center"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="56dp"
-                android:layout_marginEnd="@dimen/app_margin"/>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="@dimen/medium_margin">
+                android:layout_gravity="center_horizontal|center"
+                android:gravity="center_horizontal">
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </RelativeLayout>
-
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-<!--    <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--        android:theme="@style/AppBarLayoutTheme"-->
-<!--        android:background="@color/white"-->
-<!--        app:elevation="0dp"-->
-<!--        android:elevation="0dp"-->
-<!--        xmlns:android="http://schemas.android.com/apk/res/android">-->
-
-<!--        <androidx.appcompat.widget.Toolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
-<!--            >-->
-<!--                        <TextView-->
-<!--                            android:id="@+id/txt_location"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="40dp"-->
-<!--                            android:background="@drawable/round_search"-->
-<!--                            android:layout_marginEnd="@dimen/app_margin"-->
-<!--                            android:textColor="@color/colorDarkGray"-->
-<!--                            android:drawableStart="@drawable/ic_location"-->
-<!--                            android:drawableEnd="@drawable/ic_arrow_down"-->
-<!--                            android:gravity="start|center"-->
-<!--                            android:paddingEnd="@dimen/medium_padding"-->
-<!--                            android:paddingStart="@dimen/medium_padding"-->
-<!--                            tools:text="Location .."/>-->
-<!--                    </androidx.appcompat.widget.Toolbar>-->
-
-<!--                </com.google.android.material.appbar.AppBarLayout>-->
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/white"
+                    android:elevation="0dp"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
 
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/location_constraint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center">
 
-                <include layout="@layout/content_home" />
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/linearLayoutCompat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:gravity="center_vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_locations_gray" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:text="@string/current_location"
+                            android:textColor="#757575"
+                            android:textSize="12sp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:src="@drawable/ic_icon_down_gray" />
 
 
-            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <TextView
+                        android:id="@+id/location_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat"
+                        tools:text="Eslam Samy" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/txt_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="56dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/app_margin"
+                    android:background="@drawable/round_search"
+                    android:drawableStart="@drawable/ic_location"
+                    android:drawableEnd="@drawable/ic_arrow_down"
+                    android:gravity="center"
+                    android:paddingStart="@dimen/medium_padding"
+                    android:paddingEnd="@dimen/medium_padding"
+                    android:textColor="@color/colorDarkGray"
+                    android:visibility="gone"
+                    tools:text="asdasdasddfgsdfgsdfg"
+                    tools:visibility="gone" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/medium_margin"
+                    android:gravity="center">
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </RelativeLayout>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!--    <com.google.android.material.appbar.AppBarLayout android:layout_width="match_parent"-->
+        <!--        android:layout_height="wrap_content"-->
+        <!--        xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--        android:theme="@style/AppBarLayoutTheme"-->
+        <!--        android:background="@color/white"-->
+        <!--        app:elevation="0dp"-->
+        <!--        android:elevation="0dp"-->
+        <!--        xmlns:android="http://schemas.android.com/apk/res/android">-->
+
+        <!--        <androidx.appcompat.widget.Toolbar-->
+        <!--            android:id="@+id/toolbar"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="?attr/actionBarSize"-->
+        <!--            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+        <!--            >-->
+        <!--                        <TextView-->
+        <!--                            android:id="@+id/txt_location"-->
+        <!--                            android:layout_width="match_parent"-->
+        <!--                            android:layout_height="40dp"-->
+        <!--                            android:background="@drawable/round_search"-->
+        <!--                            android:layout_marginEnd="@dimen/app_margin"-->
+        <!--                            android:textColor="@color/colorDarkGray"-->
+        <!--                            android:drawableStart="@drawable/ic_location"-->
+        <!--                            android:drawableEnd="@drawable/ic_arrow_down"-->
+        <!--                            android:gravity="start|center"-->
+        <!--                            android:paddingEnd="@dimen/medium_padding"-->
+        <!--                            android:paddingStart="@dimen/medium_padding"-->
+        <!--                            tools:text="Location .."/>-->
+        <!--                    </androidx.appcompat.widget.Toolbar>-->
+
+        <!--                </com.google.android.material.appbar.AppBarLayout>-->
+
+
+        <include
+            android:id="@+id/content_home"
+            layout="@layout/content_home" />
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

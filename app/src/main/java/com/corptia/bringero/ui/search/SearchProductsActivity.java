@@ -2,6 +2,7 @@ package com.corptia.bringero.ui.search;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +33,7 @@ import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseActivity;
+import com.corptia.bringero.databinding.ActivitySearchProductsBinding;
 import com.corptia.bringero.graphql.CreateCartItemMutation;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.StoreSearchQuery;
@@ -42,6 +44,7 @@ import com.corptia.bringero.type.PaginationInput;
 import com.corptia.bringero.type.SEARCH_Input;
 import com.corptia.bringero.type.StoreGalleryFilter;
 import com.corptia.bringero.ui.home.HomeActivity;
+import com.corptia.bringero.ui.home.HomeModefiedActivity;
 import com.corptia.bringero.ui.storesDetail.NewStoreDetailAdapter;
 import com.corptia.bringero.ui.storesDetail.StoreDetailActivity;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -65,7 +68,7 @@ import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_ST
 
 public class SearchProductsActivity extends BaseActivity {
 
-
+    ActivitySearchProductsBinding binding;
     //For Pagination
     private int currentPage = PAGE_START;
     private boolean isLastPage = false;
@@ -73,74 +76,24 @@ public class SearchProductsActivity extends BaseActivity {
     int totalPages = 1;
 
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
-    @BindView(R.id.edt_search)
-    EditText edt_search;
-
-    @BindView(R.id.recycler_product)
-    RecyclerView recycler_product;
-
     NewStoreDetailAdapter storeDetailAdapter;
 
     String storeId;
-
-    @BindView(R.id.img_logo)
-    ImageView img_logo;
-    @BindView(R.id.txt_name)
-    TextView txt_name;
-
     String imageUrl;
-
-    @BindView(R.id.img_clean)
-    ImageView img_clean;
-    @BindView(R.id.img_speech)
-    ImageView img_speech;
-
     String searchWord = "";
-
     private static final int SPEECH_REQUEST_CODE = 0;
-
     GridLayoutManager gridLayoutManager;
-
-
-    //For Placeholder
-    @BindView(R.id.layout_placeholder)
-    ConstraintLayout layout_placeholder;
-    @BindView(R.id.img_placeholder)
-    ImageView img_placeholder;
-    @BindView(R.id.txt_placeholder_title)
-    TextView txt_placeholder_title;
-    @BindView(R.id.txt_placeholder_dec)
-    TextView txt_placeholder_dec;
-    @BindView(R.id.btn_1)
-    Button btn_1;
-    @BindView(R.id.btn_2)
-    Button btn_2;
 
     //Speed Cart
     double totalPriceCart;
     int countOfCart;
     boolean isHaveCart = false;
-    @BindView(R.id.txt_totalPriceCart)
-    TextView txt_totalPriceCart;
-    @BindView(R.id.btn_view_cart)
-    TextView btn_view_cart;
-    @BindView(R.id.layout_speed_cart)
-    ConstraintLayout layout_speed_cart;
 
-    //ProgressBar
-    @BindView(R.id.progress_search)
-    ProgressBar loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_products);
-
-        ButterKnife.bind(this);
-        initActionBar();
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search_products);
 
 
         gridLayoutManager = new GridLayoutManager(this, 2);
@@ -159,8 +112,8 @@ public class SearchProductsActivity extends BaseActivity {
             }
         });
 
-        recycler_product.setLayoutManager(gridLayoutManager);
-        recycler_product.addItemDecoration(new GridSpacingItemDecoration(
+        binding.recyclerProduct.setLayoutManager(gridLayoutManager);
+        binding.recyclerProduct.addItemDecoration(new GridSpacingItemDecoration(
                 2,
                 Common.dpToPx(10, this),
                 true,
@@ -176,50 +129,43 @@ public class SearchProductsActivity extends BaseActivity {
             imageUrl = intent.getStringExtra(Constants.EXTRA_STORE_IMAGE);
         }
 
-        edt_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+        binding.searchInput.setOnEditorActionListener((v, actionId, event) -> {
 
-                    searchWord = edt_search.getText().toString();
+            Log.d("ESLAM", "onCreate: " + actionId + EditorInfo.IME_ACTION_SEARCH);
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchWord = binding.searchInput.getText().toString();
 
-                    currentPage = 1;
+                currentPage = 1;
 
-                    storeDetailAdapter.removeSearch();
+                storeDetailAdapter.removeSearch();
 
-                    isLoading = false;
+                isLoading = false;
 
-                    performSearch();
+                performSearch();
 
-                    return true;
-                }
-                return false;
+                return true;
             }
+            return false;
         });
 
         //SetData To Toolbar
-        PicassoUtils.setImage(imageUrl, img_logo);
-        txt_name.setText(Common.CURRENT_STORE.name());
 
 
-        img_clean.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isLastPage = false;
-                edt_search.setText("");
-                layout_placeholder.setVisibility(View.VISIBLE);
-                recycler_product.setVisibility(View.GONE);
-            }
+        binding.imgClean.setOnClickListener(view -> {
+            isLastPage = false;
+            binding.searchInput.setText("");
+            binding.placeHolder.getRoot().setVisibility(View.VISIBLE);
+            binding.recyclerProduct.setVisibility(View.GONE);
         });
 
-        img_speech.setOnClickListener(new View.OnClickListener() {
+        binding.imgSpeech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 displaySpeechRecognizer();
             }
         });
 
-        edt_search.addTextChangedListener(new TextWatcher() {
+        binding.searchInput.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -233,12 +179,12 @@ public class SearchProductsActivity extends BaseActivity {
             @Override
             public void afterTextChanged(Editable editable) {
 
-                if (edt_search.getText().toString().isEmpty()) {
-                    img_speech.setVisibility(View.VISIBLE);
-                    img_clean.setVisibility(View.GONE);
+                if (binding.searchInput.getText().toString().isEmpty()) {
+                    binding.imgSpeech.setVisibility(View.VISIBLE);
+                    binding.imgClean.setVisibility(View.GONE);
                 } else {
-                    img_speech.setVisibility(View.GONE);
-                    img_clean.setVisibility(View.VISIBLE);
+                    binding.imgSpeech.setVisibility(View.GONE);
+                    binding.imgClean.setVisibility(View.VISIBLE);
                 }
 
 
@@ -246,7 +192,7 @@ public class SearchProductsActivity extends BaseActivity {
         });
 
 
-        recycler_product.addOnScrollListener(new PaginationListener(gridLayoutManager) {
+        binding.recyclerProduct.addOnScrollListener(new PaginationListener(gridLayoutManager) {
             @Override
             protected void loadMoreItems() {
                 for (MyCart myCartItem : Common.myLocalCart) {
@@ -278,7 +224,7 @@ public class SearchProductsActivity extends BaseActivity {
 
 
         storeDetailAdapter = new NewStoreDetailAdapter(SearchProductsActivity.this, null, true);
-        recycler_product.setAdapter(storeDetailAdapter);
+        binding.recyclerProduct.setAdapter(storeDetailAdapter);
 
         initPlaceHolderSearch();
 
@@ -288,21 +234,19 @@ public class SearchProductsActivity extends BaseActivity {
 
     private void initPlaceHolderSearch() {
 
-        layout_placeholder.setVisibility(View.VISIBLE);
-
-        btn_1.setVisibility(View.GONE);
-        btn_2.setVisibility(View.GONE);
-        img_placeholder.setImageResource(R.drawable.ic_placeholder_search);
-        txt_placeholder_title.setText(getString(R.string.placeholder_title_search));
-        txt_placeholder_dec.setText(getString(R.string.placeholder_dec_search));
+        binding.placeHolder.getRoot().setVisibility(View.VISIBLE);
+        binding.placeHolder.btn1.setVisibility(View.GONE);
+        binding.placeHolder.btn2.setVisibility(View.GONE);
+        binding.placeHolder.imgPlaceholder.setImageResource(R.drawable.ic_placeholder_search);
+        binding.placeHolder.txtPlaceholderTitle.setText(getString(R.string.placeholder_title_search));
+        binding.placeHolder.txtPlaceholderDec.setText(getString(R.string.placeholder_dec_search));
 
     }
 
     private void performSearch() {
 
-        loading.setVisibility(View.VISIBLE);
+        binding.progressSearch.setVisibility(View.VISIBLE);
 
-        SEARCH_Input search_input = SEARCH_Input.builder().searchWord(searchWord).build();
         PaginationInput paginationInput = PaginationInput.builder().page(currentPage).limit(PAGE_SIZE).build();
 
 //        ProductFilterInput productFilterInput = ProductFilterInput.builder().sEARCH(search_input).build();
@@ -324,12 +268,12 @@ public class SearchProductsActivity extends BaseActivity {
                             @Override
                             public void run() {
 
-                                loading.setVisibility(View.GONE);
+                                binding.progressSearch.setVisibility(View.GONE);
                                 Common.adapterIsLoading = false;
 
                                 if (data.status() == 200) {
 
-                                    recycler_product.setVisibility(View.VISIBLE);
+                                    binding.recyclerProduct.setVisibility(View.VISIBLE);
 
 
                                     if (isLoading) {
@@ -337,7 +281,7 @@ public class SearchProductsActivity extends BaseActivity {
                                         isLoading = false;
                                     }
 
-                                    layout_placeholder.setVisibility(View.GONE);
+                                    binding.placeHolder.getRoot().setVisibility(View.GONE);
 
                                     totalPages = response.data().PricingProductQuery().getStoreProducts().pagination().totalPages();
                                     storeDetailAdapter.addItemsSearch(data.ProductQuery());
@@ -419,7 +363,7 @@ public class SearchProductsActivity extends BaseActivity {
                                     });
 
                                 } else {
-                                    layout_placeholder.setVisibility(View.VISIBLE);
+                                    binding.placeHolder.getRoot().setVisibility(View.VISIBLE);
                                 }
 
                             }
@@ -434,8 +378,8 @@ public class SearchProductsActivity extends BaseActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                loading.setVisibility(View.GONE);
-                                layout_placeholder.setVisibility(View.VISIBLE);
+                                binding.progressSearch.setVisibility(View.GONE);
+                                binding.placeHolder.getRoot().setVisibility(View.VISIBLE);
                             }
                         });
                     }
@@ -444,14 +388,6 @@ public class SearchProductsActivity extends BaseActivity {
 
     }
 
-
-    private void initActionBar() {
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-        }
-    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -490,13 +426,11 @@ public class SearchProductsActivity extends BaseActivity {
             List<String> results = data.getStringArrayListExtra(
                     RecognizerIntent.EXTRA_RESULTS);
             String spokenText = results.get(0);
-            edt_search.setText(spokenText);
+            binding.searchInput.setText(spokenText);
             searchWord = spokenText;
-
             currentPage = 1;
             storeDetailAdapter.removeSearch();
             isLoading = false;
-
             performSearch();
             // Do something with spokenText
         }
@@ -505,7 +439,7 @@ public class SearchProductsActivity extends BaseActivity {
 
 
     void showPlaceHolder() {
-        layout_placeholder.setVisibility(View.VISIBLE);
+        binding.placeHolder.getRoot().setVisibility(View.VISIBLE);
     }
 
 
@@ -513,23 +447,24 @@ public class SearchProductsActivity extends BaseActivity {
         if (Common.TOTAL_CART_AMOUNT <= 0) {
             Common.TOTAL_CART_AMOUNT = 0;
             isHaveCart = false;
-            layout_speed_cart.setVisibility(View.GONE);
+            binding.speedCart.getRoot().setVisibility(View.GONE);
         } else {
             isHaveCart = true;
-            layout_speed_cart.setVisibility(View.VISIBLE);
+            binding.speedCart.getRoot().setVisibility(View.VISIBLE);
             totalPriceCart = Common.TOTAL_CART_PRICE;
             countOfCart = Common.TOTAL_CART_AMOUNT;
 
-            txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
+
+            binding.speedCart.price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
+            binding.speedCart.count.setText("X " + countOfCart);
 //            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)).append(" ( ").append(countOfCart).append(" ) "));
-            btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
         }
-        layout_speed_cart.setOnClickListener(view -> gotoCart());
+        binding.speedCart.getRoot().setOnClickListener(view -> gotoCart());
     }
 
     void gotoCart() {
         try {
-            Intent intent = new Intent(SearchProductsActivity.this, HomeActivity.class);
+            Intent intent = new Intent(SearchProductsActivity.this, HomeModefiedActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Constants.EXTRA_SPEED_CART, "EXTRA_SPEED_CART");
             EventBus.getDefault().unregister(this);
@@ -547,18 +482,19 @@ public class SearchProductsActivity extends BaseActivity {
                 totalPriceCart += event.getProductPrice();
 
                 isHaveCart = true;
-                layout_speed_cart.setVisibility(View.VISIBLE);
-                txt_totalPriceCart.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
-                btn_view_cart.setText(new StringBuilder().append(getString(R.string.view_cart)));
+                binding.speedCart.getRoot().setVisibility(View.VISIBLE);
+                binding.speedCart.getRoot().setVisibility(View.VISIBLE);
+                binding.speedCart.price.setText(new StringBuilder().append(Common.getDecimalNumber(totalPriceCart)).append(" ").append(getString(R.string.currency)));
+                binding.speedCart.count.setText("X " + countOfCart);
                 Common.totalPriceCart = totalPriceCart;
                 if (totalPriceCart <= 0.0f) {
                     isHaveCart = false;
-                    layout_speed_cart.setVisibility(View.GONE);
+                    binding.speedCart.getRoot().setVisibility(View.GONE);
                 }
             } else {
                 if (Common.TOTAL_CART_AMOUNT == 0) {
                     isHaveCart = false;
-                    layout_speed_cart.setVisibility(View.GONE);
+                    binding.speedCart.getRoot().setVisibility(View.GONE);
                 }
             }
         }

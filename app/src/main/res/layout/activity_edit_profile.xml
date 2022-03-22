@@ -1,233 +1,260 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".ui.home.setting.editProfile.EditProfileActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
-    <include layout="@layout/layout_toolbar_white" />
+    </data>
 
-    <TextView
-        android:id="@+id/txt_lab_setting"
-        style="@style/TextHeaderSetting"
-        android:text="@string/edit_profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bar" />
-
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/app_margin"
-        android:layout_marginBottom="@dimen/medium_margin"
-        app:layout_constraintBottom_toTopOf="@+id/btn_save"
-        app:layout_constraintTop_toBottomOf="@+id/txt_lab_setting">
+        android:layout_height="match_parent"
+        tools:context=".ui.home.setting.editProfile.EditProfileFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".05" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_email"
-                style="@style/TextInputLayoutStyle"
-                android:translationY="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".03" />
 
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Hazem@yahoo.com"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".95" />
 
-                    />
-            </com.google.android.material.textfield.TextInputLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline33"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".97" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_firstName"
-                style="@style/TextInputLayoutStyle"
-                android:translationY="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/input_email">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".5" />
 
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/firstName"
-                    android:inputType="text"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Hazem" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.0"
+            android:orientation="horizontal" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_lastName"
-                style="@style/TextInputLayoutStyle"
-                android:translationY="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/input_firstName">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".4" />
 
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:hint="@string/lastName"
-                    android:inputType="text"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Elnahas" />
-            </com.google.android.material.textfield.TextInputLayout>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".75" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_birthDate"
-                style="@style/TextInputLayoutStyle"
-                android:translationY="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/input_lastName">
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".5" />
 
-                <EditText
-                    style="@style/EditTextStyle"
-                    android:drawableEnd="@drawable/ic_calendar"
-                    android:enabled="false"
-                    android:hint="@string/date_of_birth_optional"
-                    android:inputType="date"
-                    android:text="@string/select_date"
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.02" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent=".98" />
+
+        <com.corptia.bringero.utils.customAppBar.CustomAppBar
+            android:id="@+id/tool_bar"
+            android:layout_width="0dp"
+            app:is_right_icon="false"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline9"
+            app:text_value="@string/edit_profile" />
+
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/medium_margin"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toTopOf="@+id/btn_save"
+            app:layout_constraintEnd_toStartOf="@+id/guideline33"
+            app:layout_constraintStart_toStartOf="@+id/guideline22"
+            app:layout_constraintTop_toBottomOf="@+id/tool_bar">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_avatar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_placeholder_profile"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <View
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/ic_add_user"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_avatar"
+                    app:layout_constraintEnd_toEndOf="@+id/img_avatar" />
 
 
-            <TextView
-                android:id="@+id/txt_hint_radio_gender"
-                style="@style/HintTextStyle"
-                android:text="@string/gender_optional"
-                app:layout_constraintStart_toStartOf="@+id/input_birthDate"
-                app:layout_constraintTop_toBottomOf="@+id/input_birthDate" />
-
-            <RadioGroup
-                android:id="@+id/radioGroupGender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="@dimen/low_margin"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_hint_radio_gender">
-
-                <RadioButton
-                    android:id="@+id/radioMail"
-                    style="@style/MyRadioButtonStyle"
-                    android:layout_width="80dp"
+                <LinearLayout
+                    android:id="@+id/root"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppinsmedium"
-                    android:paddingStart="4dp"
-                    android:text="@string/mail" />
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/img_avatar">
 
-                <RadioButton
-                    android:id="@+id/radioFemail"
-                    style="@style/MyRadioButtonStyle"
-                    android:layout_width="80dp"
+                    <EditText
+                        android:id="@+id/input_first_name"
+                        style="@style/EditTextStyleMod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow_layout_input"
+                        android:hint="@string/firstName"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+                        app:layout_constraintStart_toStartOf="@+id/guideline22"
+                        app:layout_constraintTop_toBottomOf="@+id/creat_new_account_text" />
+
+                    <EditText
+                        android:id="@+id/input_last_name"
+                        style="@style/EditTextStyleMod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow_layout_input"
+                        android:hint="@string/lastName"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+                        app:layout_constraintStart_toStartOf="@+id/guideline22"
+                        app:layout_constraintTop_toBottomOf="@+id/creat_new_account_text" />
+
+                    <EditText
+                        android:id="@+id/input_phone_number"
+                        style="@style/EditTextStyleMod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow_layout_input"
+                        android:hint="@string/phone_number"
+                        android:inputType="phone"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+                        app:layout_constraintStart_toStartOf="@+id/guideline22"
+                        app:layout_constraintTop_toBottomOf="@+id/creat_new_account_text" />
+
+                    <EditText
+                        android:id="@+id/input_email"
+                        style="@style/EditTextStyleMod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow_layout_input"
+                        android:hint="@string/email"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+                        app:layout_constraintStart_toStartOf="@+id/guideline22"
+                        app:layout_constraintTop_toBottomOf="@+id/creat_new_account_text" />
+
+                    <EditText
+                        android:id="@+id/input_dob"
+                        style="@style/EditTextStyleMod"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow_layout_input"
+                        android:drawableEnd="@drawable/ic_calender"
+                        android:hint="@string/date_of_birth_optional"
+                        android:paddingStart="30dp"
+                        android:paddingEnd="30dp"
+                        android:focusable="false"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+                        app:layout_constraintStart_toStartOf="@+id/guideline22"
+                        app:layout_constraintTop_toBottomOf="@+id/creat_new_account_text" />
+
+
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/gender_select"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppinsmedium"
-                    android:paddingStart="4dp"
-                    android:text="@string/femail"
-
-                    />
-            </RadioGroup>
-
-            <View
-                android:id="@+id/view_center"
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:layout_marginEnd="@dimen/app_margin"
-                android:background="@color/colorIcons"
-                app:layout_constraintTop_toBottomOf="@+id/radioGroupGender" />
-
-            <TextView
-                android:id="@+id/txt_lab_receive"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:layout_marginEnd="@dimen/app_margin"
-                android:fontFamily="@font/poppinssemibold"
-                android:text="@string/receive_updates_of_offers_npromotions_and_discount"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                app:layout_constraintTop_toBottomOf="@+id/view_center" />
-
-            <TextView
-                android:id="@+id/txt_lab_sms_notification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="@dimen/large_margin"
-                android:fontFamily="@font/poppinsregular"
-                android:text="@string/sms_notification"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_receive" />
-
-            <Switch
-                android:id="@+id/switch_sms_notification"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/app_margin"
-                android:thumb="@drawable/selector_switch_thumb"
-                android:track="@drawable/selector_switch_track"
-                app:layout_constraintBottom_toBottomOf="@+id/txt_lab_sms_notification"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txt_lab_sms_notification" />
+                    android:background="@drawable/shadow_layout_input"
+                    android:gravity="center_vertical"
+                    android:paddingStart="30dp"
+                    android:paddingEnd="30dp"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/root" />
 
 
-            <TextView
-                android:id="@+id/txt_lab_newsletter_subscription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginTop="@dimen/medium_margin"
-                android:fontFamily="@font/poppinsregular"
-                android:text="@string/newsletter_subscription"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_sms_notification" />
-
-            <Switch
-                android:id="@+id/switch_newsletter_subscription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/app_margin"
-                android:thumb="@drawable/selector_switch_thumb"
-                android:track="@drawable/selector_switch_track"
-                app:layout_constraintBottom_toBottomOf="@+id/txt_lab_newsletter_subscription"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/txt_lab_newsletter_subscription" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    android:src="@drawable/ic_drop_down_icon"
+                    app:layout_constraintBottom_toBottomOf="@+id/gender_select"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/root" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
 
-    </ScrollView>
+        <Button
+            android:id="@+id/btn_save"
+            style="@style/ButtonNormalStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:layout_marginBottom="@dimen/app_margin"
+            android:text="@string/save"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
-    <Button
-        android:id="@+id/btn_save"
-        style="@style/ButtonNormalStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/app_margin"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

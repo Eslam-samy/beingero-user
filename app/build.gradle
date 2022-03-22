@@ -1,18 +1,23 @@
-apply plugin: 'com.android.application'
-apply plugin: 'com.apollographql.android'
+plugins {
+    id("com.android.application")
+    id("com.apollographql.apollo").version("2.4.6")
+    id ("androidx.navigation.safeargs")
 
+}
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.0"
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
     defaultConfig {
+
         applicationId "com.corptia.bringero"
         minSdkVersion 21
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 65
         versionName "0.65"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
+
 
     lintOptions {
         checkReleaseBuilds false
@@ -48,36 +53,44 @@ android {
 //        incremental true
 //        javaMaxHeapSize "1g"
 //    }
+    buildFeatures {
+        dataBinding true
+    }
+
+
+
 }
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.2'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.google.android.material:material:1.0.0'
-    implementation 'androidx.navigation:navigation-fragment:2.0.0'
-    implementation 'androidx.navigation:navigation-ui:2.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    implementation 'androidx.fragment:fragment:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.navigation:navigation-fragment:2.4.1'
+    implementation 'androidx.navigation:navigation-ui:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.fragment:fragment:1.4.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation "androidx.work:work-runtime:2.7.1"
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 //    implementation 'com.google.android.material:material:1.2.0-alpha02'
 
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.cardview:cardview:1.0.0'
 
 
     //1.2.2
-    implementation 'com.apollographql.apollo:apollo-runtime:1.0.0'
-    implementation 'com.apollographql.apollo:apollo-rx2-support:1.0.0'
-    implementation "io.reactivex.rxjava2:rxjava:2.2.9"
+    implementation 'com.apollographql.apollo:apollo-runtime:2.4.6'
+    implementation 'com.apollographql.apollo:apollo-rx2-support:2.4.6'
+    implementation "io.reactivex.rxjava2:rxjava:2.2.16"
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
-    implementation 'com.apollographql.apollo:apollo-http-cache:1.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+    implementation 'com.apollographql.apollo:apollo-http-cache:2.4.6'
 
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
 
@@ -88,14 +101,14 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     //Dagger 2
-    implementation 'com.google.dagger:dagger:2.15'
-    implementation 'com.google.dagger:dagger-android:2.15'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
-    annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
+    implementation 'com.google.dagger:dagger-android:2.35.1'
+    implementation 'com.google.dagger:dagger:2.38.1'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.38.1'
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.38.1'
     implementation 'com.google.dagger:dagger-android-support:2.15'
     //Butter Knife
-    implementation 'com.jakewharton:butterknife:10.1.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
     //For Shadow ( Failed With Libs )
     //implementation 'com.github.BluRe-CN:ComplexView:v1.0'
@@ -109,19 +122,18 @@ dependencies {
 
     //ripple Animation Click On Button
     implementation 'com.balysv:material-ripple:1.0.2'
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
     // Google Maps Services (needed for directions)
     implementation 'com.google.maps:google-maps-services:0.2.9'
     implementation 'org.slf4j:slf4j-nop:1.7.25'
-    implementation 'com.google.android.libraries.places:places:2.1.0'
+    implementation 'com.google.android.libraries.places:places:2.5.0'
 //    implementation 'com.google.firebase:firebase-inappmessaging-display:17.2.0'
 //    implementation 'com.google.guava:guava:27.0.1-android'
 
 
-    implementation group: 'androidx.work', name: 'work-runtime-ktx', version: '2.3.0-alpha01'
 
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
 
     implementation group: 'org.jetbrains', name: 'annotations', version: '17.0.0'
 
@@ -131,11 +143,11 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.7.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.7.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.8.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.12'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.16'
     implementation 'com.squareup.retrofit2:converter-scalars:2.0.1'
 
 
@@ -151,22 +163,21 @@ dependencies {
 //    implementation 'com.michaelgarnerdev.materialsearchview:materialsearchview:0.1.0@aar'
 
     //Firebase
-    implementation 'com.google.firebase:firebase-core:17.2.1'
-    implementation 'com.google.firebase:firebase-auth:19.2.0'
-    implementation 'com.google.firebase:firebase-database:19.2.0'
+    implementation 'com.google.firebase:firebase-core:20.1.0'
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.firebase:firebase-database:20.0.3'
 
-    implementation 'com.firebase:geofire-android:3.0.0'
+    implementation 'com.firebase:geofire-android:3.1.0'
 
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
-    implementation 'com.github.uzairiqbal91:CircularTimerView:1.0'
-
     //For Can Distance
+    //noinspection GradleDynamicVersion
     implementation 'com.google.maps.android:android-maps-utils:0.5+'
 
-    implementation 'com.google.firebase:firebase-config:19.0.0'
+    implementation 'com.google.firebase:firebase-config:21.0.1'
 
     implementation 'com.github.iwgang:countdownview:2.1.6'
 

@@ -3,59 +3,72 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:background="@drawable/shadow_location">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/shadow_layout_input">
 
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="12sp"
+        android:layout_marginStart="12sp"
+        android:src="@drawable/ic_location_mod"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txt_address_name"
         style="@style/TextCardDefaultStyle"
-        app:layout_constraintBottom_toTopOf="@+id/txt_street"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="New Damietta - 33 Masr Street"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:fontFamily="@font/poppinsmedium"
-        android:layout_marginStart="@dimen/app_low_margin"
-        android:textColor="@color/colorPrimary" />
-
-    <TextView
-        android:id="@+id/txt_street"
-        style="@style/TextCardDefaultStyle"
-        android:layout_width="0dp"
-        android:layout_marginTop="@dimen/low_xx_text_size"
         android:fontFamily="@font/poppinsregular"
-        android:textColor="@color/colorDavyGray"
-        android:textSize="@dimen/low_xx_text_size"
+        android:padding="20dp"
+        android:textColor="@color/black"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/img_selected"
-        app:layout_constraintStart_toStartOf="@+id/txt_address_name"
-        app:layout_constraintTop_toBottomOf="@+id/txt_address_name"
-        tools:text="Conoco, Precision Transmition, 2-A"
-        android:layout_marginStart="0dp"
-        android:gravity="start"/>
+        app:layout_constraintStart_toEndOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="New Damietta - 33 Masr Street" />
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/txt_street"-->
+    <!--        style="@style/TextCardDefaultStyle"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_marginTop="@dimen/low_xx_text_size"-->
+    <!--        android:fontFamily="@font/poppinsregular"-->
+    <!--        android:textColor="@color/colorDavyGray"-->
+    <!--        android:textSize="@dimen/low_xx_text_size"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toStartOf="@+id/img_selected"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/txt_address_name"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/txt_address_name"-->
+    <!--        tools:text="Conoco, Precision Transmition, 2-A"-->
+    <!--        android:layout_marginStart="0dp"-->
+    <!--        android:gravity="start"/>-->
 
     <ImageView
         android:id="@+id/btn_update"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:src="@drawable/ic_update"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/app_low_margin"
-        android:padding="@dimen/low_padding"/>
+        android:padding="@dimen/low_padding"
+        android:src="@drawable/ic_pink_pen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/img_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/normal_margin"
         android:src="@drawable/ic_check_mark"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_update"
         app:layout_constraintEnd_toStartOf="@+id/btn_update"
         app:layout_constraintTop_toTopOf="@+id/btn_update"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_update"
-        android:layout_marginEnd="@dimen/normal_margin"
-        android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

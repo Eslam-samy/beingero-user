@@ -1,7 +1,9 @@
 package com.corptia.bringero.ui.home.cart.checkOut;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
@@ -12,7 +14,10 @@ import android.graphics.Paint;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,6 +32,7 @@ import android.widget.Toast;
 import com.corptia.bringero.Common.Common;
 import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.R;
+import com.corptia.bringero.databinding.ActivityCheckOutBinding;
 import com.corptia.bringero.graphql.ValidateCouponQuery;
 import com.corptia.bringero.ui.order.ordersDetails.OrdersPaidDetailsActivity;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
@@ -40,47 +46,11 @@ import es.dmoral.toasty.Toasty;
 
 public class CheckOutActivity extends BaseActivity implements CheckOutView {
 
+    ActivityCheckOutBinding binding;
 
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.recycler_cart)
-    RecyclerView recycler_cart;
+
     private CartAdapter cartAdapter;
 
-    @BindView(R.id.btn_confirm)
-    Button btn_confirm;
-
-    @BindView(R.id.image_correct)
-    ImageView image_correct;
-    @BindView(R.id.txt_title_name_address)
-    TextView txt_title_name_address;
-    @BindView(R.id.txt_address)
-    TextView txt_address;
-
-    @BindView(R.id.txt_subtotal)
-    TextView txt_subtotal;
-    @BindView(R.id.txt_delivery_fees_new)
-    TextView txt_delivery_fees_new;
-    @BindView(R.id.txt_delivery_fees_old)
-    TextView txt_delivery_fees_old;
-    @BindView(R.id.txt_total)
-    TextView txt_total;
-    @BindView(R.id.total_price)
-    TextView total_price;
-
-    @BindView(R.id.txt_date_order)
-    TextView txt_date_order;
-
-    @BindView(R.id.btn_control_coupon)
-    TextView btn_control_coupon;
-    @BindView(R.id.btn_add_coupon)
-    Button btn_add_coupon;
-    @BindView(R.id.edt_coupon_code)
-    EditText edt_coupon_code;
-    @BindView(R.id.layout_coupon)
-    LinearLayout layout_coupon;
-    @BindView(R.id.add_coupon_layout)
-    LinearLayout add_coupon_layout;
 
     CheckOutPresenter checkOutPresenter = new CheckOutPresenter(this);
 
@@ -93,18 +63,18 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
     Button btn_ok;
     AnimatedVectorDrawableCompat avd;
     AnimatedVectorDrawable avd2;
-
     AlertDialog dialog;
+    private String couponCode = "";
+
+
+    double deliveryValue = 0;
+    String oldTotal = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_out);
-
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_check_out);
         ButterKnife.bind(this);
-
-        initActionBar();
 
 
         if (getIntent() != null) {
@@ -114,139 +84,84 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
         alertDialog = new SpotsDialog.Builder().setContext(this).setCancelable(false).build();
 
         cartAdapter = new CartAdapter(this, Common.CURRENT_CART, false);
-        recycler_cart.setLayoutManager(new LinearLayoutManager(this));
-        recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, this)));
-        recycler_cart.setAdapter(cartAdapter);
+        binding.recyclerCart.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerCart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(15, this)));
+        binding.recyclerCart.setAdapter(cartAdapter);
 
-        btn_confirm.setOnClickListener(view -> {
+        binding.btnConfirm.setOnClickListener(view -> {
+            checkOutPresenter.sendOrder(couponCode);
+        });
 
-            if (layout_coupon.getVisibility() != View.GONE && !edt_coupon_code.isEnabled()) {
+        binding.removeCoupon.setOnClickListener(view -> {
+            binding.couponMessage.setText("");
+            couponCode = "";
+            binding.applyCoupon.setVisibility(View.VISIBLE);
+            binding.removeCoupon.setVisibility(View.GONE);
+            binding.inputCoupon.setText("");
+            binding.txtDiscount.setText("0.0" + " " + getString(R.string.currency));
+            binding.txtTotal.setText(oldTotal);
 
-                checkOutPresenter.sendOrder(edt_coupon_code.getText().toString());
-            } else if (layout_coupon.getVisibility() == View.GONE) {
-                checkOutPresenter.sendOrder("");
-            } else {
-                Toasty.warning(CheckOutActivity.this, "Must be remove coupon or apply").show();
+        });
+        binding.inputCoupon.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
-//                HomeActivity.navController.popBackStack();
-//                HomeActivity.bottomNavigationView.setVisibility(View.VISIBLE);
-//                HomeActivity.fab.show();
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (charSequence.length() > 3) {
+                    binding.applyCoupon.setBackground(getDrawable(R.drawable._6_gradient_rect));
+                } else {
+                    binding.applyCoupon.setBackground(getDrawable(R.drawable._6_gray_rect));
 
+                }
+            }
 
-            // HomeActivity.navController.navigate(R.id.action_checkOutFragment_to_nav_cart);
-            //requireActivity().finish();
+            @Override
+            public void afterTextChanged(Editable editable) {
 
-
-            //دول ذي بعض في الفعل
-            //getActivity().onBackPressed();
-            //NavHostFragment.findNavController(CheckOutFragment.this).popBackStack();
-
-
+            }
         });
 
         //Set Current Location
         if (Common.CURRENT_USER != null) {
-            image_correct.setVisibility(View.GONE);
-            txt_title_name_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
-            txt_address.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
-            txt_subtotal.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
+
+            //TODO sho delivery icon
+            binding.deliveryLocationCard.imageCorrect.setVisibility(View.GONE);
+            binding.deliveryLocationCard.txtTitleNameAddress.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getName());
+            binding.deliveryLocationCard.txtAddress.setText(Common.CURRENT_USER.getCurrentDeliveryAddress().getRegion() + " - " + Common.CURRENT_USER.getCurrentDeliveryAddress().getStreet());
+            binding.txtSubtotal.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice)).append(" ").append(getString(R.string.currency)));
 
             Log.d("DDD", "onCreate: store size and max" + Common.STORE_COUNT + "cart: " + Common.CURRENT_CART.size() + "max : " + Common.MAX_AD_COST_STORE);
-            if (Common.CURRENT_CART.size() <= Integer.parseInt(Common.MAX_AD_COST_STORE)){
-                txt_delivery_fees_new.setText(new StringBuilder().append(10).append(" ").append("-").append(" ").append(15).append(" ").append(getString(R.string.currency)));
-                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)) .append(" ")
-                        .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
-                total_price.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)) .append(" ")
-                        .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+            if (Common.CURRENT_CART.size() <= Integer.parseInt(Common.MAX_AD_COST_STORE)) {
+                deliveryValue = 15;
 
-            }else {
-
-                txt_delivery_fees_new.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
-                txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
-                total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
+                binding.txtDeliveryFeesNew.setText(new StringBuilder().append(10).append(" ").append("-").append(" ").append(15).append(" ").append(getString(R.string.currency)));
+                binding.txtTotal.setText(new StringBuilder().append(Common.getDecimalNumber(totalPrice + 10)).append(" ")
+                        .append("-").append(" ").append(Common.getDecimalNumber(totalPrice + 15)).append(" ").append(getString(R.string.currency)));
+            } else {
+                deliveryValue = (Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size());
+                binding.txtDeliveryFeesNew.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
+                binding.txtTotal.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
             }
         }
 
 
         //------------- For Coupon ----------
 
-        if (Common.CURRENT_CART.size() >= Integer.parseInt(Common.MIN_COUPON_STORE)) {
-
-            add_coupon_layout.setVisibility(View.VISIBLE);
-            btn_control_coupon.setTag(Constants.TAG_COUPON_ADD);
-            btn_control_coupon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if (btn_control_coupon.getTag().equals(Constants.TAG_COUPON_ADD)) {
-                        layout_coupon.setVisibility(View.VISIBLE);
-                        btn_control_coupon.setText(getString(R.string.remove));
-                        btn_control_coupon.setTag(Constants.TAG_COUPON_REMOVE);
-
-                        edt_coupon_code.setText("");
-                        edt_coupon_code.setEnabled(true);
-                    } else if (btn_control_coupon.getTag().equals(Constants.TAG_COUPON_REMOVE)) {
-
-                        layout_coupon.setVisibility(View.GONE);
-                        btn_control_coupon.setText(getString(R.string.add));
-                        btn_control_coupon.setTag(Constants.TAG_COUPON_ADD);
-                        if (Common.CURRENT_CART.size() <= Integer.parseInt(Common.MAX_AD_COST_STORE)) {
-                            txt_delivery_fees_new.setText(new StringBuilder().append(10).append(" ").append("-").append(" ").append(15).append(" ").append(getString(R.string.currency)));
-                            txt_total.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)).append(" ")
-                                    .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
-                            total_price.setText(new StringBuilder().append(Common.getDecimalNumber( totalPrice + 10)).append(" ")
-                                    .append("-").append(" ").append(Common.getDecimalNumber( totalPrice + 15)).append(" ").append(getString(R.string.currency)));
-
-                        } else {
-                            txt_delivery_fees_new.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
-                            txt_total.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
-                            total_price.setText(new StringBuilder().append(Common.getDecimalNumber((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size()) + totalPrice)).append(" ").append(getString(R.string.currency)));
-                        }
-                        edt_coupon_code.setText("");
-
-                        txt_delivery_fees_old.setVisibility(View.INVISIBLE);
-
-                    } else if (btn_control_coupon.getTag().equals(Constants.TAG_COUPON_CHANGE)) {
-                        layout_coupon.setEnabled(true);
-
-                        btn_control_coupon.setTag(Constants.TAG_COUPON_REMOVE);
-                        btn_control_coupon.setText(getString(R.string.remove));
-                        btn_add_coupon.setVisibility(View.VISIBLE);
-
-                        edt_coupon_code.setEnabled(true);
-
-                    }
-                }
-            });
-        }else {
-            add_coupon_layout.setVisibility(View.GONE);
-        }
-        btn_add_coupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //Here validate Coupon
-                if (edt_coupon_code.getText().toString().trim().isEmpty()) {
+        binding.applyCoupon.setOnClickListener(view -> {
+            couponCode = binding.inputCoupon.getText().toString();
+            if (couponCode.length() > 3) {
+                if (binding.inputCoupon.getText().toString().trim().isEmpty()) {
                     Toasty.info(CheckOutActivity.this, getString(R.string.coupon_code_is_required)).show();
                     return;
                 }
-
-                checkOutPresenter.validateCoupon(edt_coupon_code.getText().toString(), Common.CURRENT_USER.getId());
+                checkOutPresenter.validateCoupon(couponCode, Common.CURRENT_USER.getId());
             }
+            //Here validate Coupon
         });
-
     }
-
-    private void initActionBar() {
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -286,24 +201,6 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
 
     @Override
     public void onSuccessMessage(String message) {
-
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//
-//            }
-//        });
-
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Intent intent = new Intent(CheckOutActivity.this, HomeActivity.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
 
     }
 
@@ -383,53 +280,48 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
     public void onSuccessValidateCoupon(ValidateCouponQuery.Data1 couponData) {
 
         runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void run() {
-
-                //Here fetch data
-
-                //Common.CURRENT_CART
-
-//                Delevary cost * count store = all delevaryCost
-//
-//                DelevaryCost * 50 / 100
-//
-//                        -----------------------------------------
-//                if(Delevary Cost - dicountValue < =0 )
-//
-//                Delevary Cost - dicountValue = All DelevaryCost * Count Store
 
                 double allDelivery = Integer.parseInt(Common.DELIVERY_COST) * Common.CURRENT_CART.size();
                 double finalDeliveryCost = 0;
 
                 if (couponData.userCanUse().canUse()) {
 
-                    edt_coupon_code.setEnabled(false);
-                    btn_control_coupon.setTag(Constants.TAG_COUPON_CHANGE);
-                    btn_control_coupon.setText(getString(R.string.change));
-                    btn_add_coupon.setVisibility(View.GONE);
+                    binding.couponMessage.setTextColor(getColor(R.color.approved));
+                    binding.couponMessage.setText(getString(R.string.coupon_applied));
+                    binding.applyCoupon.setVisibility(View.GONE);
+                    binding.removeCoupon.setVisibility(View.VISIBLE);
+                    oldTotal = binding.txtTotal.getText().toString();
 
-                    if (!couponData.discountFixed())
-                        finalDeliveryCost = (allDelivery * (1-couponData.discountRatio()));
-                    else {
-                        finalDeliveryCost = ( Integer.parseInt(Common.DELIVERY_COST) - couponData.discountValue()) *  Common.CURRENT_CART.size();
+
+//                    edt_coupon_code.setEnabled(false);
+//                    btn_control_coupon.setTag(Constants.TAG_COUPON_CHANGE);
+//                    btn_control_coupon.setText(getString(R.string.change));
+
+                    if (!couponData.discountFixed()) {
+                        finalDeliveryCost = (allDelivery * (1 - couponData.discountRatio()));
+                    } else {
+                        finalDeliveryCost = (Integer.parseInt(Common.DELIVERY_COST) - couponData.discountValue()) * Common.CURRENT_CART.size();
                     }
-
                     if (finalDeliveryCost <= Double.parseDouble(Common.MINDELIVERY_COST)) {
                         finalDeliveryCost = Double.parseDouble(Common.MINDELIVERY_COST);
                     }
 
-                    txt_delivery_fees_old.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
-                    txt_delivery_fees_old.setPaintFlags(txt_delivery_fees_old.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                    txt_delivery_fees_old.setVisibility(View.VISIBLE);
+//                    txt_delivery_fees_old.setText(new StringBuilder().append((Double.parseDouble(Common.DELIVERY_COST) * Common.CURRENT_CART.size())).append(" ").append(getString(R.string.currency)));
+//                    txt_delivery_fees_old.setPaintFlags(txt_delivery_fees_old.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+//                    txt_delivery_fees_old.setVisibility(View.VISIBLE);
+                    double val = deliveryValue - finalDeliveryCost;
+                    binding.txtDiscount.setText(val + " " + getString(R.string.currency));
 
-                    txt_delivery_fees_new.setText(new StringBuilder().append(Common.getDecimalNumber(finalDeliveryCost)).append(" ").append(getString(R.string.currency)));
+//                    binding.txtDeliveryFeesNew.setText(new StringBuilder().append(Common.getDecimalNumber(finalDeliveryCost)).append(" ").append(getString(R.string.currency)));
 
-                    txt_total.setText(new StringBuilder().append(Common.getDecimalNumber(finalDeliveryCost + totalPrice)).append(" ").append(getString(R.string.currency)));
-                    total_price.setText(new StringBuilder().append(Common.getDecimalNumber(finalDeliveryCost + totalPrice)).append(" ").append(getString(R.string.currency)));
+                    binding.txtTotal.setText(new StringBuilder().append(Common.getDecimalNumber(finalDeliveryCost + totalPrice)).append(" ").append(getString(R.string.currency)));
 
                 } else {
-                    Toasty.warning(CheckOutActivity.this, getString(R.string.you_have_run_out_of_this_coupon)).show();
+                    binding.couponMessage.setTextColor(getColor(R.color.colorDelete));
+                    binding.couponMessage.setText(getString(R.string.you_have_run_out_of_this_coupon));
                 }
 
             }
@@ -441,9 +333,11 @@ public class CheckOutActivity extends BaseActivity implements CheckOutView {
     public void onNotFoundValidateCoupon() {
 
         runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void run() {
-                Toasty.warning(CheckOutActivity.this, "لا يوجد خصم علي هذا الكوبون").show();
+                binding.couponMessage.setTextColor(getColor(R.color.colorDelete));
+                binding.couponMessage.setText("لا يوجد خصم علي هذا الكوبون");
             }
         });
 

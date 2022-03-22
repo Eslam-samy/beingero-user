@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,7 +39,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
     Context context;
     List<MyCartQuery.StoreDatum> myCartList = new ArrayList<>();
-    public CartItemsAdapter itemsAdapter;
+    public CartItemAdapterModefied itemsAdapter;
     boolean isCart;
     Handler handler;
     CallBackUpdateCartItemsListener callBackUpdateCartItemsListener;
@@ -70,77 +71,30 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
         @Nullable List<MyCartQuery.Item> itemList = new ArrayList<>(cartModel.Items());
 
-        itemsAdapter = new CartItemsAdapter(context, itemList, isCart, new IClickRecyclerAdapter() {
-            @Override
-            public void onClickAdapter(int positionItems) {
-                itemList.remove(positionItems);
+        itemsAdapter = new CartItemAdapterModefied(context, itemList, isCart, positionItems -> {
+            itemList.remove(positionItems);
 
-                if (itemList.size() == 0) {
+            if (itemList.size() == 0) {
 
-                    myCartList.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, myCartList.size());
-                }
+                myCartList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, myCartList.size());
             }
         });
 
-//        itemsAdapter.setiDeleteCartItemsListener(new CartItemsAdapter.IDeleteCartItemsListener() {
-//            @Override
-//            public void onDeleteCart(int positionItems, int amount) {
-//
-////                loading.showProgressBar(context, false);
-//
-//
-//                MyApolloClient.getApollowClientAuthorization().mutate(RemoveCartItemMutation.builder()._id(itemList.get(position)._id()).build())
-//                        .enqueue(new ApolloCall.Callback<RemoveCartItemMutation.Data>() {
-//                            @Override
-//                            public void onResponse(@NotNull Response<RemoveCartItemMutation.Data> response) {
-//
-//                                handler.post(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//
-//
-//                                        if (response.data().CartItemMutation().remove().status() == 200) {
-//
-//                                            Toast.makeText(context, "Items Deleted !", Toast.LENGTH_SHORT).show();
-//
-//                                            double totalProductPrice = amount * itemList.get(position).PricingProduct().storePrice();
-//                                            EventBus.getDefault().postSticky(new CalculatePriceEvent(totalProductPrice));
-//
-//                                            itemList.remove(positionItems);
-//
-//                                            if (itemList.size() == 0) {
-//
-//                                                myCartList.remove(position);
-//                                                notifyItemRemoved(position);
-//                                                notifyItemRangeChanged(position, myCartList.size());
-//                                            }
-//
-//                                        } else {
-//
-//                                        }
-//
-////                                        loading.hideProgressBar();
-//
-//
-//                                    }
-//                                });
-//
-//                            }
-//
-//                            @Override
-//                            public void onFailure(@NotNull ApolloException e) {
-//
-//                            }
-//                        });
-//
-//            }
-//        });
+
+        if (!isCart) {
+            double price = 0;
+            holder.checkoutLinear.setVisibility(View.VISIBLE);
+            for (int x = 0; x < itemList.size(); x++) {
+                price += itemList.get(x).totalPrice();
+            }
+            holder.totalPrice.setText(String.valueOf(price) + " " + context.getString(R.string.currency));
+        }
 
         holder.recycler_items.setNestedScrollingEnabled(false);
         holder.recycler_items.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
-        holder.recycler_items.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(10, context)));
+//        holder.recycler_items.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(10, context)));
         holder.recycler_items.setAdapter(itemsAdapter);
 
         holder.txt_name_store.setText(cartModel.Store().name());
@@ -153,22 +107,12 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
 
         if (callBackUpdateCartItemsListener != null) {
-
-
-            itemsAdapter.setUpdateCartItemsListener(new CartItemsAdapter.UpdateCartItemsListener() {
-                @Override
-                public void onUpdateCart(String itemId, int amount) {
-                    callBackUpdateCartItemsListener.callBack(itemId, amount);
-                }
-            });
+            itemsAdapter.setUpdateCartItemsListener((itemId, amount) -> callBackUpdateCartItemsListener.callBack(itemId, amount));
         }
 
-        if (isCart)        holder.img_delete_store_products.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(removeAllStoreItemsListener!=null){
-                    removeAllStoreItemsListener.removeAllStoreProducts(myCartList.get(position).Items(),position,myCartList.get(position).TotalPrice(),myCartList);
-                }
+        if (isCart) holder.img_delete_store_products.setOnClickListener(v -> {
+            if (removeAllStoreItemsListener != null) {
+                removeAllStoreItemsListener.removeAllStoreProducts(myCartList.get(position).Items(), position, myCartList.get(position).TotalPrice(), myCartList);
             }
         });
         if (isCart) {
@@ -256,12 +200,15 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         ImageView img_lock;
         @BindView(R.id.txt_name_store)
         TextView txt_name_store;
+
 //        @BindView(R.id.txt_total_price)
 //        TextView txt_total_price;
 
         ConstraintLayout layout_store_cart;
         ImageView img_delete_store_products;
 
+        LinearLayoutCompat checkoutLinear;
+        TextView totalPrice;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -274,6 +221,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     img_delete_store_products = itemView.findViewById(R.id.img_delete_store_products);
                     img_lock = itemView.findViewById(R.id.img_lock);
                 }
+            } else {
+                checkoutLinear = itemView.findViewById(R.id.checkout_linear);
+                totalPrice = itemView.findViewById(R.id.total_checkout);
             }
         }
     }
@@ -281,8 +231,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public interface CallBackUpdateCartItemsListener {
         void callBack(String itemId, int amount);
     }
+
     public interface RemoveAllStoreItemsListener {
-        void removeAllStoreProducts(List<MyCartQuery.Item> storeItems, int position,Double totalPrice,List<MyCartQuery.StoreDatum> cartList);
+        void removeAllStoreProducts(List<MyCartQuery.Item> storeItems, int position, Double totalPrice, List<MyCartQuery.StoreDatum> cartList);
     }
 
     RemoveAllStoreItemsListener removeAllStoreItemsListener;

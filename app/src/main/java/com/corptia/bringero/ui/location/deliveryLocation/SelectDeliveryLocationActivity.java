@@ -3,7 +3,6 @@ package com.corptia.bringero.ui.location.deliveryLocation;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.util.StringUtil;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,6 +18,7 @@ import com.corptia.bringero.R;
 import com.corptia.bringero.base.BaseActivity;
 import com.corptia.bringero.ui.MapWork.MapsActivity;
 import com.corptia.bringero.ui.home.HomeActivity;
+import com.corptia.bringero.ui.home.HomeModefiedActivity;
 import com.corptia.bringero.utils.CustomLoading;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.karumi.dexter.Dexter;
@@ -77,7 +77,7 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
             btn_set_location.setEnabled(false);
 
             //UpdateLocation And Goto Home Activity
-            startActivity(new Intent(this, HomeActivity.class));
+            startActivity(new Intent(this, HomeModefiedActivity.class));
             overridePendingTransition( R.anim.fade_in, R.anim.fade_out );
             finish();
 
@@ -157,7 +157,7 @@ public class SelectDeliveryLocationActivity extends BaseActivity implements Sele
 
         bottomSheetDialog.dismiss();
         //Here Refresh get me ^_^
-        startActivity(new Intent(SelectDeliveryLocationActivity.this , HomeActivity.class));
+        startActivity(new Intent(SelectDeliveryLocationActivity.this , HomeModefiedActivity.class));
         finish();
     }
 

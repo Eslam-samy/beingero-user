@@ -1,113 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.home.cart.CartFragment"
-    android:background="@color/white">
+    xmlns:tools="http://schemas.android.com/tools">
 
-<!--    <TextView-->
-<!--        android:id="@+id/txt_lab_setting"-->
-<!--        android:text="@string/my_cart"-->
-<!--        style="@style/TextHeaderSetting"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/bar"-->
-<!--        app:layout_constraintStart_toStartOf="parent"/>-->
+    <data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_cart"
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        android:scrollbars="none"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/card_total"
-     />
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ui.home.cart.CartFragment">
 
-    <androidx.cardview.widget.CardView
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.02" />
 
-        android:id="@+id/card_total"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:cardElevation="@dimen/cardElevationMedium">
+        <com.corptia.bringero.utils.customAppBar.CustomAppBar
+            android:id="@+id/tool_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:is_right_icon="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline9"
+            app:text_value="@string/cart" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_checkOut"
+
+        <!--    <TextView-->
+        <!--        android:id="@+id/txt_lab_setting"-->
+        <!--        android:text="@string/my_cart"-->
+        <!--        style="@style/TextHeaderSetting"-->
+        <!--        app:layout_constraintTop_toBottomOf="@+id/bar"-->
+        <!--        app:layout_constraintStart_toStartOf="parent"/>-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_cart"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:visibility="gone"
-            tools:visibility="visible"
-            >
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/card_total"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tool_bar" />
 
-            <TextView
-                android:id="@+id/txt_lab_total"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/total"
-                android:textSize="@dimen/medium_text_size"
-                android:textColor="@color/colorGray"
-                app:layout_constraintTop_toTopOf="@+id/btn_next"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/app_margin"
-                android:fontFamily="@font/poppinsmedium"
-                android:includeFontPadding="false"
-                app:layout_constraintBottom_toTopOf="@+id/total_price"
-                app:layout_constraintVertical_chainStyle="packed"
+        <androidx.cardview.widget.CardView
 
-                />
+            android:id="@+id/card_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="@dimen/cardElevationMedium"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
-                android:id="@+id/total_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="280.00 EGP"
-                android:textSize="@dimen/large_text_size"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lab_total"
-                app:layout_constraintStart_toStartOf="@+id/txt_lab_total"
-                android:textColor="@color/black"
-                android:fontFamily="@font/poppinsmedium"
-                android:includeFontPadding="false" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_checkOut"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:visibility="gone"
+                tools:visibility="visible">
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".05" />
 
-            <Button
-                android:id="@+id/btn_next"
-                android:layout_height="wrap_content"
-                android:layout_width="146dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:text="@string/check_out"
-                android:background="@drawable/round_main_button"
-                android:layout_marginEnd="@dimen/app_margin"
-                android:textColor="@color/white"
-                android:textAllCaps="false"
-                android:textStyle="bold"
-                android:textSize="@dimen/medium_text_size"
-                android:fontFamily="@font/poppinsregular"/>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".03" />
 
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".95" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline33"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent=".97" />
 
-
-
-    </androidx.cardview.widget.CardView>
-
-    <include layout="@layout/layout_placeholder"/>
-
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/loading"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        app:lottie_loop="true"
-        app:lottie_fileName="loading.json"
-        app:lottie_autoPlay="true"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+                <Button
+                    android:id="@+id/btn_next"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/_6_gradient_rect"
+                    android:fontFamily="@font/poppinsregular"
+                    android:text="Go to Checkout - 120.00 EGP "
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/medium_text_size"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                    app:layout_constraintStart_toStartOf="@+id/guideline2"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <include
+            android:id="@+id/placeHolder"
+            layout="@layout/layout_placeholder" />
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="loading.json"
+            app:lottie_loop="true" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

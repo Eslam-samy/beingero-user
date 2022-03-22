@@ -20,7 +20,6 @@ import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
 import com.corptia.bringero.base.BaseViewHolder;
-import com.corptia.bringero.graphql.CreateCartItemMutation;
 import com.corptia.bringero.graphql.GetStoreProductsQuery;
 import com.corptia.bringero.graphql.RemoveCartItemMutation;
 import com.corptia.bringero.graphql.StoreSearchQuery;
@@ -28,7 +27,6 @@ import com.corptia.bringero.graphql.UpdateCartItemMutation;
 import com.corptia.bringero.model.CartItemsModel;
 import com.corptia.bringero.model.EventBus.CalculateCartEvent;
 import com.corptia.bringero.model.MyCart;
-import com.corptia.bringero.type.CreateCartItem;
 import com.corptia.bringero.type.UpdateCartItem;
 import com.corptia.bringero.ui.search.SearchProductsActivity;
 import com.corptia.bringero.utils.PicassoUtils;
@@ -73,6 +71,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
     String productName = "";
     String productImage = "";
     String productId = "";
+    String stepValue = "";
     //for cart
     double amount = 0;
 
@@ -140,6 +139,8 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         TextView txt_name_product;
         @BindView(R.id.txt_price)
         TextView txt_price;
+        @BindView(R.id.min_value)
+        TextView min_value;
 
         @BindView(R.id.txt_amount)
         TextView txt_amount;
@@ -156,9 +157,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
             setIsRecyclable(false);
-
         }
 
         @Override
@@ -175,6 +174,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                 continueBinding(position, product, null, productId = product._id());
             } else {
                 final StoreSearchQuery.ProductQuery productSearch = productsListSearch.get(position);
+                Log.d("ESLAM", "onBind: " + productSearch.Product().isPackaged());
                 continueBinding(position, null, productSearch, productId = productSearch._id());
             }
         }
@@ -189,7 +189,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
                     txt_discount.setVisibility(View.VISIBLE);
                     txt_old_price.setVisibility(View.VISIBLE);
-
                     discountActive = product.discountActive();
                     discountRatio = product.discountRatio();
 
@@ -219,10 +218,8 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
                 //Product Have Discount
                 if (productSearch.discountActive() != null && productSearch.discountActive()) {
-
                     txt_discount.setVisibility(View.VISIBLE);
                     txt_old_price.setVisibility(View.VISIBLE);
-
                     discountActive = productSearch.discountActive();
                     discountRatio = productSearch.discountRatio();
 
@@ -252,74 +249,88 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
             //Here Set Data On Cart
             txt_price.setText(new StringBuilder().append(Common.getDecimalNumber(price)).append(" ").append(context.getString(R.string.currency)));
             txt_old_price.setText(new StringBuilder().append(Common.getDecimalNumber(oldPrice)).append(" ").append(context.getString(R.string.currency)));
-            txt_discount.setText(new StringBuilder().append((int) (discountRatio * 100)).append(" %"));
+            txt_discount.setText(new StringBuilder().append((int) (discountRatio * 100)).append(" % OFF"));
             txt_name_product.setText(Utils.cutName(productName));
+            txt_name_product.setText(Utils.cutName(productName));
+
+
+            if (isSearch) {
+                if (productSearch.Product().isPackaged()) {
+                    stepValue = productSearch.Product().minSellingUnits().toString();
+                } else {
+                    stepValue = productSearch.Product().minSellingUnits() + context.getString(R.string.kg);
+                }
+            } else {
+                if (product.Product().isPackaged()) {
+                    stepValue = product.Product().minSellingUnits().toString();
+                } else {
+                    stepValue = product.Product().minSellingUnits() + context.getString(R.string.kg);
+                }
+            }
+            min_value.setText(stepValue);
             PicassoUtils.setImage(Common.BASE_URL_IMAGE + productImage, image_product);
             //Click handling
 
             if (listener != null && Common.IS_AVAILABLE_STORE) {
                 double finalPrice1 = price;
                 boolean finalIsPackaged = isPackaged;
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (!Common.adapterIsLoading) {
-                            //rePopulateData
-                            rePopulateData(position, product, productSearch);
-                            //Here Condition Limit Max Price
-                            if (Common.TOTAL_CART_PRICE <= 0) {
-                                Common.TOTAL_CART_PRICE = 0;
-                            }
-                            if (!isPackaged) {
-                                double step, actualAmount = 0;
-                                if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
-                                    step = minSellingUnits;
-                                    actualAmount = minSellingUnits;
-                                    inCart = false;
-                                } else {
-                                    inCart = true;
-                                    step = unitStep;
-                                    actualAmount = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) + unitStep;
-                                }
-                                if (checkMaxPrice(finalPrice1 * step)) return;
-                                if (actualAmount < 10) {
-                                    if (cartProductId.isEmpty()) {
-                                        //I am product new
-                                        Common.TOTAL_CART_AMOUNT += 1;
-                                        cartProductId = "any";
-                                    }
-                                    Common.TOTAL_CART_PRICE += (finalPrice1 * step);
-                                    if (!finalIsPackaged) {
-                                        txt_amount.setText(new StringBuilder().append(actualAmount).append(" ").append(context.getString(R.string.kg)));
-                                    }
-                                    continueClickFromOutSide(actualAmount, finalPrice1 * step, false, product, productSearch);
-                                }
-
-                                animateTheAmount(step);
-
+                itemView.setOnClickListener(view -> {
+                    if (!Common.adapterIsLoading) {
+                        //rePopulateData
+                        rePopulateData(position, product, productSearch);
+                        //Here Condition Limit Max Price
+                        if (Common.TOTAL_CART_PRICE <= 0) {
+                            Common.TOTAL_CART_PRICE = 0;
+                        }
+                        if (!isPackaged) {
+                            double step, actualAmount = 0;
+                            if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
+                                step = minSellingUnits;
+                                actualAmount = minSellingUnits;
+                                inCart = false;
                             } else {
-                                if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
-                                    inCart = false;
-                                } else {
-                                    inCart = true;
-                                }
-                                if (checkMaxPrice(finalPrice1)) return;
-                                int count;
-                                count = Integer.parseInt(txt_amount.getText().toString().split(" ")[0]) + 1;
-                                if (count < 10) {
-                                    if (cartProductId.isEmpty()) {
-                                        //I am product new
-                                        Common.TOTAL_CART_AMOUNT += 1;
-                                        cartProductId = "any";
-                                    }
-                                    Common.TOTAL_CART_PRICE += finalPrice1;
-                                    continueClickFromOutSide(count, finalPrice1, false, product, productSearch);
-                                    if (finalIsPackaged) {
-                                        txt_amount.setText(new StringBuilder().append(count).append(" ").append("X"));
-                                    }
-                                }
-                                animateTheAmount(count);
+                                inCart = true;
+                                step = unitStep;
+                                actualAmount = Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) + unitStep;
                             }
+                            if (checkMaxPrice(finalPrice1 * step)) return;
+                            if (actualAmount < 10) {
+                                if (cartProductId.isEmpty()) {
+                                    //I am product new
+                                    Common.TOTAL_CART_AMOUNT += 1;
+                                    cartProductId = "any";
+                                }
+                                Common.TOTAL_CART_PRICE += (finalPrice1 * step);
+                                if (!finalIsPackaged) {
+                                    txt_amount.setText(new StringBuilder().append(actualAmount).append(" ").append(context.getString(R.string.kg)));
+                                }
+                                continueClickFromOutSide(actualAmount, finalPrice1 * step, false, product, productSearch);
+                            }
+
+                            animateTheAmount(step);
+
+                        } else {
+                            if (Double.parseDouble(txt_amount.getText().toString().split(" ")[0]) == 0f) {
+                                inCart = false;
+                            } else {
+                                inCart = true;
+                            }
+                            if (checkMaxPrice(finalPrice1)) return;
+                            int count;
+                            count = Integer.parseInt(txt_amount.getText().toString().split(" ")[0]) + 1;
+                            if (count < 10) {
+                                if (cartProductId.isEmpty()) {
+                                    //I am product new
+                                    Common.TOTAL_CART_AMOUNT += 1;
+                                    cartProductId = "any";
+                                }
+                                Common.TOTAL_CART_PRICE += finalPrice1;
+                                continueClickFromOutSide(count, finalPrice1, false, product, productSearch);
+                                if (finalIsPackaged) {
+                                    txt_amount.setText(new StringBuilder().append(count).append(" ").append("X"));
+                                }
+                            }
+                            animateTheAmount(count);
                         }
                     }
                 });
@@ -614,6 +625,7 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                 }
                 productName = product.Product().name();
                 productId = product._id();
+
                 isPackaged = product.Product().isPackaged();
                 if (product.Product().ImageResponse().status() == 200)
                     productImage = product.Product().ImageResponse().data().name();
@@ -668,7 +680,6 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
 
     public void checkItemInCart(TextView txt_amount, View btn_delete, View bg_delete, boolean update, GetStoreProductsQuery.Product product, StoreSearchQuery.ProductQuery productSearch) {
         String productId = "";
-
         if (!isSearch) {
             productId = product._id();
         } else {
@@ -715,11 +726,11 @@ public class NewStoreDetailAdapter extends RecyclerView.Adapter<BaseViewHolder> 
                         else
                             txt_amount.setText(new StringBuilder().append(amount).append(" ").append(context.getString(R.string.kg)));
 
-                            if (amount == 0) {
-                                txt_amount.setVisibility(View.INVISIBLE);
-                                btn_delete.setVisibility(View.INVISIBLE);
-                                bg_delete.setVisibility(View.INVISIBLE);
-                            }
+                        if (amount == 0) {
+                            txt_amount.setVisibility(View.INVISIBLE);
+                            btn_delete.setVisibility(View.INVISIBLE);
+                            bg_delete.setVisibility(View.INVISIBLE);
+                        }
                         break;
                     }
                 }

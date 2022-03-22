@@ -21,104 +21,143 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.Main.resetPassword.ResetPasswordStepTwo"></activity>
+        <activity
+            android:name=".ui.home.order.MyOrdersActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.home.HomeModefiedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.storesDetail.single_store.SingleStoreActivity"
+            android:exported="true" />
+        <activity android:name=".ui.Main.resetPassword.ResetPasswordStepTwo" />
         <activity android:name=".ui.webview.WebViewActivity" />
         <activity android:name=".ui.test.TestActivity" />
         <activity
             android:name=".ui.Main.signup.SignupActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.Main.login.LoginActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.Main.suspend.SuspendActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.Main.underMaintenance.UnderMaintenanceActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.Main.comingSoon.ComingSoonActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.allowLocation.AllowLocationActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.order.orderStoreDetail.OrderStoreDetailsActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.tracking.TrackingActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.search.SearchProductsActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".ui.home.cart.checkOut.CheckOutActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.location.AllLocation.LocationsDeliveryActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.location.addNewLocation.AddNewLocationActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.location.deliveryLocation.SelectDeliveryLocationActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.pricingProduct.PricingProductActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.order.ordersDetails.OrdersPaidDetailsActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.locations.LocationsActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.cart.CartActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.notification.NotificationActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.Main.resetPassword.ResetPasswordActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.setting.language.LanguageActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.setting.contactUs.ContactUsActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.setting.changePassword.ChangePasswordActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.setting.editProfile.EditProfileActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.setting.main.SettingActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.productDetail.ProductDetailActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.storesDetail.StoreDetailActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.stores.StoresActivity"
+            android:exported="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.HomeActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name=".ui.Main.otp.VerifyPhoneNumberActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.splash.SplashActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/FullWindow">
             <intent-filter>
@@ -130,10 +169,12 @@
         </activity>
         <activity
             android:name=".ui.Main.MainActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.MapWork.MapsActivity"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/FullWindow" />
 

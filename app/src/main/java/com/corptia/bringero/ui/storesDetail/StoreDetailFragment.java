@@ -323,9 +323,7 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                 img_placeholder.setImageResource(R.drawable.ic_placeholder_product);
                 btn_1.setText(getString(R.string.another_store));
                 btn_2.setText(getString(R.string.menu_home));
-
                 btn_1.setOnClickListener(view -> getActivity().finish());
-
                 btn_2.setOnClickListener(view -> {
                     Intent intent = new Intent(getActivity(), HomeActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -388,11 +386,8 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
                                 @Override
                                 public void OnSuccessCallback() {
 //                                    Log.d("HAZEM" , "Welcome OnSuccessCallback " +position);
-                                    handler.post(new Runnable() {
-                                        @Override
-                                        public void run() {
+                                    handler.post(() -> {
 //                                            storeDetailAdapter.notifyItemChanged(position);
-                                        }
                                     });
                                 }
 
@@ -401,10 +396,6 @@ public class StoreDetailFragment extends Fragment implements StoreDetailContract
 
                                 }
                             });
-
-
-                        } else {
-
                         }
 
                     }

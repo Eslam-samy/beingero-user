@@ -5,37 +5,133 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.location.addNewLocation.AddNewLocationActivity">
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".05" />
 
-    <include
-        layout="@layout/layout_toolbar"/>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".03" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".97" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.0"
+        android:orientation="horizontal" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".98" />
+
+
+    <com.corptia.bringero.utils.customAppBar.CustomAppBar
+        android:id="@+id/tool_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline9"
+        app:text_value="@string/address" />
+
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_save"
-        app:layout_constraintTop_toBottomOf="@+id/bar">
+        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+        app:layout_constraintStart_toStartOf="@+id/guideline22"
+        app:layout_constraintTop_toBottomOf="@+id/tool_bar">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="@dimen/app_margin">
+            android:layout_marginTop="@dimen/app_margin"
+            android:orientation="vertical">
 
-
-            <fragment
-                android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                tools:context="net.corptia.talabyat.MapsActivity"
-                android:layout_marginStart="@dimen/app_margin"
-                android:layout_marginEnd="@dimen/app_margin"/>
+                app:cardCornerRadius="10dp"
+                android:elevation="0dp"
+                app:cardElevation="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_height="wrap_content">
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    tools:context="net.corptia.talabyat.MapsActivity" />
+            </androidx.cardview.widget.CardView>
+
 
             <RelativeLayout
+                android:layout_marginTop="10dp"
+                style="@style/ShadowLayoutInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/ShadowLayoutInput">
+                android:layout_height="wrap_content">
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_region"
                     style="@style/TextInputLayoutStyle"
@@ -44,17 +140,16 @@
                     <EditText
                         style="@style/EditTextStyle"
                         android:hint="@string/region"
-                        android:inputType="text"
-                        />
+                        android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
 
 
             <RelativeLayout
+                style="@style/ShadowLayoutInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/ShadowLayoutInput">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_address_name"
@@ -63,14 +158,12 @@
                     <EditText
                         style="@style/EditTextStyle"
                         android:hint="@string/address_name"
-                        android:inputType="text"
-                        />
+                        android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
 
             </RelativeLayout>
-
 
 
             <TextView
@@ -90,47 +183,46 @@
                     android:id="@+id/spinner_flatType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dialog"
-                    android:textSize="15sp"
                     android:background="@drawable/shadow_layout_input"
                     android:paddingStart="26dp"
+                    android:spinnerMode="dialog"
+                    android:textSize="15sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
                     android:src="@drawable/ic_arrow_down"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginEnd="30dp"/>
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-<!--            <Spinner-->
-<!--                android:id="@+id/spinner_language"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="@dimen/high_margin"-->
-<!--                android:layout_marginEnd="@dimen/high_margin"-->
-<!--                android:background="@drawable/bg_edit_text"-->
-<!--                android:paddingStart="10dp"-->
-<!--                android:spinnerMode="dialog"-->
-<!--                android:textSize="15sp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/txt_hint_spinner_language"-->
-<!--                tools:padding="@dimen/high_padding" />-->
+            <!--            <Spinner-->
+            <!--                android:id="@+id/spinner_language"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginStart="@dimen/high_margin"-->
+            <!--                android:layout_marginEnd="@dimen/high_margin"-->
+            <!--                android:background="@drawable/bg_edit_text"-->
+            <!--                android:paddingStart="10dp"-->
+            <!--                android:spinnerMode="dialog"-->
+            <!--                android:textSize="15sp"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toBottomOf="@+id/txt_hint_spinner_language"-->
+            <!--                tools:padding="@dimen/high_padding" />-->
 
 
             <RelativeLayout
+                style="@style/ShadowLayoutInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/ShadowLayoutInput">
+                android:layout_height="wrap_content">
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_street"
                     style="@style/TextInputLayoutStyle">
@@ -138,17 +230,16 @@
                     <EditText
                         style="@style/EditTextStyle"
                         android:hint="@string/street"
-                        android:inputType="text"
-                        />
+                        android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
             </RelativeLayout>
 
 
             <RelativeLayout
+                style="@style/ShadowLayoutInput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/ShadowLayoutInput">
+                android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_building"
@@ -157,32 +248,28 @@
                     <EditText
                         style="@style/EditTextStyle"
                         android:hint="@string/building"
-                        android:inputType="number"
-                        />
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
             </RelativeLayout>
 
 
-
             <RelativeLayout
                 android:id="@+id/layout_input_floor"
+                style="@style/ShadowLayoutInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/ShadowLayoutInput"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input_floor"
-                    style="@style/TextInputLayoutStyle"
-                    >
+                    style="@style/TextInputLayoutStyle">
 
                     <EditText
                         style="@style/EditTextStyle"
                         android:hint="@string/floor"
-                        android:inputType="number"
-                        />
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -190,29 +277,25 @@
 
             <RelativeLayout
                 android:id="@+id/layout_input__flat"
+                style="@style/ShadowLayoutInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/ShadowLayoutInput"
                 android:visibility="gone">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/input__flat"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     style="@style/TextInputLayoutStyle"
-                    >
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
                     <EditText
                         style="@style/EditTextStyle"
                         android:hint="@string/flat"
-                        android:inputType="number"
-                        />
+                        android:inputType="number" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
             </RelativeLayout>
-
-
 
 
         </LinearLayout>
@@ -221,14 +304,12 @@
     </androidx.core.widget.NestedScrollView>
 
 
-
-
     <Button
         android:id="@+id/btn_save"
         style="@style/ButtonNormalStyle"
+        android:layout_marginBottom="@dimen/app_margin"
         android:text="@string/save_address"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginBottom="@dimen/app_margin"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

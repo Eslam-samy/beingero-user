@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -97,8 +99,8 @@ public class Common {
     public static DecimalFormat decimalFormatDiscount = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.US));
     public static NumberFormat formatter = decimalFormatDiscount;
     public static String CURRENT_IMIE;
-    public static boolean adapterIsLoading=false;
-    public static double totalPriceCart=0;
+    public static boolean adapterIsLoading = false;
+    public static double totalPriceCart = 0;
 
     public static int dpToPx(int dp, Context context) {
         if (context != null) {
@@ -152,8 +154,7 @@ public class Common {
         View sheetView = inflater.inflate(R.layout.layout_select_delivery_location, null);
 
         RecyclerView recycler_delivery_location = sheetView.findViewById(R.id.recycler_delivery_location);
-        Button btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
-        Button btn_apply_location = sheetView.findViewById(R.id.btn_apply_location);
+        LinearLayoutCompat btn_select_location_from_map = sheetView.findViewById(R.id.btn_select_location_from_map);
 
         recycler_delivery_location.setHasFixedSize(true);
         recycler_delivery_location.setLayoutManager(new LinearLayoutManager(context));
@@ -162,6 +163,7 @@ public class Common {
 
         adapter = new SelectDeliveryLocationAdapter(context, Common.CURRENT_USER.getDeliveryAddressesList());
         recycler_delivery_location.setAdapter(adapter);
+        BottomSheetDialog finalBottomSheetDialog1 = bottomSheetDialog;
 
         adapter.setClickListener(new IOnRecyclerViewClickListener() {
             @Override
@@ -169,6 +171,10 @@ public class Common {
                 //Here Update Location Yo CuttentLocation
 //                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID(position));
                 adapter.selectCurrentLocation(position);
+                if (adapter.isChangeLocation())
+                    presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID());
+                else
+                    finalBottomSheetDialog1.dismiss();
 
             }
         });
@@ -196,13 +202,6 @@ public class Common {
 
         });
 
-        BottomSheetDialog finalBottomSheetDialog1 = bottomSheetDialog;
-        btn_apply_location.setOnClickListener(view -> {
-            if (adapter.isChangeLocation())
-                presenter.userUpdateCurrentLocation(adapter.getCurrentDeliveryAddressID());
-            else
-                finalBottomSheetDialog1.dismiss();
-        });
 
         bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 //        bottomSheetDialog.getWindow().setBackgroundDrawableResource(R.drawable.round_up_bottom_sheet);
@@ -223,7 +222,7 @@ public class Common {
                 .enqueue(new ApolloCall.Callback<GetCartItemsCountQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<GetCartItemsCountQuery.Data> response) {
-double myPrice=0;
+                        double myPrice = 0;
                         if (response.data().CartItemQuery().getAll().status() == 200) {
 
                             CART_ITEMS_MODELS = new ArrayList<>();
@@ -244,8 +243,8 @@ double myPrice=0;
                                 if (isFirstTimeGetCartCount) {
 //                                    Common.LOG("Hello first");
                                     TOTAL_CART_PRICE += product.totalPrice();
-                                }else{
-                                    myPrice+=product.totalPrice();
+                                } else {
+                                    myPrice += product.totalPrice();
                                 }
 
                             }

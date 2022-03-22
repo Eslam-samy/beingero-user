@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:showIn="navigation_view">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation">
 
 
-    <group android:id="@+id/group1"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_addresses"
-            android:icon="@drawable/ic_nav_addresses"
-            android:title="@string/menu_my_addresses" />
+    <item
+        android:id="@+id/nav_addresses"
+        android:icon="@drawable/ic_nav_addresses"
+        android:title="@string/addresses" />
+    <item
+        android:id="@+id/nav_orders"
+        android:icon="@drawable/ic_nav_orders"
+        android:title="@string/orders" />
 
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_nav_settings"
-            android:title="@string/menu_settings" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_nav_settings"
+        android:title="@string/menu_settings" />
 
-        <item
-            android:id="@+id/nav_contact"
-            android:icon="@drawable/ic_nav_contact"
-            android:title="@string/menu_contact" />
+    <item
+        android:id="@+id/nav_contact"
+        android:icon="@drawable/ic_nav_contact"
+        android:title="@string/contact_us" />
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@drawable/ic_nav_info"
+        android:title="@string/about_us" />
 
-    </group>
-
-
-
-
-
-
-    <group android:id="@+id/group2"
-        android:checkableBehavior="single">
-
-
-
-        <item android:id="@+id/nav_terms_conditions"
-            android:title="@string/terms_conditions" />
-
-        <item android:id="@+id/nav_privacy_policy"
-            android:title="@string/privacy_policy"/>
-
-        <item
-            android:id="@+id/nav_faq_support"
-            android:title="@string/faq_support"/>
-    </group>
+    <item
+        android:id="@+id/nav_terms_conditions"
+        android:icon="@drawable/ic_nav_terms"
+        android:title="@string/terms_conditions" />
+    <item
+        android:id="@+id/nav_invite"
+        android:icon="@drawable/ic_user_add"
+        android:title="@string/invite_friend" />
+    <item
+        android:id="@+id/nav_rate"
+        android:icon="@drawable/ic_rate"
+        android:title="@string/rate_app" />
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_logout_red"
+        android:title="@string/log_out" />
 
 
 </menu>

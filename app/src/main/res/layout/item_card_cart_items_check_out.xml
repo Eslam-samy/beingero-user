@@ -2,78 +2,70 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/shadow_cart"
+    android:orientation="vertical"
     android:padding="25dp">
 
 
+    <ImageView
+        android:id="@+id/image_product"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_placeholder_product"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-            <ImageView
-                android:id="@+id/image_product"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_placeholder_product"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:padding="5dp"
-                />
+    <TextView
+        android:id="@+id/txt_name_product"
+        style="@style/TextCardDefaultStyle"
+        android:fontFamily="@font/poppinssemibold"
+        app:layout_constraintStart_toEndOf="@+id/image_product"
+        app:layout_constraintTop_toTopOf="@+id/image_product"
+        tools:text="Nike Official" />
 
-
-
-
-        <TextView
-            android:id="@+id/txt_name_product"
-            style="@style/TextCardDefaultStyle"
-            tools:text="Nike Official"
-            android:fontFamily="@font/poppinssemibold"
-            app:layout_constraintTop_toTopOf="@+id/image_product"
-            app:layout_constraintStart_toEndOf="@+id/image_product"/>
-
-        <TextView
-            android:id="@+id/txt_price"
-            style="@style/TextCardDefaultStyle"
-            android:textColor="@color/colorAccent"
-            tools:text="USD 180.00"
-            android:fontFamily="@font/poppinsregular"
-            app:layout_constraintStart_toEndOf="@+id/image_product"
-            app:layout_constraintTop_toBottomOf="@+id/txt_name_product"/>
+    <TextView
+        android:id="@+id/txt_price"
+        style="@style/TextCardDefaultStyle"
+        android:fontFamily="@font/poppinsregular"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintStart_toEndOf="@+id/image_product"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name_product"
+        tools:text="USD 180.00" />
 
     <TextView
         android:id="@+id/txt_total_price"
         style="@style/TextCardDefaultStyle"
-        android:textColor="@color/colorAccent"
-        android:text="USD 180.00"
         android:fontFamily="@font/poppinsregular"
-        app:layout_constraintStart_toEndOf="@+id/txt_price"
-        app:layout_constraintTop_toTopOf="@+id/txt_price"
+        android:text="USD 180.00"
+        android:textColor="@color/colorAccent"
         android:visibility="gone"
-        />
+        app:layout_constraintStart_toEndOf="@+id/txt_price"
+        app:layout_constraintTop_toTopOf="@+id/txt_price" />
+
     <TextView
         android:id="@+id/txt_discount"
         style="@style/TextCardDefaultStyle"
-        android:textColor="@color/colorAccent"
-        android:text="USD 180.00"
         android:fontFamily="@font/poppinsregular"
-        app:layout_constraintStart_toEndOf="@+id/txt_price"
-        app:layout_constraintTop_toTopOf="@+id/txt_price"
+        android:text="USD 180.00"
+        android:textColor="@color/colorAccent"
         android:visibility="gone"
-        />
+        app:layout_constraintStart_toEndOf="@+id/txt_price"
+        app:layout_constraintTop_toTopOf="@+id/txt_price" />
+
     <TextView
         android:id="@+id/txt_old_price"
         style="@style/TextCardDefaultStyle"
-        android:textColor="@color/colorAccent"
-        android:text="USD 180.00"
         android:fontFamily="@font/poppinsregular"
-        app:layout_constraintStart_toEndOf="@+id/txt_price"
-        app:layout_constraintTop_toTopOf="@+id/txt_price"
+        android:text="USD 180.00"
+        android:textColor="@color/colorAccent"
         android:visibility="gone"
-        />
-
-
+        app:layout_constraintStart_toEndOf="@+id/txt_price"
+        app:layout_constraintTop_toTopOf="@+id/txt_price" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

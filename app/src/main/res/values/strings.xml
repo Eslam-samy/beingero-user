@@ -282,6 +282,41 @@
     <string name="select_your_address">Select your address</string>
     <string name="allow_location">Allow Location</string>
     <string name="we_need_your_permission_to_access_your_location">we need your permission to access your location</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_profile">My profile</string>
+    <string name="current_location">Current Location</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
+    <string name="subject">Subject</string>
+    <string name="write_details_here">write details here</string>
+    <string name="send_message">Send Message</string>
+    <string name="stores_list">Stores List</string>
+    <string name="single_store">Single Store</string>
+    <string name="addresses">Addresses</string>
+    <string name="about_us">About Us</string>
+    <string name="invite_friend">Invite Friend</string>
+    <string name="rate_app">Rate App</string>
+    <string name="select_delivery_address">Select Delivery Address</string>
+    <string name="add_new_address">Add new address</string>
+    <string name="categories">Categories</string>
+    <string name="see_all">See All</string>
+    <string name="popular_store">Popular store</string>
+    <string name="go_to_checkout">GO to Checkout</string>
+    <string name="confirm_order">Confirm Order</string>
+    <string name="complete">Complete</string>
+    <string name="apply">Apply</string>
+    <string name="enter_coupon_code">Enter Coupon Code</string>
+    <string name="delivery">Delivery</string>
+    <string name="discount">Discount</string>
+    <string name="coupon_applied">Coupon Applied</string>
+    <string name="latest_orders">Latest Orders</string>
+    <string name="order_id_mod">Order ID :</string>
+    <string name="date">Date</string>
+    <string name="total_price">Total Price</string>
 
 </resources>
 

@@ -1,82 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/shadow_card_select_location">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:padding="@dimen/medium_padding">
+        android:layout_marginBottom="5dp"
+        android:layout_height="90dp"
+        android:background="@drawable/shadow_layout_input">
+
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:orientation="horizontal"
-            android:weightSum="8"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical">
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/image_correct"
+            app:layout_constraintStart_toEndOf="@+id/image_correct"
+            app:layout_constraintTop_toTopOf="@+id/image_correct">
 
-
-            <ImageView
-                android:id="@+id/image_location"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_weight="1"
-
-                android:src="@drawable/ic_location" />
-
-            <LinearLayout
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/txt_title_name_address"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:orientation="vertical">
+                android:fontFamily="@font/poppinsregular"
+                android:textColor="@color/black"
+                android:textSize="12dp"
+                app:layout_constraintStart_toEndOf="@+id/image_location"
+                app:layout_constraintTop_toTopOf="@+id/image_location"
+                tools:text="Home" />
 
-                <TextView
-                    android:id="@+id/txt_title_name_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="Home"
-                    app:layout_constraintStart_toEndOf="@+id/image_location"
-                    app:layout_constraintTop_toTopOf="@+id/image_location"
-                    android:textSize="@dimen/medium_text_size"
-                    android:fontFamily="@font/poppinsregular"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/txt_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/poppinsregular"
+                android:textSize="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/image_location"
+                app:layout_constraintStart_toEndOf="@+id/image_location"
+                app:layout_constraintTop_toBottomOf="@+id/txt_title_name_address"
+                tools:text="End Str Aboo El5eer" />
 
-                <TextView
-                    android:id="@+id/txt_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    tools:text="End Str Aboo El5eer"
-                    app:layout_constraintStart_toEndOf="@+id/image_location"
-                    app:layout_constraintBottom_toBottomOf="@+id/image_location"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_title_name_address"
-                    android:fontFamily="@font/poppinsregular"
-                    android:textSize="@dimen/normal_text_size"
-                    />
-
-
-            </LinearLayout>
-
-            <ImageView
-                android:id="@+id/image_correct"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_weight="1"
-                android:src="@drawable/ic_check_mark"
-                tools:visibility="invisible"
-                android:visibility="invisible"
-                />
 
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/image_correct"
+            android:layout_width="16sp"
+            android:layout_height="16sp"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/ic_unchecked_group"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

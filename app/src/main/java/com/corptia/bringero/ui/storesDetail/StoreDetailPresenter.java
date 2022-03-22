@@ -20,6 +20,8 @@ import java.util.List;
 
 import static com.corptia.bringero.utils.recyclerview.PaginationListener.PAGE_SIZE;
 
+import android.util.Log;
+
 public class StoreDetailPresenter {
 
     StoreDetailContract.StoreDetailView view;

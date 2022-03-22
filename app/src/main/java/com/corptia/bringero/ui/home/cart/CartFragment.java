@@ -6,10 +6,13 @@ import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,7 @@ import com.corptia.bringero.Common.Constants;
 import com.corptia.bringero.Interface.CallbackListener;
 import com.corptia.bringero.R;
 import com.corptia.bringero.Remote.MyApolloClient;
+import com.corptia.bringero.databinding.FragmentCartBinding;
 import com.corptia.bringero.graphql.GeneralOptionAllQuery;
 import com.corptia.bringero.graphql.GeneralOptionQuery;
 import com.corptia.bringero.graphql.RemoveCartItemMutation;
@@ -34,6 +38,7 @@ import com.corptia.bringero.model.MyCart;
 import com.corptia.bringero.type.GeneralOptionFilter;
 import com.corptia.bringero.type.GeneralOptionNameEnum;
 import com.corptia.bringero.utils.CustomLoading;
+import com.corptia.bringero.utils.customAppBar.BarClicks;
 import com.corptia.bringero.utils.recyclerview.decoration.LinearSpacingItemDecoration;
 import com.corptia.bringero.graphql.MyCartQuery;
 import com.corptia.bringero.model.EventBus.CalculatePriceEvent;
@@ -53,40 +58,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 
-public class CartFragment extends Fragment implements CartContract.CartView {
+public class CartFragment extends Fragment implements CartContract.CartView, BarClicks {
 
-    @BindView(R.id.recycler_cart)
-    RecyclerView recycler_cart;
-    //Adapters
-    private CartAdapter cartAdapter;
-    @BindView(R.id.btn_next)
-    Button btn_next;
-    @BindView(R.id.total_price)
-    TextView total_price;
-    @BindView(R.id.layout_checkOut)
-    ConstraintLayout layout_checkOut;
-
+    FragmentCartBinding binding;
     Handler handler = new Handler();
     CartPresenter cartPresenter = new CartPresenter(this);
-
+    CartAdapter cartAdapter;
     double totalPrice = 0;
 
     //For Placeholder
-    @BindView(R.id.layout_placeholder)
-    ConstraintLayout layout_placeholder;
-    @BindView(R.id.img_placeholder)
-    ImageView img_placeholder;
-    @BindView(R.id.txt_placeholder_title)
-    TextView txt_placeholder_title;
-    @BindView(R.id.txt_placeholder_dec)
-    TextView txt_placeholder_dec;
-    @BindView(R.id.btn_1)
-    Button btn_home;
-    @BindView(R.id.btn_2)
-    Button btn_2;
 
-    @BindView(R.id.loading)
-    LottieAnimationView loading;
 
     CustomLoading loadingDialog;
 
@@ -99,12 +80,14 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        binding = FragmentCartBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
+
         ButterKnife.bind(this, view);
 
-        recycler_cart.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recycler_cart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(10, getActivity())));
-
+        binding.recyclerCart.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recyclerCart.addItemDecoration(new LinearSpacingItemDecoration(Common.dpToPx(10, getActivity())));
+        binding.toolBar.setClicks(this);
         initPlaceHolder();
 
         loadingDialog = new CustomLoading(getActivity(), true);
@@ -114,25 +97,17 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
     private void initPlaceHolder() {
 
-        recycler_cart.setVisibility(View.GONE);
-        btn_2.setVisibility(View.GONE);
-        img_placeholder.setImageResource(R.drawable.ic_placeholder_cart);
+        binding.recyclerCart.setVisibility(View.GONE);
+        binding.placeHolder.btn2.setVisibility(View.GONE);
+        binding.placeHolder.imgPlaceholder.setImageResource(R.drawable.ic_placeholder_cart);
 
-        btn_home.setText(getString(R.string.menu_home));
-        btn_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((BottomNavigationView) getActivity()
-                        .findViewById(R.id.nav_bottomNavigationView))
-                        .setSelectedItemId(R.id.nav_home);
-            }
-        });
+        binding.placeHolder.btn2.setText(getString(R.string.menu_home));
 
 
-        txt_placeholder_title.setText(getString(R.string.placeholder_title_cart));
-        txt_placeholder_dec.setText(getString(R.string.placeholder_dec_cart));
+        binding.placeHolder.txtPlaceholderTitle.setText(getString(R.string.placeholder_title_cart));
+        binding.placeHolder.txtPlaceholderDec.setText(getString(R.string.placeholder_dec_cart));
 
-        layout_placeholder.setVisibility(View.GONE);
+        binding.placeHolder.getRoot().setVisibility(View.GONE);
 
     }
 
@@ -141,31 +116,28 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
         handler.post(() -> {
 
-            layout_placeholder.setVisibility(View.GONE);
-            recycler_cart.setVisibility(View.VISIBLE);
-            layout_checkOut.setVisibility(View.VISIBLE);
+            binding.placeHolder.getRoot().setVisibility(View.GONE);
+            binding.recyclerCart.setVisibility(View.VISIBLE);
+            binding.layoutCheckOut.setVisibility(View.VISIBLE);
 
 
             totalPrice = myCartData.TotalPrice();
 
             //stickyRecyclerView.setDataSource(myCartData);
             cartAdapter = new CartAdapter(getActivity(), myCartData.storeData(), true);
-            cartAdapter.setRemoveAllStoreItemsListener(new CartAdapter.RemoveAllStoreItemsListener() {
-                @Override
-                public void removeAllStoreProducts(List<MyCartQuery.Item> storeItems, int position, Double totalPrice,List<MyCartQuery.StoreDatum> myCartList) {
-                    CustomLoading customLoading = new CustomLoading(getContext(), true);
-                    customLoading.showProgressBar(getContext(), false);
+            cartAdapter.setRemoveAllStoreItemsListener((storeItems, position, totalPrice, myCartList) -> {
+                CustomLoading customLoading = new CustomLoading(getContext(), true);
+                customLoading.showProgressBar(getContext(), false);
 
-                    for (MyCartQuery.Item item : storeItems) {
+                for (MyCartQuery.Item item : storeItems) {
 
-                        Boolean isLast = storeItems.indexOf(item) == storeItems.size() - 1;
-                        String cartId = item._id();
-                        deleteCartItems(cartId, position, isLast, totalPrice, customLoading, myCartList);
-                    }
+                    Boolean isLast = storeItems.indexOf(item) == storeItems.size() - 1;
+                    String cartId = item._id();
+                    deleteCartItems(cartId, position, isLast, totalPrice, customLoading, myCartList);
                 }
             });
 
-            recycler_cart.setAdapter(cartAdapter);
+            binding.recyclerCart.setAdapter(cartAdapter);
 
 
             if (myCartData != null) {
@@ -175,12 +147,12 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                     Common.TOTAL_CART_PRICE = myCartData.TotalPrice();
 
                     if (getContext() != null)
-                        total_price.setText(new StringBuilder().append(Common.getDecimalNumber(Common.TOTAL_CART_PRICE)).append(" ").append(getString(R.string.currency)));
+                        binding.btnNext.setText(getString(R.string.go_to_checkout) + " - " + new StringBuilder().append(Common.getDecimalNumber(Common.TOTAL_CART_PRICE)).append(" ").append(getString(R.string.currency)));
 
-                    layout_checkOut.setVisibility(View.VISIBLE);
+                    binding.layoutCheckOut.setVisibility(View.VISIBLE);
 
 
-                    btn_next.setOnClickListener(view1 -> {
+                    binding.btnNext.setOnClickListener(view1 -> {
 
                         loadingDialog.showProgressBar(getActivity(), false);
 
@@ -193,16 +165,10 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                                         handler.post(new Runnable() {
                                             @Override
                                             public void run() {
-
-
                                                 if (myCart.status() == 200) {
-
-
                                                     List<Boolean> isAvailableStores = new ArrayList<>();
-
                                                     for (MyCartQuery.StoreDatum stores : myCart.storeData()) {
                                                         stores.TotalPrice();
-
                                                         isAvailableStores.add(stores.Store().isAvailable());
 
                                                         if (stores.Store().orderMinPrice() != null) {
@@ -220,8 +186,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
                                                     if (isAvailableStores.contains(false)) {
 
-                                                        btn_next.setBackgroundResource(R.drawable.round_button_gray);
-                                                        btn_next.setEnabled(false);
+                                                        binding.btnNext.setBackgroundResource(R.drawable.round_button_gray);
+                                                        binding.btnNext.setEnabled(false);
                                                         cartPresenter.getMyCart();
 
                                                         loadingDialog.hideProgressBar();
@@ -276,11 +242,11 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
             if (isAvailableStores.contains(false)) {
 
-                btn_next.setBackgroundResource(R.drawable.round_button_gray);
-                btn_next.setEnabled(false);
+                binding.btnNext.setBackgroundResource(R.drawable.round_button_gray);
+                binding.btnNext.setEnabled(false);
             } else {
-                btn_next.setBackgroundResource(R.drawable.round_main_button);
-                btn_next.setEnabled(true);
+                binding.btnNext.setBackgroundResource(R.drawable._6_gradient_rect);
+                binding.btnNext.setEnabled(true);
             }
 
 
@@ -360,7 +326,6 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                     public void onResponse(@NotNull Response<GeneralOptionAllQuery.Data> response) {
 
                         for (GeneralOptionAllQuery.Data1 option : response.data().GeneralOptionQuery().getAll().data()) {
-
                             if (option.name().rawValue().equalsIgnoreCase(GeneralOptionNameEnum.DELIVERYCOST.rawValue())) {
 
                                 Common.DELIVERY_COST = option.value();
@@ -368,8 +333,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                             } else if (option.name().rawValue().equalsIgnoreCase(GeneralOptionNameEnum.MINDELIVERYCOST.rawValue())) {
 
                                 Common.MINDELIVERY_COST = option.value();
-                            }
-                            else if (option.name().rawValue().equalsIgnoreCase(GeneralOptionNameEnum.MAXADCOSTSTORECOUNT.rawValue())) {
+                            } else if (option.name().rawValue().equalsIgnoreCase(GeneralOptionNameEnum.MAXADCOSTSTORECOUNT.rawValue())) {
 
                                 Common.MAX_AD_COST_STORE = option.value();
 
@@ -380,8 +344,8 @@ public class CartFragment extends Fragment implements CartContract.CartView {
                         }
 
 
-                        btn_next.setBackgroundResource(R.drawable.round_main_button);
-                        btn_next.setEnabled(true);
+                        binding.btnNext.setBackgroundResource(R.drawable._6_gradient_rect);
+                        binding.btnNext.setEnabled(true);
                         Common.CURRENT_CART = myCart.storeData();
                         Intent intent = new Intent(getActivity(), CheckOutActivity.class);
                         intent.putExtra(Constants.EXTRA_TOTAL_CART, myCart.TotalPrice());
@@ -428,17 +392,14 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
     @Override
     public void setPlaceholder() {
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
+        handler.post(() -> {
 
 
-                showPlaceHolder();
+            showPlaceHolder();
 
-                Common.TOTAL_CART_PRICE = 0;
-                Common.TOTAL_CART_AMOUNT = 0;
+            Common.TOTAL_CART_PRICE = 0;
+            Common.TOTAL_CART_AMOUNT = 0;
 
-            }
         });
     }
 
@@ -446,9 +407,9 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
         if (getActivity() != null) {
 
-            layout_placeholder.setVisibility(View.VISIBLE);
-            recycler_cart.setVisibility(View.GONE);
-            layout_checkOut.setVisibility(View.GONE);
+            binding.placeHolder.getRoot().setVisibility(View.VISIBLE);
+            binding.recyclerCart.setVisibility(View.GONE);
+            binding.layoutCheckOut.setVisibility(View.GONE);
         }
 
     }
@@ -461,7 +422,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @Override
     public void hideProgressBar() {
 
-        handler.post(() -> loading.setVisibility(View.GONE));
+        handler.post(() -> binding.loading.setVisibility(View.GONE));
     }
 
     @Override
@@ -516,7 +477,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
         Common.TOTAL_CART_PRICE += storePrice;
         Common.TOTAL_CART_AMOUNT += amount;
 
-        total_price.setText(new StringBuilder().append(Common.getDecimalNumber(Common.TOTAL_CART_PRICE)).append(" ").append(getString(R.string.currency)));
+        binding.btnNext.setText(getString(R.string.go_to_checkout) + " - " + new StringBuilder().append(Common.getDecimalNumber(Common.TOTAL_CART_PRICE)).append(" ").append(getString(R.string.currency)));
 
 
         Common.LOG("TOTAL FROM CART FRAGMENT : >> " + Common.TOTAL_CART_PRICE);
@@ -525,7 +486,7 @@ public class CartFragment extends Fragment implements CartContract.CartView {
 
         if (Common.TOTAL_CART_PRICE <= 0.1f) {
             showPlaceHolder();
-            loading.setVisibility(View.GONE);
+            binding.loading.setVisibility(View.GONE);
             Common.TOTAL_CART_PRICE = 0;
             Common.TOTAL_CART_AMOUNT = 0;
         }
@@ -560,12 +521,24 @@ public class CartFragment extends Fragment implements CartContract.CartView {
     @Override
     public void onResume() {
         super.onResume();
-        recycler_cart.setVisibility(View.GONE);
-        loading.setVisibility(View.VISIBLE);
-        layout_checkOut.setVisibility(View.GONE);
+        binding.recyclerCart.setVisibility(View.GONE);
+        binding.loading.setVisibility(View.VISIBLE);
+        binding.layoutCheckOut.setVisibility(View.GONE);
 
         cartPresenter.getMyCart();
     }
+
+    @Override
+    public void onBackClick() {
+        Navigation.findNavController(getView()).popBackStack();
+
+    }
+
+    @Override
+    public void onNotficationClick() {
+
+    }
+
 }
 
 

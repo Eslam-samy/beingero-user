@@ -3,176 +3,177 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:background="@drawable/shadow_cart">
+    android:layout_height="220dp"
+    android:background="@drawable/shadow_cart"
+    tools:context=".ui.stores.StoresActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+
+    <TextView
+        android:id="@+id/bg_delete"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="@dimen/large_margin"
+        android:layout_marginEnd="@dimen/medium_margin"
+        android:background="@drawable/round_delete"
+        android:gravity="center|center_vertical|clip_horizontal"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/linear"
+        app:layout_constraintTop_toTopOf="@+id/linear"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/btn_delete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:src="@drawable/ic_min_x"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_delete"
+        app:layout_constraintEnd_toEndOf="@+id/bg_delete"
+        app:layout_constraintStart_toStartOf="@+id/bg_delete"
+        app:layout_constraintTop_toTopOf="@+id/bg_delete" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linear"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/image_product"
+            android:layout_width="50sp"
+            android:layout_height="68dp"
+            android:layout_gravity="center_horizontal"
+            android:padding="@dimen/normal_padding"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_placeholder_product"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/medium_margin"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/dashed_rect"
+            android:fontFamily="@font/poppinsmedium"
+            android:paddingStart="7dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="7dp"
+            android:paddingBottom="2dp"
+            android:text="10%"
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_product" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4">
-
-
-            <ImageView
-                android:id="@+id/image_product"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/normal_padding"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_placeholder_product"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/low_margin"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/medium_margin">
 
             <TextView
-                android:id="@+id/txt_amount"
+                android:id="@+id/txt_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/round_count_product"
-                android:text="0 "
-                android:textAlignment="center"
-                android:gravity="center"
-                android:textColor="@color/white"
+                android:fontFamily="@font/poppinsmedium"
+                android:gravity="start"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/medium_margin"
-                android:layout_marginTop="@dimen/large_margin"
-                android:visibility="gone"
-                tools:visibility="visible"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"/>
-
-
-            <TextView
-                android:id="@+id/bg_delete"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="@drawable/round_delete"
-                android:textAlignment="center"
-                android:gravity="center|center_vertical|clip_horizontal"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginEnd="@dimen/medium_margin"
-                android:layout_marginTop="@dimen/large_margin"
-                android:visibility="gone"
-                tools:visibility="visible"/>
-
-            <ImageView
-                android:id="@+id/btn_delete"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:src="@drawable/ic_min"
-                app:layout_constraintTop_toTopOf="@+id/bg_delete"
-                app:layout_constraintBottom_toBottomOf="@+id/bg_delete"
-                app:layout_constraintStart_toStartOf="@+id/bg_delete"
-                app:layout_constraintEnd_toEndOf="@+id/bg_delete"
-                android:padding="10dp"/>
-
-
-            <TextView
-                android:id="@+id/txt_discount"
-                android:layout_width="35dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/round_discount"
-                android:text="10%"
-                android:textColor="@color/white"
-                android:fontFamily="@font/poppinsregular"
-                android:textSize="@dimen/normal_text_size"
-                android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="@dimen/medium_margin"
-                />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="150 EGP" />
+
+            <TextView
+                android:id="@+id/txt_old_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:fontFamily="@font/poppinsregular"
+                android:text="200 EGP"
+                android:textColor="@color/colorOldPrice"
+                android:textSize="@dimen/low_xx_text_size"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_price"
+                app:layout_constraintStart_toEndOf="@+id/txt_price"
+                app:layout_constraintTop_toTopOf="@+id/txt_price" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0.8dp"
+                android:layout_marginBottom="3dp"
+                android:background="@color/colorOldPrice"
+                app:layout_constraintBottom_toBottomOf="@+id/txt_old_price"
+                app:layout_constraintEnd_toEndOf="@+id/txt_old_price"
+                app:layout_constraintStart_toStartOf="@+id/txt_old_price"
+                app:layout_constraintTop_toTopOf="@+id/txt_old_price" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+
+        <TextView
+            android:id="@+id/txt_name_product"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/poppinsregular"
+            android:gravity="start"
             android:paddingStart="@dimen/medium_margin"
-            android:paddingEnd="@dimen/large_margin"
-            android:paddingBottom="@dimen/low_padding">
+            android:text="Nike Air Max 95 PremiumPrem "
+            android:textColor="@color/black"
+            android:textSize="@dimen/normal_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                android:layout_marginTop="@dimen/low_margin">
+        <TextView
+            android:id="@+id/min_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppinsregular"
+            android:paddingStart="@dimen/medium_margin"
+            android:text="500 gm"
+            android:textColor="#80757575"
+            android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/txt_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    tools:text="150 EGP"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/medium_text_size"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:fontFamily="@font/poppinsregular"
-                    android:textStyle="bold" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <TextView
-                    android:id="@+id/txt_old_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="200 EGP"
-                    app:layout_constraintStart_toEndOf="@+id/txt_price"
-                    app:layout_constraintTop_toTopOf="@+id/txt_price"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_price"
-                    android:textSize="@dimen/low_xx_text_size"
-                    android:layout_marginStart="@dimen/low_margin"
-                    android:textColor="@color/colorOldPrice"
-                    android:fontFamily="@font/poppinsregular"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0.8dp"
-                    android:background="@color/colorOldPrice"
-                    app:layout_constraintStart_toStartOf="@+id/txt_old_price"
-                    app:layout_constraintEnd_toEndOf="@+id/txt_old_price"
-                    app:layout_constraintTop_toTopOf="@+id/txt_old_price"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_old_price"/>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <TextView
-                android:id="@+id/txt_name_product"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="5dp"
-                android:layout_weight="2.5"
-                android:gravity="start"
-                android:text="Nike Air Max 95 PremiumPrem \n asdasdasd \n dfsdfsdfsdf "
-                android:textColor="@color/colorProductName"
-                android:textSize="@dimen/normal_text_size"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:fontFamily="@font/poppinsmedium"/>
-
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/txt_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_margin"
+        android:layout_marginTop="@dimen/large_margin"
+        android:background="@drawable/round_count_product"
+        android:gravity="center"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/linear"
+        app:layout_constraintTop_toTopOf="@+id/linear"
+        tools:visibility="visible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

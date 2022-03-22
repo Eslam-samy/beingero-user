@@ -1,6 +1,7 @@
 package com.corptia.bringero.ui.home.storetypes;
 
 import android.os.Handler;
+import android.util.Log;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -28,7 +29,7 @@ public class StoreTypesPresenter {
         this.storeTypesView = storeTypesView;
     }
 
-    void getStoreTypes(String offers) {
+    public void getStoreTypes(String offers) {
 
         storeTypesView.showProgressBar();
 
@@ -70,6 +71,7 @@ public class StoreTypesPresenter {
                                                             new StoreTypesQuery.StoreType("","",offers,null),offersStores));
                                                     storeCategoryList.addAll(allStores.StoreCategory());
 
+                                                    Log.d("asasas", "run: " + storeCategoryList.get(1).StoreType().name());
                                                     storeTypesView.setStoreTypes(storeCategoryList);
                                                     storeTypesView.hideProgressBar();
                                                 }

@@ -61,10 +61,10 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
         if (address!=null) {
 
             holder.txt_address_name.setText(address.getName());
-            holder.txt_street.setText(new StringBuilder()
-                    .append(address.getRegion())
-                    .append(" - ")
-                    .append(address.getStreet().length() > 30 ? address.getStreet().substring(0,30) : address.getStreet()));
+//            holder.txt_street.setText(new StringBuilder()
+//                    .append(address.getRegion())
+//                    .append(" - ")
+//                    .append(address.getStreet().length() > 30 ? address.getStreet().substring(0,30) : address.getStreet()));
 
 
             if (selectedPosition == -1) {
@@ -143,8 +143,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.ViewHo
 
         @BindView(R.id.txt_address_name)
         TextView txt_address_name;
-        @BindView(R.id.txt_street)
-        TextView txt_street;
         @BindView(R.id.btn_update)
         ImageView btn_update;
         @BindView(R.id.img_selected)

@@ -54,18 +54,18 @@ public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDe
         DeliveryAddresses address = deliveryAddressList.get(position);
         holder.txt_address.setText(address.getStreet());
         holder.txt_title_name_address.setText(address.getName());
-
         if (selectedPosition == -1) {
             if (Common.CURRENT_USER.getCurrentDeliveryAddress().getId().equals(address.getId())) {
-                holder.image_correct.setVisibility(View.VISIBLE);
+                holder.image_correct.setImageResource(R.drawable.ic_checked_group);
                 selectedPosition = position;
                 tempCurrentPosition = position;
             } else
-                holder.image_correct.setVisibility(View.INVISIBLE);
+                holder.image_correct.setImageResource(R.drawable.ic_unchecked_group);
         } else {
             if (selectedPosition == position) {
-                holder.image_correct.setVisibility(View.VISIBLE);
-            } else holder.image_correct.setVisibility(View.INVISIBLE);
+                holder.image_correct.setImageResource(R.drawable.ic_checked_group);
+            } else holder.image_correct.setImageResource(R.drawable.ic_unchecked_group);
+
         }
 
         holder.itemView.setOnClickListener(view -> {
@@ -91,7 +91,6 @@ public class SelectDeliveryLocationAdapter extends RecyclerView.Adapter<SelectDe
         TextView txt_address;
         @BindView(R.id.image_correct)
         ImageView image_correct;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
